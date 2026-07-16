@@ -1,4 +1,5 @@
 'use strict';
+//são as tabelas no código
 
 const fs = require('fs');
 const path = require('path');
