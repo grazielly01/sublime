@@ -1,5 +1,5 @@
 .alert{
-    width: 100%;
+    width: 97%;
     min-height: 85px;
     background: #FFDFE0;
     border-radius: 8px;
@@ -9,6 +9,7 @@
     padding: 16px 20px;
     box-sizing: border-box;
     gap: 18px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .circuloIcone{
@@ -46,8 +47,7 @@
     color: white;
     padding: 3px 10px;
     border-radius: 15px;
-    font-size: 13px;
-    font-weight: bold;
+    font-size: 12px;
 }
 
 .descricaoAlert{

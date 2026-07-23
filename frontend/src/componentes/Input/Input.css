@@ -4,6 +4,7 @@
     border: 1px solid #870B22;
     border-radius: 8px; /*Para deixar os cantos arredondados*/
     font-size: 16px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     outline: none; /*Para tirar o outline feio padrao q o navegador põe no input*/
     transition: border-color 0.2s; /*Quando o user clica no input, a borda transiciona por 0.2s de vinho para rosa*/
     box-sizing: border-box; /*pro navegador nao somar o tamanho da caixa, com o suposto padding e border: ele entende q é tudo um só*/

@@ -135,10 +135,13 @@ import Sidebar from "./componentes/Sidebar/Sidebar.jsx";
 
 function App() {
   return (
-    <div class="Fundo" style={{ padding: "40px" }}>
+    <div className="Fundo" style={{ padding: "0px" }}>
 
-      <div class="tudoMenosSidebar">
-      <h1>ESSA É A PÁGINA PRINCIPAL Q O REACT DEIXA DEPOIS Q BAIXA TUDO. COMENTEI OS CODIGOS DAQUELES DAQUELA PÁGINA BONITINHA DO REACT E TESTEI OS COMPONENTES AQUI :D</h1>
+      <div className="tudoMenosSidebar">
+
+      <br /> <br /> <br /> <br /> <br /> <br />
+
+      <h1>ESSA É A PÁGINA PRINCIPAL Q O REACT DEIXA DEPOIS Q BAIXA TUDO. COMENTEI OS CODIGOS DAQUELA PÁGINA BONITINHA DO REACT E TESTEI OS COMPONENTES AQUI :D</h1>
 
       <br /> <br />
 

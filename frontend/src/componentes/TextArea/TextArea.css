@@ -14,3 +14,8 @@
 .textArea:focus {
     border-color: #F6A2B1; /*Quando o user clica no textarea, a borda fica assim esse rosinha*/
 }
+
+.textArea::placeholder{
+    color: #0000008a;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
