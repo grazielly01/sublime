@@ -1,8 +1,9 @@
-import { useState } from 'react'
+/*import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
+import Input from "./componentes/Input/Input.jsx";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -120,3 +121,88 @@ function App() {
 }
 
 export default App
+*/
+
+import './App.css'
+import Input from "./componentes/Input/Input.jsx";
+import Button from "./componentes/Button/Button.jsx";
+import Card from "./componentes/Card/Card.jsx";
+import Textarea from "./componentes/TextArea/TextArea.jsx";
+import Select from "./componentes/Select/Select.jsx";
+import Header from './componentes/Header/Header.jsx';
+import Alert from "./componentes/Alerts/Alerts.jsx";
+import Sidebar from "./componentes/Sidebar/Sidebar.jsx";
+
+function App() {
+  return (
+    <div class="Fundo" style={{ padding: "40px" }}>
+
+      <div class="tudoMenosSidebar">
+      <h1>ESSA É A PÁGINA PRINCIPAL Q O REACT DEIXA DEPOIS Q BAIXA TUDO. COMENTEI OS CODIGOS DAQUELES DAQUELA PÁGINA BONITINHA DO REACT E TESTEI OS COMPONENTES AQUI :D</h1>
+
+      <br /> <br />
+
+      <Input placeholder="Digite seu nome"/>
+    
+      <br /> <br />
+
+      <Button texto="Cadastrar insumo" />
+
+      <br /> <br />
+
+      <Card></Card>
+
+      <br /> <br />
+
+      <Textarea placeholder="Digite aqui a descrição da saída" />
+
+      <br /> <br />
+
+      <Select options={[
+        "Doces finos",
+        "Bolos",
+        "Tortas",
+        "Sazonais",
+        "Mousses e cremosos",
+        "Pavês e gelados",
+        "Outros" 
+      ]}
+      />
+
+      <br /> <br />
+
+      <Header nomeIndustria="Sweet Sunset" />
+
+      <br /> <br />
+
+      <Alert
+        titulo="Estoque de farinha baixo"
+        descricao="A farinha de trigo deve acabar em aproximadamente 2 dias."
+        prioridade="alta"
+      />
+
+      <br />
+
+      <Alert
+        titulo="Pedido próximo do prazo"
+        descricao="O pedido #125 deve ser entregue amanhã."
+        prioridade="media"
+      />
+
+      <br />
+
+      <Alert
+        titulo="Backup recomendado"
+        descricao="O último backup foi realizado há 10 dias."
+        prioridade="baixa"
+      />
+      </div>
+
+      <br /> <br />
+      <Sidebar paginaAtiva="Visão geral" />
+
+    </div>
+  );
+}
+
+export default App;
