@@ -1,4 +1,8 @@
-/*import { useState } from 'react'
+/*  !!!!!!!!!!!  ESSE CÓDIGO COMENTADO É O Q O REACT CRIA DEPOIS Q INSTALAMOS ELE E AS DEPENDENCIAS  !!!!!!!!!!!
+
+
+
+import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
@@ -134,8 +138,9 @@ import Header from './componentes/Header/Header.jsx';
 import Alert from "./componentes/Alerts/Alerts.jsx";
 import Sidebar from "./componentes/Sidebar/Sidebar.jsx";
 import Login from "./pages/login/login.jsx"; /*importando a página de Login só pra poder visualizar ela por essa gambiarra temporária*/
+import Estoque from "./pages/estoque/estoque.jsx"; /*importando a página de Estoque só pra poder visualizar ela por essa gambiarra temporária*/
 
-function App() {
+function App() { /**ESSA FUNCTION ABAIXO, Q USA useState, TAMBEM É TEMPORÁRIA: É GAMBIARRA PRA EU VISUALIZAR AS PAGINAS Q TO CRIANDO QUANDO CLICO NOS BUTTONS */
 
   const [telaAtual, setTelaAtual] = useState("app");
   /*telaAtual começa como "app" (mostra a tela normal de testes); setTelaAtual é quem troca esse valor*/
@@ -144,6 +149,11 @@ function App() {
   if (telaAtual === "login") {
     return <Login />;
   }
+
+  /*se telaAtual for "ESTOQUE", mostra só a página de Estoque e para por aqui, nem chega a olhar o resto do código abaixo*/
+  if (telaAtual === "estoque") {
+    return <Estoque />;
+ }
 
   return (
     <div className="Fundo" style={{ padding: "0px" }}>
@@ -216,6 +226,7 @@ function App() {
       <h3>Esses buttons abaixo são só improvisados para eu visualizar as páginas. Depois eu farei as rotas ao clicar no menu lateral.</h3>
 
       <Button texto="Login" onClick={() => setTelaAtual("login")} />
+      <Button texto="Estoque" onClick={() => setTelaAtual("estoque")} />
 
       </div>
 

@@ -1,0 +1,176 @@
+/*         DIV Q ABRIGA TUDO         */
+
+.tudoEstoque{
+    width: 100%;
+    min-height: 100vh; /*min-height ao inves de height fixo, pra página poder crescer se a tabela for grande*/
+    display: flex;
+}
+
+/*        TUDO MENOS A SIDEBAR        */
+
+.tudoMenosSidebar{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
+    background-color: #FDEDE8;
+}
+
+
+/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
+
+.conteudoEstoque{
+    padding: 6% 48px;
+    box-sizing: border-box;
+}
+
+.tituloEstoque{
+    margin: 0;
+    font-size: 350%;
+    color: #870B22;
+}
+
+.subtituloEstoque{
+    margin: 6px 0 0 4px;
+    font-size: 100%;
+    color: #777;
+}
+
+
+/*        BARRA DE FILTROS (busca + aviso + botões)        */
+
+.barraFiltros{
+    display: flex;
+    justify-content: space-between; /*lado esquerdo (busca+aviso) numa ponta, lado direito (botões) na outra*/
+    align-items: center;
+    margin-top: 28px;
+    flex-wrap: wrap; /*se a tela for estreita, quebra linha ao inves de espremer tudo*/
+    gap: 16px;
+}
+
+.ladoEsquerdoFiltros{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.ladoDireitoFiltros{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/*campo de busca com ícone*/
+.buscaComIcone{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.buscaComIcone svg{
+    position: absolute;
+    left: 14px;
+    width: 18px;
+    height: 18px;
+    color: #870B22;
+    pointer-events: none;  /*ignora o cursor e nao acontece nada qnd o cursor clica nele*/
+}
+
+.buscaComIcone .input{
+    width: 280px;
+    padding-left: 42px;
+    box-sizing: border-box;
+}
+
+/*aviso "... abaixo do mínimo"*/
+.avisoMinimo{
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #CF0003;
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    padding: 8px 16px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.avisoMinimo svg{
+    width: 15px;
+    height: 15px;
+}
+
+#selectFiltroInsumo{
+    width: 90%;
+    box-sizing: border-box;
+    border-radius: 20px;
+    font-size: 90%;
+    font-weight: bold;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+
+
+
+/*        TABELA DE INSUMOS        */
+
+.tabelaEstoque{
+    width: 100%;
+    margin-top: 40px;
+    border-collapse: collapse; /*junta as bordas das células, sem espaçamento entre elas*/
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden; /*deixa os cantos arredondados "cortarem" certinho o que tiver dentro*/
+    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.tabelaEstoque thead{
+    border-bottom: 2px solid #870B22;
+}
+
+.tabelaEstoque th{
+    text-align: left;
+    padding: 16px 20px;
+    font-size: 108%;
+    color: #000000;
+    font-weight: 600;
+}
+
+.tabelaEstoque td{
+    padding: 16px 20px;
+    font-size: 14px;
+    color: #333;
+    border-top: 1px solid #f5eae6;
+    border-bottom: 1px solid #870B22;
+}
+
+.nomeInsumo{
+    font-weight: 600;
+}
+
+.loteInsumo{
+    color: #999;
+}
+
+/*tarjazinha do status OK ou Repor*/
+.statusReposicao{
+    display: inline-block;
+    padding: 4px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.statusReposicao.ok{
+    background-color: #FFDCE0;
+    color: #870B22;
+}
+
+.statusReposicao.repor{
+    background-color: #CF0003;
+    color: white;
+}

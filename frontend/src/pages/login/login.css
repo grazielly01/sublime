@@ -14,11 +14,9 @@
     height: 100%;
     box-sizing: border-box;
     padding: 40px;
-
     background-image: url("/img/fundo-login.png"); /*a foto marrom fica em public/imagens*/
     background-size: cover; /*a foto cobre a div toda, sem esticar/deformar*/
     background-position: center;
-
     display: flex;
     flex-direction: column; /*empilha: topo, meio e rodapé*/
     justify-content: space-between; /*espalha bem: topo no topo, rodapé embaixo, meio no meio*/

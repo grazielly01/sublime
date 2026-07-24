@@ -11,6 +11,7 @@
     top: 0;
     left: 7vh;
     right: 0;
+    z-index: 998;  /*fica por cima do conteúdo qnd abrir, coloquei 998 pq 998 camadas é o suficiente pra ficar por cima, mas ainda é abaixo de 999: o sidebar*/
 }
 
 .logoIndustria{

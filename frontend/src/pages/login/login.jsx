@@ -77,7 +77,8 @@ function Login() {
                     <div className="botaoEntrar"><Button texto="Entrar" /></div>
 
                     {/*link de cadastro*/}
-                    <p className="primeiroAcesso">Primeiro acesso? 
+                    <p className="primeiroAcesso">Primeiro acesso?
+                        <span> </span> 
                         <span className="linkCadastro">Cadastre-se</span>
                     </p>
 
