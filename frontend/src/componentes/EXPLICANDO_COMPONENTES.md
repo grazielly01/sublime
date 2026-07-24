@@ -1,0 +1,8 @@
+-Button:     Executar uma ação quando clicado (user interage)
+-Input:      O usuário digitar um texto curto (user modifica e interage)
+-TextArea:   O usuário digitar um texto grande (user modifica e interage)
+-Select:     O usuário escolhe uma opção de uma lista (user interage)
+-Alert:      Mostrar um aviso ou mensagem (user não modifica nem interage)
+-Card:       Cards do dashboard (user não modifica nem interage)
+-Header:     Cabeçalho da página (user não modifica nem interage)
+-Sidebar:    Menu lateral  (user não modifica, mas interage)

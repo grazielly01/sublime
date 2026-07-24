@@ -1,4 +1,4 @@
-.counter {
+/* .counter {
   font-size: 16px;
   padding: 5px 10px;
   border-radius: 5px;
@@ -181,4 +181,23 @@
     right: 0;
     border-right-color: var(--border);
   }
+} */
+
+.Fundo{
+  background-color: bisque;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 170vh;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+  gap: 0;
+  position: absolute;
+  
+}
+
+.tudoMenosSidebar{
+  margin-left: 6%;
 }

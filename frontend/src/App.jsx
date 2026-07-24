@@ -1,8 +1,9 @@
-import { useState } from 'react'
+/*import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
+import Input from "./componentes/Input/Input.jsx";
 
 function App() {
   const [count, setCount] = useState(0)
@@ -120,3 +121,112 @@ function App() {
 }
 
 export default App
+*/
+
+import { useState } from "react"; /*useState guarda uma informação que pode mudar (aqui: qual tela mostrar) e redesenha a tela sozinho quando ela muda*/
+import './App.css'
+import Input from "./componentes/Input/Input.jsx";
+import Button from "./componentes/Button/Button.jsx";
+import Card from "./componentes/Card/Card.jsx";
+import Textarea from "./componentes/TextArea/TextArea.jsx";
+import Select from "./componentes/Select/Select.jsx";
+import Header from './componentes/Header/Header.jsx';
+import Alert from "./componentes/Alerts/Alerts.jsx";
+import Sidebar from "./componentes/Sidebar/Sidebar.jsx";
+import Login from "./pages/login/login.jsx"; /*importando a página de Login só pra poder visualizar ela por essa gambiarra temporária*/
+
+function App() {
+
+  const [telaAtual, setTelaAtual] = useState("app");
+  /*telaAtual começa como "app" (mostra a tela normal de testes); setTelaAtual é quem troca esse valor*/
+
+  /*se telaAtual for "login", mostra só a página de Login e para por aqui, nem chega a olhar o resto do código abaixo*/
+  if (telaAtual === "login") {
+    return <Login />;
+  }
+
+  return (
+    <div className="Fundo" style={{ padding: "0px" }}>
+
+      <div className="tudoMenosSidebar">
+
+      <br /> <br /> <br /> <br /> <br /> <br />
+
+      <h1>ESSA É A PÁGINA PRINCIPAL Q O REACT DEIXA DEPOIS Q BAIXA TUDO. COMENTEI OS CODIGOS DAQUELA PÁGINA BONITINHA DO REACT E TESTEI OS COMPONENTES AQUI :D</h1>
+
+      <br /> <br />
+
+      <Input placeholder="Digite seu nome"/>
+    
+      <br /> <br />
+
+      <Button texto="Cadastrar insumo" />
+
+      <br /> <br />
+
+      <Card></Card>
+
+      <br /> <br />
+
+      <Textarea placeholder="Digite aqui a descrição da saída" />
+
+      <br /> <br />
+
+      <Select options={[
+        "Doces finos",
+        "Bolos",
+        "Tortas",
+        "Sazonais",
+        "Mousses e cremosos",
+        "Pavês e gelados",
+        "Outros" 
+      ]}
+      />
+
+      <br /> <br />
+
+      <Header nomeIndustria="Sweet Sunset" />
+
+      <br /> <br />
+
+      <Alert
+        titulo="Estoque de farinha baixo"
+        descricao="A farinha de trigo deve acabar em aproximadamente 2 dias."
+        prioridade="alta"
+      />
+
+      <br />
+
+      <Alert
+        titulo="Pedido próximo do prazo"
+        descricao="O pedido #125 deve ser entregue amanhã."
+        prioridade="media"
+      />
+
+      <br />
+
+      <Alert
+        titulo="Backup recomendado"
+        descricao="O último backup foi realizado há 10 dias."
+        prioridade="baixa"
+      />
+
+      <br /> <br />
+
+      <h3>Esses buttons abaixo são só improvisados para eu visualizar as páginas. Depois eu farei as rotas ao clicar no menu lateral.</h3>
+
+      <Button texto="Login" onClick={() => setTelaAtual("login")} />
+
+      </div>
+
+      <br /> <br />
+
+      <Sidebar paginaAtiva="Visão geral" />
+
+      
+
+    </div>
+  );
+}
+
+export default App;

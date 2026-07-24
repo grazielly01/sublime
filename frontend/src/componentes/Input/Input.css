@@ -1,0 +1,17 @@
+.input {
+    width: 500px;
+    padding: 10px 14px;  /*Para o texto nao ficar colado na borda da caixihha*/
+    border: 1px solid #870B22;
+    border-radius: 8px; /*Para deixar os cantos arredondados*/
+    font-size: 16px;
+    font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    outline: none; /*Para tirar o outline feio padrao q o navegador põe no input*/
+    transition: border-color 0.2s; /*Quando o user clica no input, a borda transiciona por 0.2s de vinho para rosa*/
+    box-sizing: border-box; /*pro navegador nao somar o tamanho da caixa, com o suposto padding e border: ele entende q é tudo um só*/
+    cursor: text; /*ao colocar o cursor em cima do input, ele vira aquele cursor de texto (parece essa letra I)*/
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25); /*sombra*/
+}
+
+.input:focus {
+    border-color: #F6A2B1; /*Quando o user clica no input, a borda fica assim esse rosinha*/
+}
