@@ -139,8 +139,10 @@ import Alert from "./componentes/Alerts/Alerts.jsx";
 import Sidebar from "./componentes/Sidebar/Sidebar.jsx";
 import Login from "./pages/login/login.jsx"; /*importando a página de Login só pra poder visualizar ela por essa gambiarra temporária*/
 import Estoque from "./pages/estoque/estoque.jsx"; /*importando a página de Estoque só pra poder visualizar ela por essa gambiarra temporária*/
+import Cadastro from "./pages/cadastro/cadastro.jsx"; /*importando a página de Cadastro só pra poder visualizar ela por essa gambiarra temporária*/
 
-function App() { /**ESSA FUNCTION ABAIXO, Q USA useState, TAMBEM É TEMPORÁRIA: É GAMBIARRA PRA EU VISUALIZAR AS PAGINAS Q TO CRIANDO QUANDO CLICO NOS BUTTONS */
+ /**ESSA FUNCTION ABAIXO, Q USA useState, TAMBEM É TEMPORÁRIA: É GAMBIARRA PRA EU VISUALIZAR AS PAGINAS Q TO CRIANDO QUANDO CLICO NOS BUTTONS */
+function App() {
 
   const [telaAtual, setTelaAtual] = useState("app");
   /*telaAtual começa como "app" (mostra a tela normal de testes); setTelaAtual é quem troca esse valor*/
@@ -153,80 +155,97 @@ function App() { /**ESSA FUNCTION ABAIXO, Q USA useState, TAMBEM É TEMPORÁRIA:
   /*se telaAtual for "ESTOQUE", mostra só a página de Estoque e para por aqui, nem chega a olhar o resto do código abaixo*/
   if (telaAtual === "estoque") {
     return <Estoque />;
- }
+  }
+
+  /*se telaAtual for "cadastro", mostra só a página de Estoque e para por aqui, nem chega a olhar o resto do código abaixo*/
+  if (telaAtual === "cadastro") {
+    return <Cadastro />;
+  }
+
 
   return (
     <div className="Fundo" style={{ padding: "0px" }}>
 
       <div className="tudoMenosSidebar">
 
-      <br /> <br /> <br /> <br /> <br /> <br />
+        <br /> <br /> <br /> <br /> <br /> <br />
 
-      <h1>ESSA É A PÁGINA PRINCIPAL Q O REACT DEIXA DEPOIS Q BAIXA TUDO. COMENTEI OS CODIGOS DAQUELA PÁGINA BONITINHA DO REACT E TESTEI OS COMPONENTES AQUI :D</h1>
+        <h1>ESSA É A PÁGINA PRINCIPAL Q O REACT DEIXA DEPOIS Q BAIXA TUDO. COMENTEI OS CODIGOS DAQUELA PÁGINA BONITINHA DO REACT E TESTEI OS COMPONENTES AQUI :D</h1>
 
-      <br /> <br />
+        <br /> <br />
 
-      <Input placeholder="Digite seu nome"/>
+        <Input placeholder="Digite seu nome"/>
     
-      <br /> <br />
+        <br /> <br />
 
-      <Button texto="Cadastrar insumo" />
+        <Button texto="Cadastrar insumo" />
 
-      <br /> <br />
+        <br /> <br />
 
-      <Card></Card>
+        <Card></Card>
 
-      <br /> <br />
+        <br /> <br />
 
-      <Textarea placeholder="Digite aqui a descrição da saída" />
+        <Textarea placeholder="Digite aqui a descrição da saída" />
 
-      <br /> <br />
+        <br /> <br />
 
-      <Select options={[
-        "Doces finos",
-        "Bolos",
-        "Tortas",
-        "Sazonais",
-        "Mousses e cremosos",
-        "Pavês e gelados",
-        "Outros" 
-      ]}
-      />
+        <Select options={[
+          "Doces finos",
+          "Bolos",
+          "Tortas",
+          "Sazonais",
+          "Mousses e cremosos",
+          "Pavês e gelados",
+          "Outros" 
+        ]}
+        />
 
-      <br /> <br />
+        <br /> <br />
 
-      <Header nomeIndustria="Sweet Sunset" />
+        <Header nomeIndustria="Sweet Sunset" />
 
-      <br /> <br />
+        <br /> <br />
 
-      <Alert
-        titulo="Estoque de farinha baixo"
-        descricao="A farinha de trigo deve acabar em aproximadamente 2 dias."
-        prioridade="alta"
-      />
+        <Alert
+          titulo="Estoque de farinha baixo"
+          descricao="A farinha de trigo deve acabar em aproximadamente 2 dias."
+          prioridade="alta"
+        />
 
-      <br />
+        <br />
 
-      <Alert
-        titulo="Pedido próximo do prazo"
-        descricao="O pedido #125 deve ser entregue amanhã."
-        prioridade="media"
-      />
+        <Alert
+          titulo="Pedido próximo do prazo"
+          descricao="O pedido #125 deve ser entregue amanhã."
+          prioridade="media"
+        />
 
-      <br />
+        <br />
 
-      <Alert
-        titulo="Backup recomendado"
-        descricao="O último backup foi realizado há 10 dias."
-        prioridade="baixa"
-      />
+        <Alert
+          titulo="Backup recomendado"
+          descricao="O último backup foi realizado há 10 dias."
+          prioridade="baixa"
+        />
 
-      <br /> <br />
+       <br /> <br />
 
-      <h3>Esses buttons abaixo são só improvisados para eu visualizar as páginas. Depois eu farei as rotas ao clicar no menu lateral.</h3>
+       <h3>Esses buttons abaixo são só improvisados para eu visualizar as páginas. Depois eu farei as rotas ao clicar no menu lateral.</h3>
 
-      <Button texto="Login" onClick={() => setTelaAtual("login")} />
-      <Button texto="Estoque" onClick={() => setTelaAtual("estoque")} />
+       <div className="buttonsLogin">
+          <Button texto="Login" onClick={() => setTelaAtual("login")} />
+          <Button texto="Cadastro" onClick={() => setTelaAtual("cadastro")} />
+        </div>    
+
+        <br />
+
+        <div className="buttonsEstoque">
+          <Button texto="Estoque" onClick={() => setTelaAtual("estoque")} />
+          <Button texto="Registrar insumo" onClick={() => setTelaAtual("registrarInsumo")} />
+          <Button texto="Detalhes do insumo" onClick={() => setTelaAtual("detalhesInsumo")} />
+          <Button texto="Apagar insumo" onClick={() => setTelaAtual("apagarInsumo")} />
+        </div>
 
       </div>
 
