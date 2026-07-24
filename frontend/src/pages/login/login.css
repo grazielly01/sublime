@@ -1,0 +1,189 @@
+/*         ESTRUTURA GERAL (div q abriga as duas metades)        */
+
+.tudoLogin{
+    width: 100%;
+    height: 100vh; 
+    display: flex; 
+}
+
+
+/*        METADE ESQUERDA (bonita)        */
+
+.metadeBonita{
+    width: 50%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 40px;
+
+    background-image: url("/img/fundo-login.png"); /*a foto marrom fica em public/imagens*/
+    background-size: cover; /*a foto cobre a div toda, sem esticar/deformar*/
+    background-position: center;
+
+    display: flex;
+    flex-direction: column; /*empilha: topo, meio e rodapé*/
+    justify-content: space-between; /*espalha bem: topo no topo, rodapé embaixo, meio no meio*/
+}
+
+/*topo: logo + "Sublime" + "Indústria B2B"*/
+.topoMarca{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.iconeMarca{
+    width: 65px;
+    height: 65px;
+    padding: 2px;
+    box-sizing: border-box;
+    object-fit: contain; /*a imagem não estica/deforma dentro do círculo*/
+}
+
+.textoMarca{
+    display: flex;
+    flex-direction: column; /*"Sublime" em cima, "Indústria B2B" embaixo*/
+}
+
+.palavraMarca{
+    height: 25px;
+    width: auto; /*mantém a proporção original da imagem*/
+}
+
+.industriaB2B{
+    margin-left: 6px;
+    margin-bottom: -5px;
+    font-size: 13px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #c7c7c7;
+}
+
+/*frase impactante e descriçao*/
+.meioMarca{
+    max-width: 550px;
+    margin-bottom: 12%;
+}
+
+.fraseMarca{
+    width: 100%;
+    max-width: 550px;
+    height: auto;
+}
+
+.descricaoMarca{
+    margin-top: 16px;
+    margin-left: 2.5%;
+    width: 45vh;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #fffefee3;
+}
+
+.direitosAutorais{
+    margin: 0;
+    margin-left: 5px;
+    font-size: 14px;
+    color: #d9b3a8;
+}
+
+
+/*        METADE DIREITA (formulário prático)         */
+
+.metadePratica{
+    width: 50%;
+    height: 100%;
+    box-sizing: border-box;
+    background-color: #FDEDE8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.conteudoPratico{
+    width: 100%;
+    max-width: 450px; /*largura do "bloco" do formulário inteiro*/
+}
+
+.tituloLogin{
+    margin: 0 0 28px 0;
+    font-size: 340%;
+    color: #870B22;
+}
+
+.campoLogin{
+    margin-bottom: 22px;
+}
+
+.labelCampo{
+    display: block;
+    margin-bottom: 6px;
+    font-size: 120%;
+    font-weight: 600;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: #222;
+}
+
+#inputEmail{
+    width: 450px;
+}
+
+.linhaLabelSenha{
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+}
+
+.linkEsqueciSenha{
+    font-size: 15px;
+    color: #870B22;
+    cursor: pointer; /*faz o cursor virar uma maozinha qndo passa em cima, dizendo q é clicável*/
+}
+
+/*caixinha que "embrulha" o Input pra dar pra por o ícone dentro dele*/
+.inputComIcone{
+    position: relative; /*é a partir daqui que o ícone se posiciona*/
+    display: flex;
+    align-items: center;
+}
+
+.inputComIcone svg{
+    position: absolute; /*tira o ícone do alinhamento padrão e deixa ele "flutuar" por cima do Input bem bonitinho*/
+    left: 14px;
+    width: 18px;
+    height: 18px;
+    color: #870B22;
+    pointer-events: none; /*permite clicar "através" do ícone e cair direto no campo de texto*/
+}
+
+.inputComIcone .input{
+    width: 100%;
+    padding-left: 42px; /*espacinho pro ícone não ficar em cima do texto digitado*/
+    box-sizing: border-box;
+}
+
+#inputSenha{
+    width: 450px;
+}
+
+/*mesma ideia aqui: sobrescrevendo só a largura do Button nessa tela*/
+.botaoEntrar .button{
+    width: 100%;
+}
+
+.botaoEntrar{
+    margin-top: 6px;
+}
+
+.primeiroAcesso{
+    margin-top: 18px;
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+}
+
+.linkCadastro{
+    color: #870B22;
+    font-weight: 600;
+    text-decoration: underline;
+    cursor: pointer;
+}
