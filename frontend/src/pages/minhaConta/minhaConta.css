@@ -1,0 +1,212 @@
+/*         DIV Q ABRIGA TUDO         */
+
+.tudoMinhaConta{
+    width: 100%;
+    min-height: 100vh; /*min-height ao inves de height fixo, pra página poder crescer se a tabela for grande*/
+    display: flex;
+}
+
+/*        TUDO MENOS A SIDEBAR        */
+
+.tudoMenosSidebar{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
+    background-color: #FDEDE8;
+}
+
+
+/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
+
+.conteudoMinhaConta{
+    padding: 6% 48px;
+    box-sizing: border-box;
+}
+
+.tituloMinhaConta{
+    margin: 0;
+    font-size: 350%;
+    color: #870B22;
+}
+
+.subtituloMinhaConta{
+    margin: 6px 0 0 4px;
+    font-size: 100%;
+    color: #777;
+}
+
+.duasAbas{
+    display: flex;
+    width: 100%;
+    height: 550px;
+    margin-top: 10vh;
+}
+
+.abaEsquerda{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 35%;
+    background-color: #ffffff;
+    border-radius: 35px;
+    border: 1px solid #870B22;
+    margin-right: 2%;
+    box-shadow:  -3px 3px 15px rgba(0, 0, 0, 0.3);
+}
+
+.abaDireita{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 65%;
+    background-color: #ffffff;
+    border-radius: 35px;
+    border: 1px solid #870B22;
+    margin-left: 2%;
+    box-shadow:  -3px 3px 15px rgba(0, 0, 0, 0.3);
+}
+
+.infosAbaEsquerda{
+    display: flex;
+    flex-direction: column;
+    width: 80%;
+    height: 70%;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.fotinhaENome{
+    width: 40%;
+    height: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.iconUser{
+    background-color: #870B22;
+    width: 78%;
+    height: 100%;
+    display: flex;
+    border-radius: 90px;
+    margin-bottom: 1px;
+}
+
+.fotinhaENome h3{
+    color: #870B22;
+    font-weight: bold;
+    font-size: 150%;
+    margin-bottom: 0%;
+    margin-top: 2px;
+}
+
+.fotinhaENome p{
+    color: #616161;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 105%;
+    margin-bottom: 0%;
+    margin-top: 1%;
+}
+
+.tarjaPlano{
+    background-color: #FFC8D2;
+    width: 95%;
+    height: 20%;
+    border-radius: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tarjaPlano h2{
+    font-weight: 500;
+    color: #870B22;
+    margin-bottom: 1%;
+}
+
+.tarjaPlano p{
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    margin-top: 1%;
+    margin-bottom: 4%;
+}
+
+.buttonAlterarFoto{
+    background-color: rgb(255, 217, 0);
+    width: 39%;
+    height: 14%;
+    display: flex;
+}
+
+.infosAbaDireita{
+    display: flex;
+    flex-direction: column;
+    width: 89%;
+    height: 79%;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.infosAbaDireita h2{
+    font-size: 220%;
+    color: #870B22;
+    margin-top: -2%;
+    margin-bottom: 3%;
+}
+
+.doisInputs{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.input1 Input, .input2 Input{
+    width: 48vh;
+}
+
+.input1{
+    margin-left: -2%;
+}
+
+.input2{
+    margin-right: -2%;
+}
+
+.outrosInputs{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+
+.outrosInputs Input{
+    width: 458%;
+    margin-bottom: 8%;
+}
+
+.botoesDadosPessoais{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: flex-start;
+}
+
+.botoesDadosPessoais Button{
+    border-radius: 40px;
+    margin-right: 2vh;
+    margin-bottom: -5%;
+}
+
+#buttonAlterarSenha{
+    color: rgb(0, 0, 0);
+    background-color: #FFC8D2;
+}
