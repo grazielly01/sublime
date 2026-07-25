@@ -1,0 +1,75 @@
+/*         DIV Q ABRIGA TUDO         */
+
+.tudoAlertas{
+    width: 100%;
+    min-height: 100vh; /*min-height ao inves de height fixo*/
+    display: flex;
+}
+
+/*        TUDO MENOS A SIDEBAR        */
+
+.tudoMenosSidebar{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
+    background-color: #FDEDE8;
+}
+
+
+/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
+
+.conteudoAlertas{
+    padding: 6% 48px;
+    box-sizing: border-box;
+}
+
+.tituloAlertas{
+    margin: 0;
+    font-size: 350%;
+    color: #870B22;
+}
+
+.subtituloAlertas{
+    margin: 6px 0 0 4px;
+    font-size: 100%;
+    color: #777;
+}
+
+
+/*        ABAS DE FILTRO (Todos, Pedidos, Estoque, Financeiro, Produção)        */
+
+.filtrosAlertas{
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+}
+
+.filtroAlerta{
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer; /*ainda não faz nada de verdade (sem backend), só mostra que é clicável*/
+    background-color: white;
+    color: #333;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/*a aba ativa (no caso, "Todos") fica com o fundo vinho e o texto branco*/
+.filtroAlerta.ativo{
+    background-color: #870B22;
+    color: white;
+}
+
+
+/*        LISTA DE ALERTAS        */
+
+.listaAlertas{
+    display: flex;
+    flex-direction: column;
+    gap: 18px; /*espaço entre um alerta e outro*/
+    margin-top: 28px;
+}
