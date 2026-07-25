@@ -2,7 +2,7 @@
 
 .tudoMinhaConta{
     width: 100%;
-    min-height: 100vh; /*min-height ao inves de height fixo, pra página poder crescer se a tabela for grande*/
+    min-height: 100vh; /*min-height ao inves de height fixo*/
     display: flex;
 }
 
