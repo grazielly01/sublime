@@ -14,6 +14,7 @@ import Cadastro from "./pages/cadastro/cadastro.jsx"; /*importando function da p
 import RegistrarInsumo from "./pages/estoque/registrarInsumo.jsx";  /*importando function da página de Registrar insumo só pra poder visualizar ela por essa gambiarra temporária*/
 import DetalhesInsumo from "./pages/estoque/detalhesInsumo.jsx"; /*importando function da página de Detalhes do insumo só pra poder visualizar ela por essa gambiarra temporária*/
 import ApagarInsumo from "./pages/estoque/apagarInsumo.jsx"; /*importando function da página de Apagar insumo só pra poder visualizar ela por essa gambiarra temporária*/
+import MinhaConta from "./pages/minhaConta/minhaConta.jsx"; /*importando function da página Minha conta só pra poder visualizar ela por essa gambiarra temporária*/
 
  /**ESSA FUNCTION ABAIXO, Q USA useState, TAMBEM É TEMPORÁRIA: É GAMBIARRA PRA EU VISUALIZAR AS PAGINAS Q TO CRIANDO QUANDO CLICO NOS BUTTONS */
 function App() {
@@ -49,7 +50,9 @@ function App() {
     return <ApagarInsumo />;
   }
 
-
+  if (telaAtual === "minhaConta") {
+    return <MinhaConta />;
+  }
 
 
   return (
@@ -122,27 +125,25 @@ function App() {
 
        <h3>Esses buttons abaixo são só improvisados para eu visualizar as páginas. Depois eu farei as rotas ao clicar no menu lateral.</h3>
 
-       <div className="buttonsLogin">
-          <Button texto="Login" onClick={() => setTelaAtual("login")} />
-          <Button texto="Cadastro" onClick={() => setTelaAtual("cadastro")} />
-        </div>    
+        <Button texto="Login" onClick={() => setTelaAtual("login")} />
+        <Button texto="Cadastro" onClick={() => setTelaAtual("cadastro")} />  
 
         <br />
 
-        <div className="buttonsEstoque">
-          <Button texto="Estoque" onClick={() => setTelaAtual("estoque")} />
-          <Button texto="Registrar insumo" onClick={() => setTelaAtual("registrarInsumo")} />
-          <Button texto="Detalhes do insumo" onClick={() => setTelaAtual("detalhesInsumo")} />
-          <Button texto="Apagar insumo" onClick={() => setTelaAtual("apagarInsumo")} />
-        </div>
+        <Button texto="Estoque" onClick={() => setTelaAtual("estoque")} />
+        <Button texto="Registrar insumo" onClick={() => setTelaAtual("registrarInsumo")} />
+        <Button texto="Detalhes do insumo" onClick={() => setTelaAtual("detalhesInsumo")} />
+        <Button texto="Apagar insumo" onClick={() => setTelaAtual("apagarInsumo")} />
+
+        <br />
+
+        <Button texto="Minha conta" onClick={() => setTelaAtual("minhaConta")}/>
 
       </div>
 
       <br /> <br />
 
       <Sidebar paginaAtiva="Visão geral" />
-
-      
 
     </div>
   );
