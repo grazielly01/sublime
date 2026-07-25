@@ -8,6 +8,7 @@ import "./Button.css";  /*Importando CSS base dos buttons*/
 function Button({ /*criei o componente aq como function*/
     /*Propriedades do botão abaixo*/
     texto,
+    id,
     onClick, /*função executada quando o botão for clicado*/
     type = "button", /*se ninguém informar outro tipo (no lugar q ele for colocado), será um botão comum*/
     disabled = false, /*por padrão o botao fica habilitado para o user poder clicar sim*/
@@ -17,6 +18,7 @@ function Button({ /*criei o componente aq como function*/
         <div className="divButton"> {/*essa div abaixo so serve como uma caixinha pra guardar esse componente Button*/}
 
             <button
+                id={id}
                 className="button" /*Classe pra usar no CSS na hora de estilizar*/
                 type={type} /*{type} pq pega o valor da propriedade "type"*/
                 onClick={onClick} /*{onClick} pq pega o valor da propriedade "onClick"*/

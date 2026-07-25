@@ -1,0 +1,162 @@
+/*         DIV Q ABRIGA TUDO         */
+
+.tudoRegistrarInsumo{
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+}
+
+/*        TUDO MENOS A SIDEBAR        */
+
+.tudoMenosSidebar{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
+    background-color: #FDEDE8;
+}
+
+
+/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
+
+.conteudoRegistrarInsumo{
+    padding: 6% 48px;
+    box-sizing: border-box;
+}
+
+.tituloESetinha{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.tituloRegistrarInsumo{
+    margin: 0;
+    font-size: 350%;
+    color: #870B22;
+}
+
+.svgSetinha{
+    cursor: pointer;
+}
+
+
+/*        JANELA BRANCA COM OS DADOS DO INSUMO        */
+
+.janelaRegistrarInsumo{
+    background-color: white;
+    border: 1px solid #870B22;
+    border-radius: 12px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 28px 32px;
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.linha1,
+.linha2{
+    display: flex;
+    gap: 24px;
+}
+
+.campoRegistrar{
+    display: flex;
+    flex-direction: column;
+}
+
+.campoRegistrar label{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+/*"flex" define a proporção de espaço que cada campo ocupa na linha (em vez de width fixo em %, o flex se ajusta sozinho)*/
+.campoNome{
+    flex: 2; /*campo "Nome do insumo" ocupa o dobro de espaço dos outros da linha 1*/
+}
+
+.campoValidade,
+.campoLote,
+.campoValor{
+    flex: 1;
+}
+
+#inputValidade{
+    width: 42vh;
+}
+
+.campoCategoria{
+    flex: 1.3; /*um pouco mais largo que Custo/Quantidade, igual no protótipo*/
+}
+
+
+#selectRegistrarInsumo{
+    width: 50vh;
+    background-color: white;
+    border: solid 1px #870B22;
+}
+
+/*os Inputs dessa tela ocupam 100% do espaço do seu campo (que já é controlado pelo flex acima)*/
+.campoRegistrar .input{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/*campo desabilitado ganha um fundo levemente acinzentado, reforçando visualmente que não dá pra editar aqui*/
+.campoRegistrar .input:disabled{
+    background-color: #f7f7f7;
+    color: #333;
+    cursor: default;
+}
+
+/*ícone dentro do campo de Validade (mesma ideia usada no Login e no Estoque)*/
+.inputComIcone{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.inputComIcone svg{
+    position: absolute;
+    left: 14px;
+    width: 18px;
+    height: 18px;
+    color: #870B22;
+    pointer-events: none;
+}
+
+.inputComIcone .input{
+    padding-left: 42px;
+}
+
+
+/*        BOTÕES DE AÇÃO (Excluir e Editar)        */
+
+.botoesRegistrarInsumo{
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.botoesRegistrarInsumo .button{
+    width: auto;
+    padding: 12px 32px;
+    border-radius: 30px; /*deixa os botões bem arredondados, igual no protótipo*/
+}
+
+/*"Excluir" tem contorno em vez de fundo preenchido -- sobrescrevendo só aqui, sem mexer no Button.css original*/
+.botaoContorno .button{
+    background-color: white;
+    border: 1px solid #870B22;
+    color: #000;
+}
+
+.botaoContorno .button:hover{
+    background-color: #fdf0ee;
+}
