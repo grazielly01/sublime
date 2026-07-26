@@ -1,9 +1,12 @@
 import "./estoque.css";
+import { Link } from "react-router-dom";
 import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes*/
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
 import Select from "../../componentes/Select/Select.jsx";
+
+
 
 function Estoque() {
 
@@ -90,7 +93,9 @@ function Estoque() {
                                 "Outros"]}
                             />
 
-                            <Button id="botaoNovaEntrada" texto="+ Nova entrada" />
+                            <Link to="/estoque/registrar" className="botaoNovoInsumo">
+  + Novo insumo
+</Link>
 
                         </div>
 

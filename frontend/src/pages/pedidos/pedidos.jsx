@@ -1,4 +1,5 @@
 import "./pedidos.css";
+import { Link } from "react-router-dom";
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
@@ -53,7 +54,7 @@ function Pedidos() {
                         <div className="filtroPedido">Entregue</div>
                         <div className="filtroPedido">Cancelado</div>
 
-                        <Button id="buttonNovoPedido" texto="+ Novo pedido" />
+                        <Link to="/pedidos/registrar" className="botaoNovoPedido"> + Novo pedido </Link>
                     </div>
 
                     
@@ -78,7 +79,7 @@ function Pedidos() {
                                     <p className="valorPedido">{pedido.valor}</p>
 
                                     <div className="botaoDetalhes"> {/*ainda sem onClick -- vai abrir a tela de detalhes do pedido quando ela existir*/}
-                                        <Button texto="Detalhes" />
+                                        <Link to={`/pedidos/detalhes/${pedido.id}`} className="botaoDetalhes"> Detalhes </Link>
                                     </div>
                                 </div>
 

@@ -1,4 +1,6 @@
 import "./detalhesPedido.css";
+import { Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes*/
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
@@ -6,6 +8,7 @@ import Header from "../../componentes/Header/Header.jsx";  /*Importando o compon
 import Select from "../../componentes/Select/Select.jsx";  /*Importando o componente Select da pasta componentes*/
 
 function DetalhesPedido() {
+    
 
     /*Dados do pedido que o user clicou lá na tela de Pedidos, em "Detalhes" (dado de exemplo, "mockado", só pra visualizar a tela). Quando o backend existir, esses dados 
     vão vir do banco de dados de acordo com o pedido que foi clicado.*/

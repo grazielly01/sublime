@@ -4,6 +4,9 @@ import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o com
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
 
 function ApagarPedido() {
+   
+  
+
     return (
         <div className="tudoApagarPedido">  {/*Div q abriga tudo*/}
 
