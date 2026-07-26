@@ -16,6 +16,7 @@ import DetalhesInsumo from "./pages/estoque/detalhesInsumo.jsx"; /*importando fu
 import ApagarInsumo from "./pages/estoque/apagarInsumo.jsx"; /*importando function da página de Apagar insumo só pra poder visualizar ela por essa gambiarra temporária*/
 import MinhaConta from "./pages/minhaConta/minhaConta.jsx"; /*importando function da página Minha conta só pra poder visualizar ela por essa gambiarra temporária*/
 import Alertas from "./pages/alertas/alertas.jsx"; /*importando function da página de Alertas só pra poder visualizar ela por essa gambiarra temporária*/
+import Pedidos from "./pages/pedidos/pedidos.jsx"; /*importando function da página de Pedidos số pra poder visualizar ela por essa gambiarra temporária*/
 
  /**ESSA FUNCTION ABAIXO, Q USA useState, TAMBEM É TEMPORÁRIA: É GAMBIARRA PRA EU VISUALIZAR AS PAGINAS Q TO CRIANDO QUANDO CLICO NOS BUTTONS */
 function App() {
@@ -57,6 +58,10 @@ function App() {
 
   if (telaAtual === "alertas") {
     return <Alertas />;
+  }
+
+  if (telaAtual === "pedidos") {
+    return <Pedidos />;
   }
 
 
@@ -147,6 +152,10 @@ function App() {
         <br />
 
         <Button texto="Alertas" onClick={() => setTelaAtual("alertas")}/>
+
+        <br />
+
+        <Button texto="Pedidos" onClick={() => setTelaAtual("pedidos")}/>
 
 
       </div>

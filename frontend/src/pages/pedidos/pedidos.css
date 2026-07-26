@@ -1,0 +1,181 @@
+/*         DIV Q ABRIGA TUDO         */
+
+.tudoPedidos{
+    width: 100%;
+    min-height: 100vh; /*min-height ao inves de height fixo*/
+    display: flex;
+}
+
+/*        TUDO MENOS A SIDEBAR        */
+
+.tudoMenosSidebar{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
+    background-color: #FDEDE8;
+}
+
+
+/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
+
+.conteudoPedidos{
+    padding: 6% 48px;
+    box-sizing: border-box;
+}
+
+.topoPedidos{
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.tituloPedidos{
+    margin: 0;
+    font-size: 350%;
+    color: #870B22;
+}
+
+.subtituloPedidos{
+    margin: 6px 0 0 4px;
+    font-size: 100%;
+    color: #777;
+}
+
+/*só a largura do Button "+ Novo pedido" nessa tela*/
+#buttonNovoPedido{
+    width: auto;
+    padding: 8px 24px;
+    margin-left:83vh;
+}
+
+
+/*        ABAS DE FILTRO        */
+
+.filtrosPedidosEButton{
+    display: flex;
+    gap: 10px;
+    margin-top: 24px;
+    flex-wrap: wrap;
+}
+
+.filtroPedido{
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    background-color: white;
+    color: #333;
+    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+}
+
+.filtroPedido.ativo{
+    background-color: #870B22;
+    color: white;
+}
+
+
+/*        GRADE DE CARDS DE PEDIDOS        */
+
+.listaPedidos{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /*2 colunas, cada uma dividindo o espaço igualmente*/
+    gap: 20px;
+    margin-top: 28px;
+}
+
+.cardPedido{
+    background-color: white;
+    border: 1px solid #870B22;
+    border-radius: 12px;
+    padding: 20px 22px;
+    box-sizing: border-box;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+}
+
+.topoCardPedido{
+    display: flex;
+    justify-content: flex-end; /*joga a tarja de status pro canto direito do card*/
+}
+
+.nomeEstabelecimento{
+    margin: 6px 0 0 0;
+    font-size: 160%;
+    color: #222;
+}
+
+.infoPedido{
+    margin: 6px 0 0 0;
+    font-size: 13px;
+    color: #888;
+}
+
+.rodapeCardPedido{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+}
+
+.valorPedido{
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+    color: #870B22;
+}
+
+/*sobrescrevendo só o Button "Detalhes" nessa tela, pra ficar pequeno e com fundo clarinho*/
+.botaoDetalhes .button{
+    width: auto;
+    padding: 8px 20px;
+    font-size: 14px;
+    background-color: #FFEBE3;
+    color: #870B22;
+    box-shadow: none;
+}
+
+.botaoDetalhes .button:hover{
+    background-color: #ffdcd0;
+}
+
+
+/*        TARJA DE STATUS (cor muda de acordo com o status)        */
+
+.statusPedido{
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    white-space: nowrap;
+}
+
+.statusPedido.producao{
+    background-color: #FFC8D2;
+    color: #870B22;
+}
+
+.statusPedido.aguardando{
+    background-color: #E8C30B;
+    color: #5B4900;
+}
+
+.statusPedido.pronto{
+    background-color: #3C9F5B;
+    color: white;
+}
+
+.statusPedido.entregue{
+    background-color: #870B22;
+    color: white;
+}
+
+.statusPedido.cancelado{
+    background-color: #CF0003;
+    color: white;
+}
