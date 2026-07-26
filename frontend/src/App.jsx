@@ -20,7 +20,7 @@ import Pedidos from "./pages/pedidos/pedidos.jsx"; /*importando function da pág
 import RegistrarPedido from "./pages/pedidos/registrarPedido.jsx"; /*importando function da página de Registrar pedido số pra poder visualizar ela por essa gambiarra temporária*/
 import DetalhesPedido from "./pages/pedidos/detalhesPedido.jsx"; /*importando function da página de Detalhes do pedido số pra poder visualizar ela por essa gambiarra temporária*/
 import ApagarPedido from "./pages/pedidos/apagarPedido.jsx"; /*importando function da página de Apagar pedido số pra poder visualizar ela por essa gambiarra temporária*/
-
+import Produtos from "./pages/produtos/produtos.jsx"; /*importando function da página de Produtos số pra poder visualizar ela por essa gambiarra temporária*/
 
  /**ESSA FUNCTION ABAIXO, Q USA useState, TAMBEM É TEMPORÁRIA: É GAMBIARRA PRA EU VISUALIZAR AS PAGINAS Q TO CRIANDO QUANDO CLICO NOS BUTTONS */
 function App() {
@@ -80,6 +80,9 @@ function App() {
     return <ApagarPedido />;
   }
 
+  if (telaAtual === "produtos") {
+    return <Produtos />;
+  }
 
   return (
     <div className="Fundo" style={{ padding: "0px" }}>
@@ -179,6 +182,10 @@ function App() {
         <Button texto="Detalhes do pedido" onClick={() => setTelaAtual("detalhesPedido")} />
         <Button texto="Apagar pedido" onClick={() => setTelaAtual("apagarPedido")} />
 
+        <br />
+
+        
+        <Button texto="Produtos" onClick={() => setTelaAtual("produtos")} />
 
       </div>
 
