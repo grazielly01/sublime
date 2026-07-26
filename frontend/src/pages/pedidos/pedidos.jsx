@@ -34,7 +34,7 @@ function Pedidos() {
 
                 <div className="conteudoPedidos"> {/*Div com o conteúdo da página*/}
 
-                    {/*linha de cima: título+subtítulo de um lado, botão "+ Novo pedido" do outro*/}
+                    {/*linha de cima: título + subtítulo*/}
                     <div className="topoPedidos">
                         <div>
                             <h1 className="tituloPedidos">Pedidos</h1>
