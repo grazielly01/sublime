@@ -17,6 +17,10 @@ import ApagarInsumo from "./pages/estoque/apagarInsumo.jsx"; /*importando functi
 import MinhaConta from "./pages/minhaConta/minhaConta.jsx"; /*importando function da página Minha conta só pra poder visualizar ela por essa gambiarra temporária*/
 import Alertas from "./pages/alertas/alertas.jsx"; /*importando function da página de Alertas só pra poder visualizar ela por essa gambiarra temporária*/
 import Pedidos from "./pages/pedidos/pedidos.jsx"; /*importando function da página de Pedidos số pra poder visualizar ela por essa gambiarra temporária*/
+import RegistrarPedido from "./pages/pedidos/registrarPedido.jsx"; /*importando function da página de Registrar pedido số pra poder visualizar ela por essa gambiarra temporária*/
+import DetalhesPedido from "./pages/pedidos/detalhesPedido.jsx"; /*importando function da página de Detalhes do pedido số pra poder visualizar ela por essa gambiarra temporária*/
+import ApagarPedido from "./pages/pedidos/apagarPedido.jsx"; /*importando function da página de Apagar pedido số pra poder visualizar ela por essa gambiarra temporária*/
+
 
  /**ESSA FUNCTION ABAIXO, Q USA useState, TAMBEM É TEMPORÁRIA: É GAMBIARRA PRA EU VISUALIZAR AS PAGINAS Q TO CRIANDO QUANDO CLICO NOS BUTTONS */
 function App() {
@@ -62,6 +66,18 @@ function App() {
 
   if (telaAtual === "pedidos") {
     return <Pedidos />;
+  }
+
+  if (telaAtual === "registrarPedido") {
+    return <RegistrarPedido />;
+  }
+
+  if (telaAtual === "detalhesPedido") {
+    return <DetalhesPedido />;
+  }
+
+  if (telaAtual === "apagarPedido") {
+    return <ApagarPedido />;
   }
 
 
@@ -156,6 +172,12 @@ function App() {
         <br />
 
         <Button texto="Pedidos" onClick={() => setTelaAtual("pedidos")}/>
+
+        <br />
+
+        <Button texto="Registrar pedido" onClick={() => setTelaAtual("registrarPedido")} />
+        <Button texto="Detalhes do pedido" onClick={() => setTelaAtual("detalhesPedido")} />
+        <Button texto="Apagar pedido" onClick={() => setTelaAtual("apagarPedido")} />
 
 
       </div>
