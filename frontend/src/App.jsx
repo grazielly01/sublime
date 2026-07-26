@@ -21,6 +21,7 @@ import RegistrarPedido from "./pages/pedidos/registrarPedido.jsx"; /*importando 
 import DetalhesPedido from "./pages/pedidos/detalhesPedido.jsx"; /*importando function da página de Detalhes do pedido số pra poder visualizar ela por essa gambiarra temporária*/
 import ApagarPedido from "./pages/pedidos/apagarPedido.jsx"; /*importando function da página de Apagar pedido số pra poder visualizar ela por essa gambiarra temporária*/
 import Produtos from "./pages/produtos/produtos.jsx"; /*importando function da página de Produtos số pra poder visualizar ela por essa gambiarra temporária*/
+import Calendario from "./pages/calendario/calendario.jsx"; /*importando function da página de Calendario(so pra poder visualizar ela por essa gambiarra temporária)*/ 
 
  /**ESSA FUNCTION ABAIXO, Q USA useState, TAMBEM É TEMPORÁRIA: É GAMBIARRA PRA EU VISUALIZAR AS PAGINAS Q TO CRIANDO QUANDO CLICO NOS BUTTONS */
 function App() {
@@ -82,6 +83,10 @@ function App() {
 
   if (telaAtual === "produtos") {
     return <Produtos />;
+  }
+
+  if (telaAtual === "calendario") {
+    return <Calendario />;
   }
 
   return (
@@ -175,9 +180,6 @@ function App() {
         <br />
 
         <Button texto="Pedidos" onClick={() => setTelaAtual("pedidos")}/>
-
-        <br />
-
         <Button texto="Registrar pedido" onClick={() => setTelaAtual("registrarPedido")} />
         <Button texto="Detalhes do pedido" onClick={() => setTelaAtual("detalhesPedido")} />
         <Button texto="Apagar pedido" onClick={() => setTelaAtual("apagarPedido")} />
@@ -186,6 +188,10 @@ function App() {
 
         
         <Button texto="Produtos" onClick={() => setTelaAtual("produtos")} />
+
+        <br />
+
+        <Button texto="Calendário" onClick={() => setTelaAtual("calendario")} />
 
       </div>
 

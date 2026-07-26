@@ -51,7 +51,6 @@ function Pedidos() {
                         <div className="filtroPedido">Em produção</div>
                         <div className="filtroPedido">Pronto</div>
                         <div className="filtroPedido">Entregue</div>
-                        <div className="filtroPedido">Prioridades</div>
                         <div className="filtroPedido">Cancelado</div>
 
                         <Button id="buttonNovoPedido" texto="+ Novo pedido" />
