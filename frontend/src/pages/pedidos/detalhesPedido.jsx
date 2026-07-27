@@ -1,6 +1,5 @@
 import "./detalhesPedido.css";
 import { Link } from "react-router-dom";
-import { useParams } from "react-router-dom";
 import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes*/
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
@@ -91,7 +90,9 @@ function DetalhesPedido() {
                     {/*botões de ação: "Excluir" (contorno, leva pra tela de confirmação apagarPedido) e "Editar" (preenchido)*/}
                     <div className="botoesDetalhesPedido">
                         <div className="botaoContorno">
-                            <Button texto="Excluir" />
+                            <Link to="/pedidos/apagar" className="botaoApagarPedido">
+                                <Button texto="Excluir" />
+                            </Link>
                         </div>
                         <Button texto="Editar" />
                     </div>

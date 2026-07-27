@@ -1,4 +1,5 @@
 import "./detalhesInsumo.css";
+import { Link } from "react-router-dom";
 import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes*/
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
@@ -110,7 +111,9 @@ function DetalhesInsumo() {
                     {/*botões de ação: "Excluir" (contorno, leva pra tela de confirmação apagarInsumo) e "Editar" (preenchido)*/}
                     <div className="botoesDetalhesInsumo">
                         <div className="botaoContorno">
-                            <Button texto="Excluir" />
+                            <Link to="/estoque/apagar" className="botaoApagarInsumo">
+                                <Button texto="Excluir" />
+                            </Link>
                         </div>
                         <Button texto="Editar" />
                     </div>
