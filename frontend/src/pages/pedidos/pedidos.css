@@ -1,8 +1,8 @@
 /*         DIV Q ABRIGA TUDO         */
 
 .tudoPedidos{
-    width: 100%;
-    min-height: 100vh; /*min-height ao inves de height fixo*/
+    width: 93%;
+    min-height: 170vh; /*min-height ao inves de height fixo*/
     display: flex;
 }
 
@@ -22,7 +22,7 @@
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
 .conteudoPedidos{
-    padding: 6% 48px;
+    padding-top: 6%;
     box-sizing: border-box;
 }
 
@@ -44,11 +44,15 @@
     color: #777;
 }
 
+.botaoNovoPedido{
+    width: 2;
+}
+
 /*só a largura do Button "+ Novo pedido" nessa tela*/
 #buttonNovoPedido{
     width: auto;
     padding: 8px 24px;
-    margin-left:96vh;
+    margin-left: 93vh;
 }
 
 

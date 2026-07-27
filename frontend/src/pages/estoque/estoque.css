@@ -1,8 +1,8 @@
 /*         DIV Q ABRIGA TUDO         */
 
 .tudoEstoque{
-    width: 100%;
-    min-height: 100vh; /*min-height ao inves de height fixo, pra página poder crescer se a tabela for grande*/
+    width: 93%;
+    min-height: 170vh; /*min-height ao inves de height fixo, pra página poder crescer se a tabela for grande*/
     display: flex;
 }
 
@@ -22,7 +22,7 @@
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
 .conteudoEstoque{
-    padding: 6% 48px;
+    padding-top: 6%;
     box-sizing: border-box;
 }
 
@@ -150,6 +150,7 @@
 
 .nomeInsumo{
     font-weight: 600;
+    cursor: pointer;
 }
 
 .loteInsumo{

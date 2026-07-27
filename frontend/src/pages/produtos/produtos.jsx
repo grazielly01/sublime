@@ -36,7 +36,7 @@ function Produtos(){
                     {/*linha de cima: título + subtítulo*/}
                     <div className="topoProdutos">
                         <div>
-                            <h1 className="tituloProdutos">Produtos e receitas</h1>
+                            <h1 className="tituloProdutos">Produtos</h1>
                             <p className="subtituloProdutos">Cadastro de receitas com cálculo automático de custo e margem.</p>
                         </div>
                     </div>
