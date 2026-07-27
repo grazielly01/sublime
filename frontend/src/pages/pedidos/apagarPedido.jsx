@@ -39,11 +39,8 @@ function ApagarPedido() {
                         </div>
 
                     </div>
-
                 </div>
-
             </div>
-
         </div>
     );
 }

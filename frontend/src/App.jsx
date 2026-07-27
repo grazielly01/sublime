@@ -40,14 +40,14 @@ function App() {
         {/* Estoque */}
         <Route path="/estoque" element={<Estoque />} />
         <Route path="/estoque/registrar" element={<RegistrarInsumo />} />
-        <Route path="/estoque/detalhes/:id" element={<DetalhesInsumo />} />
-        <Route path="/estoque/apagar/:id" element={<ApagarInsumo />} />
+        <Route path="/estoque/detalhes/" element={<DetalhesInsumo />} />
+        <Route path="/estoque/apagar/" element={<ApagarInsumo />} />
 
         {/* Pedidos */}
         <Route path="/pedidos" element={<Pedidos />} />
         <Route path="/pedidos/registrar" element={<RegistrarPedido />} />
         <Route path="/pedidos/detalhes/:id" element={<DetalhesPedido />} />
-        <Route path="/pedidos/apagar/:id" element={<ApagarPedido />} />
+        <Route path="/pedidos/apagar/" element={<ApagarPedido />} />
 
         {/* Produtos */}
         <Route path="/produtos" element={<Produtos />} />
