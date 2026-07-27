@@ -1,0 +1,203 @@
+/*         DIV Q ABRIGA TUDO         */
+
+.tudoDetalhesProdutos{
+    width: 93%;
+    min-height: 170vh;
+    display: flex;
+}
+
+/*        TUDO MENOS A SIDEBAR        */
+
+.tudoMenosSidebar{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
+    background-color: #FDEDE8;
+}
+
+
+/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
+
+.conteudoDetalhesProdutos{
+    padding-top: 6%;
+    box-sizing: border-box;
+}
+
+.tituloESetinha{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.tituloDetalhesProdutos{
+    margin: 0;
+    font-size: 350%;
+    color: #870B22;
+}
+
+.svgSetinha{
+    cursor: pointer;
+}
+
+
+/*        JANELA BRANCA COM OS DADOS DO PRODUTO        */
+
+.janelaDetalhesProdutos{
+    background-color: white;
+    border: 1px solid #870B22;
+    border-radius: 12px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 28px 32px;
+    margin-top: 32px;
+}
+
+.areaFormulario{
+    display: flex;
+    gap: 28px;
+}
+
+.colunaEsquerda{
+    flex: 1.8;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.colunaDireita{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.linha1{
+    display: flex;
+    gap: 24px;
+}
+
+.campoDetalhe{
+    display: flex;
+    flex-direction: column;
+}
+
+.campoDetalhe label{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+.campoNome{
+    flex: 2;
+}
+
+.campoCategoria{
+    flex: 1.2;
+}
+
+.campoDescricaoProduto,
+.campoReceitaProduto{
+    width: 100%;
+}
+
+.campoReceitaProduto{
+    flex: 1;
+}
+
+#selectCategoriaDetalhes{
+    width: 100%;
+    background-color: white;
+    border: solid 1px #870B22;
+}
+
+/*os Inputs dessa tela ocupam 100% do espaço do campo*/
+.campoDetalhe .input{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/*campo desabilitado fica com um fundo levemente acinzentado*/
+.campoDetalhe .input:disabled{
+    background-color: #f7f7f7;
+    color: #333;
+    cursor: default;
+}
+
+.campoReceitaProduto .textarea{
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 140px;
+}
+
+#textArea{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.campoDescricaoProduto .textarea{
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 60px;
+}
+
+.campoDetalhe .textarea:disabled{
+    background-color: #f7f7f7;
+    color: #333;
+    cursor: default;
+}
+
+
+/*        IMAGEM DO PRODUTO (já cadastrada, só exibindo)        */
+
+.campoImagem{
+    flex: 1;
+}
+
+.imagemProdutoDetalhes{
+    flex: 1;
+    min-height: 160px;
+    background-color: #FFC8D2; /*aparece caso a imagem nao carregue por algum motivo*/
+    background-size: cover;
+    background-position: center;
+    border: 2px solid #ecb9ac;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+
+/*        CUSTO E VALOR (empilhados embaixo da imagem)        */
+
+.colunaValores{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+
+/*        BOTÕES DE AÇÃO (Excluir e Editar)        */
+
+.botoesDetalhesProdutos{
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.botoesDetalhesProdutos .button{
+    width: auto;
+    padding: 12px 32px;
+    border-radius: 30px;
+}
+
+.botaoContorno .button{
+    background-color: white;
+    border: 1px solid #870B22;
+    color: #000;
+}
+
+.botaoContorno .button:hover{
+    background-color: #fdf0ee;
+}
