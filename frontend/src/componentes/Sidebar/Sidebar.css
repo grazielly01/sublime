@@ -51,7 +51,7 @@
     transition: background-color 0.2s;
 }
 
-#textoMinhaConta{
+#idMinhaConta{
     margin-left: 0%; /*fiz essa gambiarra pq o texto "Minha conta" estava com o mesmo margin-left de 10% dos outros textos do menu*/
 }
 

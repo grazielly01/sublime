@@ -1,5 +1,6 @@
 import { useState } from "react"; /*useState para: guardar o mês e o ano que estão sendo exibidos, e troca esse valor quando o user clica nas setinhas*/
 import "./calendario.css";
+import { Link } from "react-router-dom";
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
@@ -106,7 +107,9 @@ function Calendario() {
                     {/*barra  com o botão "+ Novo evento"*/}
                     <div className="barraNovoEvento">
                         <div className="botaoNovoEvento"> {/*ainda sem onClick pq nao tem backend*/}
-                            <Button texto="+ Novo evento" />
+                            <Link to="/calendario/registrar" className="botaoNovoEvento">
+                                <Button texto="+ Novo evento" />
+                            </Link>
                         </div>
                     </div>
 
@@ -163,9 +166,11 @@ function Calendario() {
                                             <div className="conteudoCelula">
                                                 <span className="numeroDia">{dia}</span>
                                                 {eventoDoDia && (
-                                                    <span className={"tagEvento " + eventoDoDia.categoria}>
-                                                        {eventoDoDia.titulo}
-                                                    </span>
+                                                    <Link to="/calendario/detalhes" className="botaoDetalhesEvento">
+                                                        <span className={"tagEvento " + eventoDoDia.categoria}>
+                                                            {  eventoDoDia.titulo}
+                                                        </span>
+                                                    </Link>
                                                 )}
                                             </div>
                                         )}

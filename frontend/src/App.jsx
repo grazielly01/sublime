@@ -24,6 +24,10 @@ import RegistrarProduto from "./pages/produtos/registrarProduto.jsx";
 import DetalhesProduto from "./pages/produtos/detalhesProduto.jsx";
 import ApagarProduto from "./pages/produtos/apagarProduto.jsx";
 
+import RegistrarEvento from "./pages/calendario/registrarEvento.jsx";
+import DetalhesEvento from "./pages/calendario/detalhesEvento.jsx";
+import ApagarEvento from "./pages/calendario/apagarEvento.jsx";
+
 
 function App() {
   return (
@@ -50,6 +54,11 @@ function App() {
         <Route path="/produtos/registrar" element={<RegistrarProduto />} />
         <Route path="/produtos/detalhes" element={<DetalhesProduto />} />
         <Route path="/produtos/apagar" element={<ApagarProduto />} />
+
+        {/* Calendário */}
+        <Route path="/calendario/registrar" element={<RegistrarEvento />} />
+        <Route path="/calendario/detalhes" element={<DetalhesEvento />} />
+        <Route path="/calendario/apagar" element={<ApagarEvento />} />
 
         {/* Outras páginas */}
         <Route path="/alertas" element={<Alertas />} />
