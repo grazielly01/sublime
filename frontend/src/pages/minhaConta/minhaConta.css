@@ -1,8 +1,8 @@
 /*         DIV Q ABRIGA TUDO         */
 
 .tudoMinhaConta{
-    width: 100%;
-    min-height: 100vh; /*min-height ao inves de height fixo*/
+    width: 93%;
+    min-height: 170vh; /*min-height ao inves de height fixo*/
     display: flex;
 }
 
@@ -22,7 +22,7 @@
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
 .conteudoMinhaConta{
-    padding: 6% 48px;
+    padding-top: 6%;
     box-sizing: border-box;
 }
 
