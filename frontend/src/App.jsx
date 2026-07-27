@@ -20,35 +20,43 @@ import RegistrarInsumo from "./pages/estoque/registrarInsumo.jsx";
 import DetalhesInsumo from "./pages/estoque/detalhesInsumo.jsx";
 import ApagarInsumo from "./pages/estoque/apagarInsumo.jsx";
 
+import RegistrarProduto from "./pages/produtos/registrarProduto.jsx";
+import DetalhesProduto from "./pages/produtos/detalhesProduto.jsx";
+import ApagarProduto from "./pages/produtos/apagarProduto.jsx";
+
 
 function App() {
   return (
     <div className="Fundo" style={{ padding: "0px" }}>
       <Sidebar />
       <div className="tudoMenosSidebar">
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/estoque" element={<Estoque />} />
-          <Route path="/pedidos" element={<Pedidos />} />
-          <Route path="/produtos" element={<Produtos />} />
-          <Route path="/alertas" element={<Alertas />} />
-          <Route path="/minhaConta" element={<MinhaConta />} />
-          <Route path="/calendario" element={<Calendario />} />
-          <Route path="/producao" element={<Producao />} />
-          
-         {/* Pedidos */}
-         <Route path="/pedidos" element={<Pedidos />} />
-         <Route path="/pedidos/registrar" element={<RegistrarPedido />} />
-         <Route path="/pedidos/detalhes/:id" element={<DetalhesPedido />} />
-         <Route path="/pedidos/apagar/:id" element={<ApagarPedido />} />
+      <Routes>
+        <Route path="/login" element={<Login />} />
 
-         {/* Estoque */}
-         <Route path="/estoque" element={<Estoque />} />
-         <Route path="/estoque/registrar" element={<RegistrarInsumo />} />
-         <Route path="/estoque/detalhes/:id" element={<DetalhesInsumo />} />
+        {/* Estoque */}
+        <Route path="/estoque" element={<Estoque />} />
+        <Route path="/estoque/registrar" element={<RegistrarInsumo />} />
+        <Route path="/estoque/detalhes/:id" element={<DetalhesInsumo />} />
         <Route path="/estoque/apagar/:id" element={<ApagarInsumo />} />
 
-        </Routes>
+        {/* Pedidos */}
+        <Route path="/pedidos" element={<Pedidos />} />
+        <Route path="/pedidos/registrar" element={<RegistrarPedido />} />
+        <Route path="/pedidos/detalhes/:id" element={<DetalhesPedido />} />
+        <Route path="/pedidos/apagar/:id" element={<ApagarPedido />} />
+
+        {/* Produtos */}
+        <Route path="/produtos" element={<Produtos />} />
+        <Route path="/produtos/registrar" element={<RegistrarProduto />} />
+        <Route path="/produtos/detalhes" element={<DetalhesProduto />} />
+        <Route path="/produtos/apagar" element={<ApagarProduto />} />
+
+        {/* Outras páginas */}
+        <Route path="/alertas" element={<Alertas />} />
+        <Route path="/minhaConta" element={<MinhaConta />} />
+        <Route path="/calendario" element={<Calendario />} />
+        <Route path="/producao" element={<Producao />} />
+      </Routes>
      
       </div>
     </div>

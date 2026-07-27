@@ -1,4 +1,5 @@
 import "./produtos.css";
+import { Link } from "react-router-dom";
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
@@ -73,8 +74,10 @@ function Produtos(){
                                 "Congelados",
                                 "Outros" ]} />
                         </div>
-
-                        <Button texto="+ Novo produto" />
+                        
+                        <Link to="/produtos/registrar" className="botaoNovoProduto"> 
+                            <Button texto="+ Novo produto" />
+                        </Link>
 
                     </div>
 
@@ -112,7 +115,9 @@ function Produtos(){
                                     </div>
 
                                     <div className="botaoVerReceita"> {/*ainda sem onClick pq nao tem backend*/}
-                                        <Button texto="Ver receita" />
+                                        <Link to="/produtos/detalhes" className="botaoDetalhesProduto">
+                                            <Button texto="Ver receita" />
+                                        </Link>
                                     </div>
 
                                 </div>

@@ -1,0 +1,218 @@
+/*         DIV Q ABRIGA TUDO         */
+
+.tudoRegistrarProdutos{
+    width: 93%;
+    min-height: 170vh;
+    display: flex;
+}
+
+/*        TUDO MENOS A SIDEBAR        */
+
+.tudoMenosSidebar{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
+    background-color: #FDEDE8;
+}
+
+
+/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
+
+.conteudoRegistrarProdutos{
+    padding-top: 6%;
+    box-sizing: border-box;
+}
+
+.tituloESetinha{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.tituloRegistrarProdutos{
+    margin: 0;
+    font-size: 350%;
+    color: #870B22;
+}
+
+.svgSetinha{
+    cursor: pointer;
+}
+
+
+/*        JANELA BRANCA COM OS DADOS DO PRODUTO        */
+
+.janelaRegistrarProdutos{
+    background-color: white;
+    border: 1px solid #870B22;
+    border-radius: 12px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 28px 32px;
+    margin-top: 32px;
+}
+
+/*divide a janela em 2 colunas: campos (esquerda, mais larga) e imagem + valores (direita, mais estreita)*/
+.areaFormulario{
+    display: flex;
+    gap: 28px;
+}
+
+.colunaEsquerda{
+    flex: 1.8; /*ocupa bem mais espaço q a coluna da imagem*/
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.colunaDireita{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.linha1{
+    display: flex;
+    gap: 24px;
+}
+
+.campoRegistrar{
+    display: flex;
+    flex-direction: column;
+}
+
+.campoRegistrar label{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+label span{
+    color: #CF0003; /*deixa o * de campo obrigatório em vermelho*/
+}
+
+.campoNome{
+    flex: 2; /*campi "Nome do produto" ocupa mais espaço q Categoria*/
+}
+
+.campoCategoria{
+    flex: 1.2;
+}
+
+/*Descrição e Receita ocupam a largura toda da coluna esquerda*/
+.campoDescricaoProduto,
+.campoReceitaProduto{
+    width: 100%;
+}
+
+#textArea{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.campoReceitaProduto{
+    flex: 1; /*deixa a Receita crescer e ocupar o espaço vertical que sobrar na coluna*/
+}
+
+#selectCategoriaRegistrar{
+    width: 100%;
+    background-color: white;
+    border: solid 1px #870B22;
+}
+
+.campoRegistrar .input{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/*deixando a caixa dee texto da Receita mais alta que a de Descrição*/
+.campoReceitaProduto .textarea{
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 140px;
+}
+
+.campoDescricaoProduto .textarea{
+    width: 100%;
+    box-sizing: border-box;
+    min-height: 60px;
+}
+
+
+/*        ÁREA DE UPLOAD DE IMAGEM        */
+
+.campoImagem{
+    flex: 1; /*cresce e empurra a caixa de Custo pro final da coluna direita*/
+}
+
+.areaUpload{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 6px;
+    background-color: #FDEDE8;
+    border: 2px dashed #ecb9ac;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    cursor: pointer; /*mostra q dá pra clicar, mesmo ainda sem funcionar de verdade*/
+}
+
+.areaUpload svg{
+    width: 26px;
+    height: 26px;
+}
+
+.textoUpload{
+    margin: 4px 0 0 0;
+    font-size: 13px;
+    color: #444;
+}
+
+.textoUploadPequeno{
+    margin: 0;
+    font-size: 12px;
+    color: #999;
+}
+
+
+/*        CUSTO E VALOR (empilhados embaixo da imagem)        */
+
+.colunaValores{
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+
+/*        BOTÕES DE AÇÃO (Cancelar e Registrar)        */
+
+.botoesRegistrarProdutos{
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.botoesRegistrarProdutos .button{
+    width: auto;
+    padding: 12px 32px;
+    border-radius: 30px;
+}
+
+.botaoContorno .button{
+    background-color: white;
+    border: 1px solid #870B22;
+    color: #000;
+}
+
+.botaoContorno .button:hover{
+    background-color: #fdf0ee;
+}
