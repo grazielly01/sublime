@@ -1,0 +1,161 @@
+/*         DIV Q ABRIGA TUDO         */
+
+.tudoRegistrarEvento{
+    width: 93%;
+    min-height: 170vh;
+    display: flex;
+}
+
+/*        TUDO MENOS A SIDEBAR        */
+
+.tudoMenosSidebar{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
+    background-color: #FDEDE8;
+}
+
+
+/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
+
+.conteudoRegistrarEvento{
+    padding-top: 6%;
+    box-sizing: border-box;
+}
+
+.tituloESetinha{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.tituloRegistrarEvento{
+    margin: 0;
+    font-size: 350%;
+    color: #870B22;
+}
+
+.svgSetinha{
+    cursor: pointer;
+}
+
+
+/*        JANELA BRANCA COM OS DADOS DO EVENTO        */
+
+.janelaRegistrarEvento{
+    background-color: white;
+    border: 1px solid #870B22;
+    border-radius: 12px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 28px 32px;
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.linha1,
+.linha2{
+    display: flex;
+    gap: 24px;
+}
+
+.campoRegistrar{
+    display: flex;
+    flex-direction: column;
+}
+
+.campoRegistrar label{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+label span{
+    color: #CF0003; /*deixa o * de campo obrigatorio em vermelho*/
+}
+
+/*"flex" define a proporção de espaço que cada campo ocupa na linha (ao inves de width em %, o flex se ajusta sozinho)*/
+.campoTitulo{
+    flex: 3; /*campo "Título do evento" ocupa bem mais espaço q Categoria*/
+}
+
+.campoCategoriaEvento{
+    flex: 1;
+}
+
+.campoPrazoEvento{
+    flex: 1;
+}
+
+#inputPrazo{
+    width: 149%;
+}
+
+.campoDescricaoEvento{
+    flex: 3.5; /*campo "Descrição" ocupa bem mais espaço*/
+}
+
+/*Select de Categoria ocupando 100% do espaço do campo*/
+#selectCategoriaEvento{
+    width: 100%;
+    background-color: white;
+    border: solid 1px #870B22;
+}
+
+/*os Inputs dessa tela ocupam 100% do espaço do campo*/
+.campoRegistrar .input{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/*ícone dentro do campo de prazo*/
+.inputComIcone{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.inputComIcone svg{
+    position: absolute;
+    left: 14px;
+    width: 18px;
+    height: 18px;
+    color: #870B22;
+    pointer-events: none;
+}
+
+.inputComIcone .input{
+    padding-left: 42px;
+}
+
+
+/*        BOTÕES (Cancelar e Registrar)        */
+
+.botoesRegistrarEvento{
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.botoesRegistrarEvento .button{
+    width: auto;
+    padding: 12px 32px;
+    border-radius: 30px;
+}
+
+/*"Cancelar" tem contorno ao inves de fundo preenchido*/
+.botaoContorno .button{
+    background-color: white;
+    border: 1px solid #870B22;
+    color: #000;
+}
+
+.botaoContorno .button:hover{
+    background-color: #fdf0ee;
+}

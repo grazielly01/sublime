@@ -1,0 +1,161 @@
+/*         DIV Q ABRIGA TUDO         */
+
+.tudoDetalhesEvento{
+    width: 93%;
+    min-height: 170vh;
+    display: flex;
+}
+
+/*        TUDO MENOS A SIDEBAR        */
+
+.tudoMenosSidebar{
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 100vh;
+    box-sizing: border-box;
+    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
+    background-color: #FDEDE8;
+}
+
+
+/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
+
+.conteudoDetalhesEvento{
+    padding-top: 6%;
+    box-sizing: border-box;
+}
+
+.tituloESetinha{
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.tituloDetalhesEvento{
+    margin: 0;
+    font-size: 350%;
+    color: #870B22;
+}
+
+.svgSetinha{
+    cursor: pointer;
+}
+
+
+/*        JANELA BRANCA COM OS DADOS DO EVENTO        */
+
+.janelaDetalhesEvento{
+    background-color: white;
+    border: 1px solid #870B22;
+    border-radius: 12px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    padding: 28px 32px;
+    margin-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+.linhaDetalhes1,
+.linhaDetalhes2{
+    display: flex;
+    gap: 24px;
+}
+
+.campoDetalhe{
+    display: flex;
+    flex-direction: column;
+}
+
+.campoDetalhe label{
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+.campoTitulo{
+    flex: 3;
+}
+
+.campoCategoriaEvento{
+    flex: 1;
+}
+
+.campoPrazoEvento{
+    flex: 1;
+}
+
+#inputPrazo{
+    width: 149%;
+}
+
+.campoDescricaoEvento{
+    flex: 3.5;
+}
+
+#selectCategoriaDetalhesEvento{
+    width: 100%;
+    background-color: white;
+    border: solid 1px #870B22;
+}
+
+/*os Inputs dessa tela ocupam 100% do espaço do campo*/
+.campoDetalhe .input{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/*campo desabilitado fica com um fundo levemente acinzentadoi*/
+.campoDetalhe .input:disabled{
+    background-color: #f7f7f7;
+    color: #333;
+    cursor: default;
+}
+
+/*ícone dentro do campo de Prazo*/
+.inputComIcone{
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.inputComIcone svg{
+    position: absolute;
+    left: 14px;
+    width: 18px;
+    height: 18px;
+    color: #870B22;
+    pointer-events: none;
+}
+
+.inputComIcone .input{
+    padding-left: 42px;
+}
+
+
+/*        BOTÕES DE AÇÃO (Excluir e Editar)        */
+
+.botoesDetalhesEvento{
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 28px;
+}
+
+.botoesDetalhesEvento .button{
+    width: auto;
+    padding: 12px 32px;
+    border-radius: 30px;
+}
+
+.botaoContorno .button{
+    background-color: white;
+    border: 1px solid #870B22;
+    color: #000;
+}
+
+.botaoContorno .button:hover{
+    background-color: #fdf0ee;
+}

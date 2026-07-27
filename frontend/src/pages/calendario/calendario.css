@@ -33,7 +33,7 @@
 }
 
 .subtituloCalendario{
-    margin: 6px 0 0 0;
+    margin: 6px 0 0 5px;
     font-size: 100%;
     color: #777;
 }
@@ -171,6 +171,8 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis; /*corta o texto com "..." se ele for maior q a célula*/
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    cursor: pointer;
 }
 
 .tagEvento.producao{

@@ -16,7 +16,7 @@ function Sidebar() {
               <circle cx="12" cy="12" r="10" />
             </svg>
           </span>
-          <span className="textoItem">Minha conta</span>
+          <span id="idMinhaConta" className="textoItem">Minha conta</span>
         </Link>
 
         <hr className="divisor" />
