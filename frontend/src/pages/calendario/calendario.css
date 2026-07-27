@@ -1,8 +1,8 @@
 /*         DIV Q ABRIGA TUDO         */
 
 .tudoCalendario{
-    width: 100%;
-    min-height: 100vh;
+    width: 93%;
+    min-height: 170vh;
     display: flex;
 }
 
@@ -22,7 +22,7 @@
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
 .conteudoCalendario{
-    padding: 6% 48px;
+    padding-top: 6%;
     box-sizing: border-box;
 }
 
@@ -112,6 +112,7 @@
 /*mexendo só na largura do componente Select do ano só nessa tela*/
 #selectAnoCalendario{
     width: 90px;
+    background-color: #ffdee4;
 }
 
 

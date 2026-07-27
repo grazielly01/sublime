@@ -1,8 +1,8 @@
 /*         DIV Q ABRIGA TUDO         */
 
 .tudoApagarInsumo{
-    width: 100%;
-    min-height: 100vh;
+    width: 93%;
+    min-height: 170vh;
     display: flex;
 }
 
@@ -22,7 +22,7 @@
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
 .conteudoApagarInsumo{
-    padding: 6% 48px;
+    padding-top: 6%;
     box-sizing: border-box;
 }
 

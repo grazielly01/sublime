@@ -54,7 +54,9 @@ function Pedidos() {
                         <div className="filtroPedido">Entregue</div>
                         <div className="filtroPedido">Cancelado</div>
 
-                        <Link to="/pedidos/registrar" className="botaoNovoPedido"> + Novo pedido </Link>
+                        <Link to="/pedidos/registrar" className="botaoNovoPedido">  
+                            <Button id="buttonNovoPedido" texto="+ Novo pedido"></Button>
+                        </Link>
                     </div>
 
                     
@@ -79,7 +81,9 @@ function Pedidos() {
                                     <p className="valorPedido">{pedido.valor}</p>
 
                                     <div className="botaoDetalhes"> {/*ainda sem onClick -- vai abrir a tela de detalhes do pedido quando ela existir*/}
-                                        <Link to={`/pedidos/detalhes/${pedido.id}`} className="botaoDetalhes"> Detalhes </Link>
+                                        <Link to={`/pedidos/detalhes/${pedido.id}`} className="botaoDetalhes">
+                                            <Button texto="Detalhes"></Button>
+                                        </Link>
                                     </div>
                                 </div>
 

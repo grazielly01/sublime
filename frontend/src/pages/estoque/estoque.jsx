@@ -94,8 +94,8 @@ function Estoque() {
                             />
 
                             <Link to="/estoque/registrar" className="botaoNovoInsumo">
-  + Novo insumo
-</Link>
+                                <Button texto="+ Novo insumo"></Button>
+                            </Link>
 
                         </div>
 
