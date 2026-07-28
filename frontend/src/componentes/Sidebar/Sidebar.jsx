@@ -23,7 +23,7 @@ function Sidebar() {
 
         <div className="listaMenu">
              {/* Visão geral */}
-          <Link to="/visao-geral" className="itemMenu">
+          <Link to="/visaogeral" className="itemMenu">
             <span className="iconeItem">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
@@ -49,7 +49,7 @@ function Sidebar() {
             <span className="textoItem">Dashboard</span>
           </Link>
 
-          <Link to="/fluxo-caixa" className="itemMenu">
+          <Link to="/fluxocaixa" className="itemMenu">
             <span className="iconeItem">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
                 strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"

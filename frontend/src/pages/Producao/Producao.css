@@ -1,0 +1,247 @@
+
+:root {
+  --wine: #ab0035;
+  --ink: #311b1c;
+  --page: #fff3f0;
+  --line: #ead1d0;
+  --track: #ecd1d8;
+  --rose: #ff9cb4;
+  --white: #fff;
+}
+
+
+
+.production-page {
+  min-height: 100vh;
+  background: var(--page);
+}
+
+main {
+  max-width: 1600px;
+  margin: auto;
+  padding: 35px 100px;
+}
+
+/* título + botão */
+.title-row {
+  display: flex;
+  align-items: center;    
+  text-align: left;
+  margin-bottom: 40px;
+  justify-content: space-between;
+}
+
+.page-title {
+  margin: 0 0 8px;
+  font: 700 38px "Playfair Display", serif;
+}
+
+.btnnovaordem {
+    align-items: right;
+  gap: 10px;
+  padding: 12px 22px;
+  border-radius: 13px;
+  background: var(--wine);
+  color: #fff;
+  font-size: 17px;
+  font-weight: 700;
+  box-shadow: 0 2px 3px rgba(214, 55, 108, 0.16);
+}
+
+.page-lead {
+  margin: 0 0 20px;
+  font-size: 18px;
+  color: #704149;
+  font-family: "DM Sans", sans-serif;
+}
+
+
+/* cards resumo */
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.metric {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(82, 33, 33, 0.13);
+  min-height: 177px;
+  padding: 25px;
+}
+
+.metric-label {
+  margin-bottom: 20px;
+  font-size: 15px;
+  letter-spacing: 0.4px;
+  color: #714148;
+  font-family: "DM Sans", sans-serif;
+}
+
+.metric-number {
+  margin-bottom: 8px;
+  font: 700 32px "Playfair Display", serif;
+}
+
+.metric-number.wine {
+  color: var(--wine);
+}
+
+.metric-text {
+  color: #704149;
+  font-size: 15.5px;
+  font-family: "DM Sans", sans-serif;
+}
+
+.complete-rate {
+  margin-top: 6px;
+}
+
+.mini-track {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--track);
+  margin-top: 13px;
+}
+
+.mini-track span {
+  display: block;
+  height: 100%;
+  background: var(--wine);
+  width: 87%;
+}
+
+/* fila de produção */
+.queue {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  box-shadow: 0 2px 4px rgba(82, 33, 33, 0.13);
+  padding: 28px 30px 29px;
+}
+
+.queue h2 {
+  margin: 0 0 26px;
+  font: 700 20px "Playfair Display", serif;
+}
+
+.orders {
+  display: grid;
+  gap: 20px;
+}
+
+.order {
+  min-height: 188px;
+  padding: 23px 20px 20px;
+  border: 1px solid var(--line);
+  border-radius: 20px;
+}
+
+.order-main {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.order h3 {
+  margin: 0 0 3px;
+  font: 700 22px "Playfair Display", serif;
+}
+
+.team,
+.details {
+  color: #704149;
+  font-size: 15.5px;
+  font-family: "DM Sans", sans-serif;
+}
+
+.status {
+  padding: 7px 15px;
+  border-radius: 999px;
+  font-size: 15px;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.status.progressing {
+  background: var(--rose);
+  color: #35191e;
+}
+
+.status.finished {
+  background: var(--wine);
+  color: #fff;
+  font-weight: 600;
+}
+
+.status.queued {
+  background: #f9e9e6;
+  color: #6c4146;
+}
+
+.progress {
+  height: 10px;
+  overflow: hidden;
+  border-radius: 10px;
+  background: var(--track);
+  margin: 16px 0 10px;
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--wine);
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.time {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.action {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 10px 15px;
+  border-radius: 12px;
+  font-weight: 700;
+}
+
+.action.complete {
+  background: var(--wine);
+  color: #fff;
+}
+
+.action.start {
+  background: #fff5f2;
+  color: #32191a;
+  border: 1px solid var(--line);
+  box-shadow: 0 2px 3px rgba(70, 20, 20, 0.1);
+}
+
+/* responsividade */
+@media (max-width: 800px) {
+  main { padding: 30px 20px; }
+  .page-title { font-size: 32px; }
+  .page-lead { font-size: 16px; }
+  .metrics { grid-template-columns: 1fr; gap: 14px; }
+  .queue { padding: 21px 14px; }
+  .order { padding: 18px 14px; }
+}
+
+@media (max-width: 480px) {
+  .details { flex-direction: column; gap: 3px; }
+}
