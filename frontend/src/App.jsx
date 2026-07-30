@@ -13,6 +13,7 @@ import Calendario from "./pages/calendario/calendario.jsx";
 import Producao from "./pages/producao/producao.jsx";
 import Sair from "./pages/sair/sair.jsx"; 
 
+
 import RegistrarPedido from "./pages/pedidos/registrarPedido.jsx";
 import DetalhesPedido from "./pages/pedidos/detalhesPedido.jsx";
 import ApagarPedido from "./pages/pedidos/apagarPedido.jsx";
