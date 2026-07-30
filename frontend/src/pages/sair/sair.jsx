@@ -8,21 +8,23 @@ function Sair() {
     <div className="tudoSair">
       <Sidebar paginaAtiva="Sair" />
       <div className="tudoMenosSidebar">
-        <Header nomeIndustria="Sweet Sunset Indústria B2B" />
+        <Header nomeIndustria="Sweet Sunset" />
 
         <div className="conteudoSair">
           <div className="caixaConfirmacao">
             <p className="textoConfirmacao">Tem certeza de que deseja sair?</p>
-            <div className="botoesConfirmacao">
+    <div className="botaosair">
   <Button
     texto="Sair"
     onClick={() => (window.location.href = "/login")}
   />
+   <div className="botaocancelar">
   <Button
     texto="Cancelar"
     onClick={() => window.history.back()}
   />
 </div>
+          </div>
           </div>
         </div>
       </div>

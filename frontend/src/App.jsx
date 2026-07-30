@@ -40,7 +40,7 @@ function App() {
       {/* Sidebar só aparece se não estiver na tela de login */}
       {!isLoginPage && <Sidebar />}
 
-      <div className="tudoMenosSidebar">
+      <div className={isLoginPage ? "conteudoLogin" : "tudoMenosSidebar"}>
         <Routes>
           <Route path="/login" element={<Login />} />
 
