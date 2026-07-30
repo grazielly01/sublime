@@ -155,18 +155,19 @@ function Sidebar() {
             <span className="textoItem">Configurações</span>
           </Link>
 
-           {/* Sair */}
-          <Link to="/login" className="itemMenu">
-            <span className="iconeItem">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                className="lucide lucide-log-out">
-                <path d="M15 4H6v16h9" />
-                <path d="M10 12h11m0 0-3-3m3 3-3 3" />
-              </svg>
-            </span>
-            <span className="textoItem">Sair</span>
-          </Link>
+           
+          {/* Sair */}
+        <Link to="/sair" className="itemMenu">
+         <span className="iconeItem">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+           strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+            className="lucide lucide-log-out">
+           <path d="M15 4H6v16h9" />
+          <path d="M10 12h11m0 0-3-3m3 3-3 3" />
+         </svg>
+         </span>
+           <span className="textoItem">Sair</span>
+            </Link>
         </div>
       </nav>
     </div>

@@ -1,0 +1,60 @@
+.tudoSair {
+  display: flex;
+  min-height: 100vh;
+  background: var(--page); /* fundo rosado suave */
+}
+
+.tudoMenosSidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.conteudoSair {
+  flex: 1;
+  display: flex;
+  align-items: center;   /* centraliza vertical */
+  justify-content: center; /* centraliza horizontal */
+  padding: 40px;
+}
+
+.caixaConfirmacao {
+  background: #fff3f0; /* caixa rosada */
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(82, 33, 33, 0.13);
+  max-width: 400px;
+  width: 100%;
+}
+
+.textoConfirmacao {
+  font-size: 18px;
+  margin-bottom: 30px;
+  font-family: "DM Sans", sans-serif;
+  color: var(--ink);
+}
+
+.botoesConfirmacao {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.botoesConfirmacao button {
+  padding: 12px 24px;
+  border-radius: 12px;
+  font-weight: 600;
+}
+
+.botoesConfirmacao button:first-child {
+  background: #fff;
+  color: var(--ink);
+  border: 1px solid var(--line);
+}
+
+.botoesConfirmacao button:last-child {
+  background: var(--wine);
+  color: #fff;
+}

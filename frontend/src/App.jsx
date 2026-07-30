@@ -1,6 +1,6 @@
 import './App.css';
 import Sidebar from "./componentes/Sidebar/Sidebar.jsx";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation } from "react-router-dom";
 
 // Importando páginas
 import Login from "./pages/login/login.jsx";
@@ -11,6 +11,7 @@ import Alertas from "./pages/alertas/alertas.jsx";
 import MinhaConta from "./pages/minhaConta/minhaConta.jsx";
 import Calendario from "./pages/calendario/calendario.jsx";
 import Producao from "./pages/producao/producao.jsx";
+import Sair from "./pages/sair/sair.jsx"; 
 
 import RegistrarPedido from "./pages/pedidos/registrarPedido.jsx";
 import DetalhesPedido from "./pages/pedidos/detalhesPedido.jsx";
@@ -28,52 +29,59 @@ import RegistrarEvento from "./pages/calendario/registrarEvento.jsx";
 import DetalhesEvento from "./pages/calendario/detalhesEvento.jsx";
 import ApagarEvento from "./pages/calendario/apagarEvento.jsx";
 
-
 function App() {
+  const location = useLocation();
+
+  // Verifica se está na tela de login
+  const isLoginPage = location.pathname === "/login";
+
   return (
     <div className="Fundo" style={{ padding: "0px" }}>
-      <Sidebar />
+      {/* Sidebar só aparece se não estiver na tela de login */}
+      {!isLoginPage && <Sidebar />}
+
       <div className="tudoMenosSidebar">
-      <Routes>
-        <Route path="/login" element={<Login />} />
+        <Routes>
+          <Route path="/login" element={<Login />} />
 
-        {/* Estoque */}
-        <Route path="/estoque" element={<Estoque />} />
-        <Route path="/estoque/registrar" element={<RegistrarInsumo />} />
-        <Route path="/estoque/detalhes/" element={<DetalhesInsumo />} />
-        <Route path="/estoque/apagar/" element={<ApagarInsumo />} />
+          {/* Estoque */}
+          <Route path="/estoque" element={<Estoque />} />
+          <Route path="/estoque/registrar" element={<RegistrarInsumo />} />
+          <Route path="/estoque/detalhes/" element={<DetalhesInsumo />} />
+          <Route path="/estoque/apagar/" element={<ApagarInsumo />} />
 
-        {/* Pedidos */}
-        <Route path="/pedidos" element={<Pedidos />} />
-        <Route path="/pedidos/registrar" element={<RegistrarPedido />} />
-        <Route path="/pedidos/detalhes/:id" element={<DetalhesPedido />} />
-        <Route path="/pedidos/apagar/" element={<ApagarPedido />} />
+          {/* Pedidos */}
+          <Route path="/pedidos" element={<Pedidos />} />
+          <Route path="/pedidos/registrar" element={<RegistrarPedido />} />
+          <Route path="/pedidos/detalhes/:id" element={<DetalhesPedido />} />
+          <Route path="/pedidos/apagar/" element={<ApagarPedido />} />
 
-        {/* Produtos */}
-        <Route path="/produtos" element={<Produtos />} />
-        <Route path="/produtos/registrar" element={<RegistrarProduto />} />
-        <Route path="/produtos/detalhes" element={<DetalhesProduto />} />
-        <Route path="/produtos/apagar" element={<ApagarProduto />} />
+          {/* Produtos */}
+          <Route path="/produtos" element={<Produtos />} />
+          <Route path="/produtos/registrar" element={<RegistrarProduto />} />
+          <Route path="/produtos/detalhes" element={<DetalhesProduto />} />
+          <Route path="/produtos/apagar" element={<ApagarProduto />} />
 
-        {/* Calendário */}
-        <Route path="/calendario/registrar" element={<RegistrarEvento />} />
-        <Route path="/calendario/detalhes" element={<DetalhesEvento />} />
-        <Route path="/calendario/apagar" element={<ApagarEvento />} />
+          {/* Calendário */}
+          <Route path="/calendario/registrar" element={<RegistrarEvento />} />
+          <Route path="/calendario/detalhes" element={<DetalhesEvento />} />
+          <Route path="/calendario/apagar" element={<ApagarEvento />} />
 
-        {/* Outras páginas */}
-        <Route path="/alertas" element={<Alertas />} />
-        <Route path="/minhaConta" element={<MinhaConta />} />
-        <Route path="/calendario" element={<Calendario />} />
-        <Route path="/producao" element={<Producao />} />
-        
-      </Routes>
-     
+          {/* Outras páginas */}
+          <Route path="/alertas" element={<Alertas />} />
+          <Route path="/minhaConta" element={<MinhaConta />} />
+          <Route path="/calendario" element={<Calendario />} />
+          <Route path="/producao" element={<Producao />} />
+         <Route path="/sair" element={<Sair />} />
+
+        </Routes>
       </div>
     </div>
   );
 }
 
 export default App;
+
 
 
 
