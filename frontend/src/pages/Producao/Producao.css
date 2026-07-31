@@ -32,8 +32,15 @@ main {
 }
 
 .page-title {
-  margin: 0 0 8px;
-  font: 700 38px "Playfair Display", serif;
+   margin: 0;
+
+    font-family: "Inter", serif;
+    font-size: 40px;
+    font-weight: 700;
+    line-height: 1;
+
+    color: #8E1027;
+
 }
 
 .btnnovaordem {

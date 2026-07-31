@@ -113,4 +113,16 @@ code {
 
 body {
   margin: 0;
+  
 }
+
+body, html {
+  font-family: 'Inter', sans-serif;
+
+}
+
+body, h1 {
+  font-size: 12px;
+
+}
+

@@ -22,6 +22,7 @@
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
 .conteudoProdutos{
+    margin-top: 20px;
     padding-top: 6%;
     box-sizing: border-box;
 }
@@ -40,7 +41,7 @@
 
 .subtituloProdutos{
     margin: 6px 0 0 4px;
-    font-size: 100%;
+    font-size: 150%;
     color: #777;
 }
 

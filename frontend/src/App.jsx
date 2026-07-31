@@ -12,7 +12,7 @@ import MinhaConta from "./pages/minhaConta/minhaConta.jsx";
 import Calendario from "./pages/calendario/calendario.jsx";
 import Producao from "./pages/producao/producao.jsx";
 import Sair from "./pages/sair/sair.jsx"; 
-
+import Configuracoes from "./pages/configuracoes/configuracoes.jsx";
 
 import RegistrarPedido from "./pages/pedidos/registrarPedido.jsx";
 import DetalhesPedido from "./pages/pedidos/detalhesPedido.jsx";
@@ -74,6 +74,7 @@ function App() {
           <Route path="/calendario" element={<Calendario />} />
           <Route path="/producao" element={<Producao />} />
          <Route path="/sair" element={<Sair />} />
+          <Route path="/configuracoes" element={<Configuracoes />} />
 
         </Routes>
       </div>

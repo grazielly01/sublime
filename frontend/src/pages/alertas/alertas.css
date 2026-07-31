@@ -22,6 +22,7 @@
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
 .conteudoAlertas{
+        margin-top: 20px;
     padding-top: 6%;
     box-sizing: border-box;
 }
