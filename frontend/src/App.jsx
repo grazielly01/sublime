@@ -14,6 +14,7 @@ import Producao from "./pages/producao/producao.jsx";
 import Sair from "./pages/sair/sair.jsx"; 
 import Configuracoes from "./pages/configuracoes/configuracoes.jsx";
 import VisaoGeral from "./pages/visaogeral/visaogeral.jsx";
+import Dashboard from "./pages/dashboard/dashboard.jsx";
 
 import RegistrarPedido from "./pages/pedidos/registrarPedido.jsx";
 import DetalhesPedido from "./pages/pedidos/detalhesPedido.jsx";
@@ -74,9 +75,10 @@ function App() {
           <Route path="/minhaConta" element={<MinhaConta />} />
           <Route path="/calendario" element={<Calendario />} />
           <Route path="/producao" element={<Producao />} />
-         <Route path="/sair" element={<Sair />} />
+          <Route path="/sair" element={<Sair />} />
           <Route path="/configuracoes" element={<Configuracoes />} />
-         <Route path="/visaogeral" element={<VisaoGeral />} />
+          <Route path="/visaogeral" element={<VisaoGeral />} />
+          <Route path="/dashboard" element={<Dashboard />} />
 
         </Routes>
       </div>

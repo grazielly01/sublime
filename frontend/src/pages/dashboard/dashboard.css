@@ -1,0 +1,1154 @@
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+
+.tudoDashboard {
+  display: flex;
+  min-height: 100vh;
+  background: #FDEDE8;
+}
+
+.tudoMenosSidebar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.conteudoDashboard {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 28px 42px 50px;
+}
+
+
+/* =========================================================
+   TOPO
+========================================================= */
+
+.topoDashboard {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 30px;
+  margin-bottom: 28px;
+}
+
+.tituloDashboard {
+ margin: 0;
+
+    font-family: "Inter", serif;
+    font-size: 37px;
+    font-weight: 700;
+    line-height: 2;
+
+    color: #8E1027;
+}
+
+.subtituloDashboard {
+  margin: 7px 0 0;
+  color: #704149;
+  font: 400 14px "Inter", sans-serif;
+}
+
+.acoesDashboard {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.botaoPeriodo {
+  border: 1px solid #e6c3c5;
+  background: #fffafa;
+  color: #704149;
+  padding: 8px 12px;
+  cursor: pointer;
+  font: 600 12px "Inter", sans-serif;
+}
+
+.botaoPeriodo:first-child {
+  border-radius: 7px 0 0 7px;
+}
+
+.botaoPeriodo:nth-child(4) {
+  border-radius: 0 7px 7px 0;
+}
+
+.botaoPeriodo.ativo {
+  background: #a80b2d;
+  color: white;
+  border-color: #a80b2d;
+}
+
+.botaoDashboardSecundario {
+  margin-left: 8px;
+  border: 1px solid #e4c1c3;
+  background: white;
+  color: #704149;
+  padding: 9px 13px;
+  border-radius: 7px;
+  cursor: pointer;
+  font: 600 12px "Inter", sans-serif;
+}
+
+.botaoDashboardSecundario:hover {
+  background: #fff0f1;
+}
+
+
+/* =========================================================
+   SEÇÕES
+========================================================= */
+
+.secaoDashboard {
+  margin-bottom: 32px;
+}
+
+.tituloSecaoDashboard {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-bottom: 14px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e7c4c7;
+}
+
+.tituloSecaoDashboard span {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  background: #ffe0e4;
+  color: #a20d2c;
+  font-size: 13px;
+  font-weight: 700;
+}
+
+.tituloSecaoDashboard h2 {
+  margin: 0;
+  color: #4c151d;
+  font: 700 17px "Playfair Display", serif;
+}
+
+
+/* =========================================================
+   RESUMO
+========================================================= */
+
+.cardsResumo {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+
+.cardResumo {
+  min-height: 65px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 15px;
+  background: #fffafa;
+  border: 1px solid #ecc7ca;
+  border-left: 4px solid;
+  border-radius: 9px;
+  box-shadow: 0 2px 4px rgba(75, 20, 30, 0.06);
+}
+
+.cardResumo.ok {
+  border-left-color: #27a35a;
+}
+
+.cardResumo.atencao {
+  border-left-color: #d99a16;
+}
+
+.cardResumo.urgente {
+  border-left-color: #b00027;
+}
+
+.cardResumo.estavel {
+  border-left-color: #a20d2c;
+}
+
+.iconeResumo {
+  width: 31px;
+  height: 31px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: #fcecef;
+  color: #a20d2c;
+  font-weight: 800;
+}
+
+.cardResumo.ok .iconeResumo {
+  color: #198b48;
+  background: #eaf8ef;
+}
+
+.cardResumo.atencao .iconeResumo {
+  color: #a66c00;
+  background: #fff5da;
+}
+
+.cardResumo.urgente .iconeResumo {
+  color: #a60027;
+  background: #fdecef;
+}
+
+.cardResumo div:last-child {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.cardResumo span {
+  color: #8b777b;
+  font: 500 10px "Inter", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .7px;
+}
+
+.cardResumo strong {
+  color: #4c151d;
+  font: 700 14px "Inter", sans-serif;
+}
+
+
+/* =========================================================
+   KPI
+========================================================= */
+
+.cardsKpiDashboard {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.cardKpiDashboard {
+  padding: 17px;
+  background: #ffe0e4;
+  border: 1px solid #efc4c8;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(70, 20, 30, .08);
+}
+
+.topoKpiDashboard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.iconeKpiDashboard {
+  width: 31px;
+  height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #fff5f4;
+  color: #a20d2c;
+  font: 700 12px "Inter", sans-serif;
+}
+
+.badgeKpiDashboard {
+  padding: 4px 8px;
+  border-radius: 999px;
+  font: 700 10px "Inter", sans-serif;
+}
+
+.badgeKpiDashboard.positivo {
+  background: #d9f5dd;
+  color: #14813c;
+}
+
+.tituloKpiDashboard {
+  margin: 15px 0 4px;
+  color: #806c70;
+  font: 500 10px "Inter", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .45px;
+}
+
+.valorKpiDashboard {
+  color: #321217;
+  font: 700 22px "Playfair Display", serif;
+}
+
+
+/* =========================================================
+   CARDS
+========================================================= */
+
+.cardDashboard {
+  box-sizing: border-box;
+  background: #fffafa;
+  border: 1px solid #ecc5c8;
+  border-radius: 10px;
+  padding: 17px;
+  box-shadow: 0 2px 5px rgba(70, 20, 30, .06);
+}
+
+.cabecalhoCardDashboard {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.cardDashboard h3 {
+  margin: 0;
+  color: #43171e;
+  font: 700 15px "Playfair Display", serif;
+}
+
+.badgeSucesso {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: #dff5df;
+  color: #18813d;
+  font: 700 10px "Inter", sans-serif;
+}
+
+
+/* =========================================================
+   GRID FINANCEIRO
+========================================================= */
+
+.gridFinanceiro {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(270px, 1fr);
+  gap: 16px;
+}
+
+.gridDoisDashboard {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 16px;
+}
+
+
+/* =========================================================
+   GRÁFICO DE RECEITA
+========================================================= */
+
+.graficoReceita {
+  min-height: 330px;
+}
+
+.graficoArea {
+  height: 225px;
+  display: flex;
+  position: relative;
+  margin-top: 15px;
+}
+
+.linhasGrafico {
+  width: 38px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 24px;
+}
+
+.linhasGrafico span {
+  color: #9c8589;
+  font: 400 9px "Inter", sans-serif;
+}
+
+.graficoColunas {
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  border-bottom: 1px solid #e8ced0;
+  border-left: 1px solid #e8ced0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 44px,
+    #f1dddf 45px
+  );
+}
+
+.grupoGrafico {
+  width: 48px;
+  height: 100%;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  position: relative;
+}
+
+.grupoGrafico span {
+  position: absolute;
+  bottom: -22px;
+  color: #856e73;
+  font: 500 10px "Inter", sans-serif;
+}
+
+.barraReceita {
+  width: 14px;
+  max-height: 88%;
+  border-radius: 4px 4px 0 0;
+  background: #a20d2c;
+  opacity: .88;
+}
+
+.barraCusto {
+  width: 14px;
+  max-height: 88%;
+  border-radius: 4px 4px 0 0;
+  background: #e89ca9;
+}
+
+.legendaGrafico {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-top: 30px;
+}
+
+.legendaGrafico span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #806d71;
+  font: 500 10px "Inter", sans-serif;
+}
+
+.legendaGrafico i {
+  width: 9px;
+  height: 9px;
+  display: block;
+  border-radius: 2px;
+}
+
+.legendaReceita {
+  background: #a20d2c;
+}
+
+.legendaCusto {
+  background: #e89ca9;
+}
+
+.legendaMeta {
+  border: 1px dashed #8c6268;
+}
+
+
+/* =========================================================
+   METAS
+========================================================= */
+
+.cardMetasDashboard {
+  min-height: 330px;
+}
+
+.metaDashboard {
+  margin-bottom: 21px;
+}
+
+.linhaMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 7px;
+}
+
+.linhaMeta span {
+  color: #746064;
+  font: 500 11px "Inter", sans-serif;
+}
+
+.linhaMeta strong {
+  color: #4a1a20;
+  font: 700 11px "Inter", sans-serif;
+}
+
+.linhaMeta small {
+  color: #9a8488;
+  font-weight: 400;
+}
+
+.barraMeta {
+  width: 100%;
+  height: 7px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #f0dfe1;
+}
+
+.barraMeta div {
+  height: 100%;
+  border-radius: inherit;
+  background: #a20d2c;
+}
+
+.porcentagemMeta {
+  display: block;
+  margin-top: 4px;
+  color: #8c777b;
+  font: 500 9px "Inter", sans-serif;
+  text-align: right;
+}
+
+
+/* =========================================================
+   FLUXO
+========================================================= */
+
+.fluxoDashboard {
+  height: 190px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-around;
+  gap: 15px;
+  border-bottom: 1px solid #e7cdcf;
+  padding: 0 10px;
+}
+
+.diaFluxo {
+  height: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.barrasFluxo {
+  height: 155px;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+}
+
+.barrasFluxo div {
+  width: 11px;
+  min-height: 5px;
+  border-radius: 3px 3px 0 0;
+}
+
+.barraEntrada {
+  background: #a20d2c;
+}
+
+.barraSaida {
+  background: #e89ca9;
+}
+
+.diaFluxo > span {
+  margin-top: 8px;
+  color: #8b777b;
+  font: 500 10px "Inter", sans-serif;
+}
+
+
+/* =========================================================
+   INSIGHTS
+========================================================= */
+
+.insightsDashboard {
+  background: linear-gradient(
+    135deg,
+    #fff0f2,
+    #fffafa
+  );
+}
+
+.insight {
+  padding: 11px 12px;
+  margin-bottom: 9px;
+  border: 1px solid #efd7d9;
+  border-radius: 7px;
+  background: white;
+}
+
+.insight strong {
+  font: 700 10px "Inter", sans-serif;
+}
+
+.insight p {
+  margin: 5px 0 0;
+  color: #78666a;
+  font: 400 11px/1.5 "Inter", sans-serif;
+}
+
+.insight.positivo strong {
+  color: #18813d;
+}
+
+.insight.atencao strong {
+  color: #b47700;
+}
+
+.insight.estoque strong {
+  color: #a20d2c;
+}
+
+
+/* =========================================================
+   PRODUÇÃO
+========================================================= */
+
+.gridProducaoDashboard {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.25fr;
+  gap: 16px;
+}
+
+.oeeDashboard h3 {
+  margin-bottom: 5px;
+}
+
+.circuloOee {
+  width: 145px;
+  height: 145px;
+  margin: 12px auto 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background:
+    conic-gradient(
+      #a20d2c 0 78%,
+      #f0dfe1 78% 100%
+    );
+}
+
+.circuloOee::before {
+  content: "";
+  position: absolute;
+}
+
+.circuloOee > div {
+  width: 107px;
+  height: 107px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 50%;
+  background: #fffafa;
+}
+
+.circuloOee strong {
+  color: #481820;
+  font: 700 27px "Playfair Display", serif;
+}
+
+.circuloOee span {
+  color: #8a777b;
+  font: 500 9px "Inter", sans-serif;
+}
+
+.indicadoresOee {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  text-align: center;
+}
+
+.indicadoresOee div {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.indicadoresOee strong {
+  color: #4b1a21;
+  font: 700 13px "Inter", sans-serif;
+}
+
+.indicadoresOee span {
+  color: #8d797d;
+  font: 500 9px "Inter", sans-serif;
+}
+
+
+/* =========================================================
+   MIX
+========================================================= */
+
+.mixDashboard {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin-top: 15px;
+}
+
+.pizzaMix {
+  width: 145px;
+  height: 145px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: conic-gradient(
+    #a20d2c 0 38%,
+    #e89ca9 38% 65%,
+    #b9828b 65% 84%,
+    #efc4c9 84% 100%
+  );
+  box-shadow: inset 0 0 0 18px #fffafa;
+}
+
+.legendaMix {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+  width: 100%;
+}
+
+.legendaMix span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #715e63;
+  font: 500 10px "Inter", sans-serif;
+}
+
+.legendaMix i {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: #a20d2c;
+}
+
+.legendaMix span:nth-child(2) i {
+  background: #e89ca9;
+}
+
+.legendaMix span:nth-child(3) i {
+  background: #b9828b;
+}
+
+.legendaMix span:nth-child(4) i {
+  background: #efc4c9;
+}
+
+.legendaMix b {
+  margin-left: auto;
+  color: #4b1a21;
+}
+
+
+/* =========================================================
+   PRODUTOS
+========================================================= */
+
+.listaProdutosDashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+  margin-top: 17px;
+}
+
+.produtoDashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.produtoNome {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.produtoNome span {
+  color: #624b50;
+  font: 500 10px "Inter", sans-serif;
+}
+
+.produtoNome strong {
+  color: #4b1a21;
+  font: 700 10px "Inter", sans-serif;
+}
+
+.barraProduto {
+  width: 100%;
+  height: 7px;
+  overflow: hidden;
+  border-radius: 99px;
+  background: #f0dfe1;
+}
+
+.barraProduto div {
+  height: 100%;
+  border-radius: inherit;
+  background: #a20d2c;
+}
+
+
+/* =========================================================
+   ALERTAS
+========================================================= */
+
+.listaAlertas {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.alertaDashboard {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px;
+  border: 1px solid #efd7d9;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.pontoAlerta {
+  width: 8px;
+  height: 8px;
+  margin-top: 5px;
+  flex-shrink: 0;
+  border-radius: 50%;
+}
+
+.pontoAlerta.alta {
+  background: #b00027;
+}
+
+.pontoAlerta.media {
+  background: #d99a16;
+}
+
+.alertaDashboard small {
+  color: #9b8589;
+  font: 600 9px "Inter", sans-serif;
+  text-transform: uppercase;
+}
+
+.alertaDashboard p {
+  margin: 3px 0 0;
+  color: #513d42;
+  font: 500 11px "Inter", sans-serif;
+}
+
+.sugestaoDashboard,
+.recomendacaoDashboard {
+  margin-top: 10px;
+  padding: 11px;
+  border-radius: 7px;
+  background: #fdf2f3;
+  color: #806b70;
+  font: 400 10px/1.5 "Inter", sans-serif;
+}
+
+.sugestaoDashboard b,
+.recomendacaoDashboard b {
+  color: #4c1a21;
+}
+
+
+/* =========================================================
+   TABELAS
+========================================================= */
+
+.tabelaDashboard {
+  overflow: hidden;
+  border: 1px solid #ead1d3;
+  border-radius: 7px;
+}
+
+.linhaTabela {
+  min-height: 43px;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr .8fr 1fr;
+  align-items: center;
+  gap: 10px;
+  padding: 0 10px;
+  border-top: 1px solid #f0dfe0;
+}
+
+.linhaTabela:first-child {
+  border-top: none;
+}
+
+.linhaTabela span,
+.linhaTabela strong,
+.linhaTabela b {
+  color: #604d52;
+  font: 500 10px "Inter", sans-serif;
+}
+
+.linhaTabela strong {
+  color: #4a1920;
+  font-weight: 700;
+}
+
+.cabecalhoTabela {
+  background: #fdf0f2;
+}
+
+.cabecalhoTabela span {
+  color: #917c80;
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+
+/* =========================================================
+   BADGES
+========================================================= */
+
+.badgeUrgente,
+.badgeAtencao,
+.badgeNormal {
+  justify-self: center;
+  padding: 4px 7px;
+  border-radius: 999px;
+  font-size: 9px !important;
+}
+
+.badgeUrgente {
+  background: #f8dfe3;
+  color: #a30027 !important;
+}
+
+.badgeAtencao {
+  background: #fff1cd;
+  color: #9a6800 !important;
+}
+
+.badgeNormal {
+  background: #e8f5e9;
+  color: #258041 !important;
+}
+
+.statusCliente {
+  justify-self: center;
+  padding: 4px 8px;
+  border-radius: 999px;
+}
+
+.statusCliente.ativo {
+  background: #dff3e2;
+  color: #20803e !important;
+}
+
+.statusCliente.atencao {
+  background: #fff0ce;
+  color: #9b6800 !important;
+}
+
+.statusCliente.inativo {
+  background: #eee7e8;
+  color: #76666a !important;
+}
+
+.notaFornecedor {
+  color: #b27800 !important;
+}
+
+
+/* =========================================================
+   ENTREGAS
+========================================================= */
+
+.listaEntregas {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.entregaDashboard {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 15px;
+  padding: 11px 12px;
+  border: 1px solid #edd3d5;
+  border-radius: 7px;
+  background: #fff;
+}
+
+.entregaDashboard > div:first-child {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.entregaDashboard strong {
+  color: #4b1920;
+  font: 700 11px "Inter", sans-serif;
+}
+
+.entregaDashboard span {
+  color: #8b757a;
+  font: 400 10px "Inter", sans-serif;
+}
+
+.horarioEntrega {
+  display: flex;
+  align-items: flex-end;
+  flex-direction: column;
+  gap: 5px;
+}
+
+
+/* =========================================================
+   LINKS
+========================================================= */
+
+.botaoLinkDashboard {
+  border: none;
+  background: transparent;
+  color: #a20d2c;
+  cursor: pointer;
+  font: 700 10px "Inter", sans-serif;
+}
+
+.botaoLinkDashboard:hover {
+  text-decoration: underline;
+}
+
+
+/* =========================================================
+   INDICADORES FINAIS
+========================================================= */
+
+.indicadoresFinaisDashboard {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 13px;
+  margin-top: 5px;
+  padding-bottom: 15px;
+}
+
+.indicadorFinalDashboard {
+  padding: 16px;
+  background: #fffafa;
+  border: 1px solid #e9cdd0;
+  border-radius: 9px;
+}
+
+.indicadorFinalDashboard span {
+  display: block;
+  color: #8c777b;
+  font: 500 9px "Inter", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+
+.indicadorFinalDashboard strong {
+  display: block;
+  margin-top: 7px;
+  color: #a20d2c;
+  font: 700 21px "Playfair Display", serif;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+
+@media (max-width: 1200px) {
+
+  .conteudoDashboard {
+    padding: 25px 30px 45px;
+  }
+
+  .cardsResumo,
+  .cardsKpiDashboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .gridProducaoDashboard {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .gridProducaoDashboard > div:last-child {
+    grid-column: span 2;
+  }
+
+  .indicadoresFinaisDashboard {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+
+@media (max-width: 900px) {
+
+  .topoDashboard {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .acoesDashboard {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .gridFinanceiro,
+  .gridDoisDashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .gridProducaoDashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .gridProducaoDashboard > div:last-child {
+    grid-column: auto;
+  }
+
+  .indicadoresFinaisDashboard {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  .conteudoDashboard {
+    padding: 20px 15px 35px;
+  }
+
+  .tituloDashboard {
+    font-size: 29px;
+  }
+
+  .cardsResumo,
+  .cardsKpiDashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .indicadoresFinaisDashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .linhaTabela {
+    grid-template-columns: 1.4fr .7fr .8fr .8fr;
+    padding: 0 7px;
+    gap: 5px;
+  }
+
+  .linhaTabela span,
+  .linhaTabela strong,
+  .linhaTabela b {
+    font-size: 8px;
+  }
+
+  .acoesDashboard {
+    gap: 4px;
+  }
+
+  .botaoDashboardSecundario {
+    margin-left: 3px;
+  }
+}
