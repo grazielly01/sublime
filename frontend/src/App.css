@@ -200,4 +200,17 @@
 
 .tudoMenosSidebar{
   margin-left: 6%;
+    box-sizing: border-box;
+    
+}
+
+/* Correção do topo para TODAS as páginas do sistema */
+.tudoMenosSidebar {
+  padding-top: 0;
+  margin-top: 0;
+}
+
+/* Garante um espaçamento limpo e padrão em qualquer container de conteúdo */
+div[class*="conteudo"] {
+  padding-top: 0px;
 }

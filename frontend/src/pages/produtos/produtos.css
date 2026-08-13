@@ -1,163 +1,191 @@
-/*         DIV Q ABRIGA TUDO         */
+/* =========================================================
+   ESCOPO ISOLADO DA PÁGINA DE PRODUTOS
+   ========================================================= */
 
-.tudoProdutos{
-    width: 93%;
-    min-height: 170vh; /*min-height ao inves de height fixo*/
-    display: flex;
+.pagina-produtos.tudoProdutos {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  background-color: #FDEDE8;
 }
 
-/*        TUDO MENOS A SIDEBAR        */
-
-.tudoMenosSidebar{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    min-height: 100vh;
-    box-sizing: border-box;
-    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
-    background-color: #FDEDE8;
+.pagina-produtos .tudoMenosSidebar {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin-left: 60px; /* Largura da Sidebar fechada */
+  padding-top: 10px; /* Compensa a altura da Header fixa */
+  background-color: #FDEDE8;
 }
 
-
-/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
-
-.conteudoProdutos{
-    margin-top: 20px;
-    padding-top: 6%;
-    box-sizing: border-box;
+.pagina-produtos .conteudoProdutos {
+  padding: 16px 32px 32px 32px;
+  margin-top: 0;
+  width: 100%;
+  max-width: 1400px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
 }
 
-.topoProdutos{
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
+/* =========================================================
+   TOPO E FILTROS
+   ========================================================= */
+
+.pagina-produtos .topoProdutos {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
 }
 
-.tituloProdutos{
-    margin: 0;
-    font-size: 350%;
-    color: #870B22;
+.pagina-produtos .tituloProdutos {
+  margin: 0;
+  font-size: 36px;
+  color: #870B22;
+  font-weight: bold;
 }
 
-.subtituloProdutos{
-    margin: 6px 0 0 4px;
-    font-size: 150%;
-    color: #777;
+.pagina-produtos .subtituloProdutos {
+  margin: 4px 0 0 0;
+  font-size: 15px;
+  color: #777;
 }
 
-
-/*        FILTRO DE CATEGORIA + BOTÃO "+ Novo produto"        */
-
-.barraFiltroProdutos{
-    display: flex;
-    justify-content: flex-end; /*flex?: end - joga  os dois pro canto direito*/
-    align-items: center;
-    gap: 14px;
-    margin-top: 28px;
+.pagina-produtos .barraFiltroProdutos {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+  margin-top: 16px;
 }
 
-/*deixando o Select mais estreito e arredondado nessa tela*/
-#selectCategoriaProdutos{
-    width: 200px;
-    border-radius: 20px;
+.pagina-produtos #selectCategoriaProdutos {
+  width: 200px;
+  border-radius: 20px;
 }
 
-/*deixando o Button "+ Novo produto"  com largura automática nessa tela*/
-.barraFiltroProdutos > .button, /*aq a seta ">" busca so o Button que é "filho" direto de .barraFiltroProdutos sem fazer iso com os botoes dos cards mais abaixo*/
-.barraFiltroProdutos .divButton .button{
-    width: auto;
-    padding: 12px 22px;
+.pagina-produtos .barraFiltroProdutos > .button,
+.pagina-produtos .barraFiltroProdutos .divButton .button {
+  width: auto;
+  padding: 10px 20px;
 }
 
+/* =========================================================
+   GRADE DE CARDS (3 COLUNAS VERTICAIS)
+   ========================================================= */
 
-/*        GRADE DE CARDS DOS PRODUTOS        */
-
-.listaProdutos{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /*3 colunas, cada uma dividindo o espaço igualmente*/
-    gap: 24px;
-    margin-top: 24px;
+.pagina-produtos .listaProdutos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+  gap: 24px;
+  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.cardProduto{
-    background-color: white;
-    border-radius: 12px;
-    overflow: hidden; /*deixa os cantos arredondados "cortarem" certinho a imagem que tiver dentro*/
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.06);
+.pagina-produtos .cardProduto {
+  display: flex;
+  flex-direction: column; /* Força Imagem EM CIMA e Conteúdo EMBAIXO */
+  width: 100%;
+  background-color: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
 }
 
-/*area da imagem do produto: fica rosa quando nn tem "backgroundImage" (caso de produto sem foto)*/
-.imagemProduto{
-    width: 100%;
-    height: 180px;
-    background-color: #FFC8D2; /*o rosa usado quando o produto ainda no tem imagem*/
-    background-size: cover;
-    background-position: center;
-    position: relative; /*é a partir  daq que a tarja de categoria aparece*/
-    box-sizing: border-box;
-    padding: 14px;
+/* =========================================================
+   CONTEÚDO INTERNO DO CARD
+   ========================================================= */
+
+.pagina-produtos .imagemProduto {
+  width: 100%;
+  height: 180px;
+  min-height: 180px;
+  background-color: #FFC8D2;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  box-sizing: border-box;
+  padding: 14px;
 }
 
-/*tarjazinha branca com a categoria, no canto de cima da imagem*/
-.tarjaCategoria{
-    background-color: white;
-    color: #333;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 5px 12px;
-    border-radius: 20px;
+.pagina-produtos .tarjaCategoria {
+  background-color: #ffffff;
+  color: #333333;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 20px;
+  display: inline-block;
 }
 
-.infoProduto{
-    padding: 18px 20px 20px 20px;
-    box-sizing: border-box;
+.pagina-produtos .infoProduto {
+  display: flex;
+  flex-direction: column;
+  padding: 18px 20px 20px 20px;
+  box-sizing: border-box;
+  width: 100%;
+  text-align: left;
 }
 
-.nomeProduto{
-    margin: 0;
-    font-size: 20px;
-    color: #222;
+.pagina-produtos .nomeProduto {
+  margin: 0;
+  font-size: 18px;
+  color: #222222;
+  font-weight: 600;
 }
 
-.qtdIngredientes{
-    margin: 4px 0 0 0;
-    font-size: 13px;
-    color: #888;
+.pagina-produtos .qtdIngredientes {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  color: #888888;
 }
 
-/*linha com Custo, Venda e Margem*/
-.valoresProduto{
-    display: flex;
-    justify-content: space-between;
-    margin-top: 16px;
+.pagina-produtos .valoresProduto {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 16px;
+  width: 100%;
 }
 
-.labelValor{
-    margin: 0;
-    font-size: 12px;
-    color: #888;
+.pagina-produtos .labelValor {
+  margin: 0;
+  font-size: 12px;
+  color: #888888;
 }
 
-.numeroValor{
-    margin: 4px 0 0 0;
-    font-size: 15px;
-    font-weight: 600;
-    color: #333;
+.pagina-produtos .numeroValor {
+  margin: 4px 0 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: #333333;
 }
 
-.numeroVenda{
-    color: #CF0003;
+.pagina-produtos .numeroVenda {
+  color: #CF0003;
 }
 
-.botaoVerReceita{
-    margin-top: 18px;
+.pagina-produtos .botaoVerReceita {
+  margin-top: 18px;
+  width: 100%;
 }
 
-.botaoVerReceita .button{
-    width: 100%;
-    background-color: #8d6e63;
+.pagina-produtos .botaoVerReceita .button,
+.pagina-produtos .botaoVerReceita button {
+  width: 100%;
+  background-color: #8d6e63;
+  color: #ffffff;
+  border: none;
+  padding: 10px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 
-.botaoVerReceita .button:hover{
-    background-color: #79594f;
+.pagina-produtos .botaoVerReceita .button:hover,
+.pagina-produtos .botaoVerReceita button:hover {
+  background-color: #79594f;
 }
