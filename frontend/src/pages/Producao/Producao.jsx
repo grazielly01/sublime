@@ -46,9 +46,9 @@ export default function Producao() {
   }
 
   return (
-
-    
     <div className="production-page">
+    {/* cabeçalho da página Produção */}
+    <Header nomeIndustria="Sweet Sunset" />
       
       <main>
         {/* título + botão */}
