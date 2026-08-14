@@ -15,7 +15,7 @@ import Sair from "./pages/sair/sair.jsx";
 import Configuracoes from "./pages/configuracoes/configuracoes.jsx";
 import VisaoGeral from "./pages/visaogeral/visaogeral.jsx";
 import Dashboard from "./pages/dashboard/dashboard.jsx";
-import FluxoCaixa from "./pages/fluxocaixa/fluxocaixa.jsx";
+import FluxoCaixa from "./pages/fluxocaixa/FluxoCaixa.jsx";
 
 import RegistrarPedido from "./pages/pedidos/registrarPedido.jsx";
 import DetalhesPedido from "./pages/pedidos/detalhesPedido.jsx";
