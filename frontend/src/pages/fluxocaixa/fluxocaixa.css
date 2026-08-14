@@ -1,0 +1,710 @@
+
+
+.tudoFluxoCaixa {
+  display: flex;
+  min-height: 100vh;
+  background: #FDEDE8;
+}
+
+.tudoMenosSidebar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.conteudoFluxoCaixa {
+  flex: 1;
+  width: 100%;
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 26px 48px 60px;
+  box-sizing: border-box;
+}
+
+
+/* =====================================================
+   CABEÇALHO
+===================================================== */
+
+.topoFluxoCaixa {
+  margin-bottom: 20px;
+}
+
+.tituloFluxoCaixa {
+ margin: 0;
+
+    font-family: "Inter", serif;
+    font-size: 37px;
+    font-weight: 700;
+    line-height: 2;
+
+    color: #8E1027;
+
+}
+
+.subtituloFluxoCaixa {
+  margin: 3px 0 0;
+  color: #8b656b;
+  font: 400 11px "Inter", sans-serif;
+}
+
+
+/* =====================================================
+   CARDS DO TOPO
+===================================================== */
+
+.resumoFluxo {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.cardFluxo {
+  min-height: 58px;
+  background: #fff9f7;
+  border: 1px solid #efbfc4;
+  border-radius: 7px;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(80, 20, 30, 0.07);
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.labelFluxo {
+  color: #76545a;
+  font: 600 8px "Inter", sans-serif;
+  margin-bottom: 4px;
+}
+
+.valorFluxo {
+  color: #241416;
+  font: 700 15px "Playfair Display", serif;
+}
+
+.cardSaldoFinal {
+  background: #9d0926;
+  border-color: #9d0926;
+}
+
+.cardSaldoFinal .labelFluxo {
+  color: rgba(255, 255, 255, 0.8);
+}
+
+.cardSaldoFinal .valorFluxo {
+  color: #fff;
+}
+
+
+/* =====================================================
+   CARDS GERAIS
+===================================================== */
+
+.cardGraficoFluxo,
+.cardMovimentacoes,
+.cardDespesas {
+  background: #fff9f7;
+  border: 1px solid #efbfc4;
+  border-radius: 7px;
+  box-shadow: 0 1px 3px rgba(80, 20, 30, 0.06);
+  overflow: hidden;
+}
+
+.cardGraficoFluxo {
+  margin-bottom: 16px;
+}
+
+.cabecalhoCardFluxo {
+  min-height: 38px;
+  padding: 10px 14px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.cabecalhoCardFluxo h2 {
+  margin: 0;
+  color: #241416;
+  font: 700 11px "Playfair Display", serif;
+}
+
+
+/* =====================================================
+   LEGENDA
+===================================================== */
+
+.legendaGrafico {
+  display: flex;
+  gap: 10px;
+  font: 500 8px "Inter", sans-serif;
+  color: #665054;
+}
+
+.legendaGrafico span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legendaGrafico i {
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  display: inline-block;
+}
+
+.legendaEntrada {
+  background: #4d9653;
+}
+
+.legendaSaida {
+  background: #9d0926;
+}
+
+
+/* =====================================================
+   GRÁFICO DE BARRAS
+===================================================== */
+
+.graficoBarras {
+  height: 150px;
+  display: flex;
+  padding: 4px 18px 14px 42px;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.eixoY {
+  position: absolute;
+  left: 10px;
+  top: 6px;
+  bottom: 25px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  color: #ad9297;
+  font: 400 7px "Inter", sans-serif;
+}
+
+.areaBarras {
+  position: relative;
+  flex: 1;
+  height: 100%;
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+}
+
+.linhaGrafico {
+  position: absolute;
+  left: 0;
+  right: 0;
+  border-top: 1px dashed #eadbdb;
+}
+
+.linha60 {
+  top: 0;
+}
+
+.linha40 {
+  top: 33%;
+}
+
+.linha20 {
+  top: 66%;
+}
+
+.linha0 {
+  bottom: 22px;
+}
+
+.grupoBarras {
+  height: 100%;
+  width: 65px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+
+  position: relative;
+  z-index: 2;
+}
+
+.parBarras {
+  height: calc(100% - 22px);
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+}
+
+.barra {
+  width: 8px;
+  border-radius: 4px 4px 0 0;
+}
+
+.barra.entrada {
+  background: #4f9654;
+}
+
+.barra.saida {
+  background: #9d0926;
+}
+
+.grupoBarras > span {
+  margin-top: 5px;
+  color: #9a7b81;
+  font: 400 7px "Inter", sans-serif;
+}
+
+
+/* =====================================================
+   GRÁFICO DE LINHA
+===================================================== */
+
+.graficoLinha {
+  height: 185px;
+  position: relative;
+  margin: 0 18px 12px 42px;
+  border-bottom: 1px solid #dec9cc;
+}
+
+.linhasLinha {
+  position: absolute;
+  inset: 10px 0 25px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.linhasLinha span {
+  width: 100%;
+  border-top: 1px dashed #eadbdb;
+}
+
+.eixoLinhaY {
+  position: absolute;
+  left: -30px;
+  top: 10px;
+  bottom: 25px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  color: #ad9297;
+  font: 400 7px "Inter", sans-serif;
+}
+
+.svgLinha {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  width: 100%;
+  height: calc(100% - 22px);
+  overflow: visible;
+}
+
+.svgLinha circle {
+  fill: #9d0926;
+}
+
+.datasLinha {
+  position: absolute;
+  bottom: 2px;
+  left: 0;
+  right: 0;
+
+  display: flex;
+  justify-content: space-between;
+
+  color: #9a7b81;
+  font: 400 7px "Inter", sans-serif;
+}
+
+
+/* =====================================================
+   DUAS COLUNAS
+===================================================== */
+
+.duasColunasFluxo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.cardMovimentacoes {
+  min-width: 0;
+}
+
+.cabecalhoLista {
+  border-bottom: 1px solid #f0d8da;
+}
+
+.cabecalhoLista button {
+  border: none;
+  background: #9d0926;
+  color: white;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font: 600 7px "Inter", sans-serif;
+  cursor: pointer;
+}
+
+
+/* =====================================================
+   MOVIMENTAÇÕES
+===================================================== */
+
+.listaMovimentacoes {
+  width: 100%;
+}
+
+.movimentacao {
+  min-height: 32px;
+  padding: 6px 12px;
+  box-sizing: border-box;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  border-bottom: 1px solid #f1dddd;
+}
+
+.movimentacao:last-child {
+  border-bottom: none;
+}
+
+.infoMovimentacao {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.infoMovimentacao strong {
+  color: #392326;
+  font: 500 8px "Inter", sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.iconeMovimentacao,
+.iconeDespesa {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: white;
+  font: 700 9px "Inter", sans-serif;
+}
+
+.entradaIcone {
+  background: #4f9654;
+}
+
+.saidaIcone,
+.iconeDespesa {
+  background: #c00020;
+}
+
+.valorEntrada,
+.valorSaida {
+  white-space: nowrap;
+  font: 700 8px "Inter", sans-serif;
+}
+
+.valorEntrada {
+  color: #21813a;
+}
+
+.valorSaida {
+  color: #5c1722;
+}
+
+
+/* =====================================================
+   RESUMO INFERIOR
+===================================================== */
+
+.resumoInferior {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.miniCard {
+  background: #ffd9df;
+  border: 1px solid #efb4bd;
+  border-radius: 6px;
+  padding: 10px 13px;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.miniCard span {
+  color: #79545b;
+  font: 500 7px "Inter", sans-serif;
+}
+
+.miniCard strong {
+  margin-top: 2px;
+  color: #241416;
+  font: 700 15px "Playfair Display", serif;
+}
+
+.miniCard small {
+  margin-top: 2px;
+  color: #329047;
+  font: 500 6px "Inter", sans-serif;
+}
+
+
+/* =====================================================
+   DESPESAS FIXAS E VARIÁVEIS
+===================================================== */
+
+.cardDespesas {
+  margin-bottom: 30px;
+}
+
+.conteudoDespesas {
+  display: grid;
+  grid-template-columns: 210px 1fr 1fr;
+  gap: 20px;
+  padding: 8px 14px 14px;
+  align-items: center;
+}
+
+
+/* =====================================================
+   DONUT
+===================================================== */
+
+.areaPizza {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.pizza {
+  width: 125px;
+  height: 125px;
+  border-radius: 50%;
+
+  background: conic-gradient(
+    #9d0926 0deg 211deg,
+    #ffb3c2 211deg 360deg
+  );
+
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.centroPizza {
+  width: 73px;
+  height: 73px;
+  border-radius: 50%;
+  background: #fff9f7;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  text-align: center;
+}
+
+.centroPizza strong {
+  color: #3c272a;
+  font: 700 8px "Inter", sans-serif;
+}
+
+.centroPizza span {
+  margin-top: 2px;
+  color: #8b6b71;
+  font: 400 6px "Inter", sans-serif;
+}
+
+.legendaPizza {
+  margin-top: 8px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  color: #675156;
+  font: 500 7px "Inter", sans-serif;
+}
+
+.legendaPizza div {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.legendaPizza i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.pontoFixo {
+  background: #9d0926;
+}
+
+.pontoVariavel {
+  background: #ffb3c2;
+}
+
+
+/* =====================================================
+   TABELAS DE DESPESAS
+===================================================== */
+
+.tabelaDespesa {
+  min-width: 0;
+}
+
+.tabelaDespesa h3 {
+  margin: 0 0 5px;
+  padding: 5px 7px;
+
+  border-radius: 5px;
+  background: #9d0926;
+  color: white;
+
+  font: 700 8px "Inter", sans-serif;
+}
+
+.tabelaDespesa:last-child h3 {
+  background: #ffb3c2;
+  color: #5a2530;
+}
+
+.linhaDespesa {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+
+  padding: 4px 7px;
+  border-bottom: 1px solid #f0dfe0;
+
+  color: #4a3438;
+  font: 400 7px "Inter", sans-serif;
+}
+
+.linhaDespesa strong {
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.totalDespesa {
+  margin-top: 2px;
+  padding: 5px 7px;
+
+  display: flex;
+  justify-content: space-between;
+
+  background: #9d0926;
+  color: white;
+  border-radius: 3px;
+
+  font: 700 7px "Inter", sans-serif;
+}
+
+.tabelaDespesa:last-child .totalDespesa {
+  background: #ffb3c2;
+  color: #5a2530;
+}
+
+
+/* =====================================================
+   RESPONSIVIDADE
+===================================================== */
+
+@media (max-width: 1000px) {
+
+  .conteudoFluxoCaixa {
+    padding: 24px 30px 50px;
+  }
+
+  .resumoFluxo {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .conteudoDespesas {
+    grid-template-columns: 180px 1fr 1fr;
+  }
+}
+
+
+@media (max-width: 750px) {
+
+  .conteudoFluxoCaixa {
+    padding: 20px;
+  }
+
+  .duasColunasFluxo {
+    grid-template-columns: 1fr;
+  }
+
+  .resumoInferior {
+    grid-template-columns: 1fr;
+  }
+
+  .conteudoDespesas {
+    grid-template-columns: 1fr;
+  }
+
+  .areaPizza {
+    margin-bottom: 10px;
+  }
+}
+
+
+@media (max-width: 520px) {
+
+  .resumoFluxo {
+    grid-template-columns: 1fr;
+  }
+
+  .tituloFluxoCaixa {
+    font-size: 26px;
+  }
+
+  .graficoBarras {
+    padding-left: 35px;
+  }
+
+  .grupoBarras {
+    width: 40px;
+  }
+
+  .barra {
+    width: 6px;
+  }
+}
