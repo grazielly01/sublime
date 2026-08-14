@@ -15,6 +15,7 @@ import Sair from "./pages/sair/sair.jsx";
 import Configuracoes from "./pages/configuracoes/configuracoes.jsx";
 import VisaoGeral from "./pages/visaogeral/visaogeral.jsx";
 import Dashboard from "./pages/dashboard/dashboard.jsx";
+import FluxoCaixa from "./pages/fluxocaixa/fluxocaixa.jsx";
 
 import RegistrarPedido from "./pages/pedidos/registrarPedido.jsx";
 import DetalhesPedido from "./pages/pedidos/detalhesPedido.jsx";
@@ -45,7 +46,7 @@ function App() {
 
       <div className={isLoginPage ? "conteudoLogin" : "tudoMenosSidebar"}>
         <Routes>
-          <Route path="/login" element={<Login />} />
+           <Route path="/login" element={<Login />} />
 
           {/* Estoque */}
           <Route path="/estoque" element={<Estoque />} />
@@ -79,6 +80,9 @@ function App() {
           <Route path="/configuracoes" element={<Configuracoes />} />
           <Route path="/visaogeral" element={<VisaoGeral />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/fluxocaixa" element={<FluxoCaixa />} />
+
+        
 
         </Routes>
       </div>

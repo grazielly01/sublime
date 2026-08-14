@@ -1,10 +1,18 @@
 import "./login.css";
 import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes*/
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
+import { useNavigate } from "react-router-dom";   // importa o hook de navegação
 
 
 
 function Login() {
+    const navigate = useNavigate();
+
+  const handleLogin = (e) => {
+    e.preventDefault();
+    // aqui você pode validar email/senha se quiser
+    navigate("/visaogeral");   // redireciona para a rota Visão geral
+  };
     return (  /*já vai pro return pq nao precisa de nenhuma variavel ou nenhuma outra função ou nenhuma lógica por trás, só tem HTML (bagulhos visuais)*/
         <div className="tudoLogin">
 
@@ -75,8 +83,10 @@ function Login() {
                         </div>
                     </div>
 
-                    {/*botão de entrar, ainda sem onClick, sem backend/login de verdade ainda*/}
-                    <div className="botaoEntrar"><Button texto="Entrar" /></div>
+                    {/*botão de entrar, sem backend/login de verdade ainda*/}
+                    <div className="botaoEntrar">
+            <Button texto="Entrar" onClick={handleLogin} />
+          </div>
 
                     {/*link de cadastro*/}
                     <p className="primeiroAcesso">Primeiro acesso?
