@@ -1,0 +1,382 @@
+/* =========================================================
+   ESTRUTURA PRINCIPAL
+   ========================================================= */
+
+.tudoRegistrarProducao {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #FAF0EE;
+  box-sizing: border-box;
+}
+
+.tudoMenosSidebar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.conteudoRegistrarProducao {
+  flex: 1;
+  width: 100%;
+  padding: 42px 6%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* =========================================================
+   TOPO — SETA + TÍTULO
+   ========================================================= */
+
+.topoRegistrarProducao {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 16px;
+  margin-bottom: 38px;
+  width: 100%;
+}
+
+.botaoVoltarProducao {
+  background: transparent;
+  border: none;
+  color: #7A0C22;
+  font-family: Arial, sans-serif;
+  font-size: 42px;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+
+.botaoVoltarProducao:hover {
+  transform: translateX(-4px);
+}
+
+.tituloRegistrarProducao {
+  margin: 0;
+  color: #7A0C22;
+  font-size: clamp(30px, 2.5vw, 40px);
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   FORMULÁRIO
+   ========================================================= */
+
+.formRegistrarProducao {
+  width: 100%;
+  max-width: 1400px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+
+/* =========================================================
+   CARD DO FORMULÁRIO
+   ========================================================= */
+
+.cardFormProducao {
+  width: 100%;
+  min-height: 260px;
+
+  background-color: #FFFFFF;
+  border: 1px solid #E5AFB6;
+  border-radius: 12px;
+
+  padding: 40px 44px;
+  box-sizing: border-box;
+
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.03);
+
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+
+/* =========================================================
+   LABELS
+   ========================================================= */
+
+.formRegistrarProducao label {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+
+  color: #1F2937;
+
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.formRegistrarProducao label span b {
+  color: #C90A29;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   QUANTIDADE + PRAZO
+   ========================================================= */
+
+.linhaDuplaProducao {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 32px;
+  width: 100%;
+}
+
+
+/* =========================================================
+   INPUTS
+   ========================================================= */
+
+.formRegistrarProducao input {
+  width: 100%;
+  height: 50px;
+
+  padding: 12px 16px;
+  box-sizing: border-box;
+
+  border: 1px solid #C9939A;
+  border-radius: 8px;
+
+  background-color: #FFFFFF;
+  color: #1F2937;
+
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+
+  outline: none;
+
+  transition:
+    border-color 0.15s ease,
+    box-shadow 0.15s ease;
+}
+
+.formRegistrarProducao input::placeholder {
+  color: #888888;
+}
+
+.formRegistrarProducao input:focus {
+  border-color: #7A0C22;
+  box-shadow: 0 0 0 3px rgba(122, 12, 34, 0.1);
+}
+
+.campoPrazoProducao input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+
+/* =========================================================
+   AÇÕES
+   ========================================================= */
+
+.acoesFormProducao {
+  width: 100%;
+
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+
+  gap: 16px;
+  margin-top: 2px;
+}
+
+.botaoCancelar,
+.botaoRegistrar {
+  min-width: 130px;
+  height: 44px;
+
+  padding: 10px 28px;
+
+  border-radius: 8px;
+
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.15s ease,
+    transform 0.15s ease;
+}
+
+
+/* =========================================================
+   BOTÃO CANCELAR
+   ========================================================= */
+
+.botaoCancelar {
+  background-color: #FFFFFF;
+  color: #1F2937;
+
+  border: 1px solid #D1D5DB;
+}
+
+.botaoCancelar:hover {
+  background-color: #F3F4F6;
+}
+
+
+/* =========================================================
+   BOTÃO REGISTRAR
+   ========================================================= */
+
+.botaoRegistrar {
+  background-color: #7A0C22;
+  color: #FFFFFF;
+
+  border: none;
+}
+
+.botaoRegistrar:hover {
+  background-color: #5E081A;
+}
+
+
+/* =========================================================
+   TELAS GRANDES
+   ========================================================= */
+
+@media (min-width: 1400px) {
+
+  .conteudoRegistrarProducao {
+    padding-left: 7%;
+    padding-right: 7%;
+  }
+
+  .cardFormProducao {
+    padding: 44px 50px;
+  }
+
+  .formRegistrarProducao label {
+    font-size: 16px;
+  }
+
+  .formRegistrarProducao input {
+    height: 52px;
+    font-size: 15px;
+  }
+}
+
+
+/* =========================================================
+   TABLETS
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .conteudoRegistrarProducao {
+    padding: 35px 4%;
+  }
+
+  .cardFormProducao {
+    padding: 32px;
+  }
+
+  .linhaDuplaProducao {
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+}
+
+
+/* =========================================================
+   CELULAR
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+  .conteudoRegistrarProducao {
+    padding: 28px 20px 40px;
+  }
+
+  .topoRegistrarProducao {
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .botaoVoltarProducao {
+    font-size: 34px;
+  }
+
+  .tituloRegistrarProducao {
+    font-size: 28px;
+  }
+
+  .cardFormProducao {
+    padding: 26px 22px;
+    gap: 24px;
+  }
+
+  .linhaDuplaProducao {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
+
+  .formRegistrarProducao input {
+    height: 48px;
+  }
+
+  .acoesFormProducao {
+    flex-direction: row;
+  }
+
+  .botaoCancelar,
+  .botaoRegistrar {
+    flex: 1;
+    min-width: 0;
+  }
+}
+
+
+/* =========================================================
+   CELULARES PEQUENOS
+   ========================================================= */
+
+@media (max-width: 450px) {
+
+  .conteudoRegistrarProducao {
+    padding: 24px 14px 30px;
+  }
+
+  .tituloRegistrarProducao {
+    font-size: 24px;
+  }
+
+  .botaoVoltarProducao {
+    font-size: 30px;
+  }
+
+  .cardFormProducao {
+    padding: 22px 18px;
+  }
+
+  .formRegistrarProducao label {
+    font-size: 14px;
+  }
+
+  .acoesFormProducao {
+    flex-direction: column-reverse;
+    width: 100%;
+  }
+
+  .botaoCancelar,
+  .botaoRegistrar {
+    width: 100%;
+  }
+}
