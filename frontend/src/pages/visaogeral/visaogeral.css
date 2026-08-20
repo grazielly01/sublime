@@ -179,8 +179,8 @@ body {
 .botaoVerTodos,
 .botaoVerMais {
   border: 1px solid #d1d5db;
-  background: #ffffff;
-  color: #374151;
+  background: #8E1027;
+  color: #ffffff;
   border-radius: 6px;
   font-size: 12px;
   font-weight: 500;
@@ -192,7 +192,7 @@ body {
 
 .botaoVerTodos:hover,
 .botaoVerMais:hover {
-  background: #f9fafb;
+  background: #5d0b0b;
   border-color: #9ca3af;
 }
 

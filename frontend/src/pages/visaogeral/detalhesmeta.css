@@ -1,0 +1,190 @@
+/* Layout Principal */
+.tudoDetalhesMeta {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #FAF0EE; /* Tom rosa claro de fundo idêntico à imagem */
+  box-sizing: border-box;
+}
+
+.tudoMenosSidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.conteudoDetalhesMeta {
+  flex: 1;
+  padding: 36px 48px 40px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Título e Voltar */
+.headerTituloMeta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.botaoVoltar {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  transition: transform 0.2s ease;
+}
+
+.botaoVoltar:hover {
+  transform: translateX(-3px);
+}
+
+.tituloDetalhesMeta {
+  margin: 0;
+
+    font-family: "Inter", serif;
+    font-size: 37px;
+    font-weight: 700;
+    line-height: 2;
+
+    color: #8E1027;
+}
+
+/* Card do Formulário Ampliado e Uniforme */
+.cardDetalhesMeta {
+  background-color: #FFFFFF;
+  border: 1.5px solid #D89BA3; /* Borda rosada fina característica */
+  border-radius: 16px;
+  padding: 32px 36px;
+  width: 100%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 340px; /* Coluna esquerda maior expansível, direita com 340px */
+  gap: 20px 32px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+/* Mapeamento das Posições no Grid */
+.campoTitulo {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.campoPrazo {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.campoDescricao {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.campoQuantidade {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* Rótulos e Campos de Entrada */
+.grupoCampo {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.grupoCampo label {
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #111827;
+}
+
+.campoDisplay {
+  background-color: #FFFFFF;
+  border: 1px solid #A3A3A3; /* Borda cinza bem definida como no protótipo */
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #4B5563;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.areaDescricao {
+  height: 120px;
+  align-items: flex-start;
+  line-height: 1.5;
+}
+
+.campoComIcone {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Botões de Ação no Rodapé */
+.acoesDetalhesMeta {
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+  width: 100%;
+}
+
+.botaoExcluir {
+  background-color: #7A0C22;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 42px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.botaoExcluir:hover {
+  background-color: #FFF0F2;
+}
+
+.botaoEditar {
+  background-color: #7A0C22;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 42px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.botaoEditar:hover {
+  background-color: #5E081A;
+}
+
+/* Responsividade em Telas Menores */
+@media (max-width: 900px) {
+  .cardDetalhesMeta {
+    grid-template-columns: 1fr;
+  }
+  .campoTitulo, .campoPrazo, .campoDescricao, .campoQuantidade {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}

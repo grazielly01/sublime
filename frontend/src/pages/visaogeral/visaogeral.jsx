@@ -2,8 +2,11 @@ import "./visaogeral.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 import Button from "../../componentes/Button/Button.jsx";
+import { useNavigate } from "react-router-dom";
 
 function VisaoGeral() {
+  const navigate = useNavigate();
+
   const kpis = [
     { titulo: "Faturamento (mês)", valor: "R$ 84.320,80", variacao: "+12,4%", tipo: "positivo", icone: "💰" },
     { titulo: "Pedidos abertos", valor: "23", variacao: "+5 hoje", tipo: "positivo", icone: "🧾" },
@@ -72,9 +75,7 @@ function VisaoGeral() {
           {/* Título */}
           <div className="topoVisaoGeral">
             <h1 className="tituloVisaoGeral">Visão geral</h1>
-            <p className="subtituloVisaoGeral">
-              Resumo da sua indústria hoje
-            </p>
+            <p className="subtituloVisaoGeral">Resumo da sua indústria hoje</p>
           </div>
 
           {/* KPIs */}
@@ -85,12 +86,8 @@ function VisaoGeral() {
                   <span className="iconeKpi">{k.icone}</span>
                   <p className="tituloKpi">{k.titulo}</p>
                 </div>
-
                 <p className="valorKpi">{k.valor}</p>
-                
-                <span className={`badgeKpi ${k.tipo}`}>
-                  {k.variacao}
-                </span>
+                <span className={`badgeKpi ${k.tipo}`}>{k.variacao}</span>
               </div>
             ))}
           </div>
@@ -112,7 +109,6 @@ function VisaoGeral() {
                       <h3>{p.cliente}</h3>
                       <p>{p.itens}</p>
                     </div>
-
                     <div className="ladoDireitoPedido">
                       <span className={`statusPedido ${classeStatus(p.status)}`}>
                         {p.status}
@@ -127,7 +123,6 @@ function VisaoGeral() {
             {/* Produtos mais lucrativos */}
             <div className="produtosLucrativos">
               <h2>Produtos mais lucrativos</h2>
-
               <div className="listaProdutos">
                 {produtosLucrativos.map((p, i) => (
                   <div className="cardProduto" key={i}>
@@ -151,7 +146,6 @@ function VisaoGeral() {
             {/* Metas */}
             <div className="metas">
               <h2>Metas</h2>
-
               <ul className="listaMetas">
                 {metas.map((m, i) => (
                   <li key={i} className="itemMeta">
@@ -163,26 +157,29 @@ function VisaoGeral() {
                         </span>
                       </div>
                       <p className="descricaoMeta">{m.descricao}</p>
-                      <span className="horarioPedido" style={{marginTop: '4px'}}>{m.horario}</span>
+                      <span className="horarioPedido" style={{ marginTop: "4px" }}>
+                        {m.horario}
+                      </span>
                     </div>
                   </li>
                 ))}
               </ul>
 
-              <button className="botaoVerMais">Ver mais</button>
+              {/* Botão Ver mais com navegação */}
+              <button
+                className="botaoVerMais"
+                onClick={() => navigate("/metavisaogeral")}
+              >
+                Ver mais
+              </button>
             </div>
 
             {/* Atalhos rápidos */}
             <div className="atalhosRapidos">
               <h2>Atalhos rápidos</h2>
-
               <div className="listaAtalhos">
                 {atalhos.map((a, i) => (
-                  <Button
-                    key={i}
-                    texto={a.texto}
-                    icone={a.icone}
-                  />
+                  <Button key={i} texto={a.texto} icone={a.icone} />
                 ))}
               </div>
             </div>

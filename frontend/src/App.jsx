@@ -13,9 +13,14 @@ import Calendario from "./pages/calendario/calendario.jsx";
 import Producao from "./pages/producao/producao.jsx";
 import Sair from "./pages/sair/sair.jsx"; 
 import Configuracoes from "./pages/configuracoes/configuracoes.jsx";
-import VisaoGeral from "./pages/visaogeral/visaogeral.jsx";
 import Dashboard from "./pages/dashboard/dashboard.jsx";
 import FluxoCaixa from "./pages/fluxocaixa/FluxoCaixa.jsx";
+
+import VisaoGeral from "./pages/visaogeral/visaogeral.jsx";
+import MetaVisaoGeral from "./pages/visaogeral/metavisaogeral.jsx";
+import RegistrarMeta from "./pages/visaogeral/registrarmeta.jsx";
+import DetalhesMeta from "./pages/visaogeral/detalhesmeta.jsx";
+import ExcluirMeta from "./pages/visaogeral/excluirmeta.jsx";
 
 import RegistrarPedido from "./pages/pedidos/registrarPedido.jsx";
 import DetalhesPedido from "./pages/pedidos/detalhesPedido.jsx";
@@ -78,11 +83,15 @@ function App() {
           <Route path="/producao" element={<Producao />} />
           <Route path="/sair" element={<Sair />} />
           <Route path="/configuracoes" element={<Configuracoes />} />
-          <Route path="/visaogeral" element={<VisaoGeral />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/fluxocaixa" element={<FluxoCaixa />} />
 
-        
+        {/*visao geral */}
+        <Route path="/visaogeral" element={<VisaoGeral />} />
+        <Route path="/metavisaogeral" element={<MetaVisaoGeral />} />
+        <Route path="/registrarmeta" element={<RegistrarMeta />} />
+        <Route path="/detalhesmeta/:id" element={<DetalhesMeta />} />
+         <Route path="/excluirmeta/:id" element={<ExcluirMeta />} />
 
         </Routes>
       </div>

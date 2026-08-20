@@ -1,0 +1,270 @@
+/* =========================================================
+   LAYOUT PRINCIPAL EESTRUTURA
+   ========================================================= */
+
+.tudoRegistrarMeta {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background-color: #FAF0EE; /* Tom rosa claro idêntico ao protótipo */
+  box-sizing: border-box;
+}
+
+.tudoMenosSidebarMeta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.conteudoRegistrarMeta {
+  flex: 1;
+  padding: 36px 48px 40px;
+  width: 100%;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+}
+
+/* =========================================================
+   TÍTULO + SETA
+   ========================================================= */
+
+.topoRegistrarMeta {
+  display: flex;
+  align-items: center;
+  margin-bottom: 28px;
+}
+
+.botaoVoltarMeta {
+  width: 35px;
+  height: 35px;
+  margin-right: 12px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: #8E0D24;
+  font-family: Arial, sans-serif;
+  font-size: 38px;
+  font-weight: 300;
+  line-height: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+
+.botaoVoltarMeta:hover {
+  transform: translateX(-3px);
+}
+
+.tituloRegistrarMeta {
+  margin: 0;
+  color: #7A0C22;
+ 
+  font-size: 38px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+
+
+.formRegistrarMeta {
+  background-color: #FFFFFF;
+  border: 1.5px solid #D89BA3; /* Borda tom rosa suave */
+  border-radius: 16px;
+  padding: 32px 36px;
+  width: 95%;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: 1fr 340px;
+  gap: 20px 32px;
+
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+/* =========================================================
+   RÓTULOS (LABELS)
+   ========================================================= */
+
+.formRegistrarMeta label {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: #111827;
+  font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.formRegistrarMeta label span {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.formRegistrarMeta label b {
+  color: #D32F2F;
+  font-weight: 700;
+}
+
+/* =========================================================
+   POSICIONAMENTO DOS CAMPOS NO GRID
+   ========================================================= */
+
+.campoTituloMeta {
+  grid-column: 1;
+  grid-row: 1;
+}
+
+.campoPrazoMeta {
+  grid-column: 2;
+  grid-row: 1;
+}
+
+.campoDescricaoMeta {
+  grid-column: 1;
+  grid-row: 2;
+}
+
+.campoQuantidadeMeta {
+  grid-column: 2;
+  grid-row: 2;
+}
+
+/* =========================================================
+   INPUTS E TEXTAREA
+   ========================================================= */
+
+.formRegistrarMeta input,
+.formRegistrarMeta textarea {
+  width: 100%;
+  box-sizing: border-box;
+
+  border: 1px solid #A3A3A3; /* Borda bem definida para facilitar digitação */
+  border-radius: 10px;
+  background-color: #FFFFFF;
+
+  color: #1F2937;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Input Normal */
+.formRegistrarMeta input {
+  height: 44px;
+  padding: 10px 14px;
+}
+
+/* Textarea */
+.formRegistrarMeta textarea {
+  height: 120px;
+  min-height: 120px;
+  padding: 12px 14px;
+  resize: none;
+  line-height: 1.5;
+}
+
+/* Placeholders */
+.formRegistrarMeta input::placeholder,
+.formRegistrarMeta textarea::placeholder {
+  color: #9CA3AF;
+  opacity: 1;
+}
+
+/* Estado de Foco */
+.formRegistrarMeta input:focus,
+.formRegistrarMeta textarea:focus {
+  border-color: #7A0C22;
+  box-shadow: 0 0 0 3px rgba(122, 12, 34, 0.12);
+}
+
+/* Campo Data */
+.campoPrazoMeta input[type="date"] {
+  color: #374151;
+  cursor: pointer;
+}
+
+.campoPrazoMeta input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.65;
+  cursor: pointer;
+  filter: invert(15%) sepia(50%) saturate(3000%) hue-rotate(330deg);
+}
+
+/* =========================================================
+   BOTÕES DE AÇÃO NO RODAPÉ
+   ========================================================= */
+
+.acoesFormMeta {
+    grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  gap: 16px;
+  margin-top: 24px;
+  width: 100%;
+}
+
+/* Botão Cancelar */
+.botaoCancelar {
+  background-color: #FFFFFF;
+  color: #7A0C22;
+  border: 1.5px solid #7A0C22;
+  border-radius: 12px;
+  padding: 12px 42px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: all 0.2s ease;
+}
+
+.botaoCancelar:hover {
+  background-color: #FFF0F2;
+}
+
+/* Botão Registrar */
+.botaoRegistrar {
+  background-color: #7A0C22;
+  color: #FFFFFF;
+  border: none;
+  border-radius: 12px;
+  padding: 12px 42px;
+  font-family: "Inter", sans-serif;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  transition: all 0.2s ease;
+}
+
+.botaoRegistrar:hover {
+  background-color: #5E081A;
+}
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .conteudoRegistrarMeta {
+    padding: 24px 20px 40px;
+  }
+
+  .formRegistrarMeta {
+    grid-template-columns: 1fr;
+    padding: 24px 20px;
+  }
+
+  .campoTituloMeta,
+  .campoPrazoMeta,
+  .campoDescricaoMeta,
+  .campoQuantidadeMeta {
+    grid-column: 1;
+    grid-row: auto;
+  }
+}
