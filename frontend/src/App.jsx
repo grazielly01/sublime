@@ -15,10 +15,10 @@ import Configuracoes from "./pages/configuracoes/configuracoes.jsx";
 import Dashboard from "./pages/dashboard/dashboard.jsx";
 import FluxoCaixa from "./pages/fluxocaixa/FluxoCaixa.jsx";
 
-import Producao from "./pages/producao/producao.jsx";
-import RegistrarProducao from "./pages/producao/registrarProducao.jsx";
-import DetalhesOrdem from "./pages/producao/detalhesOrdem.jsx";
-import ExcluirOrdem from "./pages/producao/excluirOrdem.jsx";
+import Producao from "./pages/Producao/Producao.jsx";
+import RegistrarProducao from "./pages/Producao/registrarProducao.jsx";
+import DetalhesOrdem from "./pages/Producao/detalhesOrdem.jsx";
+import ExcluirOrdem from "./pages/Producao/excluirOrdem.jsx";
 
 import VisaoGeral from "./pages/visaogeral/visaogeral.jsx";
 import MetaVisaoGeral from "./pages/visaogeral/metavisaogeral.jsx";
