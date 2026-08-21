@@ -9,6 +9,12 @@
   --white: #fff;
 }
 
+/* Header da página Produção */
+.production-page .header {
+  border-bottom: 1px solid var(--line);
+  background: var(--white);
+  padding: 20px 40px;
+}
 
 
 .production-page {
@@ -35,9 +41,9 @@ main {
    margin: 0;
 
     font-family: "Inter", serif;
-    font-size: 40px;
+    font-size: 37px;
     font-weight: 700;
-    line-height: 1;
+    line-height: 2;
 
     color: #8E1027;
 

@@ -1,23 +1,20 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./producao.css";
-import Button from "../../componentes/Button/Button.jsx"; 
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 
-
-
 const initialOrders = [
-  { name: "Brigadeiro Gourmet", team: "Equipe A", total: 480, done: 360, status: "Em andamento", time: "45 min restantes", kind: "progressing" },
-  { name: "Cupcake Red Velvet", team: "Equipe B", total: 200, done: 200, status: "Concluído", time: "Finalizado às 10h12", kind: "finished" },
-  { name: "Torta de Limão 22cm", team: "Equipe A", total: 18, done: 6, status: "Em andamento", time: "1h 20min restantes", kind: "progressing" },
-  { name: "Copo da Felicidade 250ml", team: "Equipe C", total: 120, done: 0, status: "Na fila", time: "Iniciar 14h00", kind: "queued" },
-  { name: "Bolo de Chocolate 1kg", team: "Equipe B", total: 30, done: 0, status: "Na fila", time: "Iniciar 15h30", kind: "queued" },
+  { id: 1, name: "Brigadeiro Gourmet", team: "Equipe A", total: 480, done: 360, status: "Em andamento", time: "45 min restantes", kind: "progressing" },
+  { id: 2, name: "Cupcake Red Velvet", team: "Equipe B", total: 200, done: 200, status: "Concluído", time: "Finalizado às 10h12", kind: "finished" },
+  { id: 3, name: "Torta de Limão 22cm", team: "Equipe A", total: 18, done: 6, status: "Em andamento", time: "1h 20min restantes", kind: "progressing" },
+  { id: 4, name: "Copo da Felicidade 250ml", team: "Equipe C", total: 120, done: 0, status: "Na fila", time: "Iniciar 14h00", kind: "queued" },
+  { id: 5, name: "Bolo de Chocolate 1kg", team: "Equipe B", total: 30, done: 0, status: "Na fila", time: "Iniciar 15h30", kind: "queued" },
 ];
-
-
 
 export default function Producao() {
   const [orders, setOrders] = useState(initialOrders);
+  const navigate = useNavigate();
 
   function updateOrder(index, changes) {
     setOrders((current) =>
@@ -46,10 +43,10 @@ export default function Producao() {
   }
 
   return (
-
-    
     <div className="production-page">
-      
+      <Sidebar paginaAtiva="Produção" />
+      <Header nomeIndustria="Sweet Sunset" />
+
       <main>
         {/* título + botão */}
         <section className="title-row">
@@ -61,7 +58,7 @@ export default function Producao() {
           </div>
           <button
             className="btnnovaordem"
-            onClick={() => window.alert("Nova ordem criada")}
+            onClick={() => navigate("/registrarproducao")}
           >
             Nova ordem
           </button>
@@ -98,7 +95,12 @@ export default function Producao() {
             {orders.map((order, index) => {
               const percent = Math.round((order.done / order.total) * 100);
               return (
-                <article className="order" key={order.name}>
+                <article
+                  className="order"
+                  key={order.name}
+                  onClick={() => navigate(`/detalhesordem/${order.id}`)}
+                  style={{ cursor: "pointer" }}
+                >
                   <div className="order-main">
                     <div>
                       <h3>{order.name}</h3>
@@ -119,12 +121,12 @@ export default function Producao() {
                   </div>
 
                   {order.kind === "progressing" && (
-                    <button className="action complete" onClick={() => finishOrder(index)}>
+                    <button className="action complete" onClick={(e) => { e.stopPropagation(); finishOrder(index); }}>
                       Concluir lote
                     </button>
                   )}
                   {order.kind === "queued" && (
-                    <button className="action start" onClick={() => startOrder(index)}>
+                    <button className="action start" onClick={(e) => { e.stopPropagation(); startOrder(index); }}>
                       Iniciar
                     </button>
                   )}

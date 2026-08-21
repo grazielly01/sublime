@@ -10,9 +10,21 @@ import Produtos from "./pages/produtos/produtos.jsx";
 import Alertas from "./pages/alertas/alertas.jsx";
 import MinhaConta from "./pages/minhaConta/minhaConta.jsx";
 import Calendario from "./pages/calendario/calendario.jsx";
-import Producao from "./pages/producao/producao.jsx";
 import Sair from "./pages/sair/sair.jsx"; 
 import Configuracoes from "./pages/configuracoes/configuracoes.jsx";
+import Dashboard from "./pages/dashboard/dashboard.jsx";
+import FluxoCaixa from "./pages/fluxocaixa/FluxoCaixa.jsx";
+
+import Producao from "./pages/producao/producao.jsx";
+import RegistrarProducao from "./pages/producao/registrarProducao.jsx";
+import DetalhesOrdem from "./pages/producao/detalhesOrdem.jsx";
+import ExcluirOrdem from "./pages/producao/excluirOrdem.jsx";
+
+import VisaoGeral from "./pages/visaogeral/visaogeral.jsx";
+import MetaVisaoGeral from "./pages/visaogeral/metavisaogeral.jsx";
+import RegistrarMeta from "./pages/visaogeral/registrarmeta.jsx";
+import DetalhesMeta from "./pages/visaogeral/detalhesmeta.jsx";
+import ExcluirMeta from "./pages/visaogeral/excluirmeta.jsx";
 
 import RegistrarPedido from "./pages/pedidos/registrarPedido.jsx";
 import DetalhesPedido from "./pages/pedidos/detalhesPedido.jsx";
@@ -43,7 +55,7 @@ function App() {
 
       <div className={isLoginPage ? "conteudoLogin" : "tudoMenosSidebar"}>
         <Routes>
-          <Route path="/login" element={<Login />} />
+           <Route path="/login" element={<Login />} />
 
           {/* Estoque */}
           <Route path="/estoque" element={<Estoque />} />
@@ -67,14 +79,30 @@ function App() {
           <Route path="/calendario/registrar" element={<RegistrarEvento />} />
           <Route path="/calendario/detalhes" element={<DetalhesEvento />} />
           <Route path="/calendario/apagar" element={<ApagarEvento />} />
+          <Route path="/calendario" element={<Calendario />} />
 
           {/* Outras páginas */}
           <Route path="/alertas" element={<Alertas />} />
           <Route path="/minhaConta" element={<MinhaConta />} />
-          <Route path="/calendario" element={<Calendario />} />
-          <Route path="/producao" element={<Producao />} />
-         <Route path="/sair" element={<Sair />} />
+         
+          
+          <Route path="/sair" element={<Sair />} />
           <Route path="/configuracoes" element={<Configuracoes />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/fluxocaixa" element={<FluxoCaixa />} />
+
+        {/*visao geral */}
+        <Route path="/visaogeral" element={<VisaoGeral />} />
+        <Route path="/metavisaogeral" element={<MetaVisaoGeral />} />
+        <Route path="/registrarmeta" element={<RegistrarMeta />} />
+        <Route path="/detalhesmeta/:id" element={<DetalhesMeta />} />
+         <Route path="/excluirmeta/:id" element={<ExcluirMeta />} />
+
+        {/*peodução*/}
+        <Route path="/producao" element={<Producao />} />
+        <Route path="/registrarproducao" element={<RegistrarProducao />} />
+        <Route path="/detalhesordem/:id" element={<DetalhesOrdem />} />
+         <Route path="/excluirordem/:id" element={<ExcluirOrdem />} />
 
         </Routes>
       </div>

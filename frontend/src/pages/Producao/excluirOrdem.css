@@ -1,0 +1,269 @@
+/* =========================================================
+   ESTRUTURA PRINCIPAL
+   ========================================================= */
+
+.tudoExcluirOrdem {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: #fff5f3;
+  box-sizing: border-box;
+}
+
+.tudoMenosSidebar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.conteudoExcluirOrdem {
+  flex: 1;
+  width: 100%;
+  padding: 40px 5% 60px;
+  box-sizing: border-box;
+
+  /* Permite que o card centralize no espaço restante */
+  display: flex;
+  flex-direction: column;
+}
+
+
+/* =========================================================
+   TOPO — SETA + TÍTULO
+   ========================================================= */
+
+.topoExcluirOrdem {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 18px;
+  width: 100%;
+  margin-bottom: 35px;
+}
+
+
+/* =========================================================
+   BOTÃO VOLTAR
+   ========================================================= */
+
+.botaoVoltarExcluir {
+  background: transparent;
+  border: none;
+  color: #8e0d24;
+  font-family: Arial, sans-serif;
+  font-size: 46px;
+  font-weight: 300;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  width: 42px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.15s ease;
+}
+
+.botaoVoltarExcluir:hover {
+  transform: translateX(-4px);
+}
+
+
+/* =========================================================
+   TÍTULO
+   ========================================================= */
+
+.tituloExcluirOrdem {
+  margin: 0;
+  color: #8e0d24;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+
+/* =========================================================
+   CARD DE CONFIRMAÇÃO (CENTRALIZADO)
+   ========================================================= */
+
+.cardConfirmacao {
+  width: 100%;
+  max-width: 650px; /* Limita a largura para o card não esticar a tela toda */
+  margin: auto; /* Centraliza no meio vertical e horizontal da área disponível */
+
+  background: #fff9f7;
+  border: 1px solid #efc5c8;
+  border-radius: 16px;
+  padding: 40px 45px;
+  box-sizing: border-box;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.06);
+}
+
+
+/* =========================================================
+   TEXTO
+   ========================================================= */
+
+.cardConfirmacao p {
+  margin: 0 0 30px;
+  color: #241416;
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  line-height: 1.6;
+}
+
+.cardConfirmacao strong {
+  color: #8e0d24;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   BOTÕES
+   ========================================================= */
+
+.acoesConfirmacao {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 15px;
+}
+
+
+/* =========================================================
+   BOTÃO CANCELAR
+   ========================================================= */
+
+.botaoCancelar {
+  background: #ffffff;
+  color: #8e0d24;
+  border: 1px solid #8e0d24;
+  border-radius: 10px;
+  padding: 13px 30px;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.botaoCancelar:hover {
+  background: #ffe5e8;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   BOTÃO EXCLUIR
+   ========================================================= */
+
+.botaoExcluir {
+  background: #8e0d24;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 13px 30px;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.15s ease;
+}
+
+.botaoExcluir:hover {
+  background: #72091d;
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   TELAS GRANDES
+   ========================================================= */
+
+@media (min-width: 1400px) {
+  .conteudoExcluirOrdem {
+    padding-left: 6%;
+    padding-right: 6%;
+  }
+
+  .tituloExcluirOrdem {
+    font-size: 44px;
+  }
+
+  .botaoVoltarExcluir {
+    font-size: 50px;
+  }
+
+  .cardConfirmacao {
+    padding: 48px 55px;
+  }
+
+  .cardConfirmacao p {
+    font-size: 18px;
+  }
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 900px) {
+  .conteudoExcluirOrdem {
+    padding: 32px 4% 50px;
+  }
+
+  .tituloExcluirOrdem {
+    font-size: 36px;
+  }
+
+  .cardConfirmacao {
+    padding: 35px;
+  }
+}
+
+
+/* =========================================================
+   CELULAR
+   ========================================================= */
+
+@media (max-width: 600px) {
+  .conteudoExcluirOrdem {
+    padding: 25px 18px 40px;
+  }
+
+  .topoExcluirOrdem {
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .botaoVoltarExcluir {
+    width: 35px;
+    height: 40px;
+    font-size: 38px;
+  }
+
+  .tituloExcluirOrdem {
+    font-size: 28px;
+  }
+
+  .cardConfirmacao {
+    padding: 28px 22px;
+  }
+
+  .cardConfirmacao p {
+    font-size: 15px;
+  }
+
+  .acoesConfirmacao {
+    flex-direction: column-reverse;
+    width: 100%;
+  }
+
+  .botaoCancelar,
+  .botaoExcluir {
+    width: 100%;
+  }
+}

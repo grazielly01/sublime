@@ -3,7 +3,7 @@
     top: 0;
     left: 0;
     height: 100vh;
-    width: 68px; /*largura fechada, só ícones*/
+    width: 66px; /*largura fechada, só ícones*/
     background-color: #401406;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     display: flex;
@@ -16,7 +16,7 @@
 }
 
 .sidebar:hover{
-    width: 220px; /*largura de qnd ta aberto com ícone + texto*/
+    width: 210px; /*largura de qnd ta aberto com ícone + texto*/
 }
 
 .topoSidebar{

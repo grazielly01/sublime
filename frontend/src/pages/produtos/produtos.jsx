@@ -24,12 +24,10 @@ function Produtos(){
     ];
 
     return(
-        <div className="tudoProdutos">  {/*Div q abriga tudo*/}
-
+       <div className="pagina-produtos tudoProdutos"> {/* <-- Adicionada a classe pagina-produtos */}
             <Sidebar paginaAtiva="Produtos" /> {/*Menu lateral, coloquei "Produtos" como página ativa para "Produtos" no menu lateral ficar clarinho*/}
 
-            <div className="tudoMenosSidebar"> {/*Tudo menos o sidebar q ta acima*/}
-
+            <div className="tudoMenosSidebar">
                 <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
 
                 <div className="conteudoProdutos"> {/*Div com o conteúdo da página*/}
