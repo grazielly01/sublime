@@ -14,6 +14,7 @@ import Sair from "./pages/sair/sair.jsx";
 import Dashboard from "./pages/dashboard/dashboard.jsx";
 import FluxoCaixa from "./pages/fluxocaixa/FluxoCaixa.jsx";
 
+<<<<<<< HEAD
 import Configuracoes from "./pages/configuracoes/configuracoes.jsx";
 import EquipeConfig from "./pages/configuracoes/equipeConfig.jsx";
 import DadosConfig from "./pages/configuracoes/dadosConfig.jsx";
@@ -25,6 +26,12 @@ import Producao from "./pages/producao/producao.jsx";
 import RegistrarProducao from "./pages/producao/registrarProducao.jsx";
 import DetalhesOrdem from "./pages/producao/detalhesOrdem.jsx";
 import ExcluirOrdem from "./pages/producao/excluirOrdem.jsx";
+=======
+import Producao from "./pages/Producao/Producao.jsx";
+import RegistrarProducao from "./pages/Producao/registrarProducao.jsx";
+import DetalhesOrdem from "./pages/Producao/detalhesOrdem.jsx";
+import ExcluirOrdem from "./pages/Producao/excluirOrdem.jsx";
+>>>>>>> fa05cd96275faf111cafbc30636c02085d57e721
 
 import VisaoGeral from "./pages/visaogeral/visaogeral.jsx";
 import MetaVisaoGeral from "./pages/visaogeral/metavisaogeral.jsx";
