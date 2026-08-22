@@ -1,0 +1,520 @@
+/* =========================================================
+   ESTRUTURA PRINCIPAL
+   ========================================================= */
+
+.tudoEquipeConfig {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: #fff5f3;
+  box-sizing: border-box;
+}
+
+.tudoMenosSidebar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.conteudoEquipeConfig {
+  flex: 1;
+  width: 100%;
+  padding: 38px 60px 60px;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   TOPO
+   ========================================================= */
+
+.topoEquipeConfig {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  margin-bottom: 28px;
+}
+
+.tituloComVoltarEquipe {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.tituloEquipeConfig {
+  margin: 0;
+  color: #8e0d24;
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+
+/* =========================================================
+   BOTÃO VOLTAR
+   ========================================================= */
+
+.botaoVoltarEquipe {
+  width: 40px;
+  height: 40px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: transparent;
+  border: none;
+
+  color: #7a0c22;
+
+  font-family: Arial, sans-serif;
+  font-size: 36px;
+  font-weight: 300;
+  line-height: 1;
+
+  cursor: pointer;
+
+  padding: 0;
+
+  transition:
+    transform 0.15s ease,
+    color 0.15s ease;
+}
+
+.botaoVoltarEquipe:hover {
+  transform: translateX(-4px);
+  color: #5e081a;
+}
+
+/* =========================================================
+   BOTÃO REGISTRAR
+   ========================================================= */
+
+.botaoRegistrarColaborador {
+  min-height: 46px;
+  padding: 0 24px;
+
+  background: #9d0926;
+  color: #ffffff;
+
+  border: none;
+  border-radius: 10px;
+
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  white-space: nowrap;
+
+  transition:
+    background-color 0.2s ease,
+    transform 0.15s ease,
+    box-shadow 0.2s ease;
+}
+
+.botaoRegistrarColaborador:hover {
+  background: #80071f;
+  box-shadow: 0 4px 10px rgba(157, 9, 38, 0.18);
+}
+
+.botaoRegistrarColaborador:active {
+  transform: scale(0.98);
+}
+
+
+/* =========================================================
+   CONTAINER DA TABELA
+   ========================================================= */
+
+.containerTabelaEquipe {
+  width: 100%;
+  overflow-x: auto;
+
+  background: #fff9f7;
+
+  border: 1px solid #efc5c8;
+  border-radius: 14px;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================================================
+   TABELA
+   ========================================================= */
+
+.tabelaEquipeConfig {
+  width: 100%;
+  min-width: 850px;
+
+  border-collapse: collapse;
+  border-spacing: 0;
+
+  background: #fff9f7;
+}
+
+/* =========================================================
+   FOTO + NOME DO COLABORADOR
+   ========================================================= */
+
+.colaboradorInfo {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.fotoColaborador {
+  width: 42px;
+  height: 42px;
+
+  min-width: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #ffe5e8;
+  border: 1px solid #efc5c8;
+
+  color: #8e0d24;
+
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+
+  overflow: hidden;
+}
+
+.fotoColaborador span {
+  line-height: 1;
+}
+
+.nomeColaborador {
+  font-weight: 600;
+  color: #241416;
+}
+
+
+/* =========================================================
+   CABEÇALHO
+   ========================================================= */
+
+.tabelaEquipeConfig th {
+  height: 58px;
+
+  padding: 0 24px;
+
+  background: #ffe5e8;
+
+  color: #6f1728;
+
+  text-align: left;
+  vertical-align: middle;
+
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+
+  border-bottom: 1px solid #efc5c8;
+}
+
+
+/* =========================================================
+   CÉLULAS
+   ========================================================= */
+
+.tabelaEquipeConfig td {
+  height: 68px;
+
+  padding: 0 24px;
+
+  color: #241416;
+
+  text-align: left;
+  vertical-align: middle;
+
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+
+  border-bottom: 1px solid #f0d6d8;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   ÚLTIMA LINHA
+   ========================================================= */
+
+.tabelaEquipeConfig tbody tr:last-child td {
+  border-bottom: none;
+}
+
+
+/* =========================================================
+   EFEITO NAS LINHAS
+   ========================================================= */
+
+.tabelaEquipeConfig tbody tr {
+  transition: background-color 0.15s ease;
+}
+
+.tabelaEquipeConfig tbody tr:hover {
+  background-color: #fff3f1;
+}
+
+
+/* =========================================================
+   COLUNA DE AÇÕES
+   ========================================================= */
+
+.celulaAcoes {
+  white-space: nowrap;
+  width: 130px;
+}
+
+
+/* =========================================================
+   BOTÕES DE AÇÃO
+   ========================================================= */
+
+.acao {
+  width: 38px;
+  height: 38px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-right: 8px;
+
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.acao:last-child {
+  margin-right: 0;
+}
+
+.acao:hover {
+  transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   ÍCONE DE EDITAR
+   ========================================================= */
+
+.iconeEditar {
+  color: #7a0c22;
+
+  font-family: Arial, sans-serif;
+  font-size: 25px;
+  font-weight: 400;
+
+  line-height: 1;
+}
+
+.acao.editar:hover {
+  background: #fff0f2;
+  border-color: #efc5c8;
+}
+
+
+/* =========================================================
+   ÍCONE DE EXCLUIR
+   ========================================================= */
+
+.iconeExcluir {
+  color: #8e0d24;
+
+  font-family: Arial, sans-serif;
+  font-size: 30px;
+  font-weight: 300;
+
+  line-height: 0.8;
+}
+
+.acao.excluir:hover {
+  background: #fff0f2;
+  border-color: #efc5c8;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+
+  .conteudoEquipeConfig {
+    padding: 32px 40px 50px;
+  }
+
+  .tituloEquipeConfig {
+    font-size: 34px;
+  }
+
+  .tabelaEquipeConfig th,
+  .tabelaEquipeConfig td {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+
+@media (max-width: 800px) {
+
+  .conteudoEquipeConfig {
+    padding: 28px 24px 40px;
+  }
+
+  .topoEquipeConfig {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .tituloComVoltarEquipe {
+    gap: 10px;
+  }
+
+  .botaoVoltarEquipe {
+    width: 36px;
+    height: 36px;
+    font-size: 32px;
+  }
+
+  .tituloEquipeConfig {
+    font-size: 32px;
+  }
+
+  .botaoRegistrarColaborador {
+    width: 100%;
+  }
+
+  .containerTabelaEquipe {
+    border-radius: 12px;
+  }
+}
+
+
+@media (max-width: 550px) {
+
+  .conteudoEquipeConfig {
+    padding: 24px 16px 35px;
+  }
+
+  .tituloEquipeConfig {
+    font-size: 28px;
+  }
+
+  .botaoVoltarEquipe {
+    font-size: 30px;
+  }
+
+  .fotoColaborador {
+    width: 38px;
+    height: 38px;
+    min-width: 38px;
+    font-size: 14px;
+  }
+
+  .colaboradorInfo {
+    gap: 10px;
+  }
+
+  .tabelaEquipeConfig {
+    min-width: 780px;
+  }
+
+  .tabelaEquipeConfig th {
+    height: 52px;
+    font-size: 12px;
+  }
+
+  .tabelaEquipeConfig td {
+    height: 62px;
+    font-size: 13px;
+  }
+}
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 800px) {
+
+  .conteudoEquipeConfig {
+    padding: 28px 24px 40px;
+  }
+
+  .topoEquipeConfig {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 18px;
+  }
+
+  .tituloEquipeConfig {
+    font-size: 32px;
+  }
+
+  .botaoRegistrarColaborador {
+    width: 100%;
+  }
+
+  .containerTabelaEquipe {
+    border-radius: 12px;
+  }
+}
+
+
+/* =========================================================
+   CELULAR
+   ========================================================= */
+
+@media (max-width: 550px) {
+
+  .conteudoEquipeConfig {
+    padding: 24px 16px 35px;
+  }
+
+  .tituloEquipeConfig {
+    font-size: 28px;
+  }
+
+  .botaoRegistrarColaborador {
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .tabelaEquipeConfig {
+    min-width: 780px;
+  }
+
+  .tabelaEquipeConfig th {
+    height: 52px;
+    font-size: 12px;
+  }
+
+  .tabelaEquipeConfig td {
+    height: 62px;
+    font-size: 13px;
+  }
+}

@@ -11,9 +11,15 @@ import Alertas from "./pages/alertas/alertas.jsx";
 import MinhaConta from "./pages/minhaConta/minhaConta.jsx";
 import Calendario from "./pages/calendario/calendario.jsx";
 import Sair from "./pages/sair/sair.jsx"; 
-import Configuracoes from "./pages/configuracoes/configuracoes.jsx";
 import Dashboard from "./pages/dashboard/dashboard.jsx";
 import FluxoCaixa from "./pages/fluxocaixa/FluxoCaixa.jsx";
+
+import Configuracoes from "./pages/configuracoes/configuracoes.jsx";
+import EquipeConfig from "./pages/configuracoes/equipeConfig.jsx";
+import DadosConfig from "./pages/configuracoes/dadosConfig.jsx";
+import SistemaConfig from "./pages/configuracoes/sistemaConfig.jsx";
+import SegurancaConfig from "./pages/configuracoes/segurancaConfig.jsx";
+import RegistrarConfig from "./pages/configuracoes/registrarConfig.jsx";
 
 import Producao from "./pages/producao/producao.jsx";
 import RegistrarProducao from "./pages/producao/registrarProducao.jsx";
@@ -87,7 +93,7 @@ function App() {
          
           
           <Route path="/sair" element={<Sair />} />
-          <Route path="/configuracoes" element={<Configuracoes />} />
+        
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/fluxocaixa" element={<FluxoCaixa />} />
 
@@ -102,7 +108,15 @@ function App() {
         <Route path="/producao" element={<Producao />} />
         <Route path="/registrarproducao" element={<RegistrarProducao />} />
         <Route path="/detalhesordem/:id" element={<DetalhesOrdem />} />
-         <Route path="/excluirordem/:id" element={<ExcluirOrdem />} />
+        <Route path="/excluirordem/:id" element={<ExcluirOrdem />} />
+
+        {/*configuraçoes*/}
+        <Route path="/configuracoes" element={<Configuracoes />} />
+        <Route path="/equipeconfig" element={<EquipeConfig />} />
+        <Route path="/dadosconfig" element={<DadosConfig />} />
+        <Route path="/sistemaconfig" element={<SistemaConfig />} />
+        <Route path="/segurancaconfig" element={<SegurancaConfig />} />
+        <Route path="/registrarconfig" element={<RegistrarConfig />} />
 
         </Routes>
       </div>
