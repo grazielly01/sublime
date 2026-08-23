@@ -28,7 +28,7 @@
 
 
 .conteudoEstoque{
-    margin-top: -22px;
+    margin-top: 20px;
     padding-top: 6%;
     box-sizing: border-box;
 }
@@ -128,7 +128,7 @@
     width: 90%;
     box-sizing: border-box;
     border-radius: 20px;
-    font-size: 125%;
+    font-size: 90%;
     font-weight: bold;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
@@ -178,7 +178,7 @@
 
 
 .nomeInsumo{
-    font-weight: 900;
+    font-weight: 600;
     cursor: pointer;
     font-size: 120px;
 }
@@ -208,14 +208,4 @@
 .statusReposicao.repor{
     background-color: #CF0003;
     color: white;
-}
-
-
-.botaoDetalhesInsumo{
-    text-decoration: none;
-}
-
-
-.botaoDetalhesInsumo:hover{
-    text-decoration: underline;
 }

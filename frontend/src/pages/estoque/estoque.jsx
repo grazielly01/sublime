@@ -12,24 +12,24 @@ function Estoque() {
     /*essa const abaixo é o array (lista) de insumos do estoque: ela contém alguns exemplos temporários de insumos. Quando o backend existir, essa lista vai vir da API (banco de dados) ao
     invés de ficar escrita fixa aqui */
     const insumos = [
-        { nome: "Chocolate ao leite Callebaut 80g", lote: "LT-0421", quantidade: "52", minimo: "15", validade: "12/08/2026", custo: "R$ 78.50", status: "ok" },
-        { nome: "Farinha de trigo especial 300g", lote: "LT-0425", quantidade: "2", minimo: "6", validade: "30/11/2026", custo: "R$ 142.00", status: "repor" },
-        { nome: "Leite condensado Moça 395g", lote: "LT-0414", quantidade: "104", minimo: "60", validade: "20/01/2027", custo: "R$ 8.90", status: "ok" },
-        { nome: "Ovos brancos tipo extra 12unid", lote: "LT-0428", quantidade: "1053", minimo: "1200", validade: "02/06/2026", custo: "R$ 0.55", status: "repor" },
-        { nome: "Fermento químico 10g", lote: "LT-0410", quantidade: "28", minimo: "30", validade: "15/09/2026", custo: "R$ 36.00", status: "repor" },
-        { nome: "Creme de leite UHT 400ml", lote: "LT-0416", quantidade: "82", minimo: "80", validade: "18/12/2026", custo: "R$ 4.20", status: "ok" },
-        { nome: "Açúcar refinado 2kg", lote: "LT-0419", quantidade: "27", minimo: "8", validade: "05/03/2027", custo: "R$ 98.00", status: "ok" },
-        { nome: "Manteiga sem sal 1kg", lote: "LT-0422", quantidade: "19", minimo: "20", validade: "25/07/2026", custo: "R$ 52.00", status: "repor" },
-        { nome: "Leite condensado Moça 395g", lote: "LT-0426", quantidade: "104", minimo: "60", validade: "11/09/2026", custo: "R$ 8.90", status: "ok" },
-        { nome: "Chocolate ao leite Callebaut 80g", lote: "LT-0421", quantidade: "52", minimo: "15", validade: "12/08/2026", custo: "R$ 78.50", status: "ok" },
-        { nome: "Farinha de trigo especial 300g", lote: "LT-0425", quantidade: "2", minimo: "6", validade: "30/11/2026", custo: "R$ 142.00", status: "repor" },
-        { nome: "Leite condensado Moça 395g", lote: "LT-0414", quantidade: "104", minimo: "60", validade: "20/01/2027", custo: "R$ 8.90", status: "ok" },
-        { nome: "Ovos brancos tipo extra 12unid", lote: "LT-0413", quantidade: "1053", minimo: "1200", validade: "02/06/2026", custo: "R$ 0.55", status: "repor" },
-        { nome: "Fermento químico 10g", lote: "LT-0410", quantidade: "28", minimo: "5", validade: "15/09/2026", custo: "R$ 36.00", status: "repor" },
-        { nome: "Creme de leite UHT 400ml", lote: "LT-0416", quantidade: "82", minimo: "80", validade: "18/12/2026", custo: "R$ 4.20", status: "ok" },
-        { nome: "Açúcar refinado 2kg", lote: "LT-0419", quantidade: "27", minimo: "8", validade: "05/03/2027", custo: "R$ 98.00", status: "ok" },
-        { nome: "Manteiga sem sal 1kg", lote: "LT-0422", quantidade: "19", minimo: "20", validade: "25/07/2026", custo: "R$ 52.00", status: "repor" },
-        { nome: "Leite condensado Moça 395g", lote: "LT-0426", quantidade: "104", minimo: "60", validade: "11/09/2026", custo: "R$ 8.90", status: "ok" },
+        { nome: "Chocolate ao leite Callebaut", lote: "LT-0421", quantidade: "28 kg", minimo: "15", validade: "12/08/2026", custo: "R$ 78.50", status: "ok" },
+        { nome: "Farinha de trigo especial", lote: "LT-0425", quantidade: "4 sc 25kg", minimo: "6", validade: "30/11/2026", custo: "R$ 142.00", status: "repor" },
+        { nome: "Leite condensado Moça", lote: "LT-0414", quantidade: "96 lata 395g", minimo: "60", validade: "20/01/2027", custo: "R$ 8.90", status: "ok" },
+        { nome: "Ovos brancos tipo extra", lote: "LT-0413", quantidade: "1800 un", minimo: "1200", validade: "02/06/2026", custo: "R$ 0.55", status: "repor" },
+        { nome: "Fermento químico", lote: "LT-0410", quantidade: "2 kg", minimo: "5", validade: "15/09/2026", custo: "R$ 36.00", status: "repor" },
+        { nome: "Creme de leite UHT", lote: "LT-0416", quantidade: "144 cx 200g", minimo: "80", validade: "18/12/2026", custo: "R$ 4.20", status: "ok" },
+        { nome: "Açúcar refinado", lote: "LT-0419", quantidade: "12 sc 25kg", minimo: "8", validade: "05/03/2027", custo: "R$ 98.00", status: "ok" },
+        { nome: "Manteiga sem sal", lote: "LT-0422", quantidade: "18 kg", minimo: "20", validade: "25/07/2026", custo: "R$ 52.00", status: "repor" },
+        { nome: "Leite condensado Moça", lote: "LT-0426", quantidade: "78 lata 395g", minimo: "60", validade: "11/09/2026", custo: "R$ 8.90", status: "ok" },
+        { nome: "Chocolate ao leite Callebaut", lote: "LT-0421", quantidade: "28 kg", minimo: "15", validade: "12/08/2026", custo: "R$ 78.50", status: "ok" },
+        { nome: "Farinha de trigo especial", lote: "LT-0425", quantidade: "4 sc 25kg", minimo: "6", validade: "30/11/2026", custo: "R$ 142.00", status: "repor" },
+        { nome: "Leite condensado Moça", lote: "LT-0414", quantidade: "96 lata 395g", minimo: "60", validade: "20/01/2027", custo: "R$ 8.90", status: "ok" },
+        { nome: "Ovos brancos tipo extra", lote: "LT-0413", quantidade: "1800 un", minimo: "1200", validade: "02/06/2026", custo: "R$ 0.55", status: "repor" },
+        { nome: "Fermento químico", lote: "LT-0410", quantidade: "2 kg", minimo: "5", validade: "15/09/2026", custo: "R$ 36.00", status: "repor" },
+        { nome: "Creme de leite UHT", lote: "LT-0416", quantidade: "144 cx 200g", minimo: "80", validade: "18/12/2026", custo: "R$ 4.20", status: "ok" },
+        { nome: "Açúcar refinado", lote: "LT-0419", quantidade: "12 sc 25kg", minimo: "8", validade: "05/03/2027", custo: "R$ 98.00", status: "ok" },
+        { nome: "Manteiga sem sal", lote: "LT-0422", quantidade: "18 kg", minimo: "20", validade: "25/07/2026", custo: "R$ 52.00", status: "repor" },
+        { nome: "Leite condensado Moça", lote: "LT-0426", quantidade: "78 lata 395g", minimo: "60", validade: "11/09/2026", custo: "R$ 8.90", status: "ok" },
     ];
 
 
@@ -78,7 +78,7 @@ function Estoque() {
                                 <path d="M12 9v4"/>
                                 <path d="M12 17h.01"/>
                             </svg>
-                                8 abaixo do mínimo
+                                4 abaixo do mínimo
                             </div>
 
 

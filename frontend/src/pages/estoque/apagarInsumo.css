@@ -84,9 +84,7 @@
 
 .botoesConfirmacao{
     display: flex;
-    flex-direction: row;
     gap: 16px;
-    margin-left: 50%;
 }
 
 
