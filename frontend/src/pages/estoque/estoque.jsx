@@ -6,51 +6,59 @@ import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o com
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
 import Select from "../../componentes/Select/Select.jsx";
 
-
-
 function Estoque() {
 
-    /*essa const abaixo é o array (lista) de insumos do estoque: ela contém alguns exemplos temporários de insumos. Quando o backend existir, essa lista vai vir da API (banco de dados) ao 
+
+    /*essa const abaixo é o array (lista) de insumos do estoque: ela contém alguns exemplos temporários de insumos. Quando o backend existir, essa lista vai vir da API (banco de dados) ao
     invés de ficar escrita fixa aqui */
     const insumos = [
-        { nome: "Chocolate ao leite Callebaut", lote: "LT-0421", quantidade: "28 kg", minimo: "15", validade: "12/08/2026", custo: "R$ 78.50", status: "ok" },
-        { nome: "Farinha de trigo especial", lote: "LT-0425", quantidade: "4 sc 25kg", minimo: "6", validade: "30/11/2026", custo: "R$ 142.00", status: "repor" },
-        { nome: "Leite condensado Moça", lote: "LT-0414", quantidade: "96 lata 395g", minimo: "60", validade: "20/01/2027", custo: "R$ 8.90", status: "ok" },
-        { nome: "Ovos brancos tipo extra", lote: "LT-0413", quantidade: "1800 un", minimo: "1200", validade: "02/06/2026", custo: "R$ 0.55", status: "repor" },
-        { nome: "Fermento químico", lote: "LT-0410", quantidade: "2 kg", minimo: "5", validade: "15/09/2026", custo: "R$ 36.00", status: "repor" },
-        { nome: "Creme de leite UHT", lote: "LT-0416", quantidade: "144 cx 200g", minimo: "80", validade: "18/12/2026", custo: "R$ 4.20", status: "ok" },
-        { nome: "Açúcar refinado", lote: "LT-0419", quantidade: "12 sc 25kg", minimo: "8", validade: "05/03/2027", custo: "R$ 98.00", status: "ok" },
-        { nome: "Manteiga sem sal", lote: "LT-0422", quantidade: "18 kg", minimo: "20", validade: "25/07/2026", custo: "R$ 52.00", status: "repor" },
-        { nome: "Leite condensado Moça", lote: "LT-0426", quantidade: "78 lata 395g", minimo: "60", validade: "11/09/2026", custo: "R$ 8.90", status: "ok" },
-        { nome: "Chocolate ao leite Callebaut", lote: "LT-0421", quantidade: "28 kg", minimo: "15", validade: "12/08/2026", custo: "R$ 78.50", status: "ok" },
-        { nome: "Farinha de trigo especial", lote: "LT-0425", quantidade: "4 sc 25kg", minimo: "6", validade: "30/11/2026", custo: "R$ 142.00", status: "repor" },
-        { nome: "Leite condensado Moça", lote: "LT-0414", quantidade: "96 lata 395g", minimo: "60", validade: "20/01/2027", custo: "R$ 8.90", status: "ok" },
-        { nome: "Ovos brancos tipo extra", lote: "LT-0413", quantidade: "1800 un", minimo: "1200", validade: "02/06/2026", custo: "R$ 0.55", status: "repor" },
-        { nome: "Fermento químico", lote: "LT-0410", quantidade: "2 kg", minimo: "5", validade: "15/09/2026", custo: "R$ 36.00", status: "repor" },
-        { nome: "Creme de leite UHT", lote: "LT-0416", quantidade: "144 cx 200g", minimo: "80", validade: "18/12/2026", custo: "R$ 4.20", status: "ok" },
-        { nome: "Açúcar refinado", lote: "LT-0419", quantidade: "12 sc 25kg", minimo: "8", validade: "05/03/2027", custo: "R$ 98.00", status: "ok" },
-        { nome: "Manteiga sem sal", lote: "LT-0422", quantidade: "18 kg", minimo: "20", validade: "25/07/2026", custo: "R$ 52.00", status: "repor" },
-        { nome: "Leite condensado Moça", lote: "LT-0426", quantidade: "78 lata 395g", minimo: "60", validade: "11/09/2026", custo: "R$ 8.90", status: "ok" },
+        { nome: "Chocolate ao leite Callebaut 80g", lote: "LT-0421", quantidade: "52", minimo: "15", validade: "12/08/2026", custo: "R$ 78.50", status: "ok" },
+        { nome: "Farinha de trigo especial 300g", lote: "LT-0425", quantidade: "2", minimo: "6", validade: "30/11/2026", custo: "R$ 142.00", status: "repor" },
+        { nome: "Leite condensado Moça 395g", lote: "LT-0414", quantidade: "104", minimo: "60", validade: "20/01/2027", custo: "R$ 8.90", status: "ok" },
+        { nome: "Ovos brancos tipo extra 12unid", lote: "LT-0428", quantidade: "1053", minimo: "1200", validade: "02/06/2026", custo: "R$ 0.55", status: "repor" },
+        { nome: "Fermento químico 10g", lote: "LT-0410", quantidade: "28", minimo: "30", validade: "15/09/2026", custo: "R$ 36.00", status: "repor" },
+        { nome: "Creme de leite UHT 400ml", lote: "LT-0416", quantidade: "82", minimo: "80", validade: "18/12/2026", custo: "R$ 4.20", status: "ok" },
+        { nome: "Açúcar refinado 2kg", lote: "LT-0419", quantidade: "27", minimo: "8", validade: "05/03/2027", custo: "R$ 98.00", status: "ok" },
+        { nome: "Manteiga sem sal 1kg", lote: "LT-0422", quantidade: "19", minimo: "20", validade: "25/07/2026", custo: "R$ 52.00", status: "repor" },
+        { nome: "Leite condensado Moça 395g", lote: "LT-0426", quantidade: "104", minimo: "60", validade: "11/09/2026", custo: "R$ 8.90", status: "ok" },
+        { nome: "Chocolate ao leite Callebaut 80g", lote: "LT-0421", quantidade: "52", minimo: "15", validade: "12/08/2026", custo: "R$ 78.50", status: "ok" },
+        { nome: "Farinha de trigo especial 300g", lote: "LT-0425", quantidade: "2", minimo: "6", validade: "30/11/2026", custo: "R$ 142.00", status: "repor" },
+        { nome: "Leite condensado Moça 395g", lote: "LT-0414", quantidade: "104", minimo: "60", validade: "20/01/2027", custo: "R$ 8.90", status: "ok" },
+        { nome: "Ovos brancos tipo extra 12unid", lote: "LT-0413", quantidade: "1053", minimo: "1200", validade: "02/06/2026", custo: "R$ 0.55", status: "repor" },
+        { nome: "Fermento químico 10g", lote: "LT-0410", quantidade: "28", minimo: "5", validade: "15/09/2026", custo: "R$ 36.00", status: "repor" },
+        { nome: "Creme de leite UHT 400ml", lote: "LT-0416", quantidade: "82", minimo: "80", validade: "18/12/2026", custo: "R$ 4.20", status: "ok" },
+        { nome: "Açúcar refinado 2kg", lote: "LT-0419", quantidade: "27", minimo: "8", validade: "05/03/2027", custo: "R$ 98.00", status: "ok" },
+        { nome: "Manteiga sem sal 1kg", lote: "LT-0422", quantidade: "19", minimo: "20", validade: "25/07/2026", custo: "R$ 52.00", status: "repor" },
+        { nome: "Leite condensado Moça 395g", lote: "LT-0426", quantidade: "104", minimo: "60", validade: "11/09/2026", custo: "R$ 8.90", status: "ok" },
     ];
+
 
     return (
         <div className="tudoEstoque"> {/*Div q abriga tudo*/}
 
+
             <Sidebar paginaAtiva="Estoque" /> {/*Menu lateral, coloquei "Estoque" como página ativa para "Estoque" no menu lateral ficar clarinho*/}
+
 
             <div className="tudoMenosSidebar"> {/*Tudo menos o sidebar q ta acima*/}
 
+
                 <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
 
+
                 <div className="conteudoEstoque"> {/*Div com o conteúdo da página*/}
+
 
                     <h1 className="tituloEstoque">Estoque de insumos</h1>
                     <p className="subtituloEstoque">Controle por lote e validade — sistema PEPS (usar primeiro o mais antigo)</p>
 
+
                     {/*Linha com a busca, o aviso de "abaixo do mínimo" e os botões da direita*/}
                     <div className="barraFiltros">
 
+
                         <div className="ladoEsquerdoFiltros">
+
 
                             {/*campo de busca (ícone dentro do Input que nem fiz no login)*/}
                             <div className="buscaComIcone">
@@ -62,6 +70,7 @@ function Estoque() {
                                 <Input placeholder="Buscar insumo.." required={false} /> {/* required é false pq o user nao precisa obrigatoriamente digitar nada nesse input, pois ele é so um caixa de busca*/}
                             </div>
 
+
                             {/*aviso de quantos insumos estão abaixo do mínimo (número fixo por enquanto; viria calculado do backend depois)*/}
                             <div className="avisoMinimo">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-triangle-alert-icon lucide-triangle-alert">
@@ -69,12 +78,15 @@ function Estoque() {
                                 <path d="M12 9v4"/>
                                 <path d="M12 17h.01"/>
                             </svg>
-                                4 abaixo do mínimo
+                                8 abaixo do mínimo
                             </div>
+
 
                         </div>
 
+
                         <div className="ladoDireitoFiltros">
+
 
                             {/*filtro de insumos usando o componente Select*/}
                             <Select id="selectFiltroInsumo" options={[ /*coloquei um id no select pra mudar um pouquinho o CSS desse componente select e deixar ele adaptado pra essa pagina estoque */
@@ -93,16 +105,21 @@ function Estoque() {
                                 "Outros"]}
                             />
 
+
                             <Link to="/estoque/registrar" className="botaoNovoInsumo">
                                 <Button texto="+ Novo insumo"></Button>
                             </Link>
 
+
                         </div>
+
 
                     </div>
 
+
                     {/*tabela com os insumos do estoque*/}
                     <table className="tabelaEstoque">
+
 
                         <thead> {/*é como o cabeçalho da tabela, a primeira linha com os nomes das categorias*/}
                             <tr> {/*é cada categoria de insumo no cabeçalho*/}
@@ -116,8 +133,9 @@ function Estoque() {
                             </tr>
                         </thead>
 
+
                         <tbody>
-                            
+                           
                             {insumos.map((insumo, index) => (     /*.map() percorre a lista "insumos" e cria uma linha <tr> pra cada insumo, index conta o numero de insumos*/
                                 <tr key={index}>                  {/*a key da tag <tr> vai ser o index (quantidade de insumos)*/}
                                     <Link to="/estoque/detalhes" className="botaoDetalhesInsumo">
@@ -143,5 +161,6 @@ function Estoque() {
         </div>
     );
 }
+
 
 export default Estoque;

@@ -1,12 +1,15 @@
 /*         DIV Q ABRIGA TUDO         */
 
+
 .tudoCalendario{
     width: 93%;
     min-height: 170vh;
     display: flex;
 }
 
+
 /*        TUDO MENOS A SIDEBAR        */
+
 
 .tudoMenosSidebar{
     display: flex;
@@ -19,19 +22,24 @@
 }
 
 
+
+
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
+
 .conteudoCalendario{
-    margin-top: 20px;
+    margin-top: -24px;
     padding-top: 6%;
     box-sizing: border-box;
 }
+
 
 .tituloCalendario{
     margin: 0;
     font-size: 350%;
     color: #870B22;
 }
+
 
 .subtituloCalendario{
     margin: 6px 0 0 5px;
@@ -40,7 +48,10 @@
 }
 
 
+
+
 /*        BARRA COM O BOTÃO "+ Novo evento"        */
+
 
 .barraNovoEvento{
     display: flex;
@@ -48,13 +59,17 @@
     margin-top: 28px;
 }
 
+
 .botaoNovoEvento .button{
     width: auto;
     padding: 12px 22px;
 }
 
 
+
+
 /*        JANELA BRANCA COM O CALENDÁRIO        */
+
 
 .janelaCalendario{
     background-color: white;
@@ -66,7 +81,10 @@
 }
 
 
+
+
 /*        CABEÇALHO: seta, mês + ano, seta        */
+
 
 .cabecalhoCalendario{
     display: flex;
@@ -75,6 +93,7 @@
     gap: 24px;
     padding: 22px 20px;
 }
+
 
 .setaMes{
     width: 34px;
@@ -89,14 +108,17 @@
     cursor: pointer;
 }
 
+
 .setaMes svg{
     width: 18px;
     height: 18px;
 }
 
+
 .setaMes:hover{
     background-color: #6f091b;
 }
+
 
 .seletorMesAno{
     display: flex;
@@ -104,11 +126,13 @@
     gap: 10px;
 }
 
+
 .nomeMes{
     font-size: 24px;
     font-weight: 700;
     color: #870B22;
 }
+
 
 /*mexendo só na largura do componente Select do ano só nessa tela*/
 #selectAnoCalendario{
@@ -117,13 +141,17 @@
 }
 
 
+
+
 /*        LINHA COM OS NOMES DOS DIAS DA SEMANA        */
+
 
 .linhaDiasSemana{
     display: grid;
     grid-template-columns: repeat(7, 1fr); /*7 colunas, uma pra cada dia da semana*/
     background-color: #870B22;
 }
+
 
 .diaSemana{
     color: white;
@@ -134,12 +162,16 @@
 }
 
 
+
+
 /*        GRADE COM OS DIAS DO MÊS        */
+
 
 .gradeCalendario{
     display: grid;
     grid-template-columns: repeat(7, 1fr);
 }
+
 
 .celulaDia{
     min-height: 80px;
@@ -148,11 +180,13 @@
     padding: 8px;
 }
 
+
 .conteudoCelula{
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
+
 
 .numeroDia{
     font-size: 13px;
@@ -160,7 +194,10 @@
 }
 
 
+
+
 /*        TAG DE EVENTO (cor muda de acordo com a categoria)        */
+
 
 .tagEvento{
     display: inline-block;
@@ -176,25 +213,30 @@
     cursor: pointer;
 }
 
+
 .tagEvento.producao{
     background-color: #FFC8D2;
     color: #870B22;
 }
+
 
 .tagEvento.entrega{
     background-color: #870B22;
     color: white;
 }
 
+
 .tagEvento.compra{
     background-color: #8d6e63;
     color: white;
 }
 
+
 .tagEvento.pagamento{
     background-color: #4a4a4a;
     color: white;
 }
+
 
 .tagEvento.outro{
     background-color: #e8dcd8;
@@ -202,7 +244,10 @@
 }
 
 
+
+
 /*        LEGENDA DAS CATEGORIAS        */
+
 
 .legendaCategorias{
     display: flex;

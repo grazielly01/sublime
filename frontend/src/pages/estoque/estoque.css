@@ -1,12 +1,15 @@
 /*         DIV Q ABRIGA TUDO         */
 
+
 .tudoEstoque{
     width: 93%;
     min-height: 170vh; /*min-height ao inves de height fixo, pra página poder crescer se a tabela for grande*/
     display: flex;
 }
 
+
 /*        TUDO MENOS A SIDEBAR        */
+
 
 .tudoMenosSidebar{
     display: flex;
@@ -19,19 +22,24 @@
 }
 
 
+
+
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
+
 .conteudoEstoque{
-    margin-top: 20px;
+    margin-top: -22px;
     padding-top: 6%;
     box-sizing: border-box;
 }
+
 
 .tituloEstoque{
     margin: 0;
     font-size: 350%;
     color: #870B22;
 }
+
 
 .subtituloEstoque{
     margin: 6px 0 0 4px;
@@ -40,7 +48,10 @@
 }
 
 
+
+
 /*        BARRA DE FILTROS (busca + aviso + botões)        */
+
 
 .barraFiltros{
     display: flex;
@@ -51,11 +62,13 @@
     gap: 16px;
 }
 
+
 .ladoEsquerdoFiltros{
     display: flex;
     align-items: center;
     gap: 16px;
 }
+
 
 .ladoDireitoFiltros{
     display: flex;
@@ -63,12 +76,14 @@
     gap: 6px;
 }
 
+
 /*campo de busca com ícone*/
 .buscaComIcone{
     position: relative;
     display: flex;
     align-items: center;
 }
+
 
 .buscaComIcone svg{
     position: absolute;
@@ -79,11 +94,13 @@
     pointer-events: none;  /*ignora o cursor e nao acontece nada qnd o cursor clica nele*/
 }
 
+
 .buscaComIcone .input{
     width: 280px;
     padding-left: 42px;
     box-sizing: border-box;
 }
+
 
 /*aviso "... abaixo do mínimo"*/
 .avisoMinimo{
@@ -100,16 +117,18 @@
     white-space: nowrap;
 }
 
+
 .avisoMinimo svg{
     width: 15px;
     height: 15px;
 }
 
+
 #selectFiltroInsumo{
     width: 90%;
     box-sizing: border-box;
     border-radius: 20px;
-    font-size: 90%;
+    font-size: 125%;
     font-weight: bold;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
@@ -117,7 +136,12 @@
 
 
 
+
+
+
+
 /*        TABELA DE INSUMOS        */
+
 
 .tabelaEstoque{
     width: 100%;
@@ -129,9 +153,11 @@
     box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
 }
 
+
 .tabelaEstoque thead{
     border-bottom: 2px solid #870B22;
 }
+
 
 .tabelaEstoque th{
     text-align: left;
@@ -141,6 +167,7 @@
     font-weight: 600;
 }
 
+
 .tabelaEstoque td{
     padding: 16px 20px;
     font-size: 14px;
@@ -149,14 +176,18 @@
     border-bottom: 1px solid #870B22;
 }
 
+
 .nomeInsumo{
-    font-weight: 600;
+    font-weight: 900;
     cursor: pointer;
+    font-size: 120px;
 }
+
 
 .loteInsumo{
     color: #999;
 }
+
 
 /*tarjazinha do status OK ou Repor*/
 .statusReposicao{
@@ -167,12 +198,24 @@
     font-weight: 600;
 }
 
+
 .statusReposicao.ok{
     background-color: #FFDCE0;
     color: #870B22;
 }
 
+
 .statusReposicao.repor{
     background-color: #CF0003;
     color: white;
+}
+
+
+.botaoDetalhesInsumo{
+    text-decoration: none;
+}
+
+
+.botaoDetalhesInsumo:hover{
+    text-decoration: underline;
 }

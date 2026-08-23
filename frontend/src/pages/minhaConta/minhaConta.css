@@ -1,12 +1,15 @@
 /*         DIV Q ABRIGA TUDO         */
 
+
 .tudoMinhaConta{
     width: 93%;
     min-height: 170vh; /*min-height ao inves de height fixo*/
     display: flex;
 }
 
+
 /*        TUDO MENOS A SIDEBAR        */
+
 
 .tudoMenosSidebar{
     display: flex;
@@ -19,13 +22,17 @@
 }
 
 
+
+
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
+
 .conteudoMinhaConta{
-    margin-top: 20px;
-    padding-top: 6%;
+    margin-top: -3vh; /*gambiarra pra ajeitar o rombo q estava aqui*/
+    padding-top: 1%; /*acho q isso é inutil*/
     box-sizing: border-box;
 }
+
 
 .tituloMinhaConta{
     margin: 0;
@@ -33,18 +40,21 @@
     color: #870B22;
 }
 
+
 .subtituloMinhaConta{
-    margin: 6px 0 0 4px;
+    margin: 6px 0 0 2px;
     font-size: 150%;
     color: #777;
 }
+
 
 .duasAbas{
     display: flex;
     width: 100%;
     height: 550px;
-    margin-top: 10vh;
+    margin-top: 5vh;
 }
+
 
 .abaEsquerda{
     display: flex;
@@ -59,6 +69,7 @@
     box-shadow:  -3px 3px 15px rgba(0, 0, 0, 0.3);
 }
 
+
 .abaDireita{
     display: flex;
     justify-content: center;
@@ -72,6 +83,7 @@
     box-shadow:  -3px 3px 15px rgba(0, 0, 0, 0.3);
 }
 
+
 .infosAbaEsquerda{
     display: flex;
     flex-direction: column;
@@ -80,6 +92,7 @@
     align-items: center;
     justify-content: space-around;
 }
+
 
 .fotinhaENome{
     width: 40%;
@@ -90,14 +103,26 @@
     flex-direction: column;
 }
 
+
 .iconUser{
-    background-color: #870B22;
+
+
     width: 78%;
     height: 100%;
     display: flex;
     border-radius: 90px;
     margin-bottom: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
+
+
+.iconUser img{
+    width: 140%;
+    margin-top: -3vh;
+}
+
 
 .fotinhaENome h3{
     color: #870B22;
@@ -107,6 +132,7 @@
     margin-top: 2px;
 }
 
+
 .fotinhaENome p{
     color: #616161;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -114,6 +140,7 @@
     margin-bottom: 0%;
     margin-top: 1%;
 }
+
 
 .tarjaPlano{
     background-color: #FFC8D2;
@@ -126,11 +153,13 @@
     align-items: center;
 }
 
+
 .tarjaPlano h2{
     font-weight: 500;
     color: #870B22;
     margin-bottom: 1%;
 }
+
 
 .tarjaPlano p{
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
@@ -138,12 +167,14 @@
     margin-bottom: 4%;
 }
 
+
 .buttonAlterarFoto{
     background-color: rgb(255, 217, 0);
     width: 39%;
     height: 14%;
     display: flex;
 }
+
 
 .infosAbaDireita{
     display: flex;
@@ -154,6 +185,7 @@
     justify-content: space-around;
 }
 
+
 .infosAbaDireita h2{
     font-size: 220%;
     color: #870B22;
@@ -161,25 +193,6 @@
     margin-bottom: 3%;
 }
 
-.doisInputs{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-around;
-    align-items: flex-start;
-}
-
-.input1 Input, .input2 Input{
-    width: 48vh;
-}
-
-.input1{
-    margin-left: -1.5%;
-}
-
-.input2{
-    margin-right: -4%;
-}
 
 .outrosInputs{
     display: flex;
@@ -189,10 +202,19 @@
     align-items: flex-start;
 }
 
+
 .outrosInputs Input{
-    width: 458%;
+    width: 418%;
     margin-bottom: 8%;
+    margin-top: 2%;
 }
+
+
+.labelsInputs{
+    font-size: 130%;
+    font-weight: bold;
+}
+
 
 .botoesDadosPessoais{
     display: flex;
@@ -201,13 +223,21 @@
     align-items: flex-start;
 }
 
+
 .botoesDadosPessoais Button{
     border-radius: 40px;
     margin-right: 2vh;
     margin-bottom: -5%;
 }
 
+
 #buttonAlterarSenha{
     color: rgb(0, 0, 0);
     background-color: #FFC8D2;
+}
+
+
+#buttonAlterarSenha:hover{
+    color: rgb(0, 0, 0);
+    background-color: #eeafba;
 }

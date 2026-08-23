@@ -1,12 +1,15 @@
 /*         DIV Q ABRIGA TUDO         */
 
+
 .tudoApagarInsumo{
     width: 93%;
     min-height: 170vh;
     display: flex;
 }
 
+
 /*        TUDO MENOS A SIDEBAR        */
+
 
 .tudoMenosSidebar{
     display: flex;
@@ -19,12 +22,16 @@
 }
 
 
+
+
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
+
 
 .conteudoApagarInsumo{
     padding-top: 6%;
     box-sizing: border-box;
 }
+
 
 .tituloESetinha{
     display: flex;
@@ -32,18 +39,23 @@
     gap: 16px;
 }
 
+
 .tituloApagarInsumo{
     margin: 0;
     font-size: 350%;
     color: #870B22;
 }
 
+
 .svgSetinha{
     cursor: pointer;
 }
 
 
+
+
 /*        JANELA DE CONFIRMAÇÃO        */
+
 
 .janelaConfirmacao{
     background-color: white;
@@ -60,6 +72,7 @@
     align-items: center;
 }
 
+
 .perguntaConfirmacao{
     margin: 0 0 32px 0;
     font-size: 29px;
@@ -68,10 +81,14 @@
     text-align: center;
 }
 
+
 .botoesConfirmacao{
     display: flex;
+    flex-direction: row;
     gap: 16px;
+    margin-left: 50%;
 }
+
 
 .botoesConfirmacao .button{
     width: auto;
@@ -79,11 +96,13 @@
     border-radius: 30px;
 }
 
+
 .botaoContorno .button{
     background-color: white;
     border: 1px solid #870B22;
     color: #000;
 }
+
 
 .botaoContorno .button:hover{
     background-color: #fdf0ee;
