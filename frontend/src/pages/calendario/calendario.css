@@ -22,17 +22,14 @@
 }
 
 
-
-
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
 
 .conteudoCalendario{
-    margin-top: 20px;
+    margin-top: -24px;
     padding-top: 6%;
     box-sizing: border-box;
 }
-
 
 .tituloCalendario{
     margin: 0;
@@ -40,14 +37,11 @@
     color: #870B22;
 }
 
-
 .subtituloCalendario{
     margin: 6px 0 0 5px;
     font-size: 150%;
     color: #777;
 }
-
-
 
 
 /*        BARRA COM O BOTÃO "+ Novo evento"        */
@@ -59,13 +53,10 @@
     margin-top: 28px;
 }
 
-
 .botaoNovoEvento .button{
     width: auto;
     padding: 12px 22px;
 }
-
-
 
 
 /*        JANELA BRANCA COM O CALENDÁRIO        */
@@ -81,8 +72,6 @@
 }
 
 
-
-
 /*        CABEÇALHO: seta, mês + ano, seta        */
 
 
@@ -93,7 +82,6 @@
     gap: 24px;
     padding: 22px 20px;
 }
-
 
 .setaMes{
     width: 34px;
@@ -108,17 +96,14 @@
     cursor: pointer;
 }
 
-
 .setaMes svg{
     width: 18px;
     height: 18px;
 }
 
-
 .setaMes:hover{
     background-color: #6f091b;
 }
-
 
 .seletorMesAno{
     display: flex;
@@ -126,21 +111,17 @@
     gap: 10px;
 }
 
-
 .nomeMes{
     font-size: 24px;
     font-weight: 700;
     color: #870B22;
 }
 
-
 /*mexendo só na largura do componente Select do ano só nessa tela*/
 #selectAnoCalendario{
     width: 90px;
     background-color: #ffdee4;
 }
-
-
 
 
 /*        LINHA COM OS NOMES DOS DIAS DA SEMANA        */
@@ -152,7 +133,6 @@
     background-color: #870B22;
 }
 
-
 .diaSemana{
     color: white;
     text-align: center;
@@ -160,8 +140,6 @@
     font-weight: 700;
     padding: 12px 0;
 }
-
-
 
 
 /*        GRADE COM OS DIAS DO MÊS        */
@@ -172,7 +150,6 @@
     grid-template-columns: repeat(7, 1fr);
 }
 
-
 .celulaDia{
     min-height: 80px;
     border: 1px solid #f5e5e0;
@@ -180,20 +157,16 @@
     padding: 8px;
 }
 
-
 .conteudoCelula{
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
-
 .numeroDia{
     font-size: 13px;
     color: #555;
 }
-
-
 
 
 /*        TAG DE EVENTO (cor muda de acordo com a categoria)        */
@@ -213,37 +186,30 @@
     cursor: pointer;
 }
 
-
 .tagEvento.producao{
     background-color: #FFC8D2;
     color: #870B22;
 }
-
 
 .tagEvento.entrega{
     background-color: #870B22;
     color: white;
 }
 
-
 .tagEvento.compra{
     background-color: #8d6e63;
     color: white;
 }
-
 
 .tagEvento.pagamento{
     background-color: #4a4a4a;
     color: white;
 }
 
-
 .tagEvento.outro{
     background-color: #e8dcd8;
     color: #5b4a45;
 }
-
-
 
 
 /*        LEGENDA DAS CATEGORIAS        */

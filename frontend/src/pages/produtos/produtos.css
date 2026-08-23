@@ -2,12 +2,14 @@
    ESCOPO ISOLADO DA PÁGINA DE PRODUTOS
    ========================================================= */
 
+
    .pagina-produtos.tudoProdutos {
     width: 100%;
-    min-height: 100vh;
+    min-height: 170vh;
     display: flex;
     background-color: #FDEDE8;
   }
+  
   
   .pagina-produtos .tudoMenosSidebar {
     display: flex;
@@ -16,30 +18,34 @@
     min-width: 0;
     min-height: 100vh;
     box-sizing: border-box;
-    margin-left: 60px; /* Largura da Sidebar fechada */
+    margin-left: -40px; /* Largura da Sidebar fechada */
     padding-top: 10px; /* Compensa a altura da Header fixa */
     background-color: #FDEDE8;
   }
+  
   
   .pagina-produtos .conteudoProdutos {
     padding: 16px 32px 32px 32px;
     margin-top: 0;
     width: 100%;
-    max-width: 1400px;
+    max-width: 1700px;
     margin-left: auto;
     margin-right: auto;
     box-sizing: border-box;
   }
   
+  
   /* =========================================================
      TOPO E FILTROS
      ========================================================= */
+  
   
   .pagina-produtos .topoProdutos {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
   }
+  
   
   .pagina-produtos .tituloProdutos {
     margin: 0;
@@ -48,11 +54,13 @@
     font-weight: bold;
   }
   
+  
   .pagina-produtos .subtituloProdutos {
     margin: 4px 0 0 0;
     font-size: 15px;
     color: #777;
   }
+  
   
   .pagina-produtos .barraFiltroProdutos {
     display: flex;
@@ -62,10 +70,12 @@
     margin-top: 16px;
   }
   
+  
   .pagina-produtos #selectCategoriaProdutos {
     width: 200px;
     border-radius: 20px;
   }
+  
   
   .pagina-produtos .barraFiltroProdutos > .button,
   .pagina-produtos .barraFiltroProdutos .divButton .button {
@@ -73,9 +83,11 @@
     padding: 10px 20px;
   }
   
+  
   /* =========================================================
      GRADE DE CARDS (3 COLUNAS VERTICAIS)
      ========================================================= */
+  
   
   .pagina-produtos .listaProdutos {
     display: grid;
@@ -86,9 +98,10 @@
     box-sizing: border-box;
   }
   
+  
   .pagina-produtos .cardProduto {
     display: flex;
-    flex-direction: column; /* Força Imagem EM CIMA e Conteúdo EMBAIXO */
+    flex-direction: column; /* Imagem EM CIMA e Conteúdo EMBAIXO */
     width: 100%;
     background-color: #ffffff;
     border-radius: 12px;
@@ -97,9 +110,11 @@
     box-sizing: border-box;
   }
   
+  
   /* =========================================================
      CONTEÚDO INTERNO DO CARD
      ========================================================= */
+  
   
   .pagina-produtos .imagemProduto {
     width: 100%;
@@ -113,6 +128,12 @@
     padding: 14px;
   }
   
+  
+  .imagemProduto{
+    margin-top: -12px; /*gambiarra pra consertar linha branca em cima de todos os produtos menos o 1º*/
+  }
+  
+  
   .pagina-produtos .tarjaCategoria {
     background-color: #ffffff;
     color: #333333;
@@ -123,6 +144,7 @@
     display: inline-block;
   }
   
+  
   .pagina-produtos .infoProduto {
     display: flex;
     flex-direction: column;
@@ -132,6 +154,7 @@
     text-align: left;
   }
   
+  
   .pagina-produtos .nomeProduto {
     margin: 0;
     font-size: 18px;
@@ -139,11 +162,13 @@
     font-weight: 600;
   }
   
+  
   .pagina-produtos .qtdIngredientes {
     margin: 4px 0 0 0;
     font-size: 13px;
     color: #888888;
   }
+  
   
   .pagina-produtos .valoresProduto {
     display: flex;
@@ -152,11 +177,13 @@
     width: 100%;
   }
   
+  
   .pagina-produtos .labelValor {
     margin: 0;
     font-size: 12px;
     color: #888888;
   }
+  
   
   .pagina-produtos .numeroValor {
     margin: 4px 0 0 0;
@@ -165,14 +192,17 @@
     color: #333333;
   }
   
+  
   .pagina-produtos .numeroVenda {
     color: #CF0003;
   }
+  
   
   .pagina-produtos .botaoVerReceita {
     margin-top: 18px;
     width: 100%;
   }
+  
   
   .pagina-produtos .botaoVerReceita .button,
   .pagina-produtos .botaoVerReceita button {
@@ -185,7 +215,8 @@
     cursor: pointer;
   }
   
+  
   .pagina-produtos .botaoVerReceita .button:hover,
   .pagina-produtos .botaoVerReceita button:hover {
     background-color: #79594f;
-  }
+  }  

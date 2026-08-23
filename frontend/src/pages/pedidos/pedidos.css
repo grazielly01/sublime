@@ -22,14 +22,11 @@
 }
 
 
-
-
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
 
 .conteudoPedidos{
-    padding-top: 6%;
-    margin-top: 20px;
+    margin-top: -24px;
     box-sizing: border-box;
 }
 
@@ -64,10 +61,8 @@
 #buttonNovoPedido{
     width: auto;
     padding: 8px 24px;
-    margin-left: 93vh;
+    margin-left: 84vh;
 }
-
-
 
 
 /*        ABAS DE FILTRO        */
@@ -99,8 +94,6 @@
     background-color: #870B22;
     color: white;
 }
-
-
 
 
 /*        GRADE DE CARDS DE PEDIDOS        */
@@ -174,8 +167,6 @@
 .botaoDetalhes .button:hover{
     background-color: #ffdcd0;
 }
-
-
 
 
 /*        TARJA DE STATUS (cor muda de acordo com o status)        */
