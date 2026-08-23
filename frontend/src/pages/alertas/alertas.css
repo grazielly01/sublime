@@ -22,13 +22,11 @@
 }
 
 
-
-
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
 
 .conteudoAlertas{
-    margin-top: 20px;
+        margin-top: -24px;
     padding-top: 6%;
     box-sizing: border-box;
 }
@@ -43,11 +41,9 @@
 
 .subtituloAlertas{
     margin: 6px 0 0 4px;
-    font-size: 100%;
+    font-size: 150%;
     color: #777;
 }
-
-
 
 
 /*        ABAS DE FILTRO (Todos, Pedidos, Estoque, Financeiro, Produção)        */
@@ -77,8 +73,6 @@
     background-color: #870B22;
     color: white;
 }
-
-
 
 
 /*        LISTA DE ALERTAS        */

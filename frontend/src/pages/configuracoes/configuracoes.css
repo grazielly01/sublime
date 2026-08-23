@@ -1,17 +1,16 @@
-
 .tudoConfiguracoes {
     display: flex;
-      width: 93%;
+    width: 93%;
     min-height: 170vh;
     background: #FDEDE8;
 }
 
 
 .tudoMenosSidebar {
- display: flex;
+    display: flex;
     flex-direction: column;
     width: 100%;
-    min-height: 100vh;
+    min-height: 170vh;
     box-sizing: border-box;
     margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
     background-color: #FDEDE8;
@@ -29,20 +28,16 @@
 
 .topoConfiguracoes {
     margin-bottom: 34px;
-    margin-top: 20px;
+    margin-top: -24px;
 }
 
 
 .tituloConfiguracoes {
     margin: 0;
-
-
     font-family: "Inter", serif;
     font-size: 40px;
     font-weight: 700;
     line-height: 1;
-
-
     color: #8E1027;
 }
 
@@ -52,8 +47,6 @@
     font-family: "Inter", sans-serif;
     font-size: 16px;
     font-weight: 400;
-
-
     color: #7D6B6B;
 }
 
@@ -70,28 +63,16 @@
 
 .cardConfiguracao {
     background: #FFD7DD;
-
-
     border-radius: 10px;
     border: 1px solid #F1C4CB;
-
-
     min-height: 78px;
-
-
     display: flex;
     flex-direction: column;
     justify-content: center;
-
-
     padding: 0 22px;
-
-
     box-shadow:
         0 3px 5px rgba(0,0,0,.18),
         0 1px 0 rgba(255,255,255,.35) inset;
-
-
     cursor: pointer;
     transition: .25s;
 }
@@ -99,55 +80,38 @@
 
 .cardConfiguracao:hover {
     transform: translateY(-2px);
-
-
-    box-shadow:
-        0 6px 14px rgba(0,0,0,.18);
+    box-shadow: 0 6px 14px rgba(0,0,0,.18);
 }
 
 
 .cardConfiguracao h2 {
     margin: 0;
-
-
     display: flex;
     align-items: center;
     gap: 8px;
-
-
     font-family: "Inter", serif;
     font-size: 18px;
     font-weight: 700;
-
-
     color: #1D1D1D;
 }
 
 
 .cardConfiguracao p {
     margin: 3px 0 0 21px;
-
-
     font-family: "DM Sans", sans-serif;
     font-size: 15px;
     font-weight: 400;
-
-
     color: #6F6F6F;
 }
 
 
 @media (max-width:900px) {
 
-
     .conteudoConfiguracoes{
         padding:30px;
     }
 
-
     .tituloConfiguracoes{
         font-size:42px;
     }
-
-
 }

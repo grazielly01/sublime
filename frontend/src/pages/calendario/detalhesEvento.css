@@ -22,8 +22,6 @@
 }
 
 
-
-
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
 
@@ -50,8 +48,6 @@
 .svgSetinha{
     cursor: pointer;
 }
-
-
 
 
 /*        JANELA BRANCA COM OS DADOS DO EVENTO        */
@@ -92,7 +88,7 @@
 
 
 .campoTitulo{
-    flex: 3;
+    flex: 2.5;
 }
 
 
@@ -107,7 +103,7 @@
 
 
 #inputPrazo{
-    width: 149%;
+    width: 110%;
 }
 
 
@@ -159,8 +155,6 @@
 .inputComIcone .input{
     padding-left: 42px;
 }
-
-
 
 
 /*        BOTÕES DE AÇÃO (Excluir e Editar)        */
