@@ -28,7 +28,7 @@
 
 
 .conteudoAlertas{
-        margin-top: -24px;
+    margin-top: 20px;
     padding-top: 6%;
     box-sizing: border-box;
 }
@@ -43,7 +43,7 @@
 
 .subtituloAlertas{
     margin: 6px 0 0 4px;
-    font-size: 150%;
+    font-size: 100%;
     color: #777;
 }
 

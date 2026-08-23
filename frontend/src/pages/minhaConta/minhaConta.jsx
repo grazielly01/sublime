@@ -27,7 +27,10 @@ function MinhaConta() {
                             <div className="infosAbaEsquerda">
                                 <div className="fotinhaENome">
                                     <div className="iconUser">
-                                        <img src="../img/Icon user.png" alt="user" />
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="103" height="103" viewBox="-05.5 -05 25 25" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" class="lucide lucide-user-round-icon lucide-user-round" color="#ffffff">
+                                            <circle cx="12" cy="8" r="5"/>
+                                            <path d="M20 21a8 8 0 0 0-16 0"/>
+                                        </svg> 
                                     </div>
 
 
@@ -56,30 +59,36 @@ function MinhaConta() {
 
                                 <h2>Dados pessoais</h2>
 
-
-                                <div className="outrosInputs">
-                                    <div>
-                                        <label className="labelsInputs">Nome completo</label>
-                                        <Input type="text" placeholder="Mariana Oliveira Moraes"></Input>
+                                <div className="doisInputs">
+                                    <div className="input1">
+                                        <label>Nome</label>
+                                        <Input type="text" placeholder="Mariana"></Input>
                                     </div>
 
+                                    <div className="input2">
+                                        <label>Sobrenome</label>
+                                        <Input type="text" placeholder="Oliveira Moraes"></Input>
+                                    </div>
 
+                                    </div>
+
+                                    <div className="outrosInputs">    
+                                        <label>Email</label>
 
 
                                     <div>
-                                        <label className="labelsInputs">Email</label>
                                         <Input type="email" placeholder="MarianaOlive077@gmail.com"></Input>
                                     </div>
 
 
                                     <div>
-                                        <label className="labelsInputs">Telefone</label>
+                                        <label>Telefone</label>
                                         <Input type="number" placeholder="(11) 9 8765-4321"></Input>
                                     </div>
 
 
                                     <div>
-                                        <label className="labelsInputs">Cargo</label>
+                                        <label>Cargo</label>
                                         <Input type="text" placeholder="Gerente"></Input>
                                     </div>
                                 </div>

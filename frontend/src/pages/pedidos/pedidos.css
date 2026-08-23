@@ -28,7 +28,8 @@
 
 
 .conteudoPedidos{
-    margin-top: -24px;
+    padding-top: 6%;
+    margin-top: 20px;
     box-sizing: border-box;
 }
 
@@ -63,7 +64,7 @@
 #buttonNovoPedido{
     width: auto;
     padding: 8px 24px;
-    margin-left: 84vh;
+    margin-left: 93vh;
 }
 
 
