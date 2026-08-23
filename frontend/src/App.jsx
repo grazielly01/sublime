@@ -12,9 +12,16 @@ import MinhaConta from "./pages/minhaConta/minhaConta.jsx";
 import Calendario from "./pages/calendario/calendario.jsx";
 import Sair from "./pages/sair/sair.jsx"; 
 import Dashboard from "./pages/dashboard/dashboard.jsx";
-import FluxoCaixa from "./pages/fluxocaixa/FluxoCaixa.jsx";
 
-<<<<<<< HEAD
+import FluxoCaixa from "./pages/fluxocaixa/FluxoCaixa.jsx";
+import FluxoCaixaRegistrar from "./pages/fluxocaixa/fluxocaixaRegistrar.jsx";
+import FluxoCaixaEntrada from "./pages/fluxocaixa/fluxocaixaEntrada.jsx";
+import FluxoCaixaMovimentacao from "./pages/fluxocaixa/fluxocaixaMovimentacao.jsx";
+import FluxoCaixaDespesa from "./pages/fluxocaixa/fluxocaixadespesa.jsx";
+import FluxoCaixaDetalhes from "./pages/fluxocaixa/fluxocaixaDetalhes.jsx";
+import FluxoCaixaSaida from "./pages/fluxocaixa/fluxocaixaSaida.jsx";
+import FluxoCaixaExcluir1 from "./pages/fluxocaixa/fluxocaixaExcluir1.jsx";
+
 import Configuracoes from "./pages/configuracoes/configuracoes.jsx";
 import EquipeConfig from "./pages/configuracoes/equipeConfig.jsx";
 import DadosConfig from "./pages/configuracoes/dadosConfig.jsx";
@@ -26,12 +33,6 @@ import Producao from "./pages/producao/producao.jsx";
 import RegistrarProducao from "./pages/producao/registrarProducao.jsx";
 import DetalhesOrdem from "./pages/producao/detalhesOrdem.jsx";
 import ExcluirOrdem from "./pages/producao/excluirOrdem.jsx";
-=======
-import Producao from "./pages/Producao/Producao.jsx";
-import RegistrarProducao from "./pages/Producao/registrarProducao.jsx";
-import DetalhesOrdem from "./pages/Producao/detalhesOrdem.jsx";
-import ExcluirOrdem from "./pages/Producao/excluirOrdem.jsx";
->>>>>>> fa05cd96275faf111cafbc30636c02085d57e721
 
 import VisaoGeral from "./pages/visaogeral/visaogeral.jsx";
 import MetaVisaoGeral from "./pages/visaogeral/metavisaogeral.jsx";
@@ -100,9 +101,17 @@ function App() {
          
           
           <Route path="/sair" element={<Sair />} />
-        
           <Route path="/dashboard" element={<Dashboard />} />
+
+        {/*fluxo de caixa */}
           <Route path="/fluxocaixa" element={<FluxoCaixa />} />
+          <Route path="/fluxocaixaregistrar" element={<FluxoCaixaRegistrar />} />
+          <Route path="/fluxocaixaentrada" element={<FluxoCaixaEntrada />} />
+          <Route path="/fluxocaixamovimentacao" element={<FluxoCaixaMovimentacao />} />
+          <Route path="/fluxocaixadespesa" element={<FluxoCaixaDespesa />} />
+          <Route path="/fluxocaixadetalhes" element={<FluxoCaixaDetalhes />} />
+          <Route path="/fluxocaixasaida" element={<FluxoCaixaSaida />} />
+          <Route path="/fluxocaixaexcluir1" element={<FluxoCaixaExcluir1 />} />
 
         {/*visao geral */}
         <Route path="/visaogeral" element={<VisaoGeral />} />

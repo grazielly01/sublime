@@ -1,0 +1,298 @@
+.tudoFluxoCaixaEntrada {
+   display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: #fff5f3;
+}
+
+.tudoMenosSidebar {
+   flex: 1;
+  width: 100%;
+  min-width: 0; /* importante: sem isso, flex items às vezes não encolhem/esticam corretamente */
+  display: flex;
+  flex-direction: column;
+}
+
+.conteudoFluxoCaixaEntrada {
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 34px 24px 50px; /* era 34px 60px 50px — reduzi bastante a lateral */
+}
+
+/* =====================================================
+   TÍTULO COM SETA DE VOLTAR
+===================================================== */
+
+.topoFluxoCaixaEntrada {
+ flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 34px 24px 50px; /* era 34px 60px 50px — reduzi bastante a lateral */
+}
+
+.botaoVoltarEntrada {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: #8e0d24;
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 50%;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.botaoVoltarEntrada:hover {
+  background: #ffe5e8;
+  transform: translateX(-2px);
+}
+
+.botaoVoltarEntrada svg {
+  width: 26px;
+  height: 26px;
+}
+
+.tituloFluxoCaixaEntrada {
+  color: #8e0d24;
+  font: 700 32px "Playfair Display", serif;
+  margin: 0;
+}
+
+/* =====================================================
+   FORMULÁRIO
+===================================================== */
+
+.formFluxoCaixaEntrada {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: #fff9f7;
+  border: 1px solid #efc5c8;
+  border-radius: 14px;
+  padding: 30px;
+  box-shadow: 0 2px 10px rgba(80, 20, 30, 0.06);
+}
+
+/* Linhas do grid */
+.linhaFormEntrada {
+  display: grid;
+  gap: 18px;
+}
+
+.linhaFormEntrada.colunas4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.formFluxoCaixaEntrada label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font: 600 13px "Inter", sans-serif;
+  color: #241416;
+  min-width: 0;
+}
+
+.obrigatorio {
+  color: #9d0926;
+  margin-left: 3px;
+}
+
+.formFluxoCaixaEntrada input,
+.formFluxoCaixaEntrada textarea,
+.formFluxoCaixaEntrada select {
+  font: 400 14px "Inter", sans-serif;
+  padding: 10px 12px;
+  border: 1px solid #efc5c8;
+  border-radius: 8px;
+  background: #fff;
+  color: #241416;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  width: 100%;
+}
+
+.formFluxoCaixaEntrada input::placeholder,
+.formFluxoCaixaEntrada textarea::placeholder {
+  color: #b79aa0;
+}
+
+.formFluxoCaixaEntrada input:focus,
+.formFluxoCaixaEntrada textarea:focus,
+.formFluxoCaixaEntrada select:focus {
+  border-color: #9d0926;
+  box-shadow: 0 0 0 3px rgba(157, 9, 38, 0.12);
+}
+
+.formFluxoCaixaEntrada select {
+  appearance: none;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path d='M1 1l4 4 4-4' stroke='%238e0d24' stroke-width='1.6' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 30px;
+  cursor: pointer;
+}
+
+.formFluxoCaixaEntrada textarea {
+  resize: vertical;
+  min-height: 70px;
+  font-family: "Inter", sans-serif;
+}
+
+/* Wrapper genérico pra inputs com ícone/prefixo */
+.wrapperInput {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.wrapperInput input {
+  width: 100%;
+}
+
+/* Campo valor com prefixo R$ centralizado */
+.campoValor .wrapperInput input {
+  padding-left: 34px;
+}
+
+.prefixoValor {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font: 400 14px "Inter", sans-serif;
+  color: #8b656b;
+  pointer-events: none;
+}
+
+/* Campo data com ícone centralizado */
+.campoData .wrapperInput input[type="date"] {
+  padding-left: 34px;
+}
+
+.campoData .wrapperInput svg {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  color: #8e0d24;
+  pointer-events: none;
+}
+
+/* =====================================================
+   ÁREA DE UPLOAD
+===================================================== */
+
+.areaUpload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1.5px dashed #efb4bd;
+  border-radius: 10px;
+  background: #ffe9ec;
+  padding: 26px 16px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  text-align: center;
+}
+
+.areaUpload:hover {
+  background: #ffdde2;
+  border-color: #9d0926;
+}
+
+.areaUpload svg {
+  width: 22px;
+  height: 22px;
+  color: #6a1522;
+  margin-bottom: 4px;
+}
+
+.areaUpload span {
+  font: 400 13px "Inter", sans-serif;
+  color: #6a4a4f;
+}
+
+.areaUpload input[type="file"] {
+  display: none;
+}
+
+.nomeArquivo {
+  margin-top: 8px;
+  font: 500 12px "Inter", sans-serif;
+  color: #21813a;
+}
+
+/* =====================================================
+   AÇÕES
+===================================================== */
+
+.acoesFluxoCaixaEntrada {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.botaoCancelar {
+  background: #fff9f7;
+  color: #9d0926;
+  border: 1px solid #9d0926;
+  border-radius: 8px;
+  padding: 7px 20px;
+  font: 600 13px "Inter", sans-serif;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.botaoCancelar:hover {
+  background: #ffe5e8;
+}
+
+.botaoRegistrar {
+  background: #9d0926;
+  color: #fff;
+  border: 1px solid #9d0926;
+  border-radius: 8px;
+  padding: 7px 20px;
+  font: 600 13px "Inter", sans-serif;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.botaoRegistrar:hover {
+  background: #80071f;
+}
+
+/* =====================================================
+   RESPONSIVIDADE
+===================================================== */
+
+@media (max-width: 900px) {
+  .linhaFormEntrada.colunas4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .conteudoFluxoCaixaEntrada {
+    padding: 24px 20px 40px;
+  }
+
+  .linhaFormEntrada.colunas4 {
+    grid-template-columns: 1fr;
+  }
+
+  .tituloFluxoCaixaEntrada {
+    font-size: 24px;
+  }
+}

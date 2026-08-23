@@ -1,0 +1,227 @@
+.tudoFluxoCaixaMovimentacao {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: #fff5f3;
+}
+
+.tudoMenosSidebar {
+  flex: 1;
+  width: 100%;
+  min-width: 0; /* importante: sem isso, flex items às vezes não encolhem/esticam corretamente */
+  display: flex;
+  flex-direction: column;
+}
+
+.conteudoFluxoCaixaMovimentacao {
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 34px 24px 50px; /* era 34px 60px 50px — reduzi bastante a lateral */
+}
+/* =====================================================
+   TÍTULO COM SETA DE VOLTAR
+===================================================== */
+
+.topoFluxoCaixaMovimentacao {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 25px;
+}
+
+.botaoVoltarMovimentacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: #8e0d24;
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 50%;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.botaoVoltarMovimentacao:hover {
+  background: #ffe5e8;
+  transform: translateX(-2px);
+}
+
+.botaoVoltarMovimentacao svg {
+  width: 26px;
+  height: 26px;
+}
+
+.tituloFluxoCaixaMovimentacao {
+  color: #8e0d24;
+  font: 700 32px "Playfair Display", serif;
+  margin: 0;
+}
+
+/* =====================================================
+   CARD DA LISTA
+===================================================== */
+
+.listaCompletaMovimentacoes {
+  background: #fff9f7;
+  border: 1px solid #efc5c8;
+  border-radius: 14px;
+  padding: 22px 40px 10px;
+  box-shadow: 0 2px 10px rgba(80, 20, 30, 0.06);
+  width: 100%;
+  box-sizing: border-box;
+}
+.grupoMovimentacoes {
+  margin-bottom: 6px;
+}
+
+.cabecalhoGrupo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 10px 0;
+  text-align: left;
+}
+
+.cabecalhoGrupo h2 {
+  font: 700 19px "Playfair Display", serif;
+  color: #241416;
+  margin: 0;
+}
+
+.cabecalhoGrupo svg {
+  width: 16px;
+  height: 16px;
+  color: #6a4a4f;
+  transition: transform 0.2s ease;
+}
+
+.cabecalhoGrupo.fechado svg {
+  transform: rotate(180deg);
+}
+
+.itensGrupo {
+  display: flex;
+  flex-direction: column;
+}
+
+/* =====================================================
+   LINHA DE MOVIMENTAÇÃO
+===================================================== */
+
+.movimentacao {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 4px;
+  border-top: 1px solid #f1dddd;
+  transition: background 0.15s ease;
+}
+
+.grupoMovimentacoes:first-child .itensGrupo .movimentacao:first-child {
+  border-top: none;
+}
+
+.movimentacao:hover {
+  background: #fff3f0;
+}
+
+.infoMovimentacaoCompleta {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.iconeMovimentacaoCompleta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.iconeMovimentacaoCompleta svg {
+  width: 15px;
+  height: 15px;
+  color: #fff;
+}
+
+.iconeEntrada {
+  background: #3fa451;
+}
+
+.iconeSaida {
+  background: #c1122c;
+}
+
+.textoMovimentacao {
+  min-width: 0;
+}
+
+.textoMovimentacao strong {
+  display: block;
+  font: 600 14.5px "Inter", sans-serif;
+  color: #241416;
+  margin-bottom: 3px;
+}
+
+.metaMovimentacao {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font: 400 12px "Inter", sans-serif;
+  color: #8b656b;
+}
+
+.metaMovimentacao .separador {
+  color: #d9bcc0;
+}
+
+.tagTipo {
+  font-weight: 500;
+}
+
+.valorMovimentacaoCompleta {
+  white-space: nowrap;
+  font: 700 15px "Inter", sans-serif;
+  flex-shrink: 0;
+}
+
+.valorMovimentacaoCompleta.entrada {
+  color: #9d0926;
+}
+
+.valorMovimentacaoCompleta.saida {
+  color: #1c1416;
+}
+
+/* =====================================================
+   RESPONSIVIDADE
+===================================================== */
+
+@media (max-width: 700px) {
+  .conteudoFluxoCaixaMovimentacao {
+    padding: 24px 20px 40px;
+  }
+
+  .metaMovimentacao {
+    display: none;
+  }
+
+  .tituloFluxoCaixaMovimentacao {
+    font-size: 24px;
+  }
+}

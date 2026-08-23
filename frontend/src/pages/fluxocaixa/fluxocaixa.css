@@ -1,5 +1,3 @@
-
-
 .tudoFluxoCaixa {
   display: flex;
   min-height: 100vh;
@@ -16,9 +14,9 @@
 .conteudoFluxoCaixa {
   flex: 1;
   width: 100%;
-  max-width: 1180px;
+  max-width: 1440px;
   margin: 0 auto;
-  padding: 26px 48px 60px;
+  padding: 26px 64px 60px;
   box-sizing: border-box;
 }
 
@@ -31,13 +29,43 @@
   margin-bottom: 20px;
 }
 
+.tituloComVoltar {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.botaoVoltar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #efbfc4;
+  border-radius: 50%;
+  background: #fff9f7;
+  color: #8E1027;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
+}
+
+.botaoVoltar:hover {
+  background: #ffe3e6;
+}
+
+.botaoVoltar svg {
+  width: 18px;
+  height: 18px;
+}
+
 .tituloFluxoCaixa {
  margin: 0;
 
     font-family: "Inter", serif;
     font-size: 37px;
     font-weight: 700;
-    line-height: 2;
+    line-height: 1.3;
 
     color: #8E1027;
 
@@ -46,7 +74,7 @@
 .subtituloFluxoCaixa {
   margin: 3px 0 0;
   color: #8b656b;
-  font: 400 11px "Inter", sans-serif;
+  font: 400 14px "Inter", sans-serif;
 }
 
 
@@ -77,13 +105,13 @@
 
 .labelFluxo {
   color: #76545a;
-  font: 600 8px "Inter", sans-serif;
+  font: 600 12px "Inter", sans-serif;
   margin-bottom: 4px;
 }
 
 .valorFluxo {
   color: #241416;
-  font: 700 15px "Playfair Display", serif;
+  font: 700 20px "Playfair Display", serif;
 }
 
 .cardSaldoFinal {
@@ -131,7 +159,7 @@
 .cabecalhoCardFluxo h2 {
   margin: 0;
   color: #241416;
-  font: 700 11px "Playfair Display", serif;
+  font: 700 16px "Playfair Display", serif;
 }
 
 
@@ -142,7 +170,7 @@
 .legendaGrafico {
   display: flex;
   gap: 10px;
-  font: 500 8px "Inter", sans-serif;
+  font: 500 12px "Inter", sans-serif;
   color: #665054;
 }
 
@@ -167,6 +195,50 @@
   background: #9d0926;
 }
 
+/* =====================================================
+   AÇÕES DO GRÁFICO (BOTÕES + LEGENDA)
+===================================================== */
+
+.acoesGrafico {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.botoesFluxo {
+  display: flex;
+  gap: 8px;
+}
+
+.botaoSaida,
+.botaoEntrada {
+  border-radius: 999px;
+  padding: 6px 16px;
+  font: 600 12px "Inter", sans-serif;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.botaoSaida {
+  background: #fff9f7;
+  border: 1px solid #9d0926;
+  color: #9d0926;
+}
+
+.botaoSaida:hover {
+  background: #ffe9eb;
+}
+
+.botaoEntrada {
+  background: #9d0926;
+  border: 1px solid #9d0926;
+  color: #fff;
+}
+
+.botaoEntrada:hover {
+  background: #7f081e;
+}
 
 /* =====================================================
    GRÁFICO DE BARRAS
@@ -191,7 +263,7 @@
   justify-content: space-between;
 
   color: #ad9297;
-  font: 400 7px "Inter", sans-serif;
+  font: 400 11px "Inter", sans-serif;
 }
 
 .areaBarras {
@@ -262,7 +334,7 @@
 .grupoBarras > span {
   margin-top: 5px;
   color: #9a7b81;
-  font: 400 7px "Inter", sans-serif;
+  font: 400 11px "Inter", sans-serif;
 }
 
 
@@ -301,7 +373,7 @@
   justify-content: space-between;
 
   color: #ad9297;
-  font: 400 7px "Inter", sans-serif;
+  font: 400 11px "Inter", sans-serif;
 }
 
 .svgLinha {
@@ -328,7 +400,7 @@
   justify-content: space-between;
 
   color: #9a7b81;
-  font: 400 7px "Inter", sans-serif;
+  font: 400 11px "Inter", sans-serif;
 }
 
 
@@ -356,8 +428,8 @@
   background: #9d0926;
   color: white;
   border-radius: 999px;
-  padding: 4px 10px;
-  font: 600 7px "Inter", sans-serif;
+  padding: 5px 14px;
+  font: 600 11px "Inter", sans-serif;
   cursor: pointer;
 }
 
@@ -371,7 +443,7 @@
 }
 
 .movimentacao {
-  min-height: 32px;
+  min-height: 40px;
   padding: 6px 12px;
   box-sizing: border-box;
 
@@ -396,7 +468,7 @@
 
 .infoMovimentacao strong {
   color: #392326;
-  font: 500 8px "Inter", sans-serif;
+  font: 500 13px "Inter", sans-serif;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -404,8 +476,8 @@
 
 .iconeMovimentacao,
 .iconeDespesa {
-  width: 13px;
-  height: 13px;
+  width: 18px;
+  height: 18px;
   flex-shrink: 0;
 
   border-radius: 50%;
@@ -415,7 +487,7 @@
   justify-content: center;
 
   color: white;
-  font: 700 9px "Inter", sans-serif;
+  font: 700 12px "Inter", sans-serif;
 }
 
 .entradaIcone {
@@ -430,7 +502,7 @@
 .valorEntrada,
 .valorSaida {
   white-space: nowrap;
-  font: 700 8px "Inter", sans-serif;
+  font: 700 13px "Inter", sans-serif;
 }
 
 .valorEntrada {
@@ -465,19 +537,19 @@
 
 .miniCard span {
   color: #79545b;
-  font: 500 7px "Inter", sans-serif;
+  font: 500 12px "Inter", sans-serif;
 }
 
 .miniCard strong {
   margin-top: 2px;
   color: #241416;
-  font: 700 15px "Playfair Display", serif;
+  font: 700 20px "Playfair Display", serif;
 }
 
 .miniCard small {
   margin-top: 2px;
   color: #329047;
-  font: 500 6px "Inter", sans-serif;
+  font: 500 11px "Inter", sans-serif;
 }
 
 
@@ -540,13 +612,13 @@
 
 .centroPizza strong {
   color: #3c272a;
-  font: 700 8px "Inter", sans-serif;
+  font: 700 13px "Inter", sans-serif;
 }
 
 .centroPizza span {
   margin-top: 2px;
   color: #8b6b71;
-  font: 400 6px "Inter", sans-serif;
+  font: 400 11px "Inter", sans-serif;
 }
 
 .legendaPizza {
@@ -557,7 +629,7 @@
   gap: 4px;
 
   color: #675156;
-  font: 500 7px "Inter", sans-serif;
+  font: 500 12px "Inter", sans-serif;
 }
 
 .legendaPizza div {
@@ -591,13 +663,13 @@
 
 .tabelaDespesa h3 {
   margin: 0 0 5px;
-  padding: 5px 7px;
+  padding: 6px 9px;
 
   border-radius: 5px;
   background: #9d0926;
   color: white;
 
-  font: 700 8px "Inter", sans-serif;
+  font: 700 13px "Inter", sans-serif;
 }
 
 .tabelaDespesa:last-child h3 {
@@ -610,11 +682,11 @@
   justify-content: space-between;
   gap: 10px;
 
-  padding: 4px 7px;
+  padding: 5px 9px;
   border-bottom: 1px solid #f0dfe0;
 
   color: #4a3438;
-  font: 400 7px "Inter", sans-serif;
+  font: 400 12px "Inter", sans-serif;
 }
 
 .linhaDespesa strong {
@@ -624,7 +696,7 @@
 
 .totalDespesa {
   margin-top: 2px;
-  padding: 5px 7px;
+  padding: 6px 9px;
 
   display: flex;
   justify-content: space-between;
@@ -633,7 +705,7 @@
   color: white;
   border-radius: 3px;
 
-  font: 700 7px "Inter", sans-serif;
+  font: 700 12px "Inter", sans-serif;
 }
 
 .tabelaDespesa:last-child .totalDespesa {
@@ -649,7 +721,7 @@
 @media (max-width: 1000px) {
 
   .conteudoFluxoCaixa {
-    padding: 24px 30px 50px;
+    padding: 24px 36px 50px;
   }
 
   .resumoFluxo {

@@ -1,0 +1,278 @@
+.tudoFluxoCaixaDetalhes {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: #fff5f3;
+}
+
+.tudoMenosSidebar {
+  flex: 1;
+  width: 100%;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.conteudoFluxoCaixaDetalhes {
+  flex: 1;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 34px 24px 50px;
+}
+
+/* =====================================================
+   TÍTULO COM SETA DE VOLTAR
+===================================================== */
+
+.topoFluxoCaixaDetalhes {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 25px;
+}
+
+.botaoVoltarDetalhes {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border: none;
+  background: transparent;
+  color: #8e0d24;
+  cursor: pointer;
+  flex-shrink: 0;
+  border-radius: 50%;
+  transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.botaoVoltarDetalhes:hover {
+  background: #ffe5e8;
+  transform: translateX(-2px);
+}
+
+.botaoVoltarDetalhes svg {
+  width: 26px;
+  height: 26px;
+}
+
+.tituloFluxoCaixaDetalhes {
+  color: #8e0d24;
+  font: 700 32px "Playfair Display", serif;
+  margin: 0;
+}
+
+/* =====================================================
+   CARD DE DETALHES
+===================================================== */
+
+.detalhesMovimentacao {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background: #fff9f7;
+  border: 1px solid #efc5c8;
+  border-radius: 14px;
+  padding: 30px 40px;
+  box-sizing: border-box;
+  width: 100%;
+  box-shadow: 0 2px 10px rgba(80, 20, 30, 0.06);
+}
+
+/* Linhas do grid */
+.linhaDetalhes {
+  display: grid;
+  gap: 18px;
+}
+
+.linhaDetalhes.colunas4 {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.detalhesMovimentacao label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font: 600 13px "Inter", sans-serif;
+  color: #241416;
+  min-width: 0;
+}
+
+.detalhesMovimentacao input,
+.detalhesMovimentacao textarea {
+  font: 400 14px "Inter", sans-serif;
+  padding: 10px 12px;
+  border: 1px solid #efc5c8;
+  border-radius: 8px;
+  background: #fff;
+  color: #241416;
+  outline: none;
+  box-sizing: border-box;
+  width: 100%;
+}
+
+.detalhesMovimentacao input:read-only,
+.detalhesMovimentacao textarea:read-only {
+  cursor: default;
+}
+
+.detalhesMovimentacao textarea {
+  resize: vertical;
+  min-height: 70px;
+  font-family: "Inter", sans-serif;
+}
+
+/* Wrapper genérico pra inputs com ícone/prefixo */
+.wrapperInput {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.wrapperInput input {
+  width: 100%;
+}
+
+/* Campo valor com prefixo R$ centralizado */
+.campoValor .wrapperInput input {
+  padding-left: 34px;
+}
+
+.prefixoValor {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font: 400 14px "Inter", sans-serif;
+  color: #8b656b;
+  pointer-events: none;
+}
+
+/* Campo data com ícone centralizado */
+.campoData .wrapperInput input {
+  padding-left: 34px;
+}
+
+.campoData .wrapperInput svg {
+  position: absolute;
+  left: 11px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 15px;
+  height: 15px;
+  color: #8e0d24;
+  pointer-events: none;
+}
+
+
+/* =====================================================
+   ÁREA DE UPLOAD 
+===================================================== */
+
+.areaUpload {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border: 1.5px dashed #efb4bd;
+  border-radius: 10px;
+  background: #ffe9ec;
+  padding: 26px 16px;
+  cursor: pointer;
+  transition: background 0.15s ease, border-color 0.15s ease;
+  text-align: center;
+}
+
+.areaUpload:hover {
+  background: #ffdde2;
+  border-color: #9d0926;
+}
+
+.areaUpload svg {
+  width: 22px;
+  height: 22px;
+  color: #6a1522;
+  margin-bottom: 4px;
+}
+
+.areaUpload span {
+  font: 400 13px "Inter", sans-serif;
+  color: #6a4a4f;
+}
+
+.areaUpload input[type="file"] {
+  display: none;
+}
+
+.nomeArquivo {
+  margin-top: 8px;
+  font: 500 12px "Inter", sans-serif;
+  color: #21813a;
+}
+
+/* =====================================================
+   AÇÕES
+===================================================== */
+
+.acoesDetalhes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.botaoExcluir {
+  background: #fff9f7;
+  color: #e0d4d7;
+  border: 1px solid #b66676;
+  border-radius: 8px;
+  padding: 9px 22px;
+  font: 600 13px "Inter", sans-serif;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.botaoExcluir:hover {
+  background: #ffe5e8;
+}
+
+.botaoEditar {
+  background: #9d0926;
+  color: #fff;
+  border: 1px solid #9d0926;
+  border-radius: 8px;
+  padding: 9px 22px;
+  font: 600 13px "Inter", sans-serif;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.botaoEditar:hover {
+  background: #80071f;
+}
+
+/* =====================================================
+   RESPONSIVIDADE
+===================================================== */
+
+@media (max-width: 900px) {
+  .linhaDetalhes.colunas4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .conteudoFluxoCaixaDetalhes {
+    padding: 24px 16px 40px;
+  }
+
+  .linhaDetalhes.colunas4 {
+    grid-template-columns: 1fr;
+  }
+
+  .tituloFluxoCaixaDetalhes {
+    font-size: 24px;
+  }
+}
