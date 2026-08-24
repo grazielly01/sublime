@@ -1,12 +1,15 @@
 /*         DIV Q ABRIGA TUDO         */
 
+
 .tudoApagarInsumo{
     width: 93%;
     min-height: 170vh;
     display: flex;
 }
 
+
 /*        TUDO MENOS A SIDEBAR        */
+
 
 .tudoMenosSidebar{
     display: flex;
@@ -20,6 +23,7 @@
 
 
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
+
 
 .conteudoApagarInsumo{
     padding-top: 6%;
@@ -44,6 +48,7 @@
 
 
 /*        JANELA DE CONFIRMAÇÃO        */
+
 
 .janelaConfirmacao{
     background-color: white;
@@ -70,7 +75,9 @@
 
 .botoesConfirmacao{
     display: flex;
+    flex-direction: row;
     gap: 16px;
+    margin-left: 50%;
 }
 
 .botoesConfirmacao .button{

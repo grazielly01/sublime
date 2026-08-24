@@ -1,94 +1,86 @@
 .tudoSair {
   display: flex;
   min-height: 100vh;
-    width: 93%;
+  width: 93%;
   background: #FDEDE8;
 }
+
 
 .tudoMenosSidebar {
   flex: 1;
   display: flex;
   flex-direction: column;
-    margin-left: 68px;
+  margin-left: 68px;
 }
+
 
 .conteudoSair {
   flex: 1;
   display: flex;
   justify-content: center;
   align-items: center;
-
   padding: 3px;
-
 }
 
+
 .caixaConfirmacao {
-  
+
   width: 100%;
   max-width: 460px;
-
   background: #ffdfe3;
   border: 1px solid #efc5c8;
   border-radius: 12px;
-
+  margin-top: -13%;
   padding: 50px 40px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
   box-shadow:
     0 2px 5px rgba(0,0,0,.12),
     0 8px 18px rgba(82,33,33,.06);
 }
 
+
 .textoConfirmacao {
   width: 100%;
   max-width: 260px;
-
   text-align: center;
-
   font-family: "DM Sans", sans-serif;
   font-size: 20px;
   font-weight: 700;
   line-height: 1.2;
-
   color: #8e0d24;
-
   margin: 0 0 28px;
 }
 
+
 .botoesConfirmacao {
   width: 100%;
-
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 12px;
 }
 
+
 /* botão branco (Sair) */
 .botaosair button:first-child {
   width: 210px;
   height: 40px;
-
-   margin-bottom: 16px;
+  margin-bottom: 16px;
   border: none;
   border-radius: 999px;
-
   background: #faf7f7;
   color: #202020;
-
   font-family: "DM Sans", sans-serif;
   font-size: 16px;
   font-weight: 700;
-
   box-shadow:
     0 2px 5px rgba(0,0,0,.15),
     inset 0 -2px 0 rgba(0,0,0,.08);
-
   transition: .2s;
 }
+
 
 .botaosair button:first-child:hover {
   transform: translateY(-1px);
@@ -97,32 +89,30 @@
     inset 0 -2px 0 rgba(0,0,0,.08);
 }
 
+
 /* botão vinho (Cancelar) */
 .botaocancelar button:last-child {
   width: 210px;
   height: 40px;
-
   border: none;
   border-radius: 999px;
-
   background: #980d27;
   color: white;
-
   font-family: "DM Sans", sans-serif;
   font-size: 16px;
   font-weight: 700;
-
   box-shadow:
     0 3px 6px rgba(0,0,0,.18),
     inset 0 -2px 0 rgba(0,0,0,.12);
-
   transition: .2s;
 }
+
 
 .botoesConfirmacao button:last-child:hover {
   background: #860b22;
   transform: translateY(-1px);
 }
+
 
 @media (max-width: 768px) {
   .caixaConfirmacao {
@@ -130,9 +120,11 @@
     padding: 30px;
   }
 
+
   .textoConfirmacao {
     font-size: 18px;
   }
+
 
   .botoesConfirmacao button {
     width: 100%;

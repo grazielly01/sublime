@@ -1,12 +1,15 @@
 /*         DIV Q ABRIGA TUDO         */
 
+
 .tudoCalendario{
     width: 93%;
     min-height: 170vh;
     display: flex;
 }
 
+
 /*        TUDO MENOS A SIDEBAR        */
+
 
 .tudoMenosSidebar{
     display: flex;
@@ -21,8 +24,9 @@
 
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
+
 .conteudoCalendario{
-    margin-top: 20px;
+    margin-top: -24px;
     padding-top: 6%;
     box-sizing: border-box;
 }
@@ -42,6 +46,7 @@
 
 /*        BARRA COM O BOTÃO "+ Novo evento"        */
 
+
 .barraNovoEvento{
     display: flex;
     justify-content: flex-end; /*joga o botão pro canto direito*/
@@ -56,6 +61,7 @@
 
 /*        JANELA BRANCA COM O CALENDÁRIO        */
 
+
 .janelaCalendario{
     background-color: white;
     border: 1px solid #870B22;
@@ -67,6 +73,7 @@
 
 
 /*        CABEÇALHO: seta, mês + ano, seta        */
+
 
 .cabecalhoCalendario{
     display: flex;
@@ -119,6 +126,7 @@
 
 /*        LINHA COM OS NOMES DOS DIAS DA SEMANA        */
 
+
 .linhaDiasSemana{
     display: grid;
     grid-template-columns: repeat(7, 1fr); /*7 colunas, uma pra cada dia da semana*/
@@ -135,6 +143,7 @@
 
 
 /*        GRADE COM OS DIAS DO MÊS        */
+
 
 .gradeCalendario{
     display: grid;
@@ -161,6 +170,7 @@
 
 
 /*        TAG DE EVENTO (cor muda de acordo com a categoria)        */
+
 
 .tagEvento{
     display: inline-block;
@@ -203,6 +213,7 @@
 
 
 /*        LEGENDA DAS CATEGORIAS        */
+
 
 .legendaCategorias{
     display: flex;

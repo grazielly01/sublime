@@ -2,190 +2,221 @@
    ESCOPO ISOLADO DA PÁGINA DE PRODUTOS
    ========================================================= */
 
-.pagina-produtos.tudoProdutos {
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  background-color: #FDEDE8;
-}
 
-.pagina-produtos .tudoMenosSidebar {
-  display: flex;
-  flex-direction: column;
-  flex: 1;
-  min-width: 0;
-  min-height: 100vh;
-  box-sizing: border-box;
-  margin-left: 60px; /* Largura da Sidebar fechada */
-  padding-top: 10px; /* Compensa a altura da Header fixa */
-  background-color: #FDEDE8;
-}
-
-.pagina-produtos .conteudoProdutos {
-  padding: 16px 32px 32px 32px;
-  margin-top: 0;
-  width: 100%;
-  max-width: 1400px;
-  margin-left: auto;
-  margin-right: auto;
-  box-sizing: border-box;
-}
-
-/* =========================================================
-   TOPO E FILTROS
-   ========================================================= */
-
-.pagina-produtos .topoProdutos {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-}
-
-.pagina-produtos .tituloProdutos {
-  margin: 0;
-  font-size: 36px;
-  color: #870B22;
-  font-weight: bold;
-}
-
-.pagina-produtos .subtituloProdutos {
-  margin: 4px 0 0 0;
-  font-size: 15px;
-  color: #777;
-}
-
-.pagina-produtos .barraFiltroProdutos {
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  gap: 14px;
-  margin-top: 16px;
-}
-
-.pagina-produtos #selectCategoriaProdutos {
-  width: 200px;
-  border-radius: 20px;
-}
-
-.pagina-produtos .barraFiltroProdutos > .button,
-.pagina-produtos .barraFiltroProdutos .divButton .button {
-  width: auto;
-  padding: 10px 20px;
-}
-
-/* =========================================================
-   GRADE DE CARDS (3 COLUNAS VERTICAIS)
-   ========================================================= */
-
-.pagina-produtos .listaProdutos {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 colunas */
-  gap: 24px;
-  margin-top: 20px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.pagina-produtos .cardProduto {
-  display: flex;
-  flex-direction: column; /* Força Imagem EM CIMA e Conteúdo EMBAIXO */
-  width: 100%;
-  background-color: #ffffff;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.06);
-  box-sizing: border-box;
-}
-
-/* =========================================================
-   CONTEÚDO INTERNO DO CARD
-   ========================================================= */
-
-.pagina-produtos .imagemProduto {
-  width: 100%;
-  height: 180px;
-  min-height: 180px;
-  background-color: #FFC8D2;
-  background-size: cover;
-  background-position: center;
-  position: relative;
-  box-sizing: border-box;
-  padding: 14px;
-}
-
-.pagina-produtos .tarjaCategoria {
-  background-color: #ffffff;
-  color: #333333;
-  font-size: 12px;
-  font-weight: 600;
-  padding: 5px 12px;
-  border-radius: 20px;
-  display: inline-block;
-}
-
-.pagina-produtos .infoProduto {
-  display: flex;
-  flex-direction: column;
-  padding: 18px 20px 20px 20px;
-  box-sizing: border-box;
-  width: 100%;
-  text-align: left;
-}
-
-.pagina-produtos .nomeProduto {
-  margin: 0;
-  font-size: 18px;
-  color: #222222;
-  font-weight: 600;
-}
-
-.pagina-produtos .qtdIngredientes {
-  margin: 4px 0 0 0;
-  font-size: 13px;
-  color: #888888;
-}
-
-.pagina-produtos .valoresProduto {
-  display: flex;
-  justify-content: space-between;
-  margin-top: 16px;
-  width: 100%;
-}
-
-.pagina-produtos .labelValor {
-  margin: 0;
-  font-size: 12px;
-  color: #888888;
-}
-
-.pagina-produtos .numeroValor {
-  margin: 4px 0 0 0;
-  font-size: 15px;
-  font-weight: 600;
-  color: #333333;
-}
-
-.pagina-produtos .numeroVenda {
-  color: #CF0003;
-}
-
-.pagina-produtos .botaoVerReceita {
-  margin-top: 18px;
-  width: 100%;
-}
-
-.pagina-produtos .botaoVerReceita .button,
-.pagina-produtos .botaoVerReceita button {
-  width: 100%;
-  background-color: #8d6e63;
-  color: #ffffff;
-  border: none;
-  padding: 10px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.pagina-produtos .botaoVerReceita .button:hover,
-.pagina-produtos .botaoVerReceita button:hover {
-  background-color: #79594f;
-}
+   .pagina-produtos.tudoProdutos {
+    width: 100%;
+    min-height: 170vh;
+    display: flex;
+    background-color: #FDEDE8;
+  }
+  
+  
+  .pagina-produtos .tudoMenosSidebar {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    min-width: 0;
+    min-height: 100vh;
+    box-sizing: border-box;
+    margin-left: -40px; /* Largura da Sidebar fechada */
+    padding-top: 10px; /* Compensa a altura da Header fixa */
+    background-color: #FDEDE8;
+  }
+  
+  
+  .pagina-produtos .conteudoProdutos {
+    padding: 16px 32px 32px 32px;
+    margin-top: 0;
+    width: 100%;
+    max-width: 1700px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+  }
+  
+  
+  /* =========================================================
+     TOPO E FILTROS
+     ========================================================= */
+  
+  
+  .pagina-produtos .topoProdutos {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  
+  .pagina-produtos .tituloProdutos {
+    margin: 0;
+    font-size: 36px;
+    color: #870B22;
+    font-weight: bold;
+  }
+  
+  
+  .pagina-produtos .subtituloProdutos {
+    margin: 4px 0 0 0;
+    font-size: 15px;
+    color: #777;
+  }
+  
+  
+  .pagina-produtos .barraFiltroProdutos {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 14px;
+    margin-top: 16px;
+  }
+  
+  
+  .pagina-produtos #selectCategoriaProdutos {
+    width: 200px;
+    border-radius: 20px;
+  }
+  
+  
+  .pagina-produtos .barraFiltroProdutos > .button,
+  .pagina-produtos .barraFiltroProdutos .divButton .button {
+    width: auto;
+    padding: 10px 20px;
+  }
+  
+  
+  /* =========================================================
+     GRADE DE CARDS (3 COLUNAS VERTICAIS)
+     ========================================================= */
+  
+  
+  .pagina-produtos .listaProdutos {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 colunas */
+    gap: 24px;
+    margin-top: 20px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+  
+  
+  .pagina-produtos .cardProduto {
+    display: flex;
+    flex-direction: column; /* Imagem EM CIMA e Conteúdo EMBAIXO */
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.06);
+    box-sizing: border-box;
+  }
+  
+  
+  /* =========================================================
+     CONTEÚDO INTERNO DO CARD
+     ========================================================= */
+  
+  
+  .pagina-produtos .imagemProduto {
+    width: 100%;
+    height: 180px;
+    min-height: 180px;
+    background-color: #FFC8D2;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    box-sizing: border-box;
+    padding: 14px;
+  }
+  
+  
+  .imagemProduto{
+    margin-top: -12px; /*gambiarra pra consertar linha branca em cima de todos os produtos menos o 1º*/
+  }
+  
+  
+  .pagina-produtos .tarjaCategoria {
+    background-color: #ffffff;
+    color: #333333;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 20px;
+    display: inline-block;
+  }
+  
+  
+  .pagina-produtos .infoProduto {
+    display: flex;
+    flex-direction: column;
+    padding: 18px 20px 20px 20px;
+    box-sizing: border-box;
+    width: 100%;
+    text-align: left;
+  }
+  
+  
+  .pagina-produtos .nomeProduto {
+    margin: 0;
+    font-size: 18px;
+    color: #222222;
+    font-weight: 600;
+  }
+  
+  
+  .pagina-produtos .qtdIngredientes {
+    margin: 4px 0 0 0;
+    font-size: 13px;
+    color: #888888;
+  }
+  
+  
+  .pagina-produtos .valoresProduto {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 16px;
+    width: 100%;
+  }
+  
+  
+  .pagina-produtos .labelValor {
+    margin: 0;
+    font-size: 12px;
+    color: #888888;
+  }
+  
+  
+  .pagina-produtos .numeroValor {
+    margin: 4px 0 0 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: #333333;
+  }
+  
+  
+  .pagina-produtos .numeroVenda {
+    color: #CF0003;
+  }
+  
+  
+  .pagina-produtos .botaoVerReceita {
+    margin-top: 18px;
+    width: 100%;
+  }
+  
+  
+  .pagina-produtos .botaoVerReceita .button,
+  .pagina-produtos .botaoVerReceita button {
+    width: 100%;
+    background-color: #8d6e63;
+    color: #ffffff;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+  }
+  
+  
+  .pagina-produtos .botaoVerReceita .button:hover,
+  .pagina-produtos .botaoVerReceita button:hover {
+    background-color: #79594f;
+  }  
