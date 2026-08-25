@@ -23,7 +23,7 @@ function FluxoCaixaDetalhes() {
 
         <main className="conteudoFluxoCaixaDetalhes">
 
-          {/* TÍTULO COM VOLTAR */}
+          {/* TÍTULO COM VOLTAR. APROVADO */}
           <div className="topoFluxoCaixaDetalhes">
             <button
               type="button"
