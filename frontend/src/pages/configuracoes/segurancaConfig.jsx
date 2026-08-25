@@ -41,7 +41,7 @@ function SegurancaConfig() {
 
         <main className="conteudoSegurancaConfig">
 
-          {/* TÍTULO + VOLTAR */}
+          {/* TÍTULO + VOLTAR. APROVANDO */}
           <div className="topoSegurancaConfig">
             <button
               className="botaoVoltarSeguranca"
