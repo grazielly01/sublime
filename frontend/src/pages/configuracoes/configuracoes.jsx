@@ -70,3 +70,4 @@ function Configuracoes() {
 }
 
 export default Configuracoes;
+//aprovando arquivo correto.
