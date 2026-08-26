@@ -9,7 +9,7 @@ function MinhaConta() {
         <div className="tudoMinhaConta">
             <Sidebar paginaAtiva="Minha conta" /> {/*Menu lateral, coloquei "minhaConta" como página ativa para "Minha conta" no menu lateral ficar clarinho*/}
        
-            <div className="tudoMenosSidebar"> {/*Tudo menos o sidebar q ta acima*/}
+            <div className="tudoMenosSidebar"> {/*Tudo menos o sidebar q ta acima* APROVADO/}
 
                 <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
        
