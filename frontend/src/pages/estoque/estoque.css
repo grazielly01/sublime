@@ -1,4 +1,5 @@
-/*         DIV Q ABRIGA TUDO         */
+/*         DIV Q ABRIGA TUDO. APROVADO */
+
 
 .tudoEstoque{
     width: 93%;
@@ -6,7 +7,9 @@
     display: flex;
 }
 
+
 /*        TUDO MENOS A SIDEBAR        */
+
 
 .tudoMenosSidebar{
     display: flex;
@@ -21,8 +24,9 @@
 
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
+
 .conteudoEstoque{
-    margin-top: 20px;
+    margin-top: -22px;
     padding-top: 6%;
     box-sizing: border-box;
 }
@@ -41,6 +45,7 @@
 
 
 /*        BARRA DE FILTROS (busca + aviso + botões)        */
+
 
 .barraFiltros{
     display: flex;
@@ -109,15 +114,14 @@
     width: 90%;
     box-sizing: border-box;
     border-radius: 20px;
-    font-size: 90%;
+    font-size: 125%;
     font-weight: bold;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 
-
-
 /*        TABELA DE INSUMOS        */
+
 
 .tabelaEstoque{
     width: 100%;
@@ -150,8 +154,9 @@
 }
 
 .nomeInsumo{
-    font-weight: 600;
+    font-weight: 900;
     cursor: pointer;
+    font-size: 120px;
 }
 
 .loteInsumo{
@@ -175,4 +180,12 @@
 .statusReposicao.repor{
     background-color: #CF0003;
     color: white;
+}
+
+.botaoDetalhesInsumo{
+    text-decoration: none;
+}
+
+.botaoDetalhesInsumo:hover{
+    text-decoration: underline;
 }

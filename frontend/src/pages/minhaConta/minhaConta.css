@@ -1,4 +1,5 @@
-/*         DIV Q ABRIGA TUDO         */
+/*         DIV Q ABRIGA TUDO. APROVADO         */
+
 
 .tudoMinhaConta{
     width: 93%;
@@ -6,7 +7,9 @@
     display: flex;
 }
 
-/*        TUDO MENOS A SIDEBAR        */
+
+/*        TUDO MENOS A SIDEBAR. APROVADO        */
+
 
 .tudoMenosSidebar{
     display: flex;
@@ -21,9 +24,10 @@
 
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
+
 .conteudoMinhaConta{
-    margin-top: 20px;
-    padding-top: 6%;
+    margin-top: -3vh; /*gambiarra pra ajeitar o rombo q estava aqui*/
+    padding-top: 1%; /*acho q isso é inutil*/
     box-sizing: border-box;
 }
 
@@ -34,7 +38,7 @@
 }
 
 .subtituloMinhaConta{
-    margin: 6px 0 0 4px;
+    margin: 6px 0 0 2px;
     font-size: 150%;
     color: #777;
 }
@@ -43,7 +47,7 @@
     display: flex;
     width: 100%;
     height: 550px;
-    margin-top: 10vh;
+    margin-top: 5vh;
 }
 
 .abaEsquerda{
@@ -91,12 +95,19 @@
 }
 
 .iconUser{
-    background-color: #870B22;
     width: 78%;
     height: 100%;
     display: flex;
     border-radius: 90px;
     margin-bottom: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.iconUser img{
+    width: 140%;
+    margin-top: -3vh;
 }
 
 .fotinhaENome h3{
@@ -161,26 +172,6 @@
     margin-bottom: 3%;
 }
 
-.doisInputs{
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-    justify-content: space-around;
-    align-items: flex-start;
-}
-
-.input1 Input, .input2 Input{
-    width: 48vh;
-}
-
-.input1{
-    margin-left: -1.5%;
-}
-
-.input2{
-    margin-right: -4%;
-}
-
 .outrosInputs{
     display: flex;
     flex-direction: column;
@@ -190,8 +181,14 @@
 }
 
 .outrosInputs Input{
-    width: 458%;
+    width: 418%;
     margin-bottom: 8%;
+    margin-top: 2%;
+}
+
+.labelsInputs{
+    font-size: 130%;
+    font-weight: bold;
 }
 
 .botoesDadosPessoais{
@@ -210,4 +207,9 @@
 #buttonAlterarSenha{
     color: rgb(0, 0, 0);
     background-color: #FFC8D2;
+}
+
+#buttonAlterarSenha:hover{
+    color: rgb(0, 0, 0);
+    background-color: #eeafba;
 }
