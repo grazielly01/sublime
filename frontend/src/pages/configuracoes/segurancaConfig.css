@@ -1,0 +1,480 @@
+/* =========================================================
+   ESTRUTURA PRINCIPAL. APROVANDO
+   ========================================================= */
+
+.tudoSegurancaConfig {
+  display: flex;
+  min-height: 100vh;
+  width: 100%;
+  background: #fff5f3;
+  box-sizing: border-box;
+}
+
+.tudoMenosSidebar {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.conteudoSegurancaConfig {
+  flex: 1;
+  width: 100%;
+  padding: 38px 60px 60px;
+  box-sizing: border-box;
+}
+
+
+/* =========================================================
+   TÍTULO + SETA
+   ========================================================= */
+
+.topoSegurancaConfig {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 14px;
+  width: 100%;
+  margin-bottom: 35px;
+}
+
+.botaoVoltarSeguranca {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 42px;
+  height: 42px;
+
+  padding: 0;
+  border: none;
+  background: transparent;
+
+  color: #7a0c22;
+
+  font-family: Arial, sans-serif;
+  font-size: 40px;
+  font-weight: 300;
+  line-height: 1;
+
+  cursor: pointer;
+
+  transition: transform 0.15s ease;
+}
+
+.botaoVoltarSeguranca:hover {
+  transform: translateX(-4px);
+}
+
+.tituloSegurancaConfig {
+  margin: 0;
+
+  color: #8e0d24;
+
+  font-family: "Playfair Display", Georgia, serif;
+  font-size: 38px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   CARDS
+   ========================================================= */
+
+.secaoSegurancaConfig {
+  width: 100%;
+
+  margin-bottom: 28px;
+
+  background: #fff9f7;
+
+  border: 1px solid #efc5c8;
+  border-radius: 16px;
+
+  padding: 30px 34px;
+
+  box-sizing: border-box;
+
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+}
+
+.secaoSegurancaConfig h2 {
+  margin: 0 0 22px;
+
+  color: #9d0926;
+
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   CONFIGURAÇÃO / 2FA
+   ========================================================= */
+
+.configuracaoLinha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+  gap: 30px;
+}
+
+.textoConfiguracao {
+  flex: 1;
+}
+
+.tituloConfiguracao {
+  display: block;
+
+  color: #241416;
+
+  font-family: "Inter", sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.descricao2FA {
+  margin: 7px 0 0;
+
+  color: #6b5558;
+
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+
+/* =========================================================
+   TOGGLE
+   ========================================================= */
+
+.toggle {
+  position: relative;
+
+  flex-shrink: 0;
+
+  width: 52px;
+  height: 28px;
+
+  padding: 0;
+
+  border: none;
+  border-radius: 50px;
+
+  background: #d8c3c6;
+
+  cursor: pointer;
+
+  transition: background-color 0.2s ease;
+}
+
+.bolinhaToggle {
+  position: absolute;
+
+  top: 4px;
+  left: 4px;
+
+  width: 20px;
+  height: 20px;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+  transition: transform 0.2s ease;
+}
+
+.toggle.ativo {
+  background: #9d0926;
+}
+
+.toggle.ativo .bolinhaToggle {
+  transform: translateX(24px);
+}
+
+
+/* =========================================================
+   CONTROLE DE ACESSO
+   ========================================================= */
+
+.cabecalhoAcesso {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 30px;
+}
+
+.cabecalhoAcesso h2 {
+  margin-bottom: 8px;
+}
+
+.usuariosAtivos {
+  margin: 0;
+
+  color: #6b5558;
+
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+}
+
+
+/* =========================================================
+   BOTÃO VER USUÁRIOS
+   ========================================================= */
+
+.botaoVerUsuarios {
+  flex-shrink: 0;
+
+  padding: 11px 20px;
+
+  background: #ffffff;
+
+  color: #9d0926;
+
+  border: 1px solid #9d0926;
+  border-radius: 9px;
+
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+}
+
+.botaoVerUsuarios:hover {
+  background: #ffe5e8;
+}
+
+
+/* =========================================================
+   LISTA DE USUÁRIOS
+   ========================================================= */
+
+.listaUsuarios {
+  width: 100%;
+
+  margin-top: 25px;
+
+  border-top: 1px solid #efc5c8;
+}
+
+.usuarioLinha {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  width: 100%;
+
+  padding: 14px 4px;
+
+  border-bottom: 1px solid #f0d8da;
+
+  box-sizing: border-box;
+}
+
+.usuarioLinha:last-child {
+  border-bottom: none;
+}
+
+.informacoesUsuario {
+  display: flex;
+  align-items: center;
+
+  gap: 12px;
+
+  min-width: 0;
+}
+
+.informacoesUsuario span {
+  color: #241416;
+
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.avatarUsuario {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  width: 36px;
+  height: 36px;
+
+  border-radius: 50%;
+
+  background: #ffe5e8;
+
+  color: #9d0926;
+
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.toggleUsuario {
+  width: 46px;
+  height: 25px;
+}
+
+.toggleUsuario .bolinhaToggle {
+  width: 17px;
+  height: 17px;
+
+  top: 4px;
+  left: 4px;
+}
+
+.toggleUsuario.ativo .bolinhaToggle {
+  transform: translateX(21px);
+}
+
+
+/* =========================================================
+   BOTÃO SALVAR
+   ========================================================= */
+
+.acoesSeguranca {
+  display: flex;
+  justify-content: flex-end;
+
+  width: 100%;
+
+  margin-top: 10px;
+}
+
+.botaoSalvarSeguranca {
+  padding: 13px 26px;
+
+  background: #9d0926;
+
+  color: #ffffff;
+
+  border: none;
+  border-radius: 10px;
+
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+
+  cursor: pointer;
+
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.08);
+
+  transition: background-color 0.2s ease;
+}
+
+.botaoSalvarSeguranca:hover {
+  background: #80071f;
+}
+
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+  .conteudoSegurancaConfig {
+    padding: 32px 40px 50px;
+  }
+
+  .secaoSegurancaConfig {
+    padding: 28px;
+  }
+}
+
+
+@media (max-width: 700px) {
+
+  .conteudoSegurancaConfig {
+    padding: 25px 20px 40px;
+  }
+
+  .topoSegurancaConfig {
+    margin-bottom: 28px;
+  }
+
+  .tituloSegurancaConfig {
+    font-size: 32px;
+  }
+
+  .botaoVoltarSeguranca {
+    font-size: 34px;
+  }
+
+  .secaoSegurancaConfig {
+    padding: 24px 20px;
+    border-radius: 13px;
+  }
+
+  .configuracaoLinha {
+    align-items: flex-start;
+  }
+
+  .cabecalhoAcesso {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .botaoVerUsuarios {
+    width: 100%;
+  }
+
+  .acoesSeguranca {
+    justify-content: stretch;
+  }
+
+  .botaoSalvarSeguranca {
+    width: 100%;
+  }
+}
+
+
+@media (max-width: 480px) {
+
+  .conteudoSegurancaConfig {
+    padding: 20px 14px 35px;
+  }
+
+  .tituloSegurancaConfig {
+    font-size: 28px;
+  }
+
+  .botaoVoltarSeguranca {
+    width: 34px;
+    font-size: 30px;
+  }
+
+  .secaoSegurancaConfig {
+    padding: 20px 16px;
+  }
+
+  .secaoSegurancaConfig h2 {
+    font-size: 18px;
+  }
+
+  .tituloConfiguracao {
+    font-size: 14px;
+  }
+
+  .descricao2FA {
+    font-size: 13px;
+  }
+
+  .informacoesUsuario span {
+    font-size: 13px;
+  }
+}

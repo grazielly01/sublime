@@ -1,8 +1,10 @@
 import "./fluxocaixa.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
+import { useNavigate } from "react-router-dom";
 
 function FluxoCaixa() {
+  const navigate = useNavigate();
   const movimentos = [
     {
       tipo: "entrada",
@@ -57,6 +59,10 @@ function FluxoCaixa() {
     ["Produção extra", "R$ 300,00"],
   ];
 
+  const voltar = () => {
+    window.history.back();
+  };
+
   return (
     <div className="tudoFluxoCaixa">
       <Sidebar paginaAtiva="Fluxo de caixa" />
@@ -66,16 +72,35 @@ function FluxoCaixa() {
 
         <main className="conteudoFluxoCaixa">
 
-          {/* CABEÇALHO */}
+          {/* CABEÇALHO. aprovado */}
           <div className="topoFluxoCaixa">
-            <h1 className="tituloFluxoCaixa">Fluxo de caixa</h1>
+            <div className="tituloComVoltar">
+              <button
+                className="botaoVoltar"
+                onClick={voltar}
+                aria-label="Voltar"
+                type="button"
+              >
+                <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M15 18l-6-6 6-6"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </button>
+
+              <h1 className="tituloFluxoCaixa">Fluxo de caixa</h1>
+            </div>
 
             <p className="subtituloFluxoCaixa">
               Entradas, saídas e saldo consolidado de setembro/2026.
             </p>
           </div>
 
-          {/* CARDS SUPERIORES */}
+          {/* CARDS SUPERIORES. APROVADO */}
           <section className="resumoFluxo">
 
             <div className="cardFluxo">
@@ -123,23 +148,44 @@ function FluxoCaixa() {
           {/* GRÁFICO DE BARRAS */}
           <section className="cardGraficoFluxo">
 
-            <div className="cabecalhoCardFluxo">
-              <h2>Fluxo de Caixa (Mês)</h2>
+  <div className="cabecalhoCardFluxo">
+    <h2>Fluxo de Caixa (Mês)</h2>
 
-              <div className="legendaGrafico">
-                <span>
-                  <i className="legendaEntrada"></i>
-                  Entradas
-                </span>
+    <div className="acoesGrafico">
+      <div className="botoesFluxo">
+  <button
+    className="botaoSaida"
+    type="button"
+    onClick={() => navigate("/fluxocaixaregistrar")}
+  >
+    + Saída
+  </button>
 
-                <span>
-                  <i className="legendaSaida"></i>
-                  Saídas
-                </span>
-              </div>
-            </div>
+  <button
+    className="botaoEntrada"
+    type="button"
+    onClick={() => navigate("/fluxocaixaentrada")}
+  >
+    + Entrada
+  </button>
+</div>
 
-            <div className="graficoBarras">
+
+      <div className="legendaGrafico">
+        <span>
+          <i className="legendaEntrada"></i>
+          Entradas
+        </span>
+
+        <span>
+          <i className="legendaSaida"></i>
+          Saídas
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div className="graficoBarras">
 
               <div className="eixoY">
                 <span>60k</span>
@@ -265,46 +311,51 @@ function FluxoCaixa() {
             {/* MOVIMENTAÇÕES */}
             <div className="cardMovimentacoes">
 
-              <div className="cabecalhoCardFluxo cabecalhoLista">
-                <h2>Movimentações recentes</h2>
+             <div className="cabecalhoCardFluxo cabecalhoLista">
+  <h2>Movimentações recentes</h2>
 
-                <button>Ver todas</button>
-              </div>
+  <button onClick={() => navigate("/fluxocaixamovimentacao")}>
+    Ver todas
+  </button>
+</div>
 
               <div className="listaMovimentacoes">
 
-                {movimentos.map((m, i) => (
-                  <div className="movimentacao" key={i}>
+  {movimentos.map((m, i) => (
+  <div
+    className="movimentacao"
+    key={i}
+    onClick={() =>
+      m.tipo === "entrada"
+        ? navigate("/fluxocaixadetalhes")
+        : navigate("/fluxocaixasaida")
+    }
+  >
+    <div className="infoMovimentacao">
+      <span
+        className={
+          m.tipo === "entrada"
+            ? "iconeMovimentacao entradaIcone"
+            : "iconeMovimentacao saidaIcone"
+        }
+      >
+        {m.tipo === "entrada" ? "↓" : "↑"}
+      </span>
+      <strong>{m.descricao}</strong>
+    </div>
 
-                    <div className="infoMovimentacao">
-
-                      <span
-                        className={
-                          m.tipo === "entrada"
-                            ? "iconeMovimentacao entradaIcone"
-                            : "iconeMovimentacao saidaIcone"
-                        }
-                      >
-                        {m.tipo === "entrada" ? "↓" : "↑"}
-                      </span>
-
-                      <strong>{m.descricao}</strong>
-
-                    </div>
-
-                    <span
-                      className={
-                        m.tipo === "entrada"
-                          ? "valorEntrada"
-                          : "valorSaida"
-                      }
-                    >
-                      {m.tipo === "entrada" ? "+" : "-"}
-                      {m.valor}
-                    </span>
-
-                  </div>
-                ))}
+    <span
+      className={
+        m.tipo === "entrada"
+          ? "valorEntrada"
+          : "valorSaida"
+      }
+    >
+      {m.tipo === "entrada" ? "+" : "-"}
+      {m.valor}
+    </span>
+  </div>
+))}
 
               </div>
 
@@ -313,11 +364,14 @@ function FluxoCaixa() {
             {/* MAIORES DESPESAS */}
             <div className="cardMovimentacoes">
 
-              <div className="cabecalhoCardFluxo cabecalhoLista">
-                <h2>Maiores despesas (mês)</h2>
+             <div className="cabecalhoCardFluxo cabecalhoLista">
+  <h2>Movimentações recentes</h2>
 
-                <button>Ver todas</button>
-              </div>
+  <button onClick={() => navigate("/fluxocaixadespesa")}>
+    Ver todas
+  </button>
+</div>
+
 
               <div className="listaMovimentacoes">
 

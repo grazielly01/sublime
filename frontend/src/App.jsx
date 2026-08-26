@@ -2,7 +2,7 @@ import './App.css';
 import Sidebar from "./componentes/Sidebar/Sidebar.jsx";
 import { Routes, Route, useLocation } from "react-router-dom";
 
-// Importando páginas
+// Importando páginas. APROVANDO
 import Login from "./pages/login/login.jsx";
 import Estoque from "./pages/estoque/estoque.jsx";
 import Pedidos from "./pages/pedidos/pedidos.jsx";
@@ -11,9 +11,23 @@ import Alertas from "./pages/alertas/alertas.jsx";
 import MinhaConta from "./pages/minhaConta/minhaConta.jsx";
 import Calendario from "./pages/calendario/calendario.jsx";
 import Sair from "./pages/sair/sair.jsx"; 
-import Configuracoes from "./pages/configuracoes/configuracoes.jsx";
 import Dashboard from "./pages/dashboard/dashboard.jsx";
+
 import FluxoCaixa from "./pages/fluxocaixa/FluxoCaixa.jsx";
+import FluxoCaixaRegistrar from "./pages/fluxocaixa/fluxocaixaRegistrar.jsx";
+import FluxoCaixaEntrada from "./pages/fluxocaixa/fluxocaixaEntrada.jsx";
+import FluxoCaixaMovimentacao from "./pages/fluxocaixa/fluxocaixaMovimentacao.jsx";
+import FluxoCaixaDespesa from "./pages/fluxocaixa/fluxocaixadespesa.jsx";
+import FluxoCaixaDetalhes from "./pages/fluxocaixa/fluxocaixaDetalhes.jsx";
+import FluxoCaixaSaida from "./pages/fluxocaixa/fluxocaixaSaida.jsx";
+import FluxoCaixaExcluir1 from "./pages/fluxocaixa/fluxocaixaExcluir1.jsx";
+
+import Configuracoes from "./pages/configuracoes/configuracoes.jsx";
+import EquipeConfig from "./pages/configuracoes/equipeConfig.jsx";
+import DadosConfig from "./pages/configuracoes/dadosConfig.jsx";
+import SistemaConfig from "./pages/configuracoes/sistemaConfig.jsx";
+import SegurancaConfig from "./pages/configuracoes/segurancaConfig.jsx";
+import RegistrarConfig from "./pages/configuracoes/registrarConfig.jsx";
 
 import Producao from "./pages/Producao/Producao.jsx";
 import RegistrarProducao from "./pages/Producao/registrarProducao.jsx";
@@ -87,9 +101,17 @@ function App() {
          
           
           <Route path="/sair" element={<Sair />} />
-          <Route path="/configuracoes" element={<Configuracoes />} />
           <Route path="/dashboard" element={<Dashboard />} />
+
+        {/*fluxo de caixa */}
           <Route path="/fluxocaixa" element={<FluxoCaixa />} />
+          <Route path="/fluxocaixaregistrar" element={<FluxoCaixaRegistrar />} />
+          <Route path="/fluxocaixaentrada" element={<FluxoCaixaEntrada />} />
+          <Route path="/fluxocaixamovimentacao" element={<FluxoCaixaMovimentacao />} />
+          <Route path="/fluxocaixadespesa" element={<FluxoCaixaDespesa />} />
+          <Route path="/fluxocaixadetalhes" element={<FluxoCaixaDetalhes />} />
+          <Route path="/fluxocaixasaida" element={<FluxoCaixaSaida />} />
+          <Route path="/fluxocaixaexcluir1" element={<FluxoCaixaExcluir1 />} />
 
         {/*visao geral */}
         <Route path="/visaogeral" element={<VisaoGeral />} />
@@ -102,7 +124,15 @@ function App() {
         <Route path="/producao" element={<Producao />} />
         <Route path="/registrarproducao" element={<RegistrarProducao />} />
         <Route path="/detalhesordem/:id" element={<DetalhesOrdem />} />
-         <Route path="/excluirordem/:id" element={<ExcluirOrdem />} />
+        <Route path="/excluirordem/:id" element={<ExcluirOrdem />} />
+
+        {/*configuraçoes*/}
+        <Route path="/configuracoes" element={<Configuracoes />} />
+        <Route path="/equipeconfig" element={<EquipeConfig />} />
+        <Route path="/dadosconfig" element={<DadosConfig />} />
+        <Route path="/sistemaconfig" element={<SistemaConfig />} />
+        <Route path="/segurancaconfig" element={<SegurancaConfig />} />
+        <Route path="/registrarconfig" element={<RegistrarConfig />} />
 
         </Routes>
       </div>

@@ -4,15 +4,14 @@ import Header from "../../componentes/Header/Header.jsx";
 import { useNavigate } from "react-router-dom";
 
 function Configuracoes() {
-
-    const navigate = useNavigate();
+  const navigate = useNavigate();
 
   return (
     <div className="tudoConfiguracoes">
       <Sidebar paginaAtiva="Configurações" />
 
       <div className="tudoMenosSidebar">
-        {/* Cabeçalho branco no topo */}
+        {/* Cabeçalho branco no topo. APROVADO */}
         <Header nomeIndustria="Sweet Sunset" />
 
         <div className="conteudoConfiguracoes">
@@ -25,20 +24,20 @@ function Configuracoes() {
 
           {/* Cards de configuração */}
           <div className="cardsConfiguracoes">
-
-             <div
+            <div
               className="cardConfiguracao"
               onClick={() => navigate("/dadosconfig")}
               style={{ cursor: "pointer" }}
             >
+              <h2>Dados da Indústria</h2>
+              <p>Razão social, CNPJ, IE, Endereço...</p>
             </div>
-              <div
+
+            <div
               className="cardConfiguracao"
               onClick={() => navigate("/equipeconfig")}
               style={{ cursor: "pointer" }}
             >
-
-            <div className="cardConfiguracao">
               <h2>Equipe</h2>
               <p>Colaboradores, Funcionários, Equipes...</p>
             </div>
@@ -51,11 +50,12 @@ function Configuracoes() {
               <h2>Sistema</h2>
               <p>Idioma, Backup, Aparência do sistema...</p>
             </div>
-               <div
+
+            <div
               className="cardConfiguracao"
               onClick={() => navigate("/segurancaconfig")}
               style={{ cursor: "pointer" }}
-            ></div>
+            >
               <h2>Segurança</h2>
               <p>
                 Login e autenticação, Controle de acesso, Histórico de
@@ -70,3 +70,4 @@ function Configuracoes() {
 }
 
 export default Configuracoes;
+//aprovando arquivo correto.
