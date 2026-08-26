@@ -1,6 +1,6 @@
-import "./estoque.css";
+ import "./estoque.css";
 import { Link } from "react-router-dom";
-import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes*/
+import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes. APROVADO*/
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
@@ -8,7 +8,7 @@ import Select from "../../componentes/Select/Select.jsx";
 
 function Estoque() {
     /*essa const abaixo é o array (lista) de insumos do estoque: ela contém alguns exemplos temporários de insumos. Quando o backend existir, essa lista vai vir da API (banco de dados) ao
-    invés de ficar escrita fixa aqui */
+    invés de ficar escrita fixa aqui. APROVADO */
     const insumos = [
         { nome: "Chocolate ao leite Callebaut 80g", lote: "LT-0421", quantidade: "52", minimo: "15", validade: "12/08/2026", custo: "R$ 78.50", status: "ok" },
         { nome: "Farinha de trigo especial 300g", lote: "LT-0425", quantidade: "2", minimo: "6", validade: "30/11/2026", custo: "R$ 142.00", status: "repor" },

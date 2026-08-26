@@ -1,6 +1,6 @@
 import "./minhaConta.css";
-import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
-import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
+import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes; APROVADO*/
+import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes. */
 import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes*/
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
 
@@ -9,7 +9,7 @@ function MinhaConta() {
         <div className="tudoMinhaConta">
             <Sidebar paginaAtiva="Minha conta" /> {/*Menu lateral, coloquei "minhaConta" como página ativa para "Minha conta" no menu lateral ficar clarinho*/}
        
-            <div className="tudoMenosSidebar"> {/*Tudo menos o sidebar q ta acima*/}
+            <div className="tudoMenosSidebar"> {/*Tudo menos o sidebar q ta acima* APROVADO/}
 
                 <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
        
