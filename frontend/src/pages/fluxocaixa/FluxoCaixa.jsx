@@ -100,7 +100,7 @@ function FluxoCaixa() {
             </p>
           </div>
 
-          {/* CARDS SUPERIORES */}
+          {/* CARDS SUPERIORES. APROVADO */}
           <section className="resumoFluxo">
 
             <div className="cardFluxo">
