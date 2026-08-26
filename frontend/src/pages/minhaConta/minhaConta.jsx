@@ -9,9 +9,10 @@ function MinhaConta() {
         <div className="tudoMinhaConta">
             <Sidebar paginaAtiva="Minha conta" /> {/*Menu lateral, coloquei "minhaConta" como página ativa para "Minha conta" no menu lateral ficar clarinho*/}
        
-            <div className="tudoMenosSidebar"> {/*Tudo menos o sidebar q ta acima* APROVADO/}
+            <div className="tudoMenosSidebar"> {/*Tudo menos o sidebar q ta acima*/}
 
-                <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
+                <Header nomeIndustria="Sweet Sunset"/> 
+                {/*componente header*/}
        
                 <div className="conteudoMinhaConta"> {/*Div com o conteúdo da página*/}
 
@@ -23,7 +24,7 @@ function MinhaConta() {
                             <div className="infosAbaEsquerda">
                                 <div className="fotinhaENome">
                                     <div className="iconUser">
-                                        <img src="../img/Icon user.png" alt="user" />
+                                        <img src="../img/icon-user.png" alt="user" />
                                     </div>
                                     <h3>Mariana Oliveira</h3>
                                     <p>Gerente</p>
