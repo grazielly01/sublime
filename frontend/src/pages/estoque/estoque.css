@@ -139,14 +139,14 @@
 
 .tabelaEstoque th{
     text-align: left;
-    padding: 12px 16px;
+    padding: 16px 20px;
     font-size: 108%;
     color: #000000;
     font-weight: 600;
 }
 
 .tabelaEstoque td{
-    padding: 12px 16px;
+    padding: 16px 20px;
     font-size: 14px;
     color: #333;
     border-top: 1px solid #f5eae6;
@@ -156,7 +156,7 @@
 .nomeInsumo{
     font-weight: 900;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 120px;
 }
 
 .loteInsumo{
