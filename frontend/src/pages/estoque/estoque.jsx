@@ -1,4 +1,4 @@
-import "./estoque.css";
+ import "./estoque.css";
 import { Link } from "react-router-dom";
 import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes*/
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
