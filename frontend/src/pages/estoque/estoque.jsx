@@ -1,6 +1,6 @@
  import "./estoque.css";
 import { Link } from "react-router-dom";
-import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes*/
+import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes. APROVADO*/
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
