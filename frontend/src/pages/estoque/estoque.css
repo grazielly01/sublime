@@ -124,7 +124,7 @@
 
 
 .tabelaEstoque{
-    width: 100%;
+    width: auto;
     margin-top: 40px;
     border-collapse: collapse; /*junta as bordas das células, sem espaçamento entre elas*/
     background-color: white;
