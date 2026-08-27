@@ -50,7 +50,7 @@ function EquipeConfig() {
 
           <div className="topoEquipeConfig">
 
-            {/* TÍTULO + SETA */}
+            {/* TÍTULO + SETA. -> APROVANDO*/}
             <div className="tituloComVoltarEquipe">
               <button
                 className="botaoVoltarEquipe"

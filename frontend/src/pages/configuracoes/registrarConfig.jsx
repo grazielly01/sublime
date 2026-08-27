@@ -15,7 +15,7 @@ function RegistrarConfig() {
 
         <main className="conteudoRegistrarConfig">
 
-          {/* TÍTULO + SETA */}
+          {/* TÍTULO + SETA. -> APROVANDO */}
           <div className="topoRegistrarConfig">
             <button
               type="button"

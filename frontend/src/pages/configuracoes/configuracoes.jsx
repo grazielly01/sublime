@@ -11,7 +11,7 @@ function Configuracoes() {
       <Sidebar paginaAtiva="Configurações" />
 
       <div className="tudoMenosSidebar">
-        {/* Cabeçalho branco no topo */}
+        {/* Cabeçalho branco no topo. APROVADO */}
         <Header nomeIndustria="Sweet Sunset" />
 
         <div className="conteudoConfiguracoes">
@@ -70,3 +70,4 @@ function Configuracoes() {
 }
 
 export default Configuracoes;
+//aprovando arquivo correto.

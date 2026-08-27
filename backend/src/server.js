@@ -9,7 +9,7 @@ sequelize.authenticate()
 .then(() => {
     console.log("Banco conectado com sucesso!");
     app.listen(PORT,() => {
-    console.log('Servidor rodando na porta ${PORT}');
+   console.log(`Servidor rodando na porta ${PORT}`);
 
 });
 })

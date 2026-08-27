@@ -15,7 +15,7 @@ function DadosConfig() {
         <Header nomeIndustria="Sweet Sunset" />
 
         <main className="conteudoDadosConfig">
-          {/* Topo com Seta de Voltar e Título */}
+          {/* Topo com Seta de Voltar e Título. APROVANDO */}
           <div className="topoDadosConfig">
             <button
               type="button"

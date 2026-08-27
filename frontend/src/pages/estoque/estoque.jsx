@@ -1,36 +1,33 @@
-import "./estoque.css";
+ import "./estoque.css";
 import { Link } from "react-router-dom";
-import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes*/
+import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes. APROVADO*/
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
 import Select from "../../componentes/Select/Select.jsx";
 
-
-
 function Estoque() {
-
-    /*essa const abaixo é o array (lista) de insumos do estoque: ela contém alguns exemplos temporários de insumos. Quando o backend existir, essa lista vai vir da API (banco de dados) ao 
-    invés de ficar escrita fixa aqui */
+    /*essa const abaixo é o array (lista) de insumos do estoque: ela contém alguns exemplos temporários de insumos. Quando o backend existir, essa lista vai vir da API (banco de dados) ao
+    invés de ficar escrita fixa aqui. APROVADO */
     const insumos = [
-        { nome: "Chocolate ao leite Callebaut", lote: "LT-0421", quantidade: "28 kg", minimo: "15", validade: "12/08/2026", custo: "R$ 78.50", status: "ok" },
-        { nome: "Farinha de trigo especial", lote: "LT-0425", quantidade: "4 sc 25kg", minimo: "6", validade: "30/11/2026", custo: "R$ 142.00", status: "repor" },
-        { nome: "Leite condensado Moça", lote: "LT-0414", quantidade: "96 lata 395g", minimo: "60", validade: "20/01/2027", custo: "R$ 8.90", status: "ok" },
-        { nome: "Ovos brancos tipo extra", lote: "LT-0413", quantidade: "1800 un", minimo: "1200", validade: "02/06/2026", custo: "R$ 0.55", status: "repor" },
-        { nome: "Fermento químico", lote: "LT-0410", quantidade: "2 kg", minimo: "5", validade: "15/09/2026", custo: "R$ 36.00", status: "repor" },
-        { nome: "Creme de leite UHT", lote: "LT-0416", quantidade: "144 cx 200g", minimo: "80", validade: "18/12/2026", custo: "R$ 4.20", status: "ok" },
-        { nome: "Açúcar refinado", lote: "LT-0419", quantidade: "12 sc 25kg", minimo: "8", validade: "05/03/2027", custo: "R$ 98.00", status: "ok" },
-        { nome: "Manteiga sem sal", lote: "LT-0422", quantidade: "18 kg", minimo: "20", validade: "25/07/2026", custo: "R$ 52.00", status: "repor" },
-        { nome: "Leite condensado Moça", lote: "LT-0426", quantidade: "78 lata 395g", minimo: "60", validade: "11/09/2026", custo: "R$ 8.90", status: "ok" },
-        { nome: "Chocolate ao leite Callebaut", lote: "LT-0421", quantidade: "28 kg", minimo: "15", validade: "12/08/2026", custo: "R$ 78.50", status: "ok" },
-        { nome: "Farinha de trigo especial", lote: "LT-0425", quantidade: "4 sc 25kg", minimo: "6", validade: "30/11/2026", custo: "R$ 142.00", status: "repor" },
-        { nome: "Leite condensado Moça", lote: "LT-0414", quantidade: "96 lata 395g", minimo: "60", validade: "20/01/2027", custo: "R$ 8.90", status: "ok" },
-        { nome: "Ovos brancos tipo extra", lote: "LT-0413", quantidade: "1800 un", minimo: "1200", validade: "02/06/2026", custo: "R$ 0.55", status: "repor" },
-        { nome: "Fermento químico", lote: "LT-0410", quantidade: "2 kg", minimo: "5", validade: "15/09/2026", custo: "R$ 36.00", status: "repor" },
-        { nome: "Creme de leite UHT", lote: "LT-0416", quantidade: "144 cx 200g", minimo: "80", validade: "18/12/2026", custo: "R$ 4.20", status: "ok" },
-        { nome: "Açúcar refinado", lote: "LT-0419", quantidade: "12 sc 25kg", minimo: "8", validade: "05/03/2027", custo: "R$ 98.00", status: "ok" },
-        { nome: "Manteiga sem sal", lote: "LT-0422", quantidade: "18 kg", minimo: "20", validade: "25/07/2026", custo: "R$ 52.00", status: "repor" },
-        { nome: "Leite condensado Moça", lote: "LT-0426", quantidade: "78 lata 395g", minimo: "60", validade: "11/09/2026", custo: "R$ 8.90", status: "ok" },
+        { nome: "Chocolate ao leite Callebaut 80g", lote: "LT-0421", quantidade: "52", minimo: "15", validade: "12/08/2026", custo: "R$ 78.50", status: "ok" },
+        { nome: "Farinha de trigo especial 300g", lote: "LT-0425", quantidade: "2", minimo: "6", validade: "30/11/2026", custo: "R$ 142.00", status: "repor" },
+        { nome: "Leite condensado Moça 395g", lote: "LT-0414", quantidade: "104", minimo: "60", validade: "20/01/2027", custo: "R$ 8.90", status: "ok" },
+        { nome: "Ovos brancos tipo extra 12unid", lote: "LT-0428", quantidade: "1053", minimo: "1200", validade: "02/06/2026", custo: "R$ 0.55", status: "repor" },
+        { nome: "Fermento químico 10g", lote: "LT-0410", quantidade: "28", minimo: "30", validade: "15/09/2026", custo: "R$ 36.00", status: "repor" },
+        { nome: "Creme de leite UHT 400ml", lote: "LT-0416", quantidade: "82", minimo: "80", validade: "18/12/2026", custo: "R$ 4.20", status: "ok" },
+        { nome: "Açúcar refinado 2kg", lote: "LT-0419", quantidade: "27", minimo: "8", validade: "05/03/2027", custo: "R$ 98.00", status: "ok" },
+        { nome: "Manteiga sem sal 1kg", lote: "LT-0422", quantidade: "19", minimo: "20", validade: "25/07/2026", custo: "R$ 52.00", status: "repor" },
+        { nome: "Leite condensado Moça 395g", lote: "LT-0426", quantidade: "104", minimo: "60", validade: "11/09/2026", custo: "R$ 8.90", status: "ok" },
+        { nome: "Chocolate ao leite Callebaut 80g", lote: "LT-0421", quantidade: "52", minimo: "15", validade: "12/08/2026", custo: "R$ 78.50", status: "ok" },
+        { nome: "Farinha de trigo especial 300g", lote: "LT-0425", quantidade: "2", minimo: "6", validade: "30/11/2026", custo: "R$ 142.00", status: "repor" },
+        { nome: "Leite condensado Moça 395g", lote: "LT-0414", quantidade: "104", minimo: "60", validade: "20/01/2027", custo: "R$ 8.90", status: "ok" },
+        { nome: "Ovos brancos tipo extra 12unid", lote: "LT-0413", quantidade: "1053", minimo: "1200", validade: "02/06/2026", custo: "R$ 0.55", status: "repor" },
+        { nome: "Fermento químico 10g", lote: "LT-0410", quantidade: "28", minimo: "5", validade: "15/09/2026", custo: "R$ 36.00", status: "repor" },
+        { nome: "Creme de leite UHT 400ml", lote: "LT-0416", quantidade: "82", minimo: "80", validade: "18/12/2026", custo: "R$ 4.20", status: "ok" },
+        { nome: "Açúcar refinado 2kg", lote: "LT-0419", quantidade: "27", minimo: "8", validade: "05/03/2027", custo: "R$ 98.00", status: "ok" },
+        { nome: "Manteiga sem sal 1kg", lote: "LT-0422", quantidade: "19", minimo: "20", validade: "25/07/2026", custo: "R$ 52.00", status: "repor" },
+        { nome: "Leite condensado Moça 395g", lote: "LT-0426", quantidade: "104", minimo: "60", validade: "11/09/2026", custo: "R$ 8.90", status: "ok" },
     ];
 
     return (
@@ -69,9 +66,8 @@ function Estoque() {
                                 <path d="M12 9v4"/>
                                 <path d="M12 17h.01"/>
                             </svg>
-                                4 abaixo do mínimo
+                                8 abaixo do mínimo
                             </div>
-
                         </div>
 
                         <div className="ladoDireitoFiltros">
@@ -96,9 +92,7 @@ function Estoque() {
                             <Link to="/estoque/registrar" className="botaoNovoInsumo">
                                 <Button texto="+ Novo insumo"></Button>
                             </Link>
-
                         </div>
-
                     </div>
 
                     {/*tabela com os insumos do estoque*/}
@@ -117,12 +111,14 @@ function Estoque() {
                         </thead>
 
                         <tbody>
-                            
+                           
                             {insumos.map((insumo, index) => (     /*.map() percorre a lista "insumos" e cria uma linha <tr> pra cada insumo, index conta o numero de insumos*/
                                 <tr key={index}>                  {/*a key da tag <tr> vai ser o index (quantidade de insumos)*/}
-                                    <Link to="/estoque/detalhes" className="botaoDetalhesInsumo">
-                                        <td className="nomeInsumo">{insumo.nome}</td>  {/*.nome: pega o valor do nome do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
-                                    </Link>
+                                <td>
+                                    {insumo.nome} 
+
+                                    </td>  {/*.nome: pega o valor do nome do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
+                                  
                                     <td className="loteInsumo">{insumo.lote}</td>  {/*.lote: pega o valor do lote do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
                                     <td>{insumo.quantidade}</td>                   {/*.quantidade: pega o valor da quantidade do insumo la no array*/}
                                     <td>{insumo.minimo}</td>                       {/*.minimo: pega o valor do minimo de insumo la no array*/}

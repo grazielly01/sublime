@@ -116,7 +116,7 @@ function FluxoCaixaMovimentacao() {
 
         <main className="conteudoFluxoCaixaMovimentacao">
 
-          {/* TÍTULO COM VOLTAR */}
+          {/* TÍTULO COM VOLTAR. APROVANDO */}
           <div className="topoFluxoCaixaMovimentacao">
             <button
               type="button"

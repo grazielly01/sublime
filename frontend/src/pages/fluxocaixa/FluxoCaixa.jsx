@@ -72,7 +72,7 @@ function FluxoCaixa() {
 
         <main className="conteudoFluxoCaixa">
 
-          {/* CABEÇALHO */}
+          {/* CABEÇALHO. aprovado */}
           <div className="topoFluxoCaixa">
             <div className="tituloComVoltar">
               <button
@@ -100,7 +100,7 @@ function FluxoCaixa() {
             </p>
           </div>
 
-          {/* CARDS SUPERIORES */}
+          {/* CARDS SUPERIORES. APROVADO */}
           <section className="resumoFluxo">
 
             <div className="cardFluxo">

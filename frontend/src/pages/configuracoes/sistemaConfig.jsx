@@ -18,7 +18,7 @@ function SistemaConfig() {
 
         <main className="conteudoSistemaConfig">
 
-          {/* TÍTULO + SETA */}
+          {/* TÍTULO + SETA. APROVANDO */}
           <div className="topoSistemaConfig">
 
             <button

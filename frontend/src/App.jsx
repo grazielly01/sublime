@@ -2,7 +2,7 @@ import './App.css';
 import Sidebar from "./componentes/Sidebar/Sidebar.jsx";
 import { Routes, Route, useLocation } from "react-router-dom";
 
-// Importando páginas
+// Importando páginas. APROVANDO
 import Login from "./pages/login/login.jsx";
 import Estoque from "./pages/estoque/estoque.jsx";
 import Pedidos from "./pages/pedidos/pedidos.jsx";

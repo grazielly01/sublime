@@ -22,7 +22,7 @@ function FluxoCaixaRegistrar() {
 
         <main className="conteudoFluxoCaixaRegistrar">
 
-          {/* TÍTULO COM VOLTAR */}
+          {/* TÍTULO COM VOLTAR. APROVANDO */}
           <div className="topoFluxoCaixaRegistrar">
             <button
               type="button"

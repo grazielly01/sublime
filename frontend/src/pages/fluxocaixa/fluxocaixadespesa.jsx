@@ -38,7 +38,7 @@ function FluxoCaixaDespesa() {
 
         <main className="conteudoFluxoCaixaDespesa">
 
-          {/* TÍTULO COM VOLTAR */}
+          {/* TÍTULO COM VOLTAR. APROVADO */}
           <div className="topoFluxoCaixaDespesa">
             <button
               type="button"
