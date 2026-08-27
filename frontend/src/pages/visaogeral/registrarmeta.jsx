@@ -26,7 +26,7 @@ function RegistrarMeta() {
               onClick={() => navigate("/metavisaogeral")}
               aria-label="Voltar"
             >
-              ←
+              ‹
             </button>
 
             <h1 className="tituloRegistrarMeta">
