@@ -10,7 +10,7 @@ function Configuracoes() {
     <div className="tudoConfiguracoes">
       <Sidebar paginaAtiva="Configurações" />
 
-      <div className="tudoMenosSidebar">
+      <div className="tudoMenosSidebar tudoMenosSidebarConfiguracoes">
         {/* Cabeçalho branco no topo. APROVADO */}
         <Header nomeIndustria="Sweet Sunset" />
 

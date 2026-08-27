@@ -21,6 +21,10 @@
     background-color: #FDEDE8;
 }
 
+.tudoMenosSidebarCalendario{
+    position: fixed;
+}
+
 
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
@@ -43,16 +47,6 @@
     color: #777;
 }
 
-
-/*        BARRA COM O BOTÃO "+ Novo evento"        */
-
-
-.barraNovoEvento{
-    display: flex;
-    justify-content: flex-end; /*joga o botão pro canto direito*/
-    margin-top: 28px;
-}
-
 .botaoNovoEvento .button{
     width: auto;
     padding: 12px 22px;
@@ -63,6 +57,7 @@
 
 
 .janelaCalendario{
+    margin-right: 11.2%;
     background-color: white;
     border: 1px solid #870B22;
     border-radius: 12px;
@@ -183,7 +178,6 @@
     overflow: hidden;
     text-overflow: ellipsis; /*corta o texto com "..." se ele for maior q a célula*/
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    cursor: pointer;
 }
 
 .tagEvento.producao{
@@ -212,13 +206,22 @@
 }
 
 
-/*        LEGENDA DAS CATEGORIAS        */
+/*        RODAPE     */
 
 
 .legendaCategorias{
     display: flex;
-    gap: 10px;
-    padding: 16px 20px;
-    border-top: 1px solid #f0e0da;
+    gap: 12px;
+    padding: 24px 20px;
     flex-wrap: wrap;
+    margin-top: -1.5%;
+}
+
+.rodapeCalendario{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 1%;
+    margin-right: 1%;
+    margin-bottom: 0.6%;
 }

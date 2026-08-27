@@ -11,7 +11,7 @@ function DadosConfig() {
     <div className="tudoDadosConfig">
       <Sidebar paginaAtiva="Configurações" />
 
-      <div className="tudoMenosSidebar">
+      <div className="tudoMenosSidebar tudoMenosSidebarDadosConfig">
         <Header nomeIndustria="Sweet Sunset" />
 
         <main className="conteudoDadosConfig">

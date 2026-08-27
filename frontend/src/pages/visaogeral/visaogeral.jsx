@@ -67,7 +67,7 @@ function VisaoGeral() {
     <div className="tudoVisaoGeral">
       <Sidebar paginaAtiva="Visão geral" />
 
-      <div className="tudoMenosSidebar">
+      <div className="tudoMenosSidebar tudoMenosSidebarVisaoGeral">
         <Header nomeIndustria="Sweet Sunset" />
 
         <div className="conteudoVisaoGeral">
