@@ -1,7 +1,9 @@
+import { useState } from "react";
 import "./cadastro.css";
 import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes*/
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
 import Select from "../../componentes/Select/Select.jsx";   /*Importando o componente select da pasta componentes*/
+
 
 function Cadastro() {
     return (  /*já vai pro return pq nao precisa de nenhuma variavel ou nenhuma outra função ou nenhuma lógica por trás, só tem HTML (bagulhos visuais)*/

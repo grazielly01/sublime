@@ -1,13 +1,19 @@
 const express = require("express");
+const usuarioRoutes = require("./routes/usuarioRoutes");
 
 const app = express();
 
+// O express.json() OBRIGATORIAMENTE precisa vir antes das rotas
 app.use(express.json());
 
-app.get("/",(req,res) => {
-    res.json({
-        mensagem:"API DO SUBLIME FUNCIONANDO!"
-    });
+// Ativa as suas rotas de usuário
+app.use(usuarioRoutes);
+
+// Rota raiz para testar se a API está viva
+app.get("/", (req, res) => {
+  res.json({
+    mensagem: "API DO SUBLIME FUNCIONANDO!" //http://localhost:3000/
+  });
 });
 
 module.exports = app;
