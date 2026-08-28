@@ -26,8 +26,11 @@
 
 
 .conteudoPedidos{
-    margin-top: -24px;
     box-sizing: border-box;
+}
+
+.conteudoPedidos2{
+    margin-top:3.5%;
 }
 
 

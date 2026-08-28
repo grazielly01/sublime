@@ -30,9 +30,12 @@
 
 
 .conteudoMinhaConta{
-    margin-top: -3vh; /*gambiarra pra ajeitar o rombo q estava aqui*/
     padding-top: 1%; /*acho q isso é inutil*/
     box-sizing: border-box;
+}
+
+.conteudoMinhaConta2{
+    margin-top: 3.5%;
 }
 
 .tituloMinhaConta{

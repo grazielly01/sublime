@@ -30,7 +30,7 @@ function Produtos(){
             <div className="tudoMenosSidebar">
                 <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
 
-                <div className="conteudoProdutos"> {/*Div com o conteúdo da página*/}
+                <div className="conteudoProdutos conteudoProdutos2"> {/*Div com o conteúdo da página*/}
 
                     {/*linha de cima: título + subtítulo*/}
                     <div className="topoProdutos">

@@ -96,7 +96,7 @@ function Calendario() {
 
                 <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
 
-                <div className="conteudoCalendario"> {/*Div com o conteúdo da página*/}
+                <div className="conteudoCalendario conteudoCalendario2"> {/*Div com o conteúdo da página*/}
                 <div></div>
 
                     {/*linha de cima: título + subtítulo*/}
