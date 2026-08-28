@@ -8,11 +8,60 @@ function VisaoGeral() {
   const navigate = useNavigate();
 
   const kpis = [
-    { titulo: "Faturamento (mês)", valor: "R$ 84.320,80", variacao: "+12,4%", tipo: "positivo", icone: "💰" },
-    { titulo: "Pedidos abertos", valor: "23", variacao: "+5 hoje", tipo: "positivo", icone: "🧾" },
-    { titulo: "Produção do dia", valor: "238 un.", variacao: "-24 hoje", tipo: "negativo", icone: "📦" },
-    { titulo: "Itens em baixa", valor: "4", variacao: "Reposição urgente", tipo: "negativo", icone: "⚠️" },
-  ];
+  {
+    titulo: "Faturamento (mês)",
+    valor: "R$ 84.320,80",
+    variacao: "+12,4%",
+    tipo: "positivo",
+    icone: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2v20" />
+        <path d="M17 5.5C16.2 4.5 14.8 4 13.2 4h-2.1C8.8 4 7 5.5 7 7.5S8.8 11 11.1 11h1.8c2.3 0 4.1 1.5 4.1 3.5S15.2 18 12.9 18h-2.1c-1.6 0-3-.5-3.8-1.5" />
+      </svg>
+    ),
+  },
+  {
+    titulo: "Pedidos abertos",
+    valor: "23",
+    variacao: "+5 hoje",
+    tipo: "positivo",
+    icone: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 3h12v18H6z" />
+        <path d="M9 7h6" />
+        <path d="M9 11h6" />
+        <path d="M9 15h4" />
+      </svg>
+    ),
+  },
+  {
+    titulo: "Produção do dia",
+    valor: "238 un.",
+    variacao: "-24 hoje",
+    tipo: "negativo",
+    icone: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 7h18v14H3z" />
+        <path d="M7 7V4h10v3" />
+        <path d="M3 12h18" />
+        <path d="M10 12v2h4v-2" />
+      </svg>
+    ),
+  },
+  {
+    titulo: "Itens em baixa",
+    valor: "4",
+    variacao: "Reposição urgente",
+    tipo: "negativo",
+    icone: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3L22 20H2L12 3z" />
+        <path d="M12 9v5" />
+        <path d="M12 17h.01" />
+      </svg>
+    ),
+  },
+];
 
   const pedidosRecentes = [
     { cliente: "Padaria Seu Zé", itens: "45 bolos formigueiro", status: "Em produção", horario: "Hoje 16:30h" },
@@ -50,11 +99,44 @@ function VisaoGeral() {
   ];
 
   const atalhos = [
-    { texto: "Nova ordem", icone: "🗓️" },
-    { texto: "Iniciar produção", icone: "👨‍🍳" },
-    { texto: "Entrada de insumos", icone: "📥" },
-    { texto: "Relatórios", icone: "📊" },
-  ];
+  {
+    texto: "Nova ordem",
+    icone: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 5v14" />
+        <path d="M5 12h14" />
+      </svg>
+    ),
+  },
+  {
+    texto: "Iniciar produção",
+    icone: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 4l12 8-12 8V4z" />
+      </svg>
+    ),
+  },
+  {
+    texto: "Entrada de insumos",
+    icone: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3v12" />
+        <path d="M7 10l5 5 5-5" />
+        <path d="M5 20h14" />
+      </svg>
+    ),
+  },
+  {
+    texto: "Relatórios",
+    icone: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M5 20V10" />
+        <path d="M12 20V4" />
+        <path d="M19 20v-7" />
+      </svg>
+    ),
+  },
+];
 
   const classeStatus = (status) =>
     "status" +
@@ -67,7 +149,7 @@ function VisaoGeral() {
     <div className="tudoVisaoGeral">
       <Sidebar paginaAtiva="Visão geral" />
 
-      <div className="tudoMenosSidebar">
+      <div className="tudoMenosSidebar tudoMenosSidebarVisaoGeral">
         <Header nomeIndustria="Sweet Sunset" />
 
         <div className="conteudoVisaoGeral">

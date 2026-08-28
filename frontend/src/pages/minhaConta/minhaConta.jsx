@@ -9,7 +9,7 @@ function MinhaConta() {
         <div className="tudoMinhaConta">
             <Sidebar paginaAtiva="Minha conta" /> {/*Menu lateral, coloquei "minhaConta" como página ativa para "Minha conta" no menu lateral ficar clarinho*/}
        
-            <div className="tudoMenosSidebar"> {/*Tudo menos o sidebar q ta acima*/}
+            <div className="tudoMenosSidebar tudoMenosSidebarMinhaConta"> {/*Tudo menos o sidebar q ta acima*/}
 
                 <Header nomeIndustria="Sweet Sunset"/> 
                 {/*componente header*/}
@@ -35,7 +35,13 @@ function MinhaConta() {
                                     <p>Plano ERP Pro: Ativo</p>
                                 </div>
 
-                                    <Button texto="Alterar foto" />
+                                <div className="alterarFoto">
+                                    <input className="inputAlterarFoto" type="file" id="uploadImagemMinhaConta" accept=".jpg,.jpeg,.png"/>
+                                    <label htmlFor="uploadImagemMinhaConta" className="botaoAlterarFoto">Alterar foto</label>
+                                </div>
+
+
+                                    
                             </div>
                         </div>
 

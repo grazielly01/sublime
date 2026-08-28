@@ -35,7 +35,7 @@ function ExcluirMeta() {
               onClick={() => navigate(-1)}
               title="Voltar"
             >
-              ←
+               ‹
             </button>
             <h1 className="tituloExcluirMeta">Detalhes da meta</h1>
           </div>
