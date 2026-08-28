@@ -25,7 +25,7 @@
   
   
   .pagina-produtos .conteudoProdutos {
-    padding: 16px 32px 32px 32px;
+    padding: 5.8% 32px 32px 32px;
     margin-top: 0;
     width: 100%;
     max-width: 1700px;
@@ -49,9 +49,13 @@
   
   .pagina-produtos .tituloProdutos {
     margin: 0;
-    font-size: 36px;
+
     color: #870B22;
     font-weight: bold;
+  }
+
+  .tituloProdutos{
+    font-size: 350%;
   }
   
   

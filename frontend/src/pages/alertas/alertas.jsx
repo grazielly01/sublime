@@ -45,7 +45,7 @@ function Alertas() {
 
                 <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
 
-                <div className="conteudoAlertas"> {/*Div com o conteúdo da página*/}
+                <div className="conteudoAlertas conteudoAlertas2"> {/*Div com o conteúdo da página*/}
 
                     <h1 className="tituloAlertas">Alertas</h1>
                     <p className="subtituloAlertas">Notificações automáticas de estoque, validade, financeiro e pedidos.</p>

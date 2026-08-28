@@ -26,9 +26,12 @@
 
 
 .conteudoEstoque{
-    margin-top: -22px;
     padding-top: 6%;
     box-sizing: border-box;
+}
+
+.conteudoEstoque2{
+    margin-top: 3.5%;
 }
 
 .tituloEstoque{

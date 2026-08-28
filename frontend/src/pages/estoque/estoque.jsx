@@ -39,7 +39,7 @@ function Estoque() {
 
                 <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
 
-                <div className="conteudoEstoque"> {/*Div com o conteúdo da página*/}
+                <div className="conteudoEstoque conteudoEstoque2"> {/*Div com o conteúdo da página*/}
 
                     <h1 className="tituloEstoque">Estoque de insumos</h1>
                     <p className="subtituloEstoque">Controle por lote e validade — sistema PEPS (usar primeiro o mais antigo)</p>

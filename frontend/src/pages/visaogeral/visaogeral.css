@@ -27,7 +27,7 @@ body {
   flex-direction: column;
   margin-right: 5%;
   margin-left: 1%;  /* Espaço exato da Sidebar */
-  padding-top: 76px;  /* Espaço exato do Header */
+  padding-top: 3.2%;  /* Espaço exato do Header */
   width: calc(100% - 60px);
 }
 
@@ -37,9 +37,13 @@ body {
 .conteudoVisaoGeral {
   flex: 1;
   padding: 24px 32px 32px;
-  margin-left: 5px;
+  margin-left: -33px;
   width: 100%;
   box-sizing: border-box;
+}
+
+.conteudoVisaoGeral2{
+  margin-top: 2.5%;
 }
 
 /* =========================================================
@@ -53,7 +57,7 @@ body {
  margin: 0;
 
     font-family: "Inter", serif;
-    font-size: 37px;
+    font-size: 350%;
     font-weight: 700;
     line-height: 2;
 
@@ -61,8 +65,8 @@ body {
 }
 
 .subtituloVisaoGeral {
-  margin: 4px 0 0;
-  font-size: 14px;
+  margin: -11px 6px 0;
+  font-size: 150%;
   font-weight: 400;
   color: #6b7280;
 }
@@ -85,9 +89,9 @@ body {
   padding: 16px 20px;
   box-sizing: border-box;
   background: #ffffff;
-  border: 1px solid #e5e7eb;
+  border: 1px solid #8E1027;
   border-radius: 12px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .topoCardKpi {
@@ -169,7 +173,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0 0 16px;
+  margin: 0 0 13px;
   font-size: 16px;
   font-weight: 600;
   color: #111827;
@@ -215,6 +219,39 @@ body {
   list-style: none;
 }
 
+.pedidosRecentes{
+  border: 1px solid #8E1027;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.pedidosRecentes h2{
+  font-size:140%;
+  font-weight: 600;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.cardPedidoRecente{
+  margin-left: 10px;
+  margin-bottom: 4px;
+}
+
+.cabecalhoSecao h2{
+  margin-left: 10px;
+  font-weight: 600;
+}
+
+.botaoVerTodos{
+  font-size: 110%;
+  margin-right: 10px;
+  border-radius: 16px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.ladoDireitoPedido{
+  margin-right: 10px;
+}
+
 .cardPedidoRecente,
 .cardProduto,
 .itemMeta {
@@ -223,6 +260,12 @@ body {
   justify-content: space-between;
   padding: 12px 0;
   border-bottom: 1px solid #f3f4f6;
+}
+
+.itemMeta{
+  margin-left: -10px;
+  margin-top: 7px;
+  margin-bottom: 2px;
 }
 
 .cardPedidoRecente:last-child,
@@ -247,9 +290,9 @@ body {
 .cardProduto h3,
 .itemMeta h3 {
   margin: 0 0 4px;
-  font-size: 14px;
+  font-size: 140%;
   font-weight: 600;
-  color: #111827;
+  color: #8E1027;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -259,7 +302,7 @@ body {
 .cardProduto p,
 .descricaoMeta {
   margin: 0;
-  font-size: 13px;
+  font-size: 15px;
   color: #6b7280;
 }
 
@@ -274,8 +317,8 @@ body {
 }
 
 .horarioPedido {
-  font-size: 12px;
-  color: #9ca3af;
+  font-size: 13px;
+  color: #979ca3;
   white-space: nowrap;
 }
 
@@ -288,7 +331,7 @@ body {
   width: 42px;
   height: 42px;
   border-radius: 10px;
-  background: #fff0f2;
+  background: #FFC8D2;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -317,36 +360,48 @@ body {
 }
 
 .statusEmProducao {
-  background: #dbeafe;
-  color: #1e40af;
+  background: #d8a90d;
+  color: #ffffff;
+  font-size: 110%;
 }
 
 .statusNaoIniciado {
-  background: #f3f4f6;
-  color: #4b5563;
+  background: #ee2424;
+  color: #ffffff;
+  font-size: 110%;
 }
 
 .statusPronto {
-  background: #dcfce7;
-  color: #166534;
+  background: #01a740;
+  color: #ffffff;
+  font-size: 110%;
 }
 
 .statusEntregue {
-  background: #e0e7ff;
-  color: #3730a3;
-}
-
-.statusEmAndamento {
-  background: #fef9c3;
-  color: #854d0e;
+  background: #a1a1a1;
+  color: #ffffff;
+  font-size: 110%;
 }
 
 /* =========================================================
    PRODUTOS LUCRATIVOS
    ========================================================= */
-.listaProdutos {
+.produtosLucrativos{
+  border: 1px solid #8E1027;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.produtosLucrativos h2{
+  font-size: 190%;
+  font-weight: 600;
+  margin-left: 10px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+   .listaProdutos {
   display: grid;
   grid-template-columns: repeat(1, minmax(0, 1fr));
+  margin-left: 10px;
 }
 
 .posicaoProduto {
@@ -357,7 +412,7 @@ body {
 }
 
 .cardProduto .lucroProduto {
-  margin-top: 6px;
+  margin-top: 8px;
   font-size: 12px;
   color: #059669;
   font-weight: 600;
@@ -366,7 +421,23 @@ body {
 /* =========================================================
    METAS
    ========================================================= */
-.topoItemMeta {
+.metas{
+  border: 1px solid #8E1027;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.metas h2{ 
+  font-size: 190%;
+  font-weight: 600;
+  margin-left: 10px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.listaMetas{
+  margin-left: 10px;
+}
+
+   .topoItemMeta {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -386,37 +457,62 @@ body {
   line-height: 1.4;
 }
 
+.botaoVerMais{
+  font-size: 150%;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  border-radius: 20px;
+}
+
 /* =========================================================
    ATALHOS
    ========================================================= */
-.listaAtalhos {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 12px;
+.atalhosRapidos{
+  border: 1px solid #8E1027;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-.listaAtalhos > button {
-  width: 100%;
+.atalhosRapidos h2{
+  font-size: 190%;
+  margin-bottom: 5%;
+  font-weight: 600;
+  margin-left: 10px;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.listaAtalhos {
+  display: flex;
+  flex-direction: column; /*empilhado, um embaixo do outro, igual na 3ª foto*/
+  gap: 12px;
+  margin-left: 10px;
+}
+
+.botaoAtalho {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 40px;
-  padding: 10px 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  background: #ffffff;
-  color: #374151;
-  font-size: 13px;
+  gap: 17px;
+  width: 100%;
+  padding: 17px 19px;
+  background: #FFC8D2; /*mesmo rosa já usado no ícone dos cards de KPI*/
+  border: none;
+  border-radius: 14px;
+  color: #8E1027;
+  font-size: 130%;
   font-weight: 600;
   cursor: pointer;
-  transition: 0.2s ease;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transition: 0.2s;
+  box-sizing: border-box;
+  margin-bottom: 2%;
 }
 
-.listaAtalhos > button:hover {
-  background: #f9fafb;
-  border-color: #d1d5db;
+.botaoAtalho:hover {
+  background: #ffb6c4;
+}
+
+.botaoAtalho svg {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 /* =========================================================

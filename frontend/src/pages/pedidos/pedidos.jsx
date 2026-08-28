@@ -33,7 +33,7 @@ function Pedidos() {
 
                 <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
 
-                <div className="conteudoPedidos"> {/*Div com o conteúdo da página*/}
+                <div className="conteudoPedidos conteudoPedidos2"> {/*Div com o conteúdo da página*/}
 
                     {/*linha de cima: título + subtítulo*/}
                     <div className="topoPedidos">

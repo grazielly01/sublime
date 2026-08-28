@@ -14,7 +14,7 @@ function MinhaConta() {
                 <Header nomeIndustria="Sweet Sunset"/> 
                 {/*componente header*/}
        
-                <div className="conteudoMinhaConta"> {/*Div com o conteúdo da página*/}
+                <div className="conteudoMinhaConta conteudoMinhaConta2"> {/*Div com o conteúdo da página*/}
 
                     <h1 className="tituloMinhaConta">Minha conta</h1>
                     <p className="subtituloMinhaConta">Suas informações pessoais</p>

@@ -14,7 +14,7 @@ function Configuracoes() {
         {/* Cabeçalho branco no topo. APROVADO */}
         <Header nomeIndustria="Sweet Sunset" />
 
-        <div className="conteudoConfiguracoes">
+        <div className="conteudoConfiguracoes conteudoConfiguracoes2">
           <div className="topoConfiguracoes">
             <h1 className="tituloConfiguracoes">Configurações</h1>
             <p className="subtituloConfiguracoes">

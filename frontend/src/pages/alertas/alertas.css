@@ -21,14 +21,16 @@
     background-color: #FDEDE8;
 }
 
-
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
 
 .conteudoAlertas{
-        margin-top: -24px;
     padding-top: 6%;
     box-sizing: border-box;
+}
+
+.conteudoAlertas2{
+    margin-top: 3.7%;
 }
 
 

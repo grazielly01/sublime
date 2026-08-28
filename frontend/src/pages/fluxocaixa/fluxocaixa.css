@@ -1,6 +1,6 @@
 .tudoFluxoCaixa {
    width: 93%;
-    min-height: 160vh; /*min-height ao inves de height fixo*/
+    min-height: 170vh; /*min-height ao inves de height fixo*/
     display: flex;
 }
 
@@ -31,13 +31,6 @@
   margin-top: 15px;  
   margin-bottom: 20px;
 }
-
-.tituloComVoltar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
 
 
 .tituloFluxoCaixa {
