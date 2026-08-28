@@ -1,4 +1,4 @@
-import "./estoque.css";
+ import "./estoque.css";
 import { Link } from "react-router-dom";
 import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes. APROVADO*/
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
@@ -113,14 +113,14 @@ function Estoque() {
                         <tbody>
                            
                             {insumos.map((insumo, index) => (     /*.map() percorre a lista "insumos" e cria uma linha <tr> pra cada insumo, index conta o numero de insumos*/
-                                <tr key={index}>  
-                                <td>                {/*a key da tag <tr> vai ser o index (quantidade de insumos)*/}
-                                 <Link to="/estoque/detalhes" 
-                                 className="botaoDetalhesInsumo">
-                                     <td> {insumo.nome} </td> {/*.nome: pega o valor do nome do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
-                                      </Link>  
-                                     </td>  {/*.nome: pega o valor do nome do insumo la no array*/}  
-                                   
+                                <tr key={index}>    
+                                <td>         {/*a key da tag <tr> vai ser o index (quantidade de insumos)*/}
+                                <Link to="/estoque/detalhes" className="botaoDetalhesInsumo">
+                                {insumo.nome} 
+                                </Link>
+                                </td>  {/*.nome: pega o valor do nome do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
+                                {/*.nome: pega o valor do nome do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
+                      
                                   
                                     <td className="loteInsumo">{insumo.lote}</td>  {/*.lote: pega o valor do lote do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
                                     <td>{insumo.quantidade}</td>                   {/*.quantidade: pega o valor da quantidade do insumo la no array*/}
