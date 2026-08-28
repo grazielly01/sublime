@@ -14,7 +14,7 @@ body {
 }
 .tudoVisaoGeral {
   display: flex;
-  min-height: 100vh;
+  min-height: 170vh;
   background: #FDEDE8; /* Cor de fundo rosada/creme uniforme */
   font-family: "Inter", system-ui, sans-serif;
   width: 100%;

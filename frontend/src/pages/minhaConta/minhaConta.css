@@ -21,6 +21,10 @@
     background-color: #FDEDE8;
 }
 
+.tudoMenosSidebarMinhaConta{
+    position: fixed;
+}
+
 
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
@@ -74,6 +78,7 @@
     border: 1px solid #870B22;
     margin-left: 2%;
     box-shadow:  -3px 3px 15px rgba(0, 0, 0, 0.3);
+    margin-right: 12%; 
 }
 
 .infosAbaEsquerda{
@@ -149,11 +154,37 @@
     margin-bottom: 4%;
 }
 
-.buttonAlterarFoto{
-    background-color: rgb(255, 217, 0);
-    width: 39%;
-    height: 14%;
+.inputAlterarFoto{
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.botaoAlterarFoto{
     display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 170px;
+    height: 40px;
+    background-color: #870B22;
+    color: white;
+    border: 1px solid #870B22;
+    border-radius: 25px;
+    font-family: Arial, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+.botaoAlterarFoto:hover{
+    background-color: #6f091c;
 }
 
 .infosAbaDireita{
@@ -181,7 +212,7 @@
 }
 
 .outrosInputs Input{
-    width: 418%;
+    width: 430%;
     margin-bottom: 8%;
     margin-top: 2%;
 }

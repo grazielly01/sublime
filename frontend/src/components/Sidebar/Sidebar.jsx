@@ -167,7 +167,7 @@ function Sidebar() {
          </svg>
          </span>
            <span className="textoItem">Sair</span>
-            </Link>
+        </Link>
         </div>
       </nav>
     </div>

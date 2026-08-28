@@ -16,6 +16,10 @@
     background-color: #FDEDE8;
 }
 
+.tudoMenosSidebarConfiguracoes{
+    position: fixed;
+}
+
 
 .conteudoConfiguracoes {
     padding-top: 6%;

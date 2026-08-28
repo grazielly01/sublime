@@ -92,25 +92,17 @@ function Calendario() {
 
             <Sidebar paginaAtiva="Calendário" /> {/*Menu lateral, coloquei "Calendário" como página ativa para "Calendário" no menu lateral ficar clarinho*/}
 
-            <div className="tudoMenosSidebar"> {/*Tudo menos o sidebar q ta acima*/}
+            <div className="tudoMenosSidebar tudoMenosSidebarCalendario"> {/*Tudo menos o sidebar q ta acima*/}
 
                 <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
 
                 <div className="conteudoCalendario"> {/*Div com o conteúdo da página*/}
+                <div></div>
 
                     {/*linha de cima: título + subtítulo*/}
                     <div className="topoCalendario">
                         <h1 className="tituloCalendario">Calendário</h1>
                         <p className="subtituloCalendario">Planejamento de produção, compras, entregas e pagamentos.</p>
-                    </div>
-
-                    {/*barra  com o botão "+ Novo evento"*/}
-                    <div className="barraNovoEvento">
-                        <div className="botaoNovoEvento"> {/*ainda sem onClick pq nao tem backend*/}
-                            <Link to="/calendario/registrar" className="botaoNovoEvento">
-                                <Button texto="+ Novo evento" />
-                            </Link>
-                        </div>
                     </div>
 
                     {/*"janela" branca com o calendário em si*/}
@@ -179,13 +171,22 @@ function Calendario() {
                             })}
                         </div>
 
-                        {/*legenda das categorias*/}
-                        <div className="legendaCategorias">
-                            <span className="tagEvento producao">Produção</span>
-                            <span className="tagEvento entrega">Entrega</span>
-                            <span className="tagEvento compra">Compra</span>
-                            <span className="tagEvento pagamento">Pagamento</span>
-                            <span className="tagEvento outro">Outro</span>
+                        <div className="rodapeCalendario">
+                            {/*legenda das categorias*/}
+                            <div className="legendaCategorias">
+                                <span className="tagEvento producao">Produção</span>
+                                <span className="tagEvento entrega">Entrega</span>
+                                <span className="tagEvento compra">Compra</span>
+                                <span className="tagEvento pagamento">Pagamento</span>
+                                <span className="tagEvento outro">Outro</span>
+                            </div>
+
+                            {/* botao de add evento*/}
+                            <div className="divBotaoNovoEvento">
+                                <Link to="/calendario/registrar" className="botaoNovoEvento">
+                                    <Button texto="+ Novo evento" />
+                                </Link>
+                            </div>
                         </div>
                     </div>
                 </div>

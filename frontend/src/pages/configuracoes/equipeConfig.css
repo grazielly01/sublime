@@ -4,10 +4,11 @@
 
 .tudoEquipeConfig {
   display: flex;
-  min-height: 100vh;
+  min-height: 170vh;
   width: 100%;
-  background: #fff5f3;
+  background: #FDEDE8;
   box-sizing: border-box;
+  margin-left: -3.5%;
 }
 
 .tudoMenosSidebar {
@@ -20,8 +21,9 @@
 .conteudoEquipeConfig {
   flex: 1;
   width: 100%;
-  padding: 38px 60px 60px;
+  padding: 0px 0px 0px;
   box-sizing: border-box;
+  margin-top: -2.4%;
 }
 
 /* =========================================================
@@ -96,21 +98,15 @@
 .botaoRegistrarColaborador {
   min-height: 46px;
   padding: 0 24px;
-
   background: #9d0926;
   color: #ffffff;
-
   border: none;
   border-radius: 10px;
-
   font-family: "Inter", sans-serif;
   font-size: 14px;
   font-weight: 700;
-
   cursor: pointer;
-
   white-space: nowrap;
-
   transition:
     background-color 0.2s ease,
     transform 0.15s ease,
@@ -134,12 +130,9 @@
 .containerTabelaEquipe {
   width: 100%;
   overflow-x: auto;
-
   background: #fff9f7;
-
   border: 1px solid #efc5c8;
   border-radius: 14px;
-
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
 }
 
@@ -151,10 +144,8 @@
 .tabelaEquipeConfig {
   width: 100%;
   min-width: 850px;
-
   border-collapse: collapse;
   border-spacing: 0;
-
   background: #fff9f7;
 }
 
@@ -171,24 +162,17 @@
 .fotoColaborador {
   width: 42px;
   height: 42px;
-
   min-width: 42px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   border-radius: 50%;
-
   background: #ffe5e8;
   border: 1px solid #efc5c8;
-
   color: #8e0d24;
-
   font-family: "Inter", sans-serif;
   font-size: 15px;
   font-weight: 700;
-
   overflow: hidden;
 }
 
