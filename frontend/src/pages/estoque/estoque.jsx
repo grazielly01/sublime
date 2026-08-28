@@ -114,10 +114,13 @@ function Estoque() {
                            
                             {insumos.map((insumo, index) => (     /*.map() percorre a lista "insumos" e cria uma linha <tr> pra cada insumo, index conta o numero de insumos*/
                                 <tr key={index}>                  {/*a key da tag <tr> vai ser o index (quantidade de insumos)*/}
+                                 <Link to="/estoque/detalhes" className="botaoDetalhesInsumo">
                                 <td>
-                                    {insumo.nome} 
+                                     <td className="nomeInsumo">{insumo.nome} </td>  {/*.nome: pega o valor do nome do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
 
-                                    </td>  {/*.nome: pega o valor do nome do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
+                                     
+                                       </td>  {/*.nome: pega o valor do nome do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
+                                    </Link>
                                   
                                     <td className="loteInsumo">{insumo.lote}</td>  {/*.lote: pega o valor do lote do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
                                     <td>{insumo.quantidade}</td>                   {/*.quantidade: pega o valor da quantidade do insumo la no array*/}
