@@ -44,19 +44,18 @@
 }
 
 .botaoVoltarMeta {
-  background: transparent;
-  border: none;
-  color: #7A0C22;
-  font-family: Arial, sans-serif;
-  font-size: 38px;
-  font-weight: 300;
-  line-height: 1;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
+    display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.15s ease;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #efbfc4;
+  border-radius: 50%;
+  background: #fff9f7;
+  color: #8E1027;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
 }
 
 .botaoVoltarMeta:hover {

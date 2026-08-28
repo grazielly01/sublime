@@ -48,7 +48,7 @@ function MetaVisaoGeral() {
                 onClick={() => navigate(-1)}
                 title="Voltar"
               >
-                ←
+                ‹
               </button>
               <h1 className="tituloMetaVisaoGeral">Metas</h1>
             </div>
