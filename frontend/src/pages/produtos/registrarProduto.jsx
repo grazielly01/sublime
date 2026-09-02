@@ -5,6 +5,7 @@ import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o com
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
 import Select from "../../componentes/Select/Select.jsx";  /*Importando o componente Select da pasta componentes*/
 import Textarea from "../../componentes/TextArea/TextArea.jsx";  /*Importando o componente Textarea da pasta componentes*/
+import { motion } from "motion/react";
 
 function RegistrarProdutos() {
     return (

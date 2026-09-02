@@ -2,6 +2,7 @@ import "./sair.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 import Button from "../../componentes/Button/Button.jsx";
+import { motion } from "motion/react";
 
 function Sair() {
   return (
