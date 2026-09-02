@@ -6,6 +6,36 @@ import Select from "../../componentes/Select/Select.jsx";   /*Importando o compo
 
 
 function Cadastro() {
+
+    const [nome, setNome] = useState(""); // Variável nome. Campo vazio pois será preenchido por alguém, não terá informação automática.
+    const [email, setEmail] = useState("");
+    const [telefone, setTelefone] = useState("")
+    const [cargo, setCrago] = useState("");
+
+    const cadastrarUsuario = async () => {
+        try{
+            const resposta = await fetch("http://localhost:3000/usuarios", {
+                method: "POST",
+                headers: {
+                    "content-Type":"application/json"
+                },
+                body:JSON.stringify({
+                    nome,
+                    email,
+                    telefone,
+                    cargo
+
+                })
+            });
+
+            const dados = await resposta.json();
+
+            console.log(dados);
+        } catch (error) {
+            console.error("ERRO AO CADASTRAR USUÁRIO." , error);
+        }
+    };
+
     return (  /*já vai pro return pq nao precisa de nenhuma variavel ou nenhuma outra função ou nenhuma lógica por trás, só tem HTML (bagulhos visuais)*/
         <div className="tudoCadastro">
 
@@ -54,7 +84,8 @@ function Cadastro() {
                                 <path d="M20 21a8 8 0 0 0-16 0"/>
                             </svg>
 
-                            <Input id="inputNome" placeholder="Digite seu nome completo" type="text"/>
+                            <Input id="inputNome" placeholder="Digite seu nome completo" type="text" value={nome} onChange={(e) => setNome(e.target.value)}/> 
+
 
                         </div>
                     </div>
@@ -72,7 +103,7 @@ function Cadastro() {
                                 <path d="M13.832 16.568a1 1 0 0 0 1.213-.303l.355-.465A2 2 0 0 1 17 15h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2A18 18 0 0 1 2 4a2 2 0 0 1 2-2h3a2 2 0 0 1 2 2v3a2 2 0 0 1-.8 1.6l-.468.351a1 1 0 0 0-.292 1.233 14 14 0 0 0 6.392 6.384"/>
                             </svg>
 
-                            <Input id="inputTelefone" placeholder="(DDD) 9 0000-0000" type="text"/>
+                            <Input id="inputTelefone" placeholder="(DDD) 9 0000-0000" type="text" value={telefone} onChange={(e) => setTelefone(e.target.value)}/>
                         </div>
                     </div>
 
@@ -90,7 +121,7 @@ function Cadastro() {
                                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
                             </svg>
 
-                            <Input id="inputEmail" placeholder="Digite seu e-mail" type="email" />
+                            <Input id="inputEmail" placeholder="Digite seu e-mail" type="email" value={email} onChange={(e) => setEmail(e.target.value)}/>
                         </div>
                     </div>
                     
@@ -110,7 +141,7 @@ function Cadastro() {
                                 <path d="M8 16h.01"/>
                             </svg>
 
-                            <Input id="inputNomeFabrica" placeholder="Digite o nome da fábrica ou empresa" type="email" />
+                            <Input id="inputNomeFabrica" placeholder="Digite o nome da fábrica ou empresa" type="text" value={nomeFabrica} onChange={(e) => setnomeFabrica(e.target.value)}/>
                         </div>
                     </div>
 
@@ -119,12 +150,16 @@ function Cadastro() {
                     {/*campo de selecionar cargo*/}
                     <div className="campoCadastro">
                     <label className="labelCampo">Selecione seu cargo:</label>
-                        <Select id="selectCargo" options={[
+                        <Select 
+                        id="selectCargo" 
+                        options={[
                             "Gerente/sub-gerente",
                             "Gerente de produção",
                             "Gerente de estoque",
                             "Gerente comercial"
-                        ]} />
+                        ]}
+                        value={cargo} onChange={(e) => setCrago(e.target.value)}
+                        />
                     </div>
 
                     <div className="espacoEntreInputs"></div>
@@ -168,7 +203,7 @@ function Cadastro() {
                     <div className="espacoEntreInputs"></div>
 
                     {/*botão de entrar, ainda sem onClick, sem backend/login de verdade ainda*/}
-                    <div className="botaoCadastrar"><Button texto="Cadastrar" /></div>
+                    <div className="botaoCadastrar"><Button texto="Cadastrar" onClick={cadastrarUsuario}/> </div>
 
 
                 </div>

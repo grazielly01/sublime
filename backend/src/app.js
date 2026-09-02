@@ -12,7 +12,7 @@ app.use(usuarioRoutes);
 // Rota raiz para testar se a API está viva
 app.get("/", (req, res) => {
   res.json({
-    mensagem: "API DO SUBLIME FUNCIONANDO!" //http://localhost:3000/
+    mensagem: "API DO SUBLIME FUNCIONANDO!" //http://localhost:300n0/
   });
 });
 
