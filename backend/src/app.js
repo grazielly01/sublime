@@ -1,19 +1,24 @@
-const express = require("express");
+const express = require('express');
+const cors = require('cors');
+
+// 1. PRIMEIRO: Importe as rotas antes de usá-las
 const usuarioRoutes = require("./routes/usuarioRoutes");
 
 const app = express();
 
-// O express.json() OBRIGATORIAMENTE precisa vir antes das rotas
-app.use(express.json());
+// 2. Middlewares essenciais
+app.use(cors()); // Libera o CORS para qualquer origem
+app.use(express.json()); // Habilita o recebimento de JSON
 
-// Ativa as suas rotas de usuário
+// 3. Registre as rotas da aplicação
 app.use(usuarioRoutes);
 
-// Rota raiz para testar se a API está viva
+// 4. Rota raiz de teste
 app.get("/", (req, res) => {
   res.json({
-    mensagem: "API DO SUBLIME FUNCIONANDO!" //http://localhost:3000/
+    mensagem: "API DO SUBLIME FUNCIONANDO!"
   });
 });
 
+// 5. ULTIMA LINHA: Exportação FORA de qualquer rota/função
 module.exports = app;

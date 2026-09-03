@@ -2,7 +2,8 @@ class UsuarioController {
   async listar(req, res) {
     return res.json([
       { id: 1, nome: "Usuário Teste 1" },
-      { id: 2, nome: "Usuário Teste 2" }
+      { id: 2, nome: "Usuário Teste 2" },
+      { id: 3, nome: "Usuário Teste 3" }
     ]);
   }
 
