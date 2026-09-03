@@ -1,6 +1,7 @@
 import "./dashboard.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
+import { motion } from "motion/react";
 
 function Dashboard() {
   const resumo = [

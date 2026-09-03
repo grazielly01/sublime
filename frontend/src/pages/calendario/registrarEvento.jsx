@@ -4,6 +4,7 @@ import Button from "../../componentes/Button/Button.jsx";   /*Importando o compo
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
 import Select from "../../componentes/Select/Select.jsx";  /*Importando o componente Select da pasta componentes*/
+import { motion } from "motion/react";
 
 function RegistrarEvento() {
     return (

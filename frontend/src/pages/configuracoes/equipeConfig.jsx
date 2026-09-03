@@ -2,6 +2,7 @@ import "./equipeConfig.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 import { useNavigate } from "react-router-dom";
+import { motion } from "motion/react";
 
 function EquipeConfig() {
   const navigate = useNavigate();

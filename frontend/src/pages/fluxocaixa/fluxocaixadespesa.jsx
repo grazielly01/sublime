@@ -2,6 +2,7 @@ import "./fluxocaixadespesa.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 import { useNavigate } from "react-router-dom";
+import { motion } from "motion/react";
 
 const IconeSetaSaida = () => (
   <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
