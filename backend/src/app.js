@@ -4,7 +4,7 @@ const usuarioRoutes = require("./routes/usuarioRoutes");
 const app = express();
 
 // O express.json() OBRIGATORIAMENTE precisa vir antes das rotas
-app.use(express.json());
+app.use(express.json()); // commit
 
 // Ativa as suas rotas de usuário
 app.use(usuarioRoutes);
