@@ -158,7 +158,7 @@
 
 /*sobrescrevendo só o Button "Detalhes" nessa tela, pra ficar pequeno e com fundo clarinho*/
 .botaoDetalhes .button{
-    width: auto;
+    width: 300px;
     padding: 8px 20px;
     font-size: 14px;
     background-color: #FFEBE3;
