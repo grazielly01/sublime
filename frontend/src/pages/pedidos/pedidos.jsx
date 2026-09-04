@@ -8,7 +8,7 @@ import { motion } from "motion/react";
 function Pedidos() {
 
     /*Lista de pedidos (só pra gente visualizar a tela). Quando o backend existir, essa lista vai vir do banco de dados responsável pelos 
-    pedidos coletados do estabelecimento, e cadastrar essas infos.*/
+    pedidos coletados do estabelecimento, e cadastrar essas infos. A*/
     
     const pedidos = [
         { estabelecimento: "Padaria São José", itens: "4 itens", entrega: "entrega 19/05 16h", valor: "R$ 2.840", status: "producao", statusTexto: "Em produção" },
