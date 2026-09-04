@@ -1,6 +1,6 @@
-Sublime - Sistema ERP
+Sublime - Sistema Inteligente
 
-Sistema de gestão para fábricas de confeitariade médio a grande porte, capaz de organizar processos, automatizar tarefas e melhorar a eficiência operacional.
+Sistema Inteligente de gestão para fábricas de confeitaria de médio a grande porte, capaz de organizar processos, automatizar tarefas e melhorar a eficiência operacional.
 
 Tecnologias
 
