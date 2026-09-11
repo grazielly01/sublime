@@ -260,7 +260,13 @@ function Dashboard() {
               </p>
             </div>
 
-            <div className="acoesDashboard">
+            {/*Tava aq*/}
+
+          </div>
+          
+          {/* PERÍODOS E EXPORTAR */}
+          <div className=" divSeiLa">
+          <div className="acoesDashboard">
               <button className="botaoPeriodo">7d</button>
               <button className="botaoPeriodo ativo">30d</button>
               <button className="botaoPeriodo">90d</button>
@@ -274,7 +280,7 @@ function Dashboard() {
                 ↓ Exportar
               </button>
             </div>
-          </div>
+            </div>
 
           {/* RESUMO POR SETOR */}
           <section className="secaoDashboard">
