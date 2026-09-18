@@ -30,12 +30,13 @@
     display: flex;
     align-items: center;
     gap: 16px;
+    margin-bottom: 2%;
 }
 
 .tituloRegistrarProdutos{
-    margin: 0;
     font-size: 350%;
     color: #870B22;
+    font-weight: 600;
 }
 
 .svgSetinha{

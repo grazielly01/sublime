@@ -35,6 +35,10 @@ function DetalhesProdutos() {
 
                 <div className="conteudoDetalhesProdutos"> {/*Div com o conteúdo da página*/}
 
+
+                    {/*"janela" branca com os dados do produto; todos os campos ficam disabled pq aqui é só pra visualizar, não pra editar*/}
+                    <div className="janelaDetalhesProdutos">
+
                     <div className="tituloESetinha">
                         <svg className="svgSetinha" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#870B22" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M6 8L2 12L6 16"/>
@@ -43,8 +47,6 @@ function DetalhesProdutos() {
                         <h1 className="tituloDetalhesProdutos">Detalhes do produto</h1>
                     </div>
 
-                    {/*"janela" branca com os dados do produto; todos os campos ficam disabled pq aqui é só pra visualizar, não pra editar*/}
-                    <div className="janelaDetalhesProdutos">
 
                         <div className="areaFormulario">
 
@@ -127,9 +129,7 @@ function DetalhesProdutos() {
 
                         </div>
 
-                    </div>
-
-                    {/*botões de ação: "Excluir" - leva pra tela de confirmação apagarProduto, e "Editar" (nao funciona ainda)*/}
+                    {/*botões de ação: "Excluir": leva pra tela de confirmação apagarProduto, e "Editar" (nao funciona ainda)*/}
                     <div className="botoesDetalhesProdutos">
                         <div className="botaoContorno">
                             <Link to="/produtos/apagar" className="botaoDetalhesProduto">
@@ -138,6 +138,9 @@ function DetalhesProdutos() {
                         </div>
                         <Button texto="Editar" />
                     </div>
+
+                    </div>
+
 
                 </div>
 

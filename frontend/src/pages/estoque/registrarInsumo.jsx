@@ -18,6 +18,10 @@ function RegistrarInsumo() {
 
                 <div className="conteudoRegistrarInsumo"> {/*Div com o conteúdo da página*/}
 
+
+                    {/*"janela" branca com os dados do insumo -- todos os campos ficam disabled, pq aqui é só pra visualizar, não pra editar*/}
+                    <div className="janelaRegistrarInsumo">
+
                     <div className="tituloESetinha">
                         <svg className="svgSetinha" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#870B22" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M6 8L2 12L6 16"/>
@@ -25,9 +29,6 @@ function RegistrarInsumo() {
                         </svg>
                         <h1 className="tituloRegistrarInsumo">Registrar novo insumo</h1>
                     </div>
-
-                    {/*"janela" branca com os dados do insumo -- todos os campos ficam disabled, pq aqui é só pra visualizar, não pra editar*/}
-                    <div className="janelaRegistrarInsumo">
 
                         <div className="linha1">
 
@@ -91,14 +92,14 @@ function RegistrarInsumo() {
 
                         </div>
 
-                    </div>
-
                     {/*botões de ação: "Excluir" (contorno, leva pra tela de confirmação apagarInsumo) e "Editar" (preenchido)*/}
                     <div className="botoesRegistrarInsumo">
                         <div className="botaoContorno">
                             <Button texto="Cancelar" />
                         </div>
                         <Button texto="Registrar" />
+                    </div>
+
                     </div>
 
                 </div>

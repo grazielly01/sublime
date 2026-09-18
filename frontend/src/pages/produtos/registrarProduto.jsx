@@ -19,6 +19,9 @@ function RegistrarProdutos() {
 
                 <div className="conteudoRegistrarProdutos"> {/*Div com o conteúdo da página*/}
 
+                    {/*"janela" branca com os dados do produto*/}
+                    <div className="janelaRegistrarProdutos">
+
                     <div className="tituloESetinha">
                         <svg className="svgSetinha" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#870B22" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M6 8L2 12L6 16"/>
@@ -26,9 +29,6 @@ function RegistrarProdutos() {
                         </svg>
                         <h1 className="tituloRegistrarProdutos">Registrar novo produto</h1>
                     </div>
-
-                    {/*"janela" branca com os dados do produto*/}
-                    <div className="janelaRegistrarProdutos">
 
                         <div className="areaFormulario"> {/*divide a janela em 2 colunas: campos (esquerda) e imagem + valores (direita)*/}
 
@@ -125,14 +125,15 @@ function RegistrarProdutos() {
 
                         </div>
 
-                    </div>
-
-                    {/*botoes Cancelar e Registrar (preenchido)*/}
+                                            {/*botoes Cancelar e Registrar*/}
                     <div className="botoesRegistrarProdutos">
                         <div className="botaoContorno">
                             <Button texto="Cancelar" />
                         </div>
                         <Button texto="Registrar" />
+                    </div>
+
+
                     </div>
 
                 </div>

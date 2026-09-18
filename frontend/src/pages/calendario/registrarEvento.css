@@ -22,7 +22,6 @@
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
 .conteudoRegistrarEvento{
-    padding-top: 6%;
     box-sizing: border-box;
 }
 
@@ -36,6 +35,7 @@
     margin: 0;
     font-size: 350%;
     color: #870B22;
+    font-weight: 600;
 }
 
 .svgSetinha{
@@ -50,7 +50,7 @@
     border: 1px solid #870B22;
     border-radius: 12px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    padding: 28px 32px;
+    padding: 18px 32px;
     margin-top: 32px;
     display: flex;
     flex-direction: column;
@@ -90,10 +90,6 @@ label span{
 
 .campoPrazoEvento{
     flex: 1;
-}
-
-#inputPrazo{
-    width: 149%;
 }
 
 .campoDescricaoEvento{
@@ -140,7 +136,7 @@ label span{
     display: flex;
     justify-content: flex-end;
     gap: 16px;
-    margin-top: 28px;
+    margin-top: 5px;
 }
 
 .botoesRegistrarEvento .button{
