@@ -18,6 +18,10 @@ function RegistrarEvento() {
 
                 <div className="conteudoRegistrarEvento"> {/*Div com o conteúdo da página*/}
 
+
+                    {/*janela branca com os dados do evento*/}
+                    <div className="janelaRegistrarEvento">
+
                     <div className="tituloESetinha">
                         <svg className="svgSetinha" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#870B22" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M6 8L2 12L6 16"/>
@@ -25,9 +29,6 @@ function RegistrarEvento() {
                         </svg>
                         <h1 className="tituloRegistrarEvento">Registrar novo evento</h1>
                     </div>
-
-                    {/*janela branca com os dados do evento*/}
-                    <div className="janelaRegistrarEvento">
 
                         <div className="linha1">
 
@@ -68,15 +69,16 @@ function RegistrarEvento() {
 
                         </div>
 
-                    </div>
-
-                    {/*botões: "Cancelar" e "Registrar"*/}
+                        {/*botões: "Cancelar" e "Registrar"*/}
                     <div className="botoesRegistrarEvento">
                         <div className="botaoContorno">
                             <Button texto="Cancelar" />
                         </div>
                         <Button texto="Registrar" />
                     </div>
+
+                    </div>
+
 
                 </div>
 
