@@ -15,7 +15,7 @@ function Sair() {
           <div className="caixaConfirmacao">
             <p className="textoConfirmacao">Tem certeza de que deseja sair?</p>
     <div className="botaosair">
-  <Button
+  <Button 
     texto="Sair"
     onClick={() => (window.location.href = "/login")}
   />

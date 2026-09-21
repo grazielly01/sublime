@@ -10,8 +10,7 @@
 
 /* Header da página Produção */
 .production-page .header {
-  margin-top: 35px;
-  padding-top: 0;
+  padding-top: 0px;
   box-sizing: border-box;
 }
 
@@ -29,12 +28,12 @@ main {
   width: 100%;
   max-width: none;
 
-  margin-left: 0;
+  margin-left: 65px;
   margin-right: 0;
-  margin-top: 45px;
+  margin-top: 65px;
 
   padding-left: 5px;
-  padding-right: 5px;
+  padding-right: 12%;
   padding-bottom: 40px;
 
   box-sizing: border-box;
@@ -53,7 +52,7 @@ main {
    margin: 0;
 
     font-family: "Inter", serif;
-    font-size: 37px;
+    font-size: 290%;
     font-weight: 700;
     line-height: 2;
 
