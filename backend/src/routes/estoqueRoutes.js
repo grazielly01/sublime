@@ -1,6 +1,6 @@
-const { Router } = require('express');
-const usuarioController = require('../routes/estoqueRoutes');
+//const { Router } = require('express');
+//const usuarioController = require('../routes/estoqueRoutes');
 
-const routes = Router();
+//const routes = Router();
 
-module.exports = Router;
+//module.exports = Router;
