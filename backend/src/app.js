@@ -1,6 +1,5 @@
 const express = require('express');
 const cors = require('cors');
-const sequelize = require("./config/database");
 const router = express.Router();
 
 // 1. PRIMEIRO: Importe as rotas antes de usá-las
@@ -27,20 +26,3 @@ app.get("/", (req, res) => {
     mensagem: "API DO SUBLIME FUNCIONANDO!"
   });
 });
-
-sequelize.authenticate()
-.then(() => {
-    console.log("Banco conectado com sucesso!");
-    app.listen(PORT,() => {
-   console.log(`Servidor rodando na porta ${PORT}`);
-
-});
-})
-
-.catch((error) => {
-console.error("ERRO AO CONECTAR COM O BANCO:", error);
-});
-
-// 5. ULTIMA LINHA: Exportação FORA de qualquer rota/função
-
-module.exports = router; 
