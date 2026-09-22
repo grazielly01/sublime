@@ -18,7 +18,7 @@
     min-width: 0;
     min-height: 100vh;
     box-sizing: border-box;
-    margin-left: -40px; /* Largura da Sidebar fechada */
+    margin-left: 33px; /* Largura da Sidebar fechada */
     padding-top: 10px; /* Compensa a altura da Header fixa */
     background-color: #FDEDE8;
   }
@@ -55,7 +55,7 @@
   }
 
   .tituloProdutos{
-    font-size: 350%;
+    font-size: 290%;
   }
   
   
