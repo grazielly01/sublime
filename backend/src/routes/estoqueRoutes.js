@@ -1,6 +1,8 @@
-//const { Router } = require('express');
-//const usuarioController = require('../routes/estoqueRoutes');
+const { Router } = require('express');
+const estoqueController = require('../controllers/estoqueController');
 
-//const routes = Router();
+const routes = Router();
 
-//module.exports = Router;
+routes.get('/', estoqueController.listar);
+
+module.exports = routes;

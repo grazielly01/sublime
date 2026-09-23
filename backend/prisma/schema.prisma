@@ -1,17 +1,33 @@
-//Tabelas
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
 }
 
 model Usuario {
   id        Int      @id @default(autoincrement())
   nome      String
   email     String   @unique
+  senha     String
+  criadoEm  DateTime @default(now())
+}
+
+model Insumo {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  lote       String
+  quantidade Int      @default(0)
+  minimo     Int      @default(0)
+  validade   DateTime
+  custo      Float
+  criadoEm   DateTime @default(now())
+}
+
+model Pedido {
+  id        Int      @id @default(autoincrement())
+  valor     Float
+  status    String   @default("PENDENTE")
   criadoEm  DateTime @default(now())
 }

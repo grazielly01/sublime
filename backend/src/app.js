@@ -2,32 +2,26 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 
-// Importação das rotas
-const routes = require('./routes');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const estoqueRoutes = require('./routes/estoqueRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
 
 const app = express();
 
-// 1. Middlewares globais
-app.use(cors());          // Permite requisições de outros domínios (Frontend)
-app.use(express.json());  // Permite interpretar requisições com corpo em JSON
+app.use(cors());
+app.use(express.json());
 
-// 2. Rota raiz de teste
 app.get('/', (req, res) => {
-  res.json({
-    mensagem: 'API DO SUBLIME FUNCIONANDO!'
-  });
+  res.json({ mensagem: 'API DO SUBLIME FUNCIONANDO!' });
 });
 
-// 3. Registro de rotas com prefixos (Prática recomendada)
 app.use('/usuarios', usuarioRoutes);
 app.use('/estoque', estoqueRoutes);
-app.use(routes);
+app.use('/dashboard', dashboardRoutes);
 
-// 4. Inicialização do servidor
 const PORT = process.env.PORT || 3000;
 
+// Esta instrução segura o processo do Node ativo:
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`🚀 Servidor rodando na porta ${PORT}`);
 });
