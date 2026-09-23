@@ -3,7 +3,7 @@ const usuarioController = require('../controllers/usuarioController');
 
 const routes = Router();
 
-routes.get('/usuarios', usuarioController.listar);
-routes.post('/usuarios', usuarioController.criar);
+routes.get('/usuarios', usuarioController.listarUsuarios);
+routes.post('/usuarios', usuarioController.criarUsuario);
 
 module.exports = routes;
