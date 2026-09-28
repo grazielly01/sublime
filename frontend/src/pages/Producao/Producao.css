@@ -107,7 +107,7 @@ main {
 
 .metric-number {
   margin-bottom: 8px;
-  font: 700 32px "Playfair Display", serif;
+  font: 700 32px serif;
 }
 
 .metric-number.wine {
@@ -150,7 +150,7 @@ main {
 
 .queue h2 {
   margin: 0 0 26px;
-  font: 700 20px "Playfair Display", serif;
+  font: 700 20px "Inter", serif;
 }
 
 .orders {
@@ -174,7 +174,7 @@ main {
 
 .order h3 {
   margin: 0 0 3px;
-  font: 700 22px "Playfair Display", serif;
+  font: 550 19px "Inter", serif;
 }
 
 .team,

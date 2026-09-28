@@ -1,6 +1,6 @@
 .tudoFluxoCaixa {
    width: 93%;
-    min-height: 170vh; /*min-height ao inves de height fixo*/
+    min-height: 170vh; 
     display: flex;
 }
 
@@ -16,11 +16,13 @@
 
 .conteudoFluxoCaixa {
   flex: 1;
-  width: 94%;
-  max-width: 1440px;
-  padding: 0;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 56px 6px 60px;
   box-sizing: border-box;
 }
+
 
 
 /* =====================================================
@@ -28,7 +30,7 @@
 ===================================================== */
 
 .topoFluxoCaixa {
-  margin-top: 15px;  
+  margin-top: -16px;  
   margin-bottom: 20px;
 }
 
@@ -66,7 +68,7 @@
 .cardFluxo {
   min-height: 58px;
   background: #fff9f7;
-  border: 1px solid #8E1027;
+  border: 1px solid #ead1d0;
   border-radius: 7px;
   padding: 0px 14px;
   box-sizing: border-box;
@@ -78,19 +80,23 @@
 }
 
 .labelFluxo {
-  color: #76545a;
-  font: 600 12px "Inter", sans-serif;
-  margin-bottom: 4px;
+
+  font: 500 11px "Inter", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+  color: #704149;
+
 }
 
 .valorFluxo {
   color: #241416;
-  font: 700 20px "Playfair Display", serif;
+  font: 600 18px "Inter", serif;
 }
 
 .cardSaldoFinal {
   background: #9d0926;
-  border-color: #9d0926;
+  border-color: #ead1d0;
 }
 
 .cardSaldoFinal .labelFluxo {
@@ -114,7 +120,7 @@
   box-shadow: 0 1px 3px rgba(80, 20, 30, 0.06);
   overflow: hidden;
   margin-bottom: 2.5%;
-  border: 1px solid #8E1027;
+  border: 1px solid #ead1d0;
 }
 
 .cardGraficoFluxo {
@@ -133,8 +139,8 @@
 .cabecalhoCardFluxo h2 {
   margin: 0;
   color: #241416;
-  font: 700 16px "Playfair Display", serif;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font: 600 16px "Inter", serif;
+  font-family: "Inter", 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 
