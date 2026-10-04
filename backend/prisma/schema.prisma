@@ -6,12 +6,13 @@ datasource db {
   provider = "mysql"
 }
 
+
 model Usuario {
-  id        Int      @id @default(autoincrement())
-  nome      String
-  email     String   @unique
-  senha     String
-  criadoEm  DateTime @default(now())
+  id       Int      @id @default(autoincrement())
+  nome     String
+  email    String   @unique
+  senha    String
+  criadoEm DateTime @default(now())
 }
 
 model Insumo {
@@ -26,8 +27,42 @@ model Insumo {
 }
 
 model Pedido {
-  id        Int      @id @default(autoincrement())
-  valor     Float
-  status    String   @default("PENDENTE")
-  criadoEm  DateTime @default(now())
+  id       Int      @id @default(autoincrement())
+  valor    Float
+  status   String   @default("PENDENTE")
+  criadoEm DateTime @default(now())
+}
+
+// -----------------------------------------------------------------
+// ENUMS E MODELOS PARA FLUXO DE CAIXA
+// -----------------------------------------------------------------
+
+enum TipoCaixa {
+  ENTRADA // ENTRADA
+  SAIDA   // SAÍDA
+}
+
+enum TipoCategoria {
+  FIXA     // Despesa Fixa
+  VARIAVEL // Despesa Variável
+  RECEITA  // Receitas/Vendas
+}
+
+model Categoria {
+  id       Int           @id @default(autoincrement())
+  nome     String        // Ex: "Matéria-prima", "Aluguel", "Salários"
+  tipo     TipoCategoria
+  caixas   Caixa[]       // Relação apontando para o modelo Caixa
+  criadoEm DateTime      @default(now())
+}
+
+model Caixa {
+  id          Int           @id @default(autoincrement())
+  descricao   String        // Ex: "Venda - Padaria São José", "Energia elétrica"
+  valor       Float         // Valor do movimento
+  tipo        TipoCaixa     // Usando o Enum TipoCaixa correto
+  data        DateTime      // Data da transação
+  categoriaId Int?
+  categoria   Categoria?    @relation(fields: [categoriaId], references: [id], onDelete: SetNull)
+  criadoEm    DateTime      @default(now())
 }
