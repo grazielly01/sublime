@@ -10,13 +10,13 @@
 body {
   margin: 0;
   padding: 0;
-  overflow-x: hidden; /* Trava qualquer vazamento na raiz */
+  overflow-x: hidden; 
 }
 .tudoVisaoGeral {
   display: flex;
   min-height: 170vh;
-  background: #FDEDE8; /* Cor de fundo rosada/creme uniforme */
-  font-family: "Inter", system-ui, sans-serif;
+  background: #FDEDE8; 
+  font-family: "Inter", sans-serif;
   width: 100%;
 }
 
@@ -26,8 +26,8 @@ body {
   display: flex;
   flex-direction: column;
   margin-right: 5%;
-  margin-left: 1%;  /* Espaço exato da Sidebar */
-  padding-top: 3.2%;  /* Espaço exato do Header */
+  margin-left: 1%;  
+  padding-top: 3.2%;  
   width: calc(100% - 60px);
 }
 
@@ -89,7 +89,7 @@ body {
   padding: 16px 20px;
   box-sizing: border-box;
   background: #ffffff;
-  border: 1px solid #8E1027;
+  border: 1px solid #f5c9d1d2;
   border-radius: 12px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
@@ -154,7 +154,6 @@ body {
    SEÇÕES GERAIS (Cards Brancos)
    ========================================================= */
 .pedidosRecentes,
-.produtosLucrativos,
 .metas,
 .atalhosRapidos {
   min-width: 0;
@@ -162,6 +161,16 @@ body {
   border: 1px solid #e5e7eb;
   border-radius: 12px;
   padding: 20px;
+  box-sizing: border-box;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.produtosLucrativos {
+  min-width: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 24px;
   box-sizing: border-box;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
@@ -186,9 +195,9 @@ body {
   background: #8E1027;
   color: #ffffff;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 500;
-  padding: 6px 12px;
+  padding: 3px 10px;
   cursor: pointer;
   transition: 0.2s;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
@@ -203,7 +212,7 @@ body {
 .botaoVerMais {
   display: block;
   margin: 16px auto 0;
-  padding: 8px 16px;
+  padding: 3px 10px;
 }
 
 /* =========================================================
@@ -220,14 +229,14 @@ body {
 }
 
 .pedidosRecentes{
-  border: 1px solid #8E1027;
+  border: 1px solid #f5c9d1d2;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .pedidosRecentes h2{
-  font-size:140%;
+  font-size:135%;
   font-weight: 600;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Inter", 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .cardPedidoRecente{
@@ -245,7 +254,7 @@ body {
   margin-right: 10px;
   border-radius: 16px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Inter", 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .ladoDireitoPedido{
@@ -387,15 +396,15 @@ body {
    PRODUTOS LUCRATIVOS
    ========================================================= */
 .produtosLucrativos{
-  border: 1px solid #8E1027;
+  border: 1px solid #f5c9d1d2;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
 .produtosLucrativos h2{
-  font-size: 190%;
-  font-weight: 600;
-  margin-left: 10px;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-size: 165%;
+  font-weight: 550;
+  margin-left: 9px;
+  font-family: "Inter", 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
    .listaProdutos {
@@ -422,7 +431,7 @@ body {
    METAS
    ========================================================= */
 .metas{
-  border: 1px solid #8E1027;
+  border: 1px solid #f5c9d1d2;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
@@ -430,7 +439,7 @@ body {
   font-size: 190%;
   font-weight: 600;
   margin-left: 10px;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Inter", 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .listaMetas{
@@ -459,7 +468,7 @@ body {
 
 .botaoVerMais{
   font-size: 150%;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Inter", 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   border-radius: 20px;
 }
 
@@ -467,7 +476,7 @@ body {
    ATALHOS
    ========================================================= */
 .atalhosRapidos{
-  border: 1px solid #8E1027;
+  border: 1px solid #f5c9d1d2;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
@@ -476,7 +485,7 @@ body {
   margin-bottom: 5%;
   font-weight: 600;
   margin-left: 10px;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Inter", 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 .listaAtalhos {

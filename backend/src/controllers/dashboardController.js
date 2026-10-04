@@ -1,4 +1,5 @@
 const prisma = require('../config/database');
+//const
 
 class DashboardController {
   async obterVisaoGeral(req, res) {

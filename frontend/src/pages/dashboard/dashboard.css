@@ -5,7 +5,7 @@
 
 .tudoDashboard {
    width: 97%;
-    min-height: 170vh; /*min-height ao inves de height fixo*/
+    min-height: 170vh; 
     display: flex;
     
 }
@@ -20,11 +20,12 @@
 }
 
 .conteudoDashboard {
+  margin-top: 1.7%;
   flex: 1;
   width: 100%;
   max-width: none;
   margin-left: 5px;
-  padding: 0; /* o espaçamento lateral já vem do margin-left do .tudoMenosSidebar */
+  padding: 0; 
   box-sizing: border-box;
 }
 
@@ -62,7 +63,7 @@
   display: flex;
   align-items: center;
   gap: 5px;
-  margin-left: auto; /*alinha pra direita*/
+  margin-left: auto;
 }
 
 .divSeiLa{
@@ -144,9 +145,9 @@
 .tituloSecaoDashboard h2 {
   margin: 0;
   color: #750415;
-  font-weight: 600;
+  font-weight: 680;
   font-size: 180%;
-  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  font-family: "Inter", 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
 }
 
 
@@ -295,7 +296,7 @@
 
 .valorKpiDashboard {
   color: #321217;
-  font: 700 22px "Playfair Display", serif;
+  font: 600 19px "Inter", serif;
 }
 
 
@@ -323,8 +324,9 @@
 .cardDashboard h3 {
   margin: 0;
   color: #43171e;
-  font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  font-size: 150%;
+ font: 550 10px "Inter", sans-serif;
+   font-size: 150%;
+
 }
 
 .badgeSucesso {
@@ -663,7 +665,7 @@
 
 .circuloOee strong {
   color: #481820;
-  font: 700 27px "Playfair Display", serif;
+  font: 550 26px "Inter", serif;
 }
 
 .circuloOee span {
@@ -1066,7 +1068,7 @@
   display: block;
   margin-top: 7px;
   color: #a20d2c;
-  font: 700 21px "Playfair Display", serif;
+  font: 700 21px "Inter", serif;
 }
 
 
