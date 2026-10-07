@@ -518,7 +518,7 @@ function Dashboard() {
           <section className="secaoDashboard">
 
             <div className="tituloSecaoDashboard">
-              <span>▣</span>
+              <span></span>
               <h2>Produção</h2>
             </div>
 
@@ -612,7 +612,7 @@ function Dashboard() {
           <section className="secaoDashboard">
 
             <div className="tituloSecaoDashboard">
-              <span>□</span>
+              <span></span>
               <h2>Estoque</h2>
             </div>
 
@@ -689,7 +689,7 @@ function Dashboard() {
           <section className="secaoDashboard">
 
             <div className="tituloSecaoDashboard">
-              <span>🛒</span>
+              <span></span>
               <h2>Pedidos</h2>
             </div>
 
