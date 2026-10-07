@@ -97,7 +97,7 @@
 
 .listaMetas {
   background-color: #FFFFFF;
-  border: 1px solid #E5AFB6; /* Borda suave como na referência */
+  border: 1px solid #ffffff; 
   border-radius: 16px;
   padding: 8px 32px;
   width: 100%;
@@ -111,7 +111,7 @@
   justify-content: space-between;
   align-items: flex-start;
   padding: 22px 0;
-  border-bottom: 1.5px solid #E5AFB6; /* Linha divisória entre as metas */
+  border-bottom: 1.5px solid #E5AFB6; 
   transition: background-color 0.15s ease;
 }
 
