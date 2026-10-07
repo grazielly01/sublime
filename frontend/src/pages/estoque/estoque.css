@@ -1,197 +1,453 @@
-/*         DIV Q ABRIGA TUDO. APROVADO */
+/* =====================================================
+   VARIÁVEIS (mesmas das outras telas)
+===================================================== */
+:root {
+  --cor-primaria: #8E1027;
+  --cor-primaria-hover: #6f0c1e;
+  --cor-fundo: #FAF6F5;
+  --cor-card: #FFFFFF;
+  --cor-borda: #EDE3E1;
+  --cor-divisor: #F3ECEA;
+  --cor-texto: #2B2B2B;
+  --cor-texto-secundario: #7A6E6C;
+  --cor-texto-suave: #A39896;
+  --cor-rosa-suave: #FBEAED;
 
+  --raio-card: 14px;
+  --sombra-card: 0 1px 3px rgba(60, 20, 20, 0.06);
+  --sombra-card-hover: 0 8px 20px rgba(142, 16, 39, 0.12);
+  --suave: cubic-bezier(0.22, 1, 0.36, 1);
+}
 
-.tudoEstoque{
-    width: 93%;
-    min-height: 170vh; /*min-height ao inves de height fixo, pra página poder crescer se a tabela for grande*/
-    display: flex;
+/* =====================================================
+   DIV QUE ABRIGA TUDO
+===================================================== */
+.tudoEstoque {
+  width: 93%;
+  min-height: 100vh;
+  display: flex;
+  font-family: "Inter", sans-serif;
+  color: var(--cor-texto);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.tudoEstoque :focus-visible {
+  outline: 2px solid var(--cor-primaria);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
+
+/* =====================================================
+   TUDO MENOS A SIDEBAR
+===================================================== */
+.tudoMenosSidebar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin-left: 68px; /* espaço pro menu lateral fechado (68px) */
+  background-color: var(--cor-fundo);
+}
+
+/* =====================================================
+   CONTEÚDO DA PÁGINA
+===================================================== */
+.conteudoEstoque {
+  padding-top: 6%;
+  box-sizing: border-box;
+}
+
+.conteudoEstoque2 {
+  margin-top: 3.5%;
+}
+
+.tituloEstoque {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: clamp(28px, 2.4vw, 34px);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: #8E1027
+}
+
+.subtituloEstoque {
+  margin: 4px 0 0;
+  font-size: 15px;
+  color: var(--cor-texto-secundario);
+}
+
+/* =====================================================
+   BARRA DE FILTROS (busca + aviso + botões)
+===================================================== */
+.barraFiltros {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 28px;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.ladoEsquerdoFiltros {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.ladoDireitoFiltros {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* campo de busca com ícone */
+.buscaComIcone {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.buscaComIcone svg {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: var(--cor-texto-suave);
+  pointer-events: none;
+  transition: color 0.2s;
+}
+
+.buscaComIcone:focus-within svg {
+  color: var(--cor-primaria);
+}
+
+.buscaComIcone .input {
+  width: 280px;
+  height: 44px;
+  padding: 0 14px 0 42px;
+  box-sizing: border-box;
+  border: 1px solid var(--cor-borda);
+  border-radius: 10px;
+  background: var(--cor-card);
+  box-shadow: var(--sombra-card);
+  color: var(--cor-texto);
+  font: 400 14px "Inter", sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.buscaComIcone .input::placeholder {
+  color: var(--cor-texto-suave);
+}
+
+.buscaComIcone .input:hover {
+  border-color: #E0CFCC;
+}
+
+.buscaComIcone .input:focus {
+  outline: none;
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 3px rgba(142, 16, 39, 0.12);
+}
+
+/* aviso "... abaixo do mínimo" */
+.avisoMinimo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background-color: #FDE8EA;
+  border: 1px solid #F6C9CF;
+  color: #B91C1C;
+  font: 600 13px "Inter", sans-serif;
+  padding: 9px 16px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.avisoMinimo svg {
+  width: 15px;
+  height: 15px;
+}
+
+/* filtro de insumo (select) */
+#selectFiltroInsumo {
+  width: auto;
+  min-width: 210px;
+  height: 44px;
+  box-sizing: border-box;
+  padding: 0 38px 0 16px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 10px;
+  background-color: var(--cor-card);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237A6E6C' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  box-shadow: var(--sombra-card);
+  color: var(--cor-texto);
+  font: 500 14px "Inter", sans-serif;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+#selectFiltroInsumo:hover {
+  border-color: #E0CFCC;
+}
+
+#selectFiltroInsumo:focus {
+  outline: none;
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 3px rgba(142, 16, 39, 0.12);
+}
+
+/* botão "+ Novo insumo" */
+.ladoDireitoFiltros button:not(#selectFiltroInsumo){
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 22px;
+  border: none;
+  border-radius: 999px;
+  color: #fff;
+  font: 600 14px "Inter", sans-serif;
+  text-decoration: none;
+  cursor: pointer;
+
+  background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 45%, #B3213B 100%);
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  box-shadow: 0 2px 6px rgba(142, 16, 39, 0.25);
+
+  transition:
+    background-position 0.5s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+}
+
+.ladoDireitoFiltros button:not(#selectFiltroInsumo):hover
+{
+  background-position: 100% 50%;
+  box-shadow: 0 4px 12px rgba(142, 16, 39, 0.35);
+  transform: translateY(-1px);
+}
+
+.ladoDireitoFiltros button:not(#selectFiltroInsumo):active,
+.ladoDireitoFiltros a:active {
+  transform: translateY(0);
+}
+
+/* =====================================================
+   TABELA DE INSUMOS
+===================================================== */
+.tabelaEstoque {
+  width: 100%;
+  margin-top: 28px;
+  border-collapse: collapse;
+  background-color: var(--cor-card);
+  border-radius: var(--raio-card);
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--cor-borda), var(--sombra-card);
+  font-variant-numeric: tabular-nums;
+}
+
+.tabelaEstoque thead {
+  background: #FBF3F2;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.tabelaEstoque th {
+  text-align: left;
+  padding: 16px 20px;
+  font-size: 12px;
+  letter-spacing: 0.3px;
+  color: var(--cor-texto-secundario);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.tabelaEstoque td {
+  padding: 16px 20px;
+  font-size: 14px;
+  color: var(--cor-texto-secundario);
+  border-top: 1px solid var(--cor-divisor);
+  border-bottom: none;
+}
+
+.tabelaEstoque tbody tr:first-child td {
+  border-top: none;
+}
+
+.tabelaEstoque tbody tr {
+  transition: background 0.15s;
+}
+
+.tabelaEstoque tbody tr:hover {
+  background: #FDFAF9;
+}
+
+/* destaque discreto nas linhas que precisam de reposição */
+.tabelaEstoque tbody tr:has(.statusReposicao.repor) td:first-child {
+  box-shadow: inset 3px 0 0 #B91C1C;
+}
+
+.nomeInsumo {
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  color: var(--cor-texto);
+  transition: color 0.2s;
+}
+
+.nomeInsumo:hover {
+  color: var(--cor-primaria);
+}
+
+.loteInsumo {
+  color: var(--cor-texto-suave);
 }
 
 
-/*        TUDO MENOS A SIDEBAR        */
+.statusReposicao {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-width: 70px;
+  justify-content: center;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+}
 
+.statusReposicao::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
 
-.tudoMenosSidebar{
-    display: flex;
-    flex-direction: column;
+.statusReposicao.ok {
+  background-color: #DCFCE7;
+  color: #166534;
+}
+
+.statusReposicao.repor {
+  background-color: #FDE8EA;
+  color: #B91C1C;
+}
+
+.botaoDetalhesInsumo {
+  color: var(--cor-primaria);
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.botaoDetalhesInsumo:hover {
+  text-decoration: underline;
+}
+
+/* =====================================================
+   ANIMAÇÕES
+===================================================== */
+@keyframes entradaCarga {
+  from { opacity: 0; translate: 0 24px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+@keyframes surgirRolagem {
+  from { opacity: 0; translate: 0 32px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+/* ---------- ordem de entrada ---------- */
+.tituloEstoque    { --atraso: 0s; }
+.subtituloEstoque { --atraso: .08s; }
+.barraFiltros     { --atraso: .18s; }
+.tabelaEstoque    { --atraso: .3s; }
+
+@media (prefers-reduced-motion: no-preference) {
+
+  .tituloEstoque,
+  .subtituloEstoque,
+  .barraFiltros,
+  .tabelaEstoque {
+    animation: entradaCarga 0.7s var(--suave) var(--atraso, 0s) backwards;
+  }
+
+  /* linhas da tabela entram uma após a outra */
+  .tabelaEstoque tbody tr {
+    animation: entradaCarga 0.5s var(--suave) backwards;
+  }
+
+  .tabelaEstoque tbody tr:nth-child(1)  { animation-delay: .40s; }
+  .tabelaEstoque tbody tr:nth-child(2)  { animation-delay: .45s; }
+  .tabelaEstoque tbody tr:nth-child(3)  { animation-delay: .50s; }
+  .tabelaEstoque tbody tr:nth-child(4)  { animation-delay: .55s; }
+  .tabelaEstoque tbody tr:nth-child(5)  { animation-delay: .60s; }
+  .tabelaEstoque tbody tr:nth-child(6)  { animation-delay: .65s; }
+  .tabelaEstoque tbody tr:nth-child(7)  { animation-delay: .70s; }
+  .tabelaEstoque tbody tr:nth-child(8)  { animation-delay: .75s; }
+  .tabelaEstoque tbody tr:nth-child(9)  { animation-delay: .80s; }
+  .tabelaEstoque tbody tr:nth-child(n+10) { animation-delay: .85s; }
+}
+
+/* ---------- linhas abaixo da dobra surgem ao rolar ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .tabelaEstoque tbody tr {
+      animation-name: surgirRolagem, entradaCarga;
+      animation-duration: auto, 0.5s;
+      animation-timing-function: linear, var(--suave);
+      animation-fill-mode: both, backwards;
+      animation-timeline: view(), auto;
+      animation-range: entry 0% entry 60%, normal;
+    }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .buscaComIcone .input,
+  #selectFiltroInsumo,
+  .tabelaEstoque tbody tr {
+    transition: none;
+  }
+}
+
+/* =====================================================
+   RESPONSIVIDADE
+===================================================== */
+@media (max-width: 1000px) {
+  .tabelaEstoque th,
+  .tabelaEstoque td {
+    padding: 14px 12px;
+  }
+}
+
+@media (max-width: 750px) {
+  .barraFiltros,
+  .ladoEsquerdoFiltros,
+  .ladoDireitoFiltros {
     width: 100%;
-    min-height: 100vh;
-    box-sizing: border-box;
-    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
-    background-color: #FDEDE8;
-}
+    flex-wrap: wrap;
+  }
 
+  .buscaComIcone,
+  .buscaComIcone .input {
+    width: 100%;
+  }
 
-/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
+  #selectFiltroInsumo {
+    flex: 1;
+  }
 
-
-.conteudoEstoque{
-    padding-top: 6%;
-    box-sizing: border-box;
-}
-
-.conteudoEstoque2{
-    margin-top: 3.5%;
-}
-
-.tituloEstoque{
-    margin: 0;
-    font-size: 350%;
-    color: #870B22;
-    font-family: "Inter", serif;
-    font-weight: 700;
-    line-height: 1.3;
-}
-
-.subtituloEstoque{
-    margin: 6px 0 0 4px;
-    font-size: 150%;
-    color: #777;
-}
-
-
-/*        BARRA DE FILTROS (busca + aviso + botões)        */
-
-
-.barraFiltros{
-    display: flex;
-    justify-content: space-between; /*lado esquerdo (busca+aviso) numa ponta, lado direito (botões) na outra*/
-    align-items: center;
-    margin-top: 28px;
-    flex-wrap: wrap; /*se a tela for estreita, quebra linha ao inves de espremer tudo*/
-    gap: 16px;
-}
-
-.ladoEsquerdoFiltros{
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.ladoDireitoFiltros{
-    display: flex;
-    align-items: center;
-    gap: 6px;
-}
-
-/*campo de busca com ícone*/
-.buscaComIcone{
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-.buscaComIcone svg{
-    position: absolute;
-    left: 14px;
-    width: 18px;
-    height: 18px;
-    color: #870B22;
-    pointer-events: none;  /*ignora o cursor e nao acontece nada qnd o cursor clica nele*/
-}
-
-.buscaComIcone .input{
-    width: 280px;
-    padding-left: 42px;
-    box-sizing: border-box;
-}
-
-/*aviso "... abaixo do mínimo"*/
-.avisoMinimo{
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    background-color: #CF0003;
-    color: white;
-    font-size: 13px;
-    font-weight: 600;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    padding: 8px 16px;
-    border-radius: 20px;
+  .tabelaEstoque {
+    display: block;
+    overflow-x: auto;
     white-space: nowrap;
-}
-
-.avisoMinimo svg{
-    width: 15px;
-    height: 15px;
-}
-
-#selectFiltroInsumo{
-    width: 90%;
-    box-sizing: border-box;
-    border-radius: 20px;
-    font-size: 125%;
-    font-weight: bold;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-}
-
-
-/*        TABELA DE INSUMOS        */
-
-
-.tabelaEstoque{
-    width: 100%;
-    margin-top: 40px;
-    border-collapse: collapse; /*junta as bordas das células, sem espaçamento entre elas*/
-    background-color: white;
-    border-radius: 10px;
-    overflow: hidden; /*deixa os cantos arredondados "cortarem" certinho o que tiver dentro*/
-    box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
-}
-
-.tabelaEstoque thead{
-    border-bottom: 2px solid #870B22;
-}
-
-.tabelaEstoque th{
-    text-align: left;
-    padding: 16px 20px;
-    font-size: 108%;
-    color: #000000;
-    font-weight: 600;
-}
-
-.tabelaEstoque td{
-    padding: 16px 20px;
-    font-size: 14px;
-    color: #333;
-    border-top: 1px solid #f5eae6;
-    border-bottom: 1px solid #870B22;
-}
-
-.nomeInsumo{
-    font-weight: 900;
-    cursor: pointer;
-    font-size: 120px;
-}
-
-.loteInsumo{
-    color: #999;
-}
-
-/*tarjazinha do status OK ou Repor*/
-.statusReposicao{
-    display: inline-block;
-    padding: 4px 14px;
-    border-radius: 20px;
-    font-size: 13px;
-    font-weight: 600;
-}
-
-.statusReposicao.ok{
-    background-color: #FFDCE0;
-    color: #870B22;
-}
-
-.statusReposicao.repor{
-    background-color: #CF0003;
-    color: white;
-}
-
-.botaoDetalhesInsumo{
-    text-decoration: none;
-}
-
-.botaoDetalhesInsumo:hover{
-    text-decoration: underline;
+  }
 }
