@@ -1,0 +1,99 @@
+### ==========================================
+### 1. TELA: VISÃO GERAL / SAÚDE DA API
+### ==========================================
+
+### 1.1 Verificação de integridade do servidor
+GET http://localhost:3000/
+Accept: application/json
+
+
+### ==========================================
+### 2. TELA: MINHA CONTA / USUÁRIOS
+### ==========================================
+
+### 2.1 Obter dados do utilizador logado / perfil
+GET http://localhost:3000/usuarios/perfil
+Accept: application/json
+
+### 2.2 Atualizar dados da conta (Nome / Email)
+PUT http://localhost:3000/usuarios/perfil
+Content-Type: application/json
+
+{
+  "nome": "Administrador Sublime",
+  "email": "admin@sublime.com"
+}
+
+
+### ==========================================
+### 3. TELA: DASHBOARD / FLUXO DE CAIXA
+### ==========================================
+
+### 3.1 Consultar KPIs e lançamentos do mês
+GET http://localhost:3000/dashboard?month=10&year=2026
+Accept: application/json
+
+### 3.2 Registar nova movimentação no Caixa (Entrada/Venda)
+POST http://localhost:3000/caixa
+Content-Type: application/json
+
+{
+  "descricao": "Venda - Padaria São José",
+  "valor": 2760.00,
+  "tipo": "ENTRADA",
+  "data": "2026-10-06T10:00:00.000Z"
+}
+
+
+### ==========================================
+### 4. TELA: ESTOQUE DE INSUMOS
+### ==========================================
+
+### 4.1 Listar insumos com alerta "abaixo do mínimo" e regra PEPS
+GET http://localhost:3000/estoque
+Accept: application/json
+
+### 4.2 Pesquisar insumo por nome
+GET http://localhost:3000/estoque?search=Chocolate
+Accept: application/json
+
+### 4.3 Cadastrar novo insumo no estoque (+ Novo insumo)
+POST http://localhost:3000/estoque
+Content-Type: application/json
+
+{
+  "nome": "Leite Condensado Moça 395g",
+  "lote": "LT-0999",
+  "quantidade": 10,
+  "minimo": 20,
+  "validade": "2027-01-20T00:00:00.000Z",
+  "custo": 8.90
+}
+
+
+### ==========================================
+### 5. TELA: PRODUÇÃO
+### ==========================================
+
+### 5.1 Listar KPIs de produção e Fila de Ordens
+GET http://localhost:3000/producao
+Accept: application/json
+
+### 5.2 Criar uma nova Ordem de Produção (+ Nova ordem)
+POST http://localhost:3000/producao
+Content-Type: application/json
+
+{
+  "produto": "Bolo de Chocolate 1kg",
+  "equipe": "Equipe B",
+  "quantidadeTotal": 30,
+  "tempoEstimado": "Iniciar 15h30"
+}
+
+### 5.3 Alterar status de uma ordem para CONCLUIDO (Botão "Concluir lote")
+PATCH http://localhost:3000/producao/1/status
+Content-Type: application/json
+
+{
+  "status": "CONCLUIDO"
+}

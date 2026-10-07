@@ -1,49 +1,65 @@
-// Array de objetos simulando o banco/estoque de insumos
-const insumo = [
+// Array que simula a tabela do banco de dados no Node.js
+let insumosMock = [
   {
-    nome: "Seda Rosa",
-    lote: "L01",
-    quantidade: 5,
-    minimo: 10,
-    validade: "2026-12-31",
-    custo: 15.50,
+    id: 1,
+    nome: "Chocolate ao leite Callebaut 80g",
+    lote: "LT-0421",
+    quantidade: 52,
+    minimo: 15,
+    validade: "2026-12-08T00:00:00.000Z",
+    custo: 78.50
   },
   {
-    nome: "Embalagem P",
-    lote: "L02",
-    quantidade: 50,
-    minimo: 20,
-    validade: "2027-01-01",
-    custo: 2.00,
+    id: 2,
+    nome: "Farinha de trigo especial 300g",
+    lote: "LT-0425",
+    quantidade: 2,
+    minimo: 6,
+    validade: "2026-11-30T00:00:00.000Z",
+    custo: 142.00
   }
 ];
 
 class EstoqueController {
-  // Nome do método ajustado para "listar" (compatível com a rota)
+  // GET /estoque
   async listar(req, res) {
-    const resultado = [];
+    let abaixoDoMinimoCount = 0;
 
-    for (let i = 0; i < insumo.length; i++) {
-      let status = "ok";
+    const resultado = insumosMock.map((item) => {
+      const precisaRepor = item.quantidade <= item.minimo;
+      if (precisaRepor) abaixoDoMinimoCount++;
 
-      if (insumo[i].quantidade <= insumo[i].minimo) {
-        status = "repor";
-      }
+      return {
+        ...item,
+        status: precisaRepor ? "Repor" : "OK"
+      };
+    });
 
-      resultado.push({
-        nome: insumo[i].nome,
-        lote: insumo[i].lote,
-        quantidade: insumo[i].quantidade,
-        minimo: insumo[i].minimo,
-        validade: insumo[i].validade,
-        custo: insumo[i].custo,
-        status: status
-      });
-    }
+    return res.json({
+      abaixoDoMinimoCount,
+      total: resultado.length,
+      data: resultado
+    });
+  }
 
-    return res.json(resultado);
+  // POST /estoque
+  async criar(req, res) {
+    const { nome, lote, quantidade, minimo, validade, custo } = req.body;
+
+    const novoItem = {
+      id: insumosMock.length + 1,
+      nome,
+      lote,
+      quantidade: Number(quantidade),
+      minimo: Number(minimo),
+      validade,
+      custo: Number(custo)
+    };
+
+    insumosMock.push(novoItem);
+
+    return res.status(201).json(novoItem);
   }
 }
 
-// Agora sim a instância da classe é exportada corretamente!
 module.exports = new EstoqueController();

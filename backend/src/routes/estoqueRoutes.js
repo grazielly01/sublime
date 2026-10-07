@@ -1,8 +1,12 @@
 const { Router } = require('express');
 const estoqueController = require('../controllers/estoqueController');
 
-const routes = Router();
+const router = Router();
 
-routes.get('/', estoqueController.listar);
+// GET /estoque -> Lista e calcula o alerta abaixo do mínimo
+router.get('/', estoqueController.listar);
 
-module.exports = routes;
+// POST /estoque -> Cadastra um novo insumo
+router.post('/', estoqueController.criar);
+
+module.exports = router;

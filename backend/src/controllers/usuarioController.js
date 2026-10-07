@@ -13,7 +13,7 @@ class UsuarioController {
       });
     }
   }
-
+  
   // Cria um novo usuário no banco MySQL
   async criar(req, res) {
     try {

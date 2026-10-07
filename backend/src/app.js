@@ -5,6 +5,9 @@ const cors = require('cors');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const estoqueRoutes = require('./routes/estoqueRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const producaoRoutes = require('./routes/producaoRoutes');
+
+// Adicione junto com as outras rotas
 
 const app = express();
 
@@ -21,6 +24,7 @@ app.get('/', (req, res) => {
 app.use('/usuarios', usuarioRoutes);
 app.use('/estoque', estoqueRoutes);
 app.use('/dashboard', dashboardRoutes);
+app.use('/producao', producaoRoutes);
 
 // Exporta a aplicação configurada
 module.exports = app;
