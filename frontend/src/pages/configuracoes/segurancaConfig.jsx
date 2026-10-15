@@ -3,6 +3,7 @@ import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "motion/react";
 
 function SegurancaConfig() {
   const navigate = useNavigate();

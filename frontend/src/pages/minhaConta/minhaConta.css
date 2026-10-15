@@ -30,15 +30,20 @@
 
 
 .conteudoMinhaConta{
-    margin-top: -3vh; /*gambiarra pra ajeitar o rombo q estava aqui*/
     padding-top: 1%; /*acho q isso é inutil*/
     box-sizing: border-box;
+}
+
+.conteudoMinhaConta2{
+    margin-top: 3.5%;
 }
 
 .tituloMinhaConta{
     margin: 0;
     font-size: 350%;
     color: #870B22;
+    font-weight: 700;
+    line-height: 1.3;
 }
 
 .subtituloMinhaConta{
@@ -118,7 +123,7 @@
 .fotinhaENome h3{
     color: #870B22;
     font-weight: bold;
-    font-size: 150%;
+    font-size: 160%;
     margin-bottom: 0%;
     margin-top: 2px;
 }
@@ -126,8 +131,8 @@
 .fotinhaENome p{
     color: #616161;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 105%;
-    margin-bottom: 0%;
+    font-size: 135%;
+    margin-bottom: -2%;
     margin-top: 1%;
 }
 
@@ -143,15 +148,16 @@
 }
 
 .tarjaPlano h2{
-    font-weight: 500;
+    font-weight: 600;
     color: #870B22;
-    margin-bottom: 1%;
+    margin-bottom: 0%;
+    font-size: 125%;
 }
 
 .tarjaPlano p{
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
     margin-top: 1%;
-    margin-bottom: 4%;
+    font-size: 115%;
 }
 
 .inputAlterarFoto{

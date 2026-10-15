@@ -1,6 +1,7 @@
 import "./dashboard.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
+import { motion } from "motion/react";
 
 function Dashboard() {
   const resumo = [
@@ -259,7 +260,13 @@ function Dashboard() {
               </p>
             </div>
 
-            <div className="acoesDashboard">
+            {/*Tava aq*/}
+
+          </div>
+          
+          {/* PERÍODOS E EXPORTAR */}
+          <div className=" divSeiLa">
+          <div className="acoesDashboard">
               <button className="botaoPeriodo">7d</button>
               <button className="botaoPeriodo ativo">30d</button>
               <button className="botaoPeriodo">90d</button>
@@ -273,7 +280,7 @@ function Dashboard() {
                 ↓ Exportar
               </button>
             </div>
-          </div>
+            </div>
 
           {/* RESUMO POR SETOR */}
           <section className="secaoDashboard">
@@ -391,7 +398,7 @@ function Dashboard() {
               {/* METAS */}
               <div className="cardDashboard cardMetasDashboard">
                 <div className="cabecalhoCardDashboard">
-                  <h3>🎯 Metas do mês</h3>
+                  <h3>Metas do mês</h3>
                 </div>
 
                 {metas.map((meta, i) => (
@@ -425,7 +432,7 @@ function Dashboard() {
 
               <div className="cardDashboard">
                 <div className="cabecalhoCardDashboard">
-                  <h3>💰 Fluxo da semana</h3>
+                  <h3>Fluxo da semana</h3>
                 </div>
 
                 <div className="fluxoDashboard">
@@ -474,7 +481,7 @@ function Dashboard() {
 
               <div className="cardDashboard insightsDashboard">
                 <div className="cabecalhoCardDashboard">
-                  <h3>✨ Insights financeiros</h3>
+                  <h3>Insights financeiros</h3>
                 </div>
 
                 <div className="insight positivo">
@@ -495,7 +502,7 @@ function Dashboard() {
                 </div>
 
                 <div className="insight estoque">
-                  <strong>📦 Estoque</strong>
+                  <strong>Estoque</strong>
                   <p>
                     Compra sugerida:
                     <b> 40kg de chocolate ao leite</b>
@@ -511,14 +518,14 @@ function Dashboard() {
           <section className="secaoDashboard">
 
             <div className="tituloSecaoDashboard">
-              <span>▣</span>
+              <span></span>
               <h2>Produção</h2>
             </div>
 
             <div className="gridProducaoDashboard">
 
               <div className="cardDashboard oeeDashboard">
-                <h3>⚙ Eficiência industrial (OEE)</h3>
+                <h3>Eficiência industrial (OEE)</h3>
 
                 <div className="circuloOee">
                   <div>
@@ -605,7 +612,7 @@ function Dashboard() {
           <section className="secaoDashboard">
 
             <div className="tituloSecaoDashboard">
-              <span>□</span>
+              <span></span>
               <h2>Estoque</h2>
             </div>
 
@@ -613,7 +620,7 @@ function Dashboard() {
 
               <div className="cardDashboard">
                 <div className="cabecalhoCardDashboard">
-                  <h3>⚠ Alertas de estoque & validade</h3>
+                  <h3>Alertas de estoque & validade</h3>
                 </div>
 
                 <div className="listaAlertas">
@@ -642,7 +649,7 @@ function Dashboard() {
               </div>
 
               <div className="cardDashboard">
-                <h3>📋 Controle de lotes próximos ao vencimento</h3>
+                <h3>Controle de lotes próximos ao vencimento</h3>
 
                 <div className="tabelaDashboard">
                   <div className="linhaTabela cabecalhoTabela">
@@ -682,14 +689,14 @@ function Dashboard() {
           <section className="secaoDashboard">
 
             <div className="tituloSecaoDashboard">
-              <span>🛒</span>
+              <span></span>
               <h2>Pedidos</h2>
             </div>
 
             <div className="gridDoisDashboard">
 
               <div className="cardDashboard">
-                <h3>🕐 Próximas entregas</h3>
+                <h3>Próximas entregas</h3>
 
                 <div className="listaEntregas">
                   {entregas.map((entrega, i) => (
@@ -767,7 +774,7 @@ function Dashboard() {
 
               <div className="cardDashboard">
                 <div className="cabecalhoCardDashboard">
-                  <h3>⚠ Alertas críticos</h3>
+                  <h3>Alertas críticos</h3>
 
                   <button className="botaoLinkDashboard">
                     Ver todos
@@ -795,7 +802,7 @@ function Dashboard() {
 
               <div className="cardDashboard">
                 <div className="cabecalhoCardDashboard">
-                  <h3>🚚 Fornecedores em atraso</h3>
+                  <h3>Fornecedores em atraso</h3>
 
                   <button className="botaoLinkDashboard">
                     Gerenciar

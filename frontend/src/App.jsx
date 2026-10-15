@@ -70,6 +70,7 @@ function App() {
       <div className={isLoginPage ? "conteudoLogin" : "tudoMenosSidebar"}>
         <Routes>
            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<VisaoGeral />} />
 
           {/* Estoque */}
           <Route path="/estoque" element={<Estoque />} />

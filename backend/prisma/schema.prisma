@@ -1,0 +1,99 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+}
+
+
+model Usuario {
+  id       Int      @id @default(autoincrement())
+  nome     String
+  email    String   @unique
+  senha    String
+  criadoEm DateTime @default(now())
+}
+
+model Insumo {
+  id         Int      @id @default(autoincrement())
+  nome       String
+  lote       String
+  quantidade Int      @default(0)
+  minimo     Int      @default(0)
+  validade   DateTime
+  custo      Float
+  criadoEm   DateTime @default(now())
+}
+
+model Pedido {
+  id       Int      @id @default(autoincrement())
+  valor    Float
+  status   String   @default("PENDENTE")
+  criadoEm DateTime @default(now())
+}
+
+// -----------------------------------------------------------------
+// ENUMS E MODELOS PARA FLUXO DE CAIXA
+// -----------------------------------------------------------------
+
+enum TipoCaixa {
+  ENTRADA // ENTRADA
+  SAIDA   // SAÍDA
+}
+
+enum TipoCategoria {
+  FIXA     // Despesa Fixa
+  VARIAVEL // Despesa Variável
+  RECEITA  // Receitas/Vendas
+}
+
+model Categoria {
+  id       Int           @id @default(autoincrement())
+  nome     String        // Ex: "Matéria-prima", "Aluguel", "Salários"
+  tipo     TipoCategoria
+  caixas   Caixa[]       // Relação apontando para o modelo Caixa
+  criadoEm DateTime      @default(now())
+}
+
+model Caixa {
+  id          Int           @id @default(autoincrement())
+  descricao   String        // Ex: "Venda - Padaria São José", "Energia elétrica"
+  valor       Float         // Valor do movimento
+  tipo        TipoCaixa     // Usando o Enum TipoCaixa correto
+  data        DateTime      // Data da transação
+  categoriaId Int?
+  categoria   Categoria?    @relation(fields: [categoriaId], references: [id], onDelete: SetNull)
+  criadoEm    DateTime      @default(now())
+}
+
+enum StatusOrdem {
+  NA_FILA
+  EM_ANDAMENTO
+  CONCLUIDO
+}
+
+model OrdemProducao {
+  id              Int         @id @default(autoincrement())
+  produto         String      // Ex: "Brigadeiro Gourmet", "Cupcake Red Velvet"
+  equipe          String      // Ex: "Equipe A", "Equipe B"
+  quantidadeTotal Int         // Ex: 480
+  quantidadeFeita Int         @default(0) // Ex: 360
+  status          StatusOrdem @default(NA_FILA)
+  tempoEstimado   String?     // Ex: "45 min restantes" ou "Iniciar 14h00"
+  horarioFim      DateTime?   // Data/Hora de conclusão
+  data            DateTime    @default(now())
+  criadoEm        DateTime    @default(now())
+
+  @@map("ordens_producao")
+}
+
+model MetaProducao {
+  id            Int      @id @default(autoincrement())
+  data          DateTime @default(now()) @db.Date
+  metaDiaria    Int      @default(1500) // Ex: 1500 unidades
+  perdasPercent Float    @default(0.0)  // Ex: 2.1%
+  criadoEm      DateTime @default(now())
+
+  @@map("metas_producao")
+}

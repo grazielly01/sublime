@@ -3,11 +3,12 @@ import { Link } from "react-router-dom";
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
+import { motion } from "motion/react";
 
 function Pedidos() {
 
     /*Lista de pedidos (só pra gente visualizar a tela). Quando o backend existir, essa lista vai vir do banco de dados responsável pelos 
-    pedidos coletados do estabelecimento, e cadastrar essas infos.*/
+    pedidos coletados do estabelecimento, e cadastrar essas infos. A*/
     
     const pedidos = [
         { estabelecimento: "Padaria São José", itens: "4 itens", entrega: "entrega 19/05 16h", valor: "R$ 2.840", status: "producao", statusTexto: "Em produção" },
@@ -33,7 +34,7 @@ function Pedidos() {
 
                 <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
 
-                <div className="conteudoPedidos"> {/*Div com o conteúdo da página*/}
+                <div className="conteudoPedidos conteudoPedidos2"> {/*Div com o conteúdo da página*/}
 
                     {/*linha de cima: título + subtítulo*/}
                     <div className="topoPedidos">

@@ -2,6 +2,7 @@ import "./excluirmeta.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 import { useNavigate, useParams } from "react-router-dom";
+import { motion } from "motion/react";
 
 function ExcluirMeta() {
   const { id } = useParams();
@@ -35,7 +36,7 @@ function ExcluirMeta() {
               onClick={() => navigate(-1)}
               title="Voltar"
             >
-              ←
+               ‹
             </button>
             <h1 className="tituloExcluirMeta">Detalhes da meta</h1>
           </div>

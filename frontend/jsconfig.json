@@ -1,0 +1,10 @@
+//ESSE ARQUIVO SO SERVE PRA DEIXAR O TAILWIND FUNCIONANDO
+
+{
+  "compilerOptions": {
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src"]
+}

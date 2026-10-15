@@ -44,19 +44,18 @@
 }
 
 .botaoVoltarMeta {
-  background: transparent;
-  border: none;
-  color: #7A0C22;
-  font-family: Arial, sans-serif;
-  font-size: 38px;
-  font-weight: 300;
-  line-height: 1;
-  cursor: pointer;
-  padding: 0;
-  display: flex;
+    display: flex;
   align-items: center;
   justify-content: center;
-  transition: transform 0.15s ease;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #efbfc4;
+  border-radius: 50%;
+  background: #fff9f7;
+  color: #8E1027;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s ease;
 }
 
 .botaoVoltarMeta:hover {
@@ -98,7 +97,7 @@
 
 .listaMetas {
   background-color: #FFFFFF;
-  border: 1px solid #E5AFB6; /* Borda suave como na referência */
+  border: 1px solid #ffffff; 
   border-radius: 16px;
   padding: 8px 32px;
   width: 100%;
@@ -112,7 +111,7 @@
   justify-content: space-between;
   align-items: flex-start;
   padding: 22px 0;
-  border-bottom: 1.5px solid #E5AFB6; /* Linha divisória entre as metas */
+  border-bottom: 1.5px solid #E5AFB6; 
   transition: background-color 0.15s ease;
 }
 

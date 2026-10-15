@@ -5,6 +5,7 @@ import Button from "../../componentes/Button/Button.jsx";   /*Importando o compo
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
 import Select from "../../componentes/Select/Select.jsx";  /*Importando o componente Select da pasta componentes*/
+import { motion } from "motion/react";
 
 
 
@@ -22,6 +23,9 @@ function RegistrarPedido() {
 
                 <div className="conteudoRegistrarPedido"> {/*Div com o conteúdo da página*/}
 
+                    {/*janela branca com os dados do pedido*/}
+                    <div className="janelaRegistrarPedido">
+
                     <div className="tituloESetinha">
                         <svg className="svgSetinha" xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="#870B22" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
                             <path d="M6 8L2 12L6 16"/>
@@ -29,9 +33,6 @@ function RegistrarPedido() {
                         </svg>
                         <h1 className="tituloRegistrarPedido">Registrar novo pedido</h1>
                     </div>
-
-                    {/*janela branca com os dados do pedido*/}
-                    <div className="janelaRegistrarPedido">
 
                         <div className="linha1">
 
@@ -58,7 +59,7 @@ function RegistrarPedido() {
                                         <rect x="3" y="5" width="18" height="16" rx="2" />
                                         <path d="M3 10h18M8 3v4M16 3v4" />
                                     </svg>
-                                    <Input id="inputPrazo" placeholder="dd/mm/aaaa      00:00hrs" required={true} />
+                                    <Input id="inputPrazo" placeholder="dd/mm/aaaa          00:00hrs" required={true} />
                                 </div>
                             </div>
 
@@ -78,15 +79,14 @@ function RegistrarPedido() {
 
                         </div>
 
-                    </div>
-
-                    {/*botões de ação: "Cancelar" (contorno) e "Registrar" (preenchido)*/}
-                    <div className="botoesRegistrarPedido">
+                        {/*botões de ação: "Cancelar"e "Registrar"*/}
+                        <div className="botoesRegistrarPedido">
                         <div className="botaoContorno">
                             <Button texto="Cancelar" onClick={() => navigate("/pedidos")} />
-
                         </div>
                         <Button texto="Registrar" />
+                    </div>
+
                     </div>
 
                 </div>

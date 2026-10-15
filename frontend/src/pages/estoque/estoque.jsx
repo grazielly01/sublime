@@ -4,6 +4,7 @@ import Input from "../../componentes/Input/Input.jsx";      /*Importando o compo
 import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
+import { motion } from "motion/react";
 import Select from "../../componentes/Select/Select.jsx";
 
 function Estoque() {
@@ -39,7 +40,7 @@ function Estoque() {
 
                 <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
 
-                <div className="conteudoEstoque"> {/*Div com o conteúdo da página*/}
+                <div className="conteudoEstoque conteudoEstoque2"> {/*Div com o conteúdo da página*/}
 
                     <h1 className="tituloEstoque">Estoque de insumos</h1>
                     <p className="subtituloEstoque">Controle por lote e validade — sistema PEPS (usar primeiro o mais antigo)</p>
@@ -113,11 +114,14 @@ function Estoque() {
                         <tbody>
                            
                             {insumos.map((insumo, index) => (     /*.map() percorre a lista "insumos" e cria uma linha <tr> pra cada insumo, index conta o numero de insumos*/
-                                <tr key={index}>                  {/*a key da tag <tr> vai ser o index (quantidade de insumos)*/}
-                                <td>
-                                    {insumo.nome} 
-
-                                    </td>  {/*.nome: pega o valor do nome do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
+                                <tr key={index}>    
+                                <td>         {/*a key da tag <tr> vai ser o index (quantidade de insumos)*/}
+                                <Link to="/estoque/detalhes" className="botaoDetalhesInsumo">
+                                {insumo.nome} 
+                                </Link>
+                                </td>  {/*.nome: pega o valor do nome do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
+                                {/*.nome: pega o valor do nome do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
+                      
                                   
                                     <td className="loteInsumo">{insumo.lote}</td>  {/*.lote: pega o valor do lote do insumo la no array*/}  {/*coloquei className so nesses 2 <td> pra mudar um pouco o CSS*/}
                                     <td>{insumo.quantidade}</td>                   {/*.quantidade: pega o valor da quantidade do insumo la no array*/}

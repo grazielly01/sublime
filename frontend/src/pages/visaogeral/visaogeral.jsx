@@ -3,16 +3,66 @@ import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 import Button from "../../componentes/Button/Button.jsx";
 import { useNavigate } from "react-router-dom";
+import { motion } from "motion/react";
 
 function VisaoGeral() {
   const navigate = useNavigate();
 
   const kpis = [
-    { titulo: "Faturamento (mês)", valor: "R$ 84.320,80", variacao: "+12,4%", tipo: "positivo", icone: "💰" },
-    { titulo: "Pedidos abertos", valor: "23", variacao: "+5 hoje", tipo: "positivo", icone: "🧾" },
-    { titulo: "Produção do dia", valor: "238 un.", variacao: "-24 hoje", tipo: "negativo", icone: "📦" },
-    { titulo: "Itens em baixa", valor: "4", variacao: "Reposição urgente", tipo: "negativo", icone: "⚠️" },
-  ];
+  {
+    titulo: "Faturamento (mês)",
+    valor: "R$ 84.320,80",
+    variacao: "+12,4%",
+    tipo: "positivo",
+    icone: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 2v20" />
+        <path d="M17 5.5C16.2 4.5 14.8 4 13.2 4h-2.1C8.8 4 7 5.5 7 7.5S8.8 11 11.1 11h1.8c2.3 0 4.1 1.5 4.1 3.5S15.2 18 12.9 18h-2.1c-1.6 0-3-.5-3.8-1.5" />
+      </svg>
+    ),
+  },
+  {
+    titulo: "Pedidos abertos",
+    valor: "23",
+    variacao: "+5 hoje",
+    tipo: "positivo",
+    icone: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M6 3h12v18H6z" />
+        <path d="M9 7h6" />
+        <path d="M9 11h6" />
+        <path d="M9 15h4" />
+      </svg>
+    ),
+  },
+  {
+    titulo: "Produção do dia",
+    valor: "238 un.",
+    variacao: "-24 hoje",
+    tipo: "negativo",
+    icone: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 7h18v14H3z" />
+        <path d="M7 7V4h10v3" />
+        <path d="M3 12h18" />
+        <path d="M10 12v2h4v-2" />
+      </svg>
+    ),
+  },
+  {
+    titulo: "Itens em baixa",
+    valor: "4",
+    variacao: "Reposição urgente",
+    tipo: "negativo",
+    icone: (
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3L22 20H2L12 3z" />
+        <path d="M12 9v5" />
+        <path d="M12 17h.01" />
+      </svg>
+    ),
+  },
+];
 
   const pedidosRecentes = [
     { cliente: "Padaria Seu Zé", itens: "45 bolos formigueiro", status: "Em produção", horario: "Hoje 16:30h" },
@@ -44,24 +94,17 @@ function VisaoGeral() {
     {
       titulo: "Produzir 200 bolos de cenoura",
       descricao: "Produzir 200 bolos de cenoura até o final da semana",
-      status: "Em andamento",
+      status: "Em produção",
       horario: "18/09 13h",
     },
   ];
 
-  const atalhos = [
-    { texto: "Nova ordem", icone: "🗓️" },
-    { texto: "Iniciar produção", icone: "👨‍🍳" },
-    { texto: "Entrada de insumos", icone: "📥" },
-    { texto: "Relatórios", icone: "📊" },
-  ];
-
-  const classeStatus = (status) =>
-    "status" +
-    status
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .replace(/\s+/g, "");
+const classeStatus = (status) =>
+  "status" +
+  status
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") /*remove os acentos*/
+    .replace(/\s+(.)/g, (correspondencia, letra) => letra.toUpperCase()); /*remove o espaço e ja deixa a letra seguinte maiúscula, pra bater certinho com o nome da classe no css*/
 
   return (
     <div className="tudoVisaoGeral">
@@ -70,7 +113,7 @@ function VisaoGeral() {
       <div className="tudoMenosSidebar tudoMenosSidebarVisaoGeral">
         <Header nomeIndustria="Sweet Sunset" />
 
-        <div className="conteudoVisaoGeral">
+        <div className="conteudoVisaoGeral conteudoVisaoGeral2">
 
           {/* Título */}
           <div className="topoVisaoGeral">
@@ -150,12 +193,14 @@ function VisaoGeral() {
                 {metas.map((m, i) => (
                   <li key={i} className="itemMeta">
                     <div className="topoItemMeta">
-                      <div className="flexRow">
-                        <h3>{m.titulo}</h3>
-                        <span className={`statusPedido ${classeStatus(m.status)}`}>
-                          {m.status}
-                        </span>
-                      </div>
+                    <div className="flexRow">
+                      <h3>{m.titulo}</h3>
+                      {m.status && ( /*coloquei pra só mostrar a tarja se esse item tiver um status definudo*/
+                      <span className={`statusPedido ${classeStatus(m.status)}`}>
+                        {m.status}
+                      </span>
+                      )}
+                    </div>
                       <p className="descricaoMeta">{m.descricao}</p>
                       <span className="horarioPedido" style={{ marginTop: "4px" }}>
                         {m.horario}
@@ -178,11 +223,50 @@ function VisaoGeral() {
             <div className="atalhosRapidos">
               <h2>Atalhos rápidos</h2>
               <div className="listaAtalhos">
-                {atalhos.map((a, i) => (
-                  <Button key={i} texto={a.texto} icone={a.icone} />
-                ))}
+
+                <button className="botaoAtalho" onClick={() => navigate("/pedidos")}> {/*ajusta a rota se o nome de vocês for diferente*/}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                className="lucide lucide-shopping-bag">
+                <path d="M16 10a4 4 0 0 1-8 0" />
+                <path d="M3.103 6.034h17.794" />
+                <path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z" />
+                </svg>
+                  Nova ordem
+                </button>
+
+                <button className="botaoAtalho" onClick={() => navigate("/producao")}>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                className="lucide lucide-chef-hat">
+                <path d="M17 21a1 1 0 0 0 1-1v-5.35c0-.457.316-.844.727-1.041a4 4 0 0 0-2.134-7.589 5 5 0 0 0-9.186 0 4 4 0 0 0-2.134 7.588c.411.198.727.585.727 1.041V20a1 1 0 0 0 1 1Z" />
+                <path d="M6 17h12" />
+              </svg>
+                  Iniciar produção
+                </button>
+
+                <button className="botaoAtalho" onClick={() => navigate("/estoque")}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 8 12 3 3 8v8l9 5 9-5V8Z" />
+                    <path d="M3 8l9 5 9-5M12 13v8" />
+                  </svg>
+                  Entrada de insumos
+                </button>
+
+                <button className="botaoAtalho" onClick={() => navigate("/dashboard")}>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+                    <rect x="4" y="12" width="4" height="8" rx="1" />
+                    <rect x="10" y="7" width="4" height="13" rx="1" />
+                    <rect x="16" y="3" width="4" height="17" rx="1" />
+                  </svg>
+                  Relatórios
+                </button>
+
               </div>
             </div>
+
+
+
 
           </div>
 

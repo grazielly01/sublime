@@ -1,222 +1,453 @@
 /* =========================================================
-   ESCOPO ISOLADO DA PÁGINA DE PRODUTOS. APROVADO. APROVADO
+   VARIÁVEIS
 ========================================================= */
+:root {
+  --cor-primaria: #8E1027;
+  --cor-primaria-hover: #6f0c1e;
+  --cor-fundo: #FAF6F5;
+  --cor-card: #FFFFFF;
+  --cor-borda: #EDE3E1;
+  --cor-divisor: #F3ECEA;
+  --cor-texto: #2B2B2B;
+  --cor-texto-secundario: #7A6E6C;
+  --cor-texto-suave: #A39896;
+  --cor-rosa-suave: #FBEAED;
 
+  --raio-card: 14px;
+  --sombra-card: 0 1px 3px rgba(60, 20, 20, 0.06);
+  --sombra-card-hover: 0 10px 24px rgba(142, 16, 39, 0.14);
+  --suave: cubic-bezier(0.22, 1, 0.36, 1);
+}
 
-   .pagina-produtos.tudoProdutos {
-    width: 100%;
-    min-height: 170vh;
-    display: flex;
-    background-color: #FDEDE8;
-  }
-  
-  
-  .pagina-produtos .tudoMenosSidebar {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-width: 0;
-    min-height: 100vh;
-    box-sizing: border-box;
-    margin-left: -40px; /* Largura da Sidebar fechada */
-    padding-top: 10px; /* Compensa a altura da Header fixa */
-    background-color: #FDEDE8;
-  }
-  
-  
-  .pagina-produtos .conteudoProdutos {
-    padding: 16px 32px 32px 32px;
-    margin-top: 0;
-    width: 100%;
-    max-width: 1700px;
-    margin-left: auto;
-    margin-right: auto;
-    box-sizing: border-box;
-  }
-  
-  
-  /* =========================================================
-     TOPO E FILTROS
-     ========================================================= */
-  
-  
-  .pagina-produtos .topoProdutos {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-  }
-  
-  
-  .pagina-produtos .tituloProdutos {
-    margin: 0;
-    font-size: 36px;
-    color: #870B22;
-    font-weight: bold;
-  }
-  
-  
-  .pagina-produtos .subtituloProdutos {
-    margin: 4px 0 0 0;
-    font-size: 15px;
-    color: #777;
-  }
-  
-  
-  .pagina-produtos .barraFiltroProdutos {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 14px;
-    margin-top: 16px;
-  }
-  
-  
-  .pagina-produtos #selectCategoriaProdutos {
-    width: 200px;
-    border-radius: 20px;
-  }
-  
-  
-  .pagina-produtos .barraFiltroProdutos > .button,
-  .pagina-produtos .barraFiltroProdutos .divButton .button {
-    width: auto;
-    padding: 10px 20px;
-  }
-  
-  
-  /* =========================================================
-     GRADE DE CARDS (3 COLUNAS VERTICAIS)
-     ========================================================= */
-  
-  
-  .pagina-produtos .listaProdutos {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 colunas */
-    gap: 24px;
-    margin-top: 20px;
-    width: 100%;
-    box-sizing: border-box;
-  }
-  
-  
+/* =========================================================
+   ESCOPO ISOLADO DA PÁGINA DE PRODUTOS
+========================================================= */
+.pagina-produtos.tudoProdutos {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  background-color: #FDEDE8;
+  font-family: "Inter", sans-serif;
+  color: var(--cor-texto);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.pagina-produtos :focus-visible {
+  outline: 2px solid var(--cor-primaria);
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+.pagina-produtos .tudoMenosSidebar {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin-left: 33px; 
+  padding-top: 10px;
+  background-color: #FDEDE8;
+}
+
+.pagina-produtos .conteudoProdutos {
+  padding: 5.8% 32px 32px 32px;
+  margin-top: 0;
+  width: 100%;
+  max-width: 1700px;
+  margin-left: auto;
+  margin-right: auto;
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   TOPO E FILTROS
+========================================================= */
+.pagina-produtos .topoProdutos {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.pagina-produtos .tituloProdutos {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: clamp(28px, 2.4vw, 34px);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color:#97041f;
+}
+
+.pagina-produtos .subtituloProdutos {
+  margin: 4px 0 0 0;
+  font-size: 15px;
+  color: var(--cor-texto-secundario);
+}
+
+.pagina-produtos .barraFiltroProdutos {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+/* select de categoria */
+.pagina-produtos #selectCategoriaProdutos {
+  width: 210px;
+  height: 44px;
+  box-sizing: border-box;
+  padding: 0 38px 0 16px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 10px;
+  background-color: var(--cor-card);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237A6E6C' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  box-shadow: var(--sombra-card);
+  color: var(--cor-texto);
+  font: 500 14px "Inter", sans-serif;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.pagina-produtos #selectCategoriaProdutos:hover {
+  border-color: #E0CFCC;
+}
+
+.pagina-produtos #selectCategoriaProdutos:focus {
+  outline: none;
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 3px rgba(142, 16, 39, 0.12);
+}
+
+/* botão "+ Novo produto" (degradê que desliza no hover) */
+.pagina-produtos .barraFiltroProdutos > .button,
+.pagina-produtos .barraFiltroProdutos .divButton .button {
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 24px;
+  border: none;
+  border-radius: 999px;
+  color: #fff;
+  font: 600 14px "Inter", sans-serif;
+  cursor: pointer;
+
+  background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 45%, #B3213B 100%);
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  box-shadow: 0 2px 6px rgba(142, 16, 39, 0.25);
+
+  transition:
+    background-position 0.5s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
+}
+
+.pagina-produtos .barraFiltroProdutos > .button:hover,
+.pagina-produtos .barraFiltroProdutos .divButton .button:hover {
+  background-position: 100% 50%;
+  box-shadow: 0 4px 12px rgba(142, 16, 39, 0.35);
+  transform: translateY(-1px);
+}
+
+/* =========================================================
+   GRADE DE CARDS (3 COLUNAS)
+========================================================= */
+.pagina-produtos .listaProdutos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* O seletor mais específico (.listaProdutos .cardProduto) é de propósito:
+   a Visão Geral também usa a classe .cardProduto e adiciona padding, margem
+   e borda. Aqui tudo isso é zerado, o que também elimina a linha branca em
+   cima da imagem (não precisa mais do margin-top: -12px). */
+.pagina-produtos .listaProdutos .cardProduto {
+  display: flex;
+  flex-direction: column; /* imagem EM CIMA e conteúdo EMBAIXO */
+  align-items: stretch;
+  justify-content: flex-start;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-card);
+  background-color: var(--cor-card);
+  overflow: hidden;
+  box-shadow: var(--sombra-card);
+  box-sizing: border-box;
+  transition: box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+}
+
+.pagina-produtos .listaProdutos .cardProduto:hover {
+  transform: translateY(-3px);
+  border-color: #F0C4CC;
+  background-color: var(--cor-card);
+  box-shadow: var(--sombra-card-hover);
+}
+
+/* =========================================================
+   CONTEÚDO INTERNO DO CARD
+========================================================= */
+.pagina-produtos .imagemProduto {
+  position: relative;
+  width: 100%;
+  height: 180px;
+  min-height: 180px;
+  margin-top: 0;
+  padding: 14px;
+  box-sizing: border-box;
+  overflow: hidden;
+  background: linear-gradient(135deg, #FBE6EA 0%, #F8DDE2 100%);
+  background-size: cover;
+  background-position: center;
+}
+
+/* camada que dá o zoom suave na foto ao passar o mouse */
+.pagina-produtos .imagemProduto::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: inherit;
+  transition: transform 0.7s var(--suave);
+}
+
+.pagina-produtos .cardProduto:hover .imagemProduto::before {
+  transform: scale(1.07);
+}
+
+.pagina-produtos .tarjaCategoria {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+  padding: 5px 12px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.94);
+  color: var(--cor-texto);
+  font: 600 12px "Inter", sans-serif;
+  box-shadow: 0 1px 4px rgba(60, 20, 20, 0.12);
+}
+
+.pagina-produtos .infoProduto {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 18px 20px 20px 20px;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.pagina-produtos .listaProdutos .nomeProduto {
+  margin: 0;
+  font: 600 17px "Inter", sans-serif;
+  letter-spacing: -0.01em;
+  color: var(--cor-texto);
+  white-space: normal;
+  overflow: visible;
+}
+
+.pagina-produtos .listaProdutos .qtdIngredientes {
+  margin: 4px 0 0 0;
+  font-size: 13px;
+  color: var(--cor-texto-secundario);
+}
+
+.pagina-produtos .valoresProduto {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--cor-divisor);
+  width: 100%;
+}
+
+.pagina-produtos .valoresProduto > *:last-child {
+  text-align: right;
+}
+
+.pagina-produtos .valoresProduto > *:nth-child(2) {
+  text-align: center;
+}
+
+.pagina-produtos .listaProdutos .labelValor {
+  margin: 0;
+  font-size: 12px;
+  color: var(--cor-texto-secundario);
+}
+
+.pagina-produtos .listaProdutos .numeroValor {
+  margin: 4px 0 0 0;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--cor-texto);
+  font-variant-numeric: tabular-nums;
+}
+
+/* o preço de venda deixou de ser vermelho (parecia alerta) */
+.pagina-produtos .numeroVenda {
+  color: var(--cor-primaria);
+}
+
+/* a margem (3º bloco) em verde */
+.pagina-produtos .valoresProduto > *:last-child .numeroValor {
+  color: #166534;
+}
+
+/* botão "Ver receita": rosa suave que se preenche de vinho no hover */
+.pagina-produtos .botaoVerReceita {
+  margin-top: 18px;
+  width: 100%;
+}
+
+.pagina-produtos .botaoVerReceita .button,
+.pagina-produtos .botaoVerReceita button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 11px;
+  border: 1px solid #F0C4CC;
+  border-radius: 10px;
+  color: var(--cor-primaria);
+  font: 600 14px "Inter", sans-serif;
+  cursor: pointer;
+
+  background: linear-gradient(90deg, var(--cor-rosa-suave) 0%, var(--cor-rosa-suave) 50%, #8E1027 50%, #B3213B 100%);
+  background-size: 200% 100%;
+  background-position: 0% 50%;
+  box-shadow: none;
+
+  transition:
+    background-position 0.5s var(--suave),
+    color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.pagina-produtos .botaoVerReceita .button:hover,
+.pagina-produtos .botaoVerReceita button:hover {
+  background-position: 100% 50%;
+  color: #fff;
+  border-color: transparent;
+}
+
+/* =========================================================
+   ÍCONES (Lucide) — herdam a cor do texto
+========================================================= */
+.pagina-produtos .barraFiltroProdutos .button svg,
+.pagina-produtos .botaoVerReceita svg {
+  width: 15px;
+  height: 15px;
+  stroke-width: 2.4;
+  flex-shrink: 0;
+}
+
+/* =========================================================
+   ANIMAÇÕES (somente CSS, sem JavaScript)
+   1) Ao ENTRAR na tela: título, filtros e cards surgem em
+      sequência (todos os navegadores).
+   2) Ao ROLAR: cards abaixo da dobra surgem quando
+      aparecem (Chrome, Edge e Safari recentes).
+========================================================= */
+@keyframes entradaCarga {
+  from { opacity: 0; translate: 0 24px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+@keyframes surgirRolagem {
+  from { opacity: 0; translate: 0 32px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+/* ---------- ordem de entrada ---------- */
+.pagina-produtos .tituloProdutos      { --atraso: 0s; }
+.pagina-produtos .subtituloProdutos   { --atraso: .08s; }
+.pagina-produtos .barraFiltroProdutos { --atraso: .16s; }
+
+/* cada card: atraso da linha + pequeno atraso da coluna */
+.pagina-produtos .cardProduto { --atraso: calc(var(--fila, .75s) + var(--col, 0s)); }
+
+.pagina-produtos .cardProduto:nth-child(3n+1) { --col: 0s; }
+.pagina-produtos .cardProduto:nth-child(3n+2) { --col: .07s; }
+.pagina-produtos .cardProduto:nth-child(3n)   { --col: .14s; }
+
+.pagina-produtos .cardProduto:nth-child(-n+3)                { --fila: .30s; }
+.pagina-produtos .cardProduto:nth-child(n+4):nth-child(-n+6) { --fila: .42s; }
+.pagina-produtos .cardProduto:nth-child(n+7):nth-child(-n+9) { --fila: .54s; }
+.pagina-produtos .cardProduto:nth-child(n+10)                { --fila: .66s; }
+
+@media (prefers-reduced-motion: no-preference) {
+
+  .pagina-produtos .tituloProdutos,
+  .pagina-produtos .subtituloProdutos,
+  .pagina-produtos .barraFiltroProdutos,
   .pagina-produtos .cardProduto {
-    display: flex;
-    flex-direction: column; /* Imagem EM CIMA e Conteúdo EMBAIXO */
-    width: 100%;
-    background-color: #ffffff;
-    border-radius: 12px;
-    overflow: hidden;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.06);
-    box-sizing: border-box;
+    animation: entradaCarga 0.7s var(--suave) var(--atraso, 0s) backwards;
   }
-  
-  
-  /* =========================================================
-     CONTEÚDO INTERNO DO CARD
-     ========================================================= */
-  
-  
-  .pagina-produtos .imagemProduto {
-    width: 100%;
-    height: 180px;
-    min-height: 180px;
-    background-color: #FFC8D2;
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    box-sizing: border-box;
-    padding: 14px;
+}
+
+/* ---------- cards abaixo da dobra surgem ao rolar ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .pagina-produtos .cardProduto {
+      animation-name: surgirRolagem, entradaCarga;
+      animation-duration: auto, 0.7s;
+      animation-timing-function: linear, var(--suave);
+      animation-delay: 0s, var(--atraso, 0s);
+      animation-fill-mode: both, backwards;
+      animation-timeline: view(), auto;
+      animation-range: entry 0% entry 30%, normal;
+    }
   }
-  
-  
-  .imagemProduto{
-    margin-top: -12px; /*gambiarra pra consertar linha branca em cima de todos os produtos menos o 1º*/
-  }
-  
-  
-  .pagina-produtos .tarjaCategoria {
-    background-color: #ffffff;
-    color: #333333;
-    font-size: 12px;
-    font-weight: 600;
-    padding: 5px 12px;
-    border-radius: 20px;
-    display: inline-block;
-  }
-  
-  
-  .pagina-produtos .infoProduto {
-    display: flex;
-    flex-direction: column;
-    padding: 18px 20px 20px 20px;
-    box-sizing: border-box;
-    width: 100%;
-    text-align: left;
-  }
-  
-  
-  .pagina-produtos .nomeProduto {
-    margin: 0;
-    font-size: 18px;
-    color: #222222;
-    font-weight: 600;
-  }
-  
-  
-  .pagina-produtos .qtdIngredientes {
-    margin: 4px 0 0 0;
-    font-size: 13px;
-    color: #888888;
-  }
-  
-  
-  .pagina-produtos .valoresProduto {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 16px;
-    width: 100%;
-  }
-  
-  
-  .pagina-produtos .labelValor {
-    margin: 0;
-    font-size: 12px;
-    color: #888888;
-  }
-  
-  
-  .pagina-produtos .numeroValor {
-    margin: 4px 0 0 0;
-    font-size: 15px;
-    font-weight: 600;
-    color: #333333;
-  }
-  
-  
-  .pagina-produtos .numeroVenda {
-    color: #CF0003;
-  }
-  
-  
-  .pagina-produtos .botaoVerReceita {
-    margin-top: 18px;
-    width: 100%;
-  }
-  
-  
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pagina-produtos .listaProdutos .cardProduto,
+  .pagina-produtos .imagemProduto::before,
   .pagina-produtos .botaoVerReceita .button,
   .pagina-produtos .botaoVerReceita button {
-    width: 100%;
-    background-color: #8d6e63;
-    color: #ffffff;
-    border: none;
-    padding: 10px;
-    border-radius: 8px;
-    cursor: pointer;
+    transition: none;
   }
-  
-  
-  .pagina-produtos .botaoVerReceita .button:hover,
-  .pagina-produtos .botaoVerReceita button:hover {
-    background-color: #79594f;
-  }  
+}
+
+/* =========================================================
+   RESPONSIVIDADE
+========================================================= */
+@media (max-width: 1200px) {
+  .pagina-produtos .listaProdutos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 700px) {
+  .pagina-produtos .listaProdutos {
+    grid-template-columns: 1fr;
+  }
+
+  .pagina-produtos .conteudoProdutos {
+    padding: 18% 16px 24px;
+  }
+
+  .pagina-produtos .barraFiltroProdutos {
+    flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+
+  .pagina-produtos #selectCategoriaProdutos {
+    flex: 1;
+    width: auto;
+  }
+}

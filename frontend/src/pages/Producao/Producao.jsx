@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "./Producao.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
+import { motion } from "motion/react";
 
 const initialOrders = [
   { id: 1, name: "Brigadeiro Gourmet", team: "Equipe A", total: 480, done: 360, status: "Em andamento", time: "45 min restantes", kind: "progressing" },

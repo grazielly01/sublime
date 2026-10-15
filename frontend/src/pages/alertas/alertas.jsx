@@ -2,6 +2,7 @@ import "./alertas.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
 import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
 import Alert from "../../componentes/Alerts/Alerts.jsx";  /*Importando o componente Alert (o cardzinho de alerta) da pasta componentes*/
+import { motion } from "motion/react";
 
 function Alertas() {
 
@@ -45,7 +46,7 @@ function Alertas() {
 
                 <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
 
-                <div className="conteudoAlertas"> {/*Div com o conteúdo da página*/}
+                <div className="conteudoAlertas conteudoAlertas2"> {/*Div com o conteúdo da página*/}
 
                     <h1 className="tituloAlertas">Alertas</h1>
                     <p className="subtituloAlertas">Notificações automáticas de estoque, validade, financeiro e pedidos.</p>

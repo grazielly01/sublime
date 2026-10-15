@@ -22,20 +22,19 @@
 /*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
 
 .conteudoRegistrarPedido{
-    padding-top: 6%;
     box-sizing: border-box;
 }
 
 .tituloESetinha{
     display: flex;
     align-items: center;
-    gap: 16px;
 }
 
 .tituloRegistrarPedido{
     margin: 0;
     font-size: 350%;
     color: #870B22;
+    font-weight: 600;
 }
 
 .svgSetinha{
@@ -50,17 +49,21 @@
     border: 1px solid #870B22;
     border-radius: 12px;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    padding: 28px 32px;
-    margin-top: 32px;
+    padding: 28px 32px 25px;
+    margin-top: 72px;
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 20px;
+    width:85%;
+}
+
+.linha1{
+    margin-top: -2%;
 }
 
 .linha1,
 .linha2{
     display: flex;
-    gap: 24px;
 }
 
 .campoRegistrar{
@@ -89,8 +92,8 @@ label span{
     flex: 1.1;
 }
 
-#inputPrazo{
-    width: 50vh;
+.campoPrazo{
+    width: 80%;
 }
 
 .campoQuantidade{
@@ -98,7 +101,7 @@ label span{
 }
 
 .campoDescricao{
-    flex: 3.5; /*campo "Descrição" ocupa bem mais espaço, igual no protótipo*/
+    flex: 3; /*campo "Descrição" ocupa bem mais espaço*/
 }
 
 /*Select de Status ocupando 100% do espaço do campo (controlado pelo flex acima)*/

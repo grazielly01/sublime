@@ -1,156 +1,188 @@
+/* =====================================================
+   VARIÁVEIS
+===================================================== */
+:root {
+  --cor-primaria: #8E1027;
+  --cor-primaria-hover: #6f0c1e;
+  --cor-fundo: #FAF6F5;
+  --cor-card: #FFFFFF;
+  --cor-borda: #EDE3E1;
+  --cor-divisor: #F3ECEA;
+  --cor-trilho: #F0E4E3;
+  --cor-texto: #2B2B2B;
+  --cor-texto-secundario: #7A6E6C;
+  --cor-texto-suave: #A39896;
+  --cor-rosa-suave: #FBEAED;
+  --cor-entrada: #3F8F4F;
+  --cor-saida: #8E1027;
+
+  --raio-card: 14px;
+  --sombra-card: 0 1px 3px rgba(60, 20, 20, 0.06);
+  --sombra-card-hover: 0 8px 20px rgba(142, 16, 39, 0.12);
+  --suave: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
 .tudoFluxoCaixa {
-  display: flex;
+  width: 93%;
   min-height: 100vh;
-  background: #FDEDE8;
+  display: flex;
+  font-family: "Inter", sans-serif;
+  color: var(--cor-texto);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 .tudoMenosSidebar {
-  flex: 1;
-  min-width: 0;
   display: flex;
   flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin-left: 68px;
+  background-color: var(--cor-fundo);
 }
 
 .conteudoFluxoCaixa {
   flex: 1;
   width: 100%;
-  max-width: 1440px;
+  max-width: 1280px;
   margin: 0 auto;
-  padding: 26px 64px 60px;
+  padding: 56px 6px 60px;
   box-sizing: border-box;
 }
 
+.tudoFluxoCaixa :focus-visible {
+  outline: 2px solid var(--cor-primaria);
+  outline-offset: 2px;
+  border-radius: 6px;
+}
 
 /* =====================================================
-   CABEÇALHO. APROVADO
+   CABEÇALHO
 ===================================================== */
-
 .topoFluxoCaixa {
-  margin-bottom: 20px;
-}
-
-.tituloComVoltar {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.botaoVoltar {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 34px;
-  height: 34px;
-  border: 1px solid #efbfc4;
-  border-radius: 50%;
-  background: #fff9f7;
-  color: #8E1027;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: background 0.15s ease;
-}
-
-.botaoVoltar:hover {
-  background: #ffe3e6;
-}
-
-.botaoVoltar svg {
-  width: 18px;
-  height: 18px;
+  margin-top: -2px;
+  margin-bottom: 26px;
 }
 
 .tituloFluxoCaixa {
- margin: 0;
-
-    font-family: "Inter", serif;
-    font-size: 37px;
-    font-weight: 700;
-    line-height: 1.3;
-
-    color: #8E1027;
-
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: clamp(28px, 2.4vw, 34px);
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: #8c1b30
 }
 
 .subtituloFluxoCaixa {
-  margin: 3px 0 0;
-  color: #8b656b;
-  font: 400 14px "Inter", sans-serif;
+  margin: 4px 0 0;
+  color: var(--cor-texto-secundario);
+  font: 400 15px "Inter", sans-serif;
 }
-
 
 /* =====================================================
    CARDS DO TOPO
 ===================================================== */
-
 .resumoFluxo {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 18px;
+  margin-bottom: 22px;
+  
 }
 
 .cardFluxo {
-  min-height: 58px;
-  background: #fff9f7;
-  border: 1px solid #efbfc4;
-  border-radius: 7px;
-  padding: 10px 14px;
+  min-height: 82px;
+  padding: 0 20px;
   box-sizing: border-box;
-  box-shadow: 0 1px 3px rgba(80, 20, 30, 0.07);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-card);
+  box-shadow: var(--sombra-card);
 
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFF7F8 45%, #FBE6EA 100%);
+  background-size: 220% 220%;
+  background-position: 0% 0%;
+
+  transition:
+    background-position 0.7s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.cardFluxo:hover {
+  background-position: 100% 100%;
+  transform: translateY(-2px);
+  border-color: #F0C4CC;
+  box-shadow: var(--sombra-card-hover);
 }
 
 .labelFluxo {
-  color: #76545a;
-  font: 600 12px "Inter", sans-serif;
-  margin-bottom: 4px;
+  font: 500 11px "Inter", sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 7px;
+  color: var(--cor-texto-secundario);
 }
 
 .valorFluxo {
-  color: #241416;
-  font: 700 20px "Playfair Display", serif;
+  color: var(--cor-texto);
+  font: 700 22px "Inter", sans-serif;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
+
 .cardSaldoFinal {
-  background: #9d0926;
-  border-color: #9d0926;
+  background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 50%, #B3213B 100%);
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(142, 16, 39, 0.28);
+}
+
+.cardSaldoFinal:hover {
+  background-position: 100% 50%;
+  border-color: transparent;
+  box-shadow: 0 10px 24px rgba(142, 16, 39, 0.35);
 }
 
 .cardSaldoFinal .labelFluxo {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .cardSaldoFinal .valorFluxo {
   color: #fff;
 }
 
-
 /* =====================================================
    CARDS GERAIS
 ===================================================== */
-
 .cardGraficoFluxo,
 .cardMovimentacoes,
 .cardDespesas {
-  background: #fff9f7;
-  border: 1px solid #efbfc4;
-  border-radius: 7px;
-  box-shadow: 0 1px 3px rgba(80, 20, 30, 0.06);
+  background: var(--cor-card);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-card);
+  box-shadow: var(--sombra-card);
   overflow: hidden;
+  margin-bottom: 2.5%;
 }
 
 .cardGraficoFluxo {
-  margin-bottom: 16px;
+  margin-bottom: 2.5%;
 }
 
 .cabecalhoCardFluxo {
-  min-height: 38px;
-  padding: 10px 14px;
+  min-height: 52px;
+  padding: 16px 20px;
   box-sizing: border-box;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -158,52 +190,47 @@
 
 .cabecalhoCardFluxo h2 {
   margin: 0;
-  color: #241416;
-  font: 700 16px "Playfair Display", serif;
+  color: var(--cor-texto);
+  font: 600 17px "Inter", sans-serif;
+  letter-spacing: -0.01em;
 }
-
 
 /* =====================================================
    LEGENDA
 ===================================================== */
-
-.legendaGrafico {
+.cardGraficoFluxo .legendaGrafico {
   display: flex;
-  gap: 10px;
+  justify-content: flex-start;
+  gap: 14px;
+  margin-top: 0;
   font: 500 12px "Inter", sans-serif;
-  color: #665054;
+  color: var(--cor-texto-secundario);
 }
 
-.legendaGrafico span {
+.cardGraficoFluxo .legendaGrafico span {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 6px;
 }
 
-.legendaGrafico i {
-  width: 7px;
-  height: 7px;
-  border-radius: 2px;
+.cardGraficoFluxo .legendaGrafico i {
+  width: 9px;
+  height: 9px;
+  border-radius: 3px;
   display: inline-block;
 }
 
-.legendaEntrada {
-  background: #4d9653;
-}
-
-.legendaSaida {
-  background: #9d0926;
-}
+.legendaEntrada { background: var(--cor-entrada); }
+.legendaSaida   { background: var(--cor-saida); }
 
 /* =====================================================
-   AÇÕES DO GRÁFICO (BOTÕES + LEGENDA)
+   AÇÕES DO GRÁFICO 
 ===================================================== */
-
 .acoesGrafico {
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 8px;
+  gap: 10px;
 }
 
 .botoesFluxo {
@@ -213,57 +240,76 @@
 
 .botaoSaida,
 .botaoEntrada {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
   border-radius: 999px;
-  padding: 6px 16px;
+  padding: 8px 18px;
   font: 600 12px "Inter", sans-serif;
   cursor: pointer;
   white-space: nowrap;
+  transition:
+    background-position 0.5s ease,
+    background-color 0.2s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
 }
 
 .botaoSaida {
-  background: #fff9f7;
-  border: 1px solid #9d0926;
-  color: #9d0926;
+  background: var(--cor-card);
+  border: 1px solid var(--cor-primaria);
+  color: var(--cor-primaria);
 }
 
 .botaoSaida:hover {
-  background: #ffe9eb;
+  background: var(--cor-rosa-suave);
+  transform: translateY(-1px);
 }
 
 .botaoEntrada {
-  background: #9d0926;
-  border: 1px solid #9d0926;
+  border: 1px solid transparent;
   color: #fff;
+  background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 45%, #B3213B 100%);
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  box-shadow: 0 2px 6px rgba(142, 16, 39, 0.25);
 }
 
 .botaoEntrada:hover {
-  background: #7f081e;
+  background-position: 100% 50%;
+  box-shadow: 0 4px 12px rgba(142, 16, 39, 0.35);
+  transform: translateY(-1px);
+}
+
+.botaoSaida:active,
+.botaoEntrada:active {
+  transform: translateY(0);
 }
 
 /* =====================================================
    GRÁFICO DE BARRAS
 ===================================================== */
-
 .graficoBarras {
-  height: 150px;
+  height: 200px;
   display: flex;
-  padding: 4px 18px 14px 42px;
+  padding: 4px 22px 16px 50px;
   box-sizing: border-box;
   position: relative;
 }
 
 .eixoY {
   position: absolute;
-  left: 10px;
+  left: 14px;
   top: 6px;
-  bottom: 25px;
+  bottom: 27px;
 
   display: flex;
   flex-direction: column;
   justify-content: space-between;
 
-  color: #ad9297;
+  color: var(--cor-texto-suave);
   font: 400 11px "Inter", sans-serif;
+  font-variant-numeric: tabular-nums;
 }
 
 .areaBarras {
@@ -279,24 +325,13 @@
   position: absolute;
   left: 0;
   right: 0;
-  border-top: 1px dashed #eadbdb;
+  border-top: 1px dashed var(--cor-divisor);
 }
 
-.linha60 {
-  top: 0;
-}
-
-.linha40 {
-  top: 33%;
-}
-
-.linha20 {
-  top: 66%;
-}
-
-.linha0 {
-  bottom: 22px;
-}
+.linha60 { top: 0; }
+.linha40 { top: 33%; }
+.linha20 { top: 66%; }
+.linha0  { bottom: 22px; }
 
 .grupoBarras {
   height: 100%;
@@ -315,38 +350,42 @@
   height: calc(100% - 22px);
   display: flex;
   align-items: flex-end;
-  gap: 4px;
+  gap: 5px;
 }
 
 .barra {
-  width: 8px;
-  border-radius: 4px 4px 0 0;
+  width: 12px;
+  border-radius: 5px 5px 0 0;
+  transform-origin: bottom;
+  transition: filter 0.2s;
+}
+
+.barra:hover {
+  filter: brightness(1.12);
 }
 
 .barra.entrada {
-  background: #4f9654;
+  background: linear-gradient(180deg, #4FA463 0%, #3F8F4F 100%);
 }
 
 .barra.saida {
-  background: #9d0926;
+  background: linear-gradient(180deg, #B3213B 0%, #8E1027 100%);
 }
 
 .grupoBarras > span {
-  margin-top: 5px;
-  color: #9a7b81;
-  font: 400 11px "Inter", sans-serif;
+  margin-top: 6px;
+  color: var(--cor-texto-secundario);
+  font: 500 11px "Inter", sans-serif;
 }
-
 
 /* =====================================================
    GRÁFICO DE LINHA
 ===================================================== */
-
 .graficoLinha {
-  height: 185px;
+  height: 200px;
   position: relative;
-  margin: 0 18px 12px 42px;
-  border-bottom: 1px solid #dec9cc;
+  margin: 8px 22px 16px 50px;
+  border-bottom: 1px solid var(--cor-borda);
 }
 
 .linhasLinha {
@@ -359,12 +398,12 @@
 
 .linhasLinha span {
   width: 100%;
-  border-top: 1px dashed #eadbdb;
+  border-top: 1px dashed var(--cor-divisor);
 }
 
 .eixoLinhaY {
   position: absolute;
-  left: -30px;
+  left: -36px;
   top: 10px;
   bottom: 25px;
 
@@ -372,8 +411,9 @@
   flex-direction: column;
   justify-content: space-between;
 
-  color: #ad9297;
+  color: var(--cor-texto-suave);
   font: 400 11px "Inter", sans-serif;
+  font-variant-numeric: tabular-nums;
 }
 
 .svgLinha {
@@ -386,8 +426,16 @@
   overflow: visible;
 }
 
+
+.svgLinha path,
+.svgLinha polyline {
+  vector-effect: non-scaling-stroke;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
 .svgLinha circle {
-  fill: #9d0926;
+  fill: var(--cor-primaria);
 }
 
 .datasLinha {
@@ -399,20 +447,18 @@
   display: flex;
   justify-content: space-between;
 
-  color: #9a7b81;
-  font: 400 11px "Inter", sans-serif;
+  color: var(--cor-texto-secundario);
+  font: 500 11px "Inter", sans-serif;
 }
-
 
 /* =====================================================
    DUAS COLUNAS
 ===================================================== */
-
 .duasColunasFluxo {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
-  margin-bottom: 16px;
+  gap: 18px;
+  margin-bottom: 18px;
 }
 
 .cardMovimentacoes {
@@ -420,39 +466,53 @@
 }
 
 .cabecalhoLista {
-  border-bottom: 1px solid #f0d8da;
+  border-bottom: 1px solid var(--cor-divisor);
 }
 
 .cabecalhoLista button {
   border: none;
-  background: #9d0926;
-  color: white;
+  color: #fff;
   border-radius: 999px;
-  padding: 5px 14px;
+  padding: 7px 16px;
   font: 600 11px "Inter", sans-serif;
   cursor: pointer;
+
+  background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 45%, #B3213B 100%);
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  box-shadow: 0 2px 6px rgba(142, 16, 39, 0.25);
+  transition: background-position 0.5s ease, box-shadow 0.3s ease, transform 0.2s ease;
 }
 
+.cabecalhoLista button:hover {
+  background-position: 100% 50%;
+  box-shadow: 0 4px 12px rgba(142, 16, 39, 0.35);
+  transform: translateY(-1px);
+}
 
 /* =====================================================
    MOVIMENTAÇÕES
 ===================================================== */
-
 .listaMovimentacoes {
   width: 100%;
 }
 
 .movimentacao {
-  min-height: 40px;
-  padding: 6px 12px;
+  min-height: 50px;
+  padding: 8px 20px;
   box-sizing: border-box;
 
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
+  gap: 12px;
 
-  border-bottom: 1px solid #f1dddd;
+  border-bottom: 1px solid var(--cor-divisor);
+  transition: background 0.15s;
+}
+
+.movimentacao:hover {
+  background: #FDFAF9;
 }
 
 .movimentacao:last-child {
@@ -463,12 +523,12 @@
   min-width: 0;
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 10px;
 }
 
 .infoMovimentacao strong {
-  color: #392326;
-  font: 500 13px "Inter", sans-serif;
+  color: var(--cor-texto);
+  font: 500 14px "Inter", sans-serif;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -476,87 +536,95 @@
 
 .iconeMovimentacao,
 .iconeDespesa {
-  width: 18px;
-  height: 18px;
+  width: 24px;
+  height: 24px;
   flex-shrink: 0;
-
   border-radius: 50%;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  color: white;
+  color: #fff;
   font: 700 12px "Inter", sans-serif;
 }
 
 .entradaIcone {
-  background: #4f9654;
+  background: linear-gradient(135deg, #4FA463, #3F8F4F);
 }
 
 .saidaIcone,
 .iconeDespesa {
-  background: #c00020;
+  background: linear-gradient(135deg, #C8213D, #A60027);
 }
 
 .valorEntrada,
 .valorSaida {
   white-space: nowrap;
-  font: 700 13px "Inter", sans-serif;
+  font: 700 14px "Inter", sans-serif;
+  font-variant-numeric: tabular-nums;
 }
 
-.valorEntrada {
-  color: #21813a;
-}
-
-.valorSaida {
-  color: #5c1722;
-}
-
+.valorEntrada { color: #1F7A3A; }
+.valorSaida   { color: #7A1626; }
 
 /* =====================================================
    RESUMO INFERIOR
 ===================================================== */
-
 .resumoInferior {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-  margin-bottom: 16px;
+  gap: 18px;
+  margin-bottom: 2.5%;
 }
 
 .miniCard {
-  background: #ffd9df;
-  border: 1px solid #efb4bd;
-  border-radius: 6px;
-  padding: 10px 13px;
+  padding: 16px 20px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-card);
+  box-shadow: var(--sombra-card);
 
   display: flex;
   flex-direction: column;
+
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFF7F8 45%, #FBE6EA 100%);
+  background-size: 220% 220%;
+  background-position: 0% 0%;
+
+  transition:
+    background-position 0.7s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease,
+    border-color 0.3s ease;
+}
+
+.miniCard:hover {
+  background-position: 100% 100%;
+  transform: translateY(-2px);
+  border-color: #F0C4CC;
+  box-shadow: var(--sombra-card-hover);
 }
 
 .miniCard span {
-  color: #79545b;
-  font: 500 12px "Inter", sans-serif;
+  color: var(--cor-texto-secundario);
+  font: 500 13px "Inter", sans-serif;
 }
 
 .miniCard strong {
-  margin-top: 2px;
-  color: #241416;
-  font: 700 20px "Playfair Display", serif;
+  margin-top: 4px;
+  color: var(--cor-texto);
+  font: 700 24px "Inter", sans-serif;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
 }
 
 .miniCard small {
-  margin-top: 2px;
-  color: #329047;
-  font: 500 11px "Inter", sans-serif;
+  margin-top: 4px;
+  color: #1F7A3A;
+  font: 500 12px "Inter", sans-serif;
 }
-
 
 /* =====================================================
    DESPESAS FIXAS E VARIÁVEIS
 ===================================================== */
-
 .cardDespesas {
   margin-bottom: 30px;
 }
@@ -564,16 +632,14 @@
 .conteudoDespesas {
   display: grid;
   grid-template-columns: 210px 1fr 1fr;
-  gap: 20px;
-  padding: 8px 14px 14px;
+  gap: 24px;
+  padding: 8px 20px 20px;
   align-items: center;
 }
-
 
 /* =====================================================
    DONUT
 ===================================================== */
-
 .areaPizza {
   display: flex;
   flex-direction: column;
@@ -581,13 +647,13 @@
 }
 
 .pizza {
-  width: 125px;
-  height: 125px;
+  width: 135px;
+  height: 135px;
   border-radius: 50%;
 
   background: conic-gradient(
-    #9d0926 0deg 211deg,
-    #ffb3c2 211deg 360deg
+    #8E1027 0deg 211deg,
+    #F4B6C2 211deg 360deg
   );
 
   position: relative;
@@ -597,84 +663,76 @@
 }
 
 .centroPizza {
-  width: 73px;
-  height: 73px;
+  width: 82px;
+  height: 82px;
   border-radius: 50%;
-  background: #fff9f7;
+  background: #fff;
 
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-
   text-align: center;
 }
 
 .centroPizza strong {
-  color: #3c272a;
-  font: 700 13px "Inter", sans-serif;
+  color: var(--cor-texto);
+  font: 700 14px "Inter", sans-serif;
 }
 
 .centroPizza span {
   margin-top: 2px;
-  color: #8b6b71;
+  color: var(--cor-texto-secundario);
   font: 400 11px "Inter", sans-serif;
 }
 
 .legendaPizza {
-  margin-top: 8px;
+  margin-top: 12px;
 
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 
-  color: #675156;
+  color: var(--cor-texto-secundario);
   font: 500 12px "Inter", sans-serif;
 }
 
 .legendaPizza div {
   display: flex;
   align-items: center;
-  gap: 5px;
+  gap: 7px;
 }
 
 .legendaPizza i {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 50%;
 }
 
-.pontoFixo {
-  background: #9d0926;
-}
-
-.pontoVariavel {
-  background: #ffb3c2;
-}
-
+.pontoFixo     { background: #8E1027; }
+.pontoVariavel { background: #F4B6C2; }
 
 /* =====================================================
    TABELAS DE DESPESAS
 ===================================================== */
-
 .tabelaDespesa {
   min-width: 0;
 }
 
 .tabelaDespesa h3 {
-  margin: 0 0 5px;
-  padding: 6px 9px;
+  margin: 0 0 6px;
+  padding: 9px 12px;
 
-  border-radius: 5px;
-  background: #9d0926;
-  color: white;
+  border-radius: 8px;
+  background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 60%, #B3213B 100%);
+  color: #fff;
 
   font: 700 13px "Inter", sans-serif;
 }
 
 .tabelaDespesa:last-child h3 {
-  background: #ffb3c2;
-  color: #5a2530;
+  background: linear-gradient(120deg, #F4B6C2 0%, #F9CFD7 100%);
+  color: #5A2530;
 }
 
 .linhaDespesa {
@@ -682,44 +740,222 @@
   justify-content: space-between;
   gap: 10px;
 
-  padding: 5px 9px;
-  border-bottom: 1px solid #f0dfe0;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--cor-divisor);
+  transition: background 0.15s;
 
-  color: #4a3438;
-  font: 400 12px "Inter", sans-serif;
+  color: var(--cor-texto-secundario);
+  font: 400 13px "Inter", sans-serif;
+}
+
+.linhaDespesa:hover {
+  background: #FDFAF9;
 }
 
 .linhaDespesa strong {
-  font-weight: 500;
+  color: var(--cor-texto);
+  font-weight: 600;
   white-space: nowrap;
+  font-variant-numeric: tabular-nums;
 }
 
 .totalDespesa {
-  margin-top: 2px;
-  padding: 6px 9px;
+  margin-top: 4px;
+  padding: 9px 12px;
 
   display: flex;
   justify-content: space-between;
 
-  background: #9d0926;
-  color: white;
-  border-radius: 3px;
+  background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 60%, #B3213B 100%);
+  color: #fff;
+  border-radius: 8px;
 
-  font: 700 12px "Inter", sans-serif;
+  font: 700 13px "Inter", sans-serif;
+  font-variant-numeric: tabular-nums;
 }
 
 .tabelaDespesa:last-child .totalDespesa {
-  background: #ffb3c2;
-  color: #5a2530;
+  background: linear-gradient(120deg, #F4B6C2 0%, #F9CFD7 100%);
+  color: #5A2530;
 }
 
+/* =====================================================
+   ÍCONES (Lucide) — herdam a cor do texto
+===================================================== */
+.iconeMovimentacao svg,
+.iconeDespesa svg {
+  width: 13px;
+  height: 13px;
+  stroke-width: 2.6;
+}
+
+.botaoSaida svg,
+.botaoEntrada svg {
+  width: 14px;
+  height: 14px;
+  stroke-width: 2.4;
+}
+
+.cabecalhoLista button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.cabecalhoLista button svg {
+  width: 12px;
+  height: 12px;
+  stroke-width: 2.4;
+}
+
+/* =====================================================
+   ANIMAÇÕES 
+===================================================== */
+@keyframes entradaCarga {
+  from { opacity: 0; translate: 0 24px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+ 
+@keyframes surgirRolagem {
+  from { opacity: 0; translate: 0 32px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+ 
+@keyframes crescerY {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
+}
+ 
+/* linha do gráfico "desenhada" da esquerda para a direita */
+@keyframes revelarLinha {
+  from { clip-path: inset(-12px 100% -12px -12px); }
+  to   { clip-path: inset(-12px -12px -12px -12px); }
+}
+ 
+/* ---------- ordem de entrada (atrasos) ---------- */
+.tituloFluxoCaixa    { --atraso: 0s; }
+.subtituloFluxoCaixa { --atraso: .08s; }
+ 
+.cardFluxo:nth-child(1) { --atraso: .12s; }
+.cardFluxo:nth-child(2) { --atraso: .19s; }
+.cardFluxo:nth-child(3) { --atraso: .26s; }
+.cardFluxo:nth-child(4) { --atraso: .33s; }
+ 
+.cardGraficoFluxo                      { --atraso: .4s; }
+.cardGraficoFluxo + .cardGraficoFluxo  { --atraso: .5s; }
+ 
+.duasColunasFluxo .cardMovimentacoes:nth-child(1) { --atraso: .55s; }
+.duasColunasFluxo .cardMovimentacoes:nth-child(2) { --atraso: .63s; }
+ 
+.miniCard:nth-child(1) { --atraso: .45s; }
+.miniCard:nth-child(2) { --atraso: .52s; }
+.miniCard:nth-child(3) { --atraso: .59s; }
+ 
+.cardDespesas { --atraso: .5s; }
+ 
+/* barras: uma coluna depois da outra */
+.grupoBarras                                              { --d: 0s; }
+.grupoBarras + .grupoBarras                               { --d: .10s; }
+.grupoBarras + .grupoBarras + .grupoBarras                { --d: .20s; }
+.grupoBarras + .grupoBarras + .grupoBarras + .grupoBarras { --d: .30s; }
+.grupoBarras + .grupoBarras + .grupoBarras + .grupoBarras + .grupoBarras { --d: .40s; }
+.grupoBarras + .grupoBarras + .grupoBarras + .grupoBarras + .grupoBarras + .grupoBarras { --d: .50s; }
+ 
+/* ---------- 1) ENTRADA AO ABRIR A TELA ---------- */
+@media (prefers-reduced-motion: no-preference) {
+ 
+  .tituloFluxoCaixa,
+  .subtituloFluxoCaixa,
+  .cardFluxo,
+  .cardGraficoFluxo,
+  .cardMovimentacoes,
+  .miniCard,
+  .cardDespesas {
+    animation: entradaCarga 0.7s var(--suave) var(--atraso, 0s) backwards;
+  }
+ 
+  /* linhas das movimentações entram uma por vez */
+  .movimentacao {
+    animation: entradaCarga 0.5s var(--suave) backwards;
+  }
+  .movimentacao:nth-child(1) { animation-delay: .70s; }
+  .movimentacao:nth-child(2) { animation-delay: .76s; }
+  .movimentacao:nth-child(3) { animation-delay: .82s; }
+  .movimentacao:nth-child(4) { animation-delay: .88s; }
+  .movimentacao:nth-child(5) { animation-delay: .94s; }
+  .movimentacao:nth-child(6) { animation-delay: 1.00s; }
+ 
+  /* barras crescem (entrada primeiro, saída logo depois) */
+  .barra {
+    animation: crescerY 0.9s var(--suave) calc(.75s + var(--d, 0s)) backwards;
+  }
+  .barra.saida {
+    animation-delay: calc(.83s + var(--d, 0s));
+  }
+ 
+  /* linha do saldo é desenhada */
+  .svgLinha {
+    animation: revelarLinha 1.3s var(--suave) .75s backwards;
+  }
+}
+ 
+/* ---------- 2) SURGIR AO ROLAR (o que está abaixo da dobra) ---------- */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+ 
+    .cardGraficoFluxo,
+    .cardMovimentacoes,
+    .miniCard,
+    .cardDespesas {
+      animation-name: surgirRolagem, entradaCarga;
+      animation-duration: auto, 0.7s;
+      animation-timing-function: linear, var(--suave);
+      animation-delay: 0s, var(--atraso, 0s);
+      animation-fill-mode: both, backwards;
+      animation-timeline: view(), auto;
+      animation-range: entry 0% entry 30%, normal;
+    }
+ 
+    .svgLinha {
+      animation-name: revelarLinha, revelarLinha;
+      animation-duration: auto, 1.3s;
+      animation-timing-function: linear, var(--suave);
+      animation-delay: 0s, .75s;
+      animation-fill-mode: both, backwards;
+      animation-timeline: view(), auto;
+      animation-range: entry 10% entry 80%, normal;
+    }
+  }
+}
+ 
+@media (prefers-reduced-motion: reduce) {
+  .cardFluxo,
+  .miniCard,
+  .botaoSaida,
+  .botaoEntrada {
+    transition: none;
+  }
+}
+ 
 
 /* =====================================================
    RESPONSIVIDADE
 ===================================================== */
+@media (min-width: 1201px) {
+  .tudoFluxoCaixa {
+    width: 97%;
+  }
+
+  .tudoMenosSidebar {
+    margin-left: 60px;
+  }
+
+  .conteudoFluxoCaixa {
+    max-width: none;
+  }
+}
 
 @media (max-width: 1000px) {
-
   .conteudoFluxoCaixa {
     padding: 24px 36px 50px;
   }
@@ -733,21 +969,13 @@
   }
 }
 
-
 @media (max-width: 750px) {
-
   .conteudoFluxoCaixa {
     padding: 20px;
   }
 
-  .duasColunasFluxo {
-    grid-template-columns: 1fr;
-  }
-
-  .resumoInferior {
-    grid-template-columns: 1fr;
-  }
-
+  .duasColunasFluxo,
+  .resumoInferior,
   .conteudoDespesas {
     grid-template-columns: 1fr;
   }
@@ -755,11 +983,14 @@
   .areaPizza {
     margin-bottom: 10px;
   }
+
+  .cabecalhoCardFluxo {
+    flex-wrap: wrap;
+    gap: 12px;
+  }
 }
 
-
 @media (max-width: 520px) {
-
   .resumoFluxo {
     grid-template-columns: 1fr;
   }
@@ -769,7 +1000,7 @@
   }
 
   .graficoBarras {
-    padding-left: 35px;
+    padding-left: 38px;
   }
 
   .grupoBarras {
@@ -777,8 +1008,6 @@
   }
 
   .barra {
-    width: 6px;
+    width: 8px;
   }
 }
-
-/* Aprovando commit correto 2.0*/

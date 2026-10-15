@@ -2,6 +2,7 @@ import "./configuracoes.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 import { useNavigate } from "react-router-dom";
+import { motion } from "motion/react";
 
 function Configuracoes() {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ function Configuracoes() {
         {/* Cabeçalho branco no topo. APROVADO */}
         <Header nomeIndustria="Sweet Sunset" />
 
-        <div className="conteudoConfiguracoes">
+        <div className="conteudoConfiguracoes conteudoConfiguracoes2">
           <div className="topoConfiguracoes">
             <h1 className="tituloConfiguracoes">Configurações</h1>
             <p className="subtituloConfiguracoes">

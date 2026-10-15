@@ -1,13 +1,30 @@
-const express = require("express");
+const express = require('express');
+const cors = require('cors');
+
+// Importação das rotas
+const usuarioRoutes = require('./routes/usuarioRoutes');
+const estoqueRoutes = require('./routes/estoqueRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
+const producaoRoutes = require('./routes/producaoRoutes');
+
+// Adicione junto com as outras rotas
 
 const app = express();
 
+// Middlewares
+app.use(cors());
 app.use(express.json());
 
-app.get("/",(req,res) => {
-    res.json({
-        mensagem:"API DO SUBLIME FUNCIONANDO!"
-    });
+// Rota raiz / teste
+app.get('/', (req, res) => {
+  res.json({ mensagem: 'API DO SUBLIME FUNCIONANDO!' });
 });
 
+// Registo das rotas da aplicação
+app.use('/usuarios', usuarioRoutes);
+app.use('/estoque', estoqueRoutes);
+app.use('/dashboard', dashboardRoutes);
+app.use('/producao', producaoRoutes);
+
+// Exporta a aplicação configurada
 module.exports = app;
