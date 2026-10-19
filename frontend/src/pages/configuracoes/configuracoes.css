@@ -1,126 +1,286 @@
+/* =====================================================
+   CONFIGURAÇÕES 
+===================================================== */
+
+/* DIV QUE ABRIGA TUDO */
 .tudoConfiguracoes {
-    display: flex;
-    width: 93%;
-    min-height: 170vh;
-    background: #FDEDE8;
+  display: flex;
+  width: 93%;
+  min-height: 100vh;
+  background: #ffede9;
+  font-family: "Inter", sans-serif;
+  color: #2B2B2B;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-
-.tudoMenosSidebar {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    min-height: 170vh;
-    box-sizing: border-box;
-    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
-    background-color: #FDEDE8;
+.tudoConfiguracoes :focus-visible {
+  outline: 2px solid #8E1027;
+  outline-offset: 2px;
+  border-radius: 10px;
 }
 
-.tudoMenosSidebarConfiguracoes{
-    position: fixed;
+/* TUDO MENOS A SIDEBAR */
+.tudoConfiguracoes .tudoMenosSidebar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin-left: 68px;
+  background-color: #ffece8;
 }
 
-
-.conteudoConfiguracoes {
-    padding-top: 6%;
-    box-sizing: border-box;
+.tudoConfiguracoes .tudoMenosSidebarConfiguracoes {
+  position: fixed;
 }
 
-.conteudoConfiguracoes2{
-    margin-top: 4.5%;
-    margin-right: 11.5%;
+.tudoConfiguracoes .conteudoConfiguracoes {
+  padding-top: 6%;
+  box-sizing: border-box;
 }
 
-
-/* ---------- TOPO ---------- APROVADO */
-
-
-.topoConfiguracoes {
-    margin-bottom: 34px;
-    margin-top: -24px;
+.tudoConfiguracoes .conteudoConfiguracoes2 {
+  margin-top: 4.5%;
+  margin-right: 11.5%;
 }
 
-
-.tituloConfiguracoes {
-    margin: 0;
-    font-family: "Inter", serif;
-    font-size: 290%;
-    font-weight: 700;
-    line-height: 1;
-    color: #8E1027;
+/* =====================================================
+   TOPO
+===================================================== */
+.tudoConfiguracoes .topoConfiguracoes {
+  margin-bottom: 34px;
+  margin-top: -147px;
 }
 
-
-.subtituloConfiguracoes {
-    margin-top: 4px;
-    font-family: "Inter", sans-serif;
-    font-size: 16px;
-    font-weight: 400;
-    color: #7D6B6B;
+.tudoConfiguracoes .tituloConfiguracoes {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: clamp(28px, 2.4vw, 34px);
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  color: #961818;
 }
 
-
-/* ---------- CARDS ---------- */
-
-
-.cardsConfiguracoes {
-    display: flex;
-    flex-direction: column;
-    gap: 22px;
+.tudoConfiguracoes .subtituloConfiguracoes {
+  margin-top: 5px;
+  font-family: "Inter", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  color: #7A6E6C;
 }
 
-
-.cardConfiguracao {
-    background: #FFD7DD;
-    border-radius: 10px;
-    border: 1px solid #F1C4CB;
-    min-height: 78px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 0 22px;
-    box-shadow:
-        0 3px 5px rgba(0,0,0,.18),
-        0 1px 0 rgba(255,255,255,.35) inset;
-    cursor: pointer;
-    transition: .25s;
+/* =====================================================
+   CARDS 
+===================================================== */
+.tudoConfiguracoes .cardsConfiguracoes {
+  display: grid;
+  /*grid-template-columns: repeat(2, minmax(0, 1fr)); isso aqui deixa os cards separados em duas colunas, eu comentei caso a gente adicione mais coisa e vá usar*/
+  gap: 20px;
 }
 
+.tudoConfiguracoes .cardConfiguracao {
+  position: relative;
+  min-height: 92px;
+  box-sizing: border-box;
 
-.cardConfiguracao:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 14px rgba(0,0,0,.18);
+  /* ícone | título + descrição | seta */
+  display: grid;
+  grid-template-columns: 48px 1fr auto;
+  column-gap: 18px;
+  row-gap: 3px;
+  align-content: center;
+  align-items: center;
+  padding: 20px 24px;
+
+  border: 1px solid #EDE3E1;
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(60, 20, 20, 0.06);
+  cursor: pointer;
+
+  /* GRADIENTE sutil que desliza no hover */
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFF7F8 45%, #FBE6EA 100%);
+  background-size: 220% 220%;
+  background-position: 0% 0%;
+
+  transition:
+    background-position 0.7s ease,
+    box-shadow 0.3s ease,
+    transform 0.3s ease,
+    border-color 0.3s ease;
 }
 
-
-.cardConfiguracao h2 {
-    margin: 0;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-family: "Inter", serif;
-    font-size: 18px;
-    font-weight: 700;
-    color: #1D1D1D;
+.tudoConfiguracoes .cardConfiguracao:hover {
+  background-position: 100% 100%;
+  transform: translateY(-2px);
+  border-color: #F0C4CC;
+  box-shadow: 0 8px 20px rgba(142, 16, 39, 0.12);
 }
 
-
-.cardConfiguracao p {
-    margin: 3px 0 0 21px;
-    font-family: "DM Sans", sans-serif;
-    font-size: 15px;
-    font-weight: 400;
-    color: #6F6F6F;
+/* quadradinho do ícone (à esquerda) */
+.tudoConfiguracoes .cardConfiguracao::before {
+  content: "";
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background-color: #FBEAED;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 24px 24px;
+  transition: background-color 0.3s ease;
 }
 
+.tudoConfiguracoes .cardConfiguracao:hover::before {
+  background-color: #8E1027;
+}
 
-@media (max-width:900px) {
+/* setinha à direita (indica que o card é clicável) */
+.tudoConfiguracoes .cardConfiguracao::after {
+  content: "";
+  grid-column: 3;
+  grid-row: 1 / span 2;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid #A39896;
+  border-bottom: 2px solid #A39896;
+  transform: rotate(-45deg);
+  transition: transform 0.3s ease, border-color 0.3s ease;
+}
 
-    .conteudoConfiguracoes{
-        padding:30px;
-    }
+.tudoConfiguracoes .cardConfiguracao:hover::after {
+  transform: translateX(4px) rotate(-45deg);
+  border-color: #8E1027;
+}
 
-    .tituloConfiguracoes{
-        font-size:42px;
-    }
+.tudoConfiguracoes .cardConfiguracao h2 {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: #2B2B2B;
+}
+
+.tudoConfiguracoes .cardConfiguracao p {
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.45;
+  color: #7A6E6C;
+}
+
+/* =====================================================
+   ÍCONES DOS CARDS (na ordem em que aparecem hoje)
+   Dados da Indústria · Equipe · Sistema · Segurança
+   No hover o quadradinho fica vinho e o ícone branco.
+===================================================== */
+/* 1º card: empresa */
+.tudoConfiguracoes .cardConfiguracao:nth-child(1)::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238E1027' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z'/%3E%3Cpath d='M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2'/%3E%3Cpath d='M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2'/%3E%3Cpath d='M10 6h4'/%3E%3Cpath d='M10 10h4'/%3E%3Cpath d='M10 14h4'/%3E%3Cpath d='M10 18h4'/%3E%3C/svg%3E");
+}
+
+.tudoConfiguracoes .cardConfiguracao:nth-child(1):hover::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z'/%3E%3Cpath d='M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2'/%3E%3Cpath d='M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2'/%3E%3Cpath d='M10 6h4'/%3E%3Cpath d='M10 10h4'/%3E%3Cpath d='M10 14h4'/%3E%3Cpath d='M10 18h4'/%3E%3C/svg%3E");
+}
+
+/* 2º card: equipe */
+.tudoConfiguracoes .cardConfiguracao:nth-child(2)::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238E1027' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='M22 21v-2a4 4 0 0 0-3-3.87'/%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'/%3E%3C/svg%3E");
+}
+
+.tudoConfiguracoes .cardConfiguracao:nth-child(2):hover::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2'/%3E%3Ccircle cx='9' cy='7' r='4'/%3E%3Cpath d='M22 21v-2a4 4 0 0 0-3-3.87'/%3E%3Cpath d='M16 3.13a4 4 0 0 1 0 7.75'/%3E%3C/svg%3E");
+}
+
+/* 3º card: sistema */
+.tudoConfiguracoes .cardConfiguracao:nth-child(3)::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238E1027' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='21' x2='14' y1='4' y2='4'/%3E%3Cline x1='10' x2='3' y1='4' y2='4'/%3E%3Cline x1='21' x2='12' y1='12' y2='12'/%3E%3Cline x1='8' x2='3' y1='12' y2='12'/%3E%3Cline x1='21' x2='16' y1='20' y2='20'/%3E%3Cline x1='12' x2='3' y1='20' y2='20'/%3E%3Cline x1='14' x2='14' y1='2' y2='6'/%3E%3Cline x1='8' x2='8' y1='10' y2='14'/%3E%3Cline x1='16' x2='16' y1='18' y2='22'/%3E%3C/svg%3E");
+}
+
+.tudoConfiguracoes .cardConfiguracao:nth-child(3):hover::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='21' x2='14' y1='4' y2='4'/%3E%3Cline x1='10' x2='3' y1='4' y2='4'/%3E%3Cline x1='21' x2='12' y1='12' y2='12'/%3E%3Cline x1='8' x2='3' y1='12' y2='12'/%3E%3Cline x1='21' x2='16' y1='20' y2='20'/%3E%3Cline x1='12' x2='3' y1='20' y2='20'/%3E%3Cline x1='14' x2='14' y1='2' y2='6'/%3E%3Cline x1='8' x2='8' y1='10' y2='14'/%3E%3Cline x1='16' x2='16' y1='18' y2='22'/%3E%3C/svg%3E");
+}
+
+/* 4º card: seguranca */
+.tudoConfiguracoes .cardConfiguracao:nth-child(4)::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%238E1027' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z'/%3E%3Cpath d='m9 12 2 2 4-4'/%3E%3C/svg%3E");
+}
+
+.tudoConfiguracoes .cardConfiguracao:nth-child(4):hover::before {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23FFFFFF' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z'/%3E%3Cpath d='m9 12 2 2 4-4'/%3E%3C/svg%3E");
+}
+
+/* =====================================================
+   ANIMAÇÃO DE ENTRADA (só CSS)
+===================================================== */
+@keyframes entradaConfiguracoes {
+  from { opacity: 0; translate: 0 24px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tudoConfiguracoes .tituloConfiguracoes,
+  .tudoConfiguracoes .subtituloConfiguracoes,
+  .tudoConfiguracoes .cardConfiguracao {
+    animation: entradaConfiguracoes 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  .tudoConfiguracoes .subtituloConfiguracoes { animation-delay: .08s; }
+
+  .tudoConfiguracoes .cardConfiguracao:nth-child(1) { animation-delay: .18s; }
+  .tudoConfiguracoes .cardConfiguracao:nth-child(2) { animation-delay: .25s; }
+  .tudoConfiguracoes .cardConfiguracao:nth-child(3) { animation-delay: .32s; }
+  .tudoConfiguracoes .cardConfiguracao:nth-child(4) { animation-delay: .39s; }
+  .tudoConfiguracoes .cardConfiguracao:nth-child(n+5) { animation-delay: .46s; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tudoConfiguracoes .cardConfiguracao,
+  .tudoConfiguracoes .cardConfiguracao::before,
+  .tudoConfiguracoes .cardConfiguracao::after {
+    transition: none;
+  }
+}
+
+/* =====================================================
+   RESPONSIVIDADE
+===================================================== */
+@media (max-width: 1100px) {
+  .tudoConfiguracoes .cardsConfiguracoes {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .tudoConfiguracoes .conteudoConfiguracoes {
+    padding: 30px;
+  }
+
+  .tudoConfiguracoes .conteudoConfiguracoes2 {
+    margin-right: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .tudoConfiguracoes .cardConfiguracao {
+    grid-template-columns: 44px 1fr auto;
+    column-gap: 14px;
+    padding: 16px;
+  }
+
+  .tudoConfiguracoes .cardConfiguracao::before {
+    width: 44px;
+    height: 44px;
+  }
 }
