@@ -1,232 +1,463 @@
-/*         DIV Q ABRIGA TUDO         */
+/* =====================================================
+   VARIÁVEIS (mesmas das outras telas)
+===================================================== */
+:root {
+  --cor-primaria: #8E1027;
+  --cor-primaria-hover: #6f0c1e;
+  --cor-fundo: #FAF6F5;
+  --cor-card: #FFFFFF;
+  --cor-borda: #EDE3E1;
+  --cor-divisor: #F3ECEA;
+  --cor-texto: #2B2B2B;
+  --cor-texto-secundario: #7A6E6C;
+  --cor-texto-suave: #A39896;
+  --cor-rosa-suave: #FBEAED;
 
-
-.tudoCalendario{
-    width: 93%;
-    min-height: 170vh;
-    display: flex;
+  --raio-card: 14px;
+  --sombra-card: 0 1px 3px rgba(60, 20, 20, 0.06);
+  --sombra-card-hover: 0 8px 20px rgba(142, 16, 39, 0.12);
+  --suave: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/*  DIV QUE ABRIGA TUDO */
+.tudoCalendario {
+  --espaco-fixo: calc(270px + 7vw);
 
-/*        TUDO MENOS A SIDEBAR. APROVADO        */
-
-
-.tudoMenosSidebar{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    min-height: 100vh;
-    box-sizing: border-box;
-    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
-    background-color: #FDEDE8;
+  width: 9%;
+  min-height: 100vh;
+  display: flex;
+  font-family: "Inter", sans-serif;
+  color: var(--cor-texto);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-.tudoMenosSidebarCalendario{
-    position: absolute;
+.tudoCalendario :focus-visible {
+  outline: 2px solid var(--cor-primaria);
+  outline-offset: 2px;
+  border-radius: 6px;
 }
 
-
-/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
-
-
-.conteudoCalendario{
-    padding-top: 6%;
-    box-sizing: border-box;
+/* TUDO MENOS A SIDEBAR */
+.tudoMenosSidebar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  margin-left: 68px; /* espaço pro menu lateral fechado (68px) */
+  background-color: var(--cor-fundo);
 }
 
-.conteudoCalendario2{
-    margin-top:3%;
+.tudoMenosSidebarCalendario {
+  position: absolute;
 }
 
-.tituloCalendario{
-    margin: 0;
-    font-size: 290%;
-    color: #870B22;
-    font-weight: 700;
-    line-height: 1.3;
+/*  CONTEÚDO DA PÁGINA*/
+.conteudoCalendario {
+  padding-top: 6%;
+  padding-bottom: 14px;
+  box-sizing: border-box;
 }
 
-.subtituloCalendario{
-    margin: 6px 0 0 5px;
-    font-size: 150%;
-    color: #777;
+.conteudoCalendario2 {
+  margin-top: 3%;
 }
 
-.botaoNovoEvento .button{
-    width: auto;
-    padding: 12px 22px;
+.tituloCalendario {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: clamp(28px, 2.4vw, 34px);
+  color: #8E1027;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
 }
 
-
-/*        JANELA BRANCA COM O CALENDÁRIO        */
-
-
-.janelaCalendario{
-    margin-right: 11.2%;
-    background-color: white;
-    border: 1px solid #870B22;
-    border-radius: 12px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    margin-top: 20px;
-    overflow: hidden; /*deixa os cantos arredondados "cortarem" certinho o que tiver dentro*/
+.subtituloCalendario {
+  margin: 4px 0 0;
+  font-size: 15px;
+  color: var(--cor-texto-secundario);
 }
 
+/* botão "Novo evento" (degradê que desliza no hover) */
+.botaoNovoEvento .button {
+  width: auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 999px;
+  color: #fff;
+  font: 600 14px "Inter", sans-serif;
+  cursor: pointer;
 
-/*        CABEÇALHO: seta, mês + ano, seta        */
+  background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 45%, #B3213B 100%);
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  box-shadow: 0 2px 6px rgba(142, 16, 39, 0.25);
 
-
-.cabecalhoCalendario{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 24px;
-    padding: 22px 20px;
+  transition:
+    background-position 0.5s ease,
+    box-shadow 0.3s ease,
+    transform 0.2s ease;
 }
 
-.setaMes{
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
-    background-color: #870B22;
-    border: none;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
+.botaoNovoEvento .button:hover {
+  background-position: 100% 50%;
+  box-shadow: 0 4px 12px rgba(142, 16, 39, 0.35);
+  transform: translateY(-1px);
 }
 
-.setaMes svg{
-    width: 18px;
-    height: 18px;
+.botaoNovoEvento .button:active {
+  transform: translateY(0);
 }
 
-.setaMes:hover{
-    background-color: #6f091b;
+/*JANELA BRANCA COM O CALENDÁRIO */
+.janelaCalendario {
+  margin-right: 11.2%;
+  margin-top: 14px;
+  background-color: var(--cor-card);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-card);
+  box-shadow: var(--sombra-card);
+  overflow: hidden;
 }
 
-.seletorMesAno{
-    display: flex;
-    align-items: center;
-    gap: 10px;
+/*CABEÇALHO: seta, mês + ano, seta*/
+.cabecalhoCalendario {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  gap: 20px;
+  padding: 12px 20px;
 }
 
-.nomeMes{
-    font-size: 24px;
-    font-weight: 700;
-    color: #870B22;
+.setaMes {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background-color: var(--cor-card);
+  border: 1px solid var(--cor-borda);
+  color: var(--cor-primaria);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: var(--sombra-card);
+  transition: background 0.2s, border-color 0.2s, transform 0.2s;
 }
 
-/*mexendo só na largura do componente Select do ano só nessa tela*/
-#selectAnoCalendario{
-    width: 90px;
-    background-color: #ffdee4;
+.setaMes svg {
+  width: 18px;
+  height: 18px;
+  stroke-width: 2.4;
 }
 
-
-/*        LINHA COM OS NOMES DOS DIAS DA SEMANA        */
-
-
-.linhaDiasSemana{
-    display: grid;
-    grid-template-columns: repeat(7, 1fr); /*7 colunas, uma pra cada dia da semana*/
-    background-color: #870B22;
+.setaMes:hover {
+  background-color: var(--cor-rosa-suave);
+  border-color: #F0C4CC;
 }
 
-.diaSemana{
-    color: white;
-    text-align: center;
-    font-size: 13px;
-    font-weight: 700;
-    padding: 12px 0;
+.setaMes:active {
+  transform: scale(0.94);
 }
 
-
-/*        GRADE COM OS DIAS DO MÊS        */
-
-
-.gradeCalendario{
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
+.seletorMesAno {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
-.celulaDia{
-    min-height: 80px;
-    border: 1px solid #f5e5e0;
-    box-sizing: border-box;
-    padding: 8px;
+.nomeMes {
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--cor-texto);
 }
 
-.conteudoCelula{
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+/* select do ano (só nessa tela) */
+#selectAnoCalendario {
+  width: 96px;
+  height: 38px;
+  box-sizing: border-box;
+  padding: 0 32px 0 14px;
+  border: 1px solid var(--cor-borda);
+  border-radius: 10px;
+  background-color: var(--cor-card);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237A6E6C' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  box-shadow: var(--sombra-card);
+  color: var(--cor-texto);
+  font: 500 14px "Inter", sans-serif;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
 }
 
-.numeroDia{
-    font-size: 13px;
-    color: #555;
+#selectAnoCalendario:hover {
+  border-color: #E0CFCC;
 }
 
-
-/*        TAG DE EVENTO (cor muda de acordo com a categoria)        */
-
-
-.tagEvento{
-    display: inline-block;
-    max-width: 100%;
-    padding: 3px 8px;
-    border-radius: 10px;
-    font-size: 11px;
-    font-weight: 600;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis; /*corta o texto com "..." se ele for maior q a célula*/
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+#selectAnoCalendario:focus {
+  outline: none;
+  border-color: var(--cor-primaria);
+  box-shadow: 0 0 0 3px rgba(142, 16, 39, 0.12);
 }
 
-.tagEvento.producao{
-    background-color: #FFC8D2;
-    color: #870B22;
+/* LINHA COM OS NOMES DOS DIAS DA SEMANA*/
+.linhaDiasSemana {
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  background-color: #810000;
+  border-top: 1px solid var(--cor-borda);
+  border-bottom: 1px solid var(--cor-borda);
 }
 
-.tagEvento.entrega{
-    background-color: #870B22;
-    color: white;
+.diaSemana {
+  color: #fff4f2;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.7px;
+  padding: 10px 0;
 }
 
-.tagEvento.compra{
-    background-color: #8d6e63;
-    color: white;
+/* GRADE COM OS DIAS DO MÊS */
+.gradeCalendario {
+  --semanas: 6;
+  --altura-semana: max(64px, calc((100dvh - var(--espaco-fixo)) / var(--semanas)));
+
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  grid-auto-rows: var(--altura-semana);
 }
 
-.tagEvento.pagamento{
-    background-color: #4a4a4a;
-    color: white;
+/* meses com 5 ou 4 semanas ganham linhas um pouco mais altas */
+.gradeCalendario:not(:has(.celulaDia:nth-child(36))) { --semanas: 5; }
+.gradeCalendario:not(:has(.celulaDia:nth-child(29))) { --semanas: 4; }
+
+.celulaDia {
+  min-height: 0;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #E0CFCC transparent;
+  border-right: 1px solid var(--cor-divisor);
+  border-bottom: 1px solid var(--cor-divisor);
+  box-sizing: border-box;
+  padding: 8px 10px;
+  transition: background 0.15s;
 }
 
-.tagEvento.outro{
-    background-color: #e8dcd8;
-    color: #5b4a45;
+.celulaDia:nth-child(7n) {
+  border-right: none;
 }
 
+/* células vazias (antes do dia 1 / depois do último dia) */
+.celulaDia:empty {
+  background: #FDFAF9;
+}
 
-/*        RODAPE     */
+.celulaDia:not(:empty):hover {
+  background: #FDFAF9;
+}
 
+.conteudoCelula {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
 
-.legendaCategorias{
-    display: flex;
+.numeroDia {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--cor-texto-secundario);
+  font-variant-numeric: tabular-nums;
+}
+
+/* dia de hoje (opcional: adicione a classe "hoje" no dia atual) */
+.celulaDia.hoje .numeroDia,
+.numeroDia.hoje {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8E1027, #B3213B);
+  color: #fff;
+  font-weight: 600;
+}
+
+/*  TAG DE EVENTO (cor muda de acordo com a categoria)*/
+.tagEvento {
+  display: inline-block;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font: 600 11px "Inter", sans-serif;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  transition: filter 0.2s, transform 0.2s, box-shadow 0.2s;
+}
+
+.tagEvento:hover {
+  filter: brightness(0.97);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(60, 20, 20, 0.12);
+}
+
+.tagEvento.producao {
+  background-color: #FBE1E6;
+  color: #8E1027;
+}
+
+.tagEvento.entrega {
+  background-color: #DCFCE7;
+  color: #166534;
+}
+
+.tagEvento.compra {
+  background-color: #FEF3C7;
+  color: #92400E;
+}
+
+.tagEvento.pagamento {
+  background-color: #E8F0FD;
+  color: #1D4ED8;
+}
+
+.tagEvento.outro {
+  background-color: #EEEAE9;
+  color: #6B6361;
+}
+
+/* RODAPÉ */
+.legendaCategorias {
+  display: flex;
+  gap: 12px;
+  padding: 12px 4px 0;
+  flex-wrap: wrap;
+  margin-top: 0;
+}
+
+.legendaCategorias .tagEvento {
+  cursor: default;
+}
+
+.legendaCategorias .tagEvento:hover {
+  transform: none;
+  box-shadow: none;
+  filter: none;
+}
+
+.rodapeCalendario {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 1%;
+  margin-right: 1%;
+  margin-bottom: 0.6%;
+}
+
+/* ANIMAÇÕES  */
+@keyframes entradaCarga {
+  from { opacity: 0; translate: 0 24px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+@keyframes aparecerCelula {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes surgirTag {
+  from { opacity: 0; scale: 0.85; }
+  to   { opacity: 1; scale: 1; }
+}
+
+/* ordem de entrada  */
+.tituloCalendario    { --atraso: 0s; }
+.subtituloCalendario { --atraso: .08s; }
+.botaoNovoEvento     { --atraso: .12s; }
+.janelaCalendario    { --atraso: .2s; }
+
+@media (prefers-reduced-motion: no-preference) {
+
+  .tituloCalendario,
+  .subtituloCalendario,
+  .botaoNovoEvento,
+  .janelaCalendario {
+    animation: entradaCarga 0.7s var(--suave) var(--atraso, 0s) backwards;
+  }
+
+  /* dias aparecem linha por linha (até 6 semanas) */
+  .celulaDia {
+    animation: aparecerCelula 0.5s ease backwards;
+  }
+  .celulaDia:nth-child(-n+7)                     { animation-delay: .35s; }
+  .celulaDia:nth-child(n+8):nth-child(-n+14)     { animation-delay: .42s; }
+  .celulaDia:nth-child(n+15):nth-child(-n+21)    { animation-delay: .49s; }
+  .celulaDia:nth-child(n+22):nth-child(-n+28)    { animation-delay: .56s; }
+  .celulaDia:nth-child(n+29):nth-child(-n+35)    { animation-delay: .63s; }
+  .celulaDia:nth-child(n+36)                     { animation-delay: .70s; }
+
+  /* eventos salta por último */
+  .gradeCalendario .tagEvento {
+    animation: surgirTag 0.45s var(--suave) .8s backwards;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .setaMes,
+  .celulaDia,
+  .tagEvento,
+  .botaoNovoEvento .button {
+    transition: none;
+  }
+}
+
+/*RESPONSIVIDADE */
+@media (max-width: 1000px) {
+  .janelaCalendario {
+    margin-right: 0;
+  }
+
+  .celulaDia {
+    padding: 6px 8px;
+  }
+}
+
+@media (max-width: 700px) {
+  .cabecalhoCalendario {
     gap: 12px;
-    padding: 24px 20px;
-    flex-wrap: wrap;
-    margin-top: -1.5%;
-}
+    padding: 16px 12px;
+  }
 
-.rodapeCalendario{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin-top: 1%;
-    margin-right: 1%;
-    margin-bottom: 0.6%;
+  .nomeMes {
+    font-size: 18px;
+  }
+
+  .diaSemana {
+    font-size: 10px;
+    letter-spacing: 0.3px;
+  }
+
+  .celulaDia {
+    padding: 4px;
+  }
+
+  .tagEvento {
+    padding: 3px 6px;
+    font-size: 10px;
+  }
 }
