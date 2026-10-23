@@ -641,3 +641,78 @@ body {
 .tituloVisaoGeral { font-size: clamp(26px, 2.4vw, 32px); }
 .subtituloVisaoGeral { font-size: clamp(14px, 1.2vw, 16px); }
 
+
+
+/* pop up */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(43, 43, 43, 0.6); 
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px); 
+}
+
+.modalConteudo {
+  background: var(--cor-card);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-card);
+  box-shadow: 0 10px 25px rgba(60, 20, 20, 0.2);
+  width: 90%;
+  max-width: 650px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  animation: entrar 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.modalCabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--cor-divisor);
+  padding-bottom: 12px;
+}
+
+.modalCabecalho h2 {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--cor-texto);
+}
+
+.botaoFecharModal {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--cor-texto-secundario);
+  cursor: pointer;
+  padding: 0 8px;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.botaoFecharModal:hover {
+  background: var(--cor-rosa-suave);
+  color: var(--cor-primaria);
+}
+
+.modalCorpo {
+  overflow-y: auto;
+  max-height: calc(70vh - 60px);
+  padding-right: 4px;
+}
+
+.modalCorpo p {
+  color: var(--cor-texto-secundario);
+  font-size: 14px;
+  margin-bottom: 16px;
+}
