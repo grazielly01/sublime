@@ -16,7 +16,7 @@ class caixaController {
         data: {
           description,
           amount: parseFloat(amount), // Garante que é enviado como número decimal
-          type,                       // 'INCOME' ou 'EXPENSE'
+          type,    
           categoryId: categoryId || null,
           date: new Date(date),       // Converte a string de data para objeto Date
         },
