@@ -1,103 +1,155 @@
+import { useState, useEffect } from "react";
 import "./pedidos.css";
 import { Link } from "react-router-dom";
-import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
-import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
-import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
-import { motion } from "motion/react";
+import Button from "../../componentes/Button/Button.jsx";
+import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
+import Header from "../../componentes/Header/Header.jsx";
 
 function Pedidos() {
+  // 1. Estado para armazenar os pedidos vindos da API
+  const [pedidos, setPedidos] = useState([]);
+  
+  // 2. Estado para controlar qual filtro de status está ativo
+  const [filtroAtivo, setFiltroAtivo] = useState("TODOS");
 
-    /*Lista de pedidos (só pra gente visualizar a tela). Quando o backend existir, essa lista vai vir do banco de dados responsável pelos 
-    pedidos coletados do estabelecimento, e cadastrar essas infos. A*/
-    
-    const pedidos = [
-        { estabelecimento: "Padaria São José", itens: "4 itens", entrega: "entrega 19/05 16h", valor: "R$ 2.840", status: "producao", statusTexto: "Em produção" },
-        { estabelecimento: "Mercado Bom Preço", itens: "7 itens", entrega: "entrega 20/05 09h", valor: "R$ 5.610", status: "aguardando", statusTexto: "Aguardando" },
-        { estabelecimento: "Confeitaria Doce Lar", itens: "2 itens", entrega: "entrega 19/05 18h", valor: "R$ 3.120", status: "pronto", statusTexto: "Pronto" },
-        { estabelecimento: "Tia Bete Bolos", itens: "3 itens", entrega: "entrega 18/05", valor: "R$ 1.450", status: "entregue", statusTexto: "Entregue" },
-        { estabelecimento: "Empório Café & Cia", itens: "5 itens", entrega: "entrega 20/05 14h", valor: "R$ 2.210", status: "producao", statusTexto: "Em produção" },
-        { estabelecimento: "Padaria Pão Quente", itens: "6 itens", entrega: "entrega —", valor: "R$ 4.180", status: "cancelado", statusTexto: "Cancelado" },
-        { estabelecimento: "Doceria Flor de Açúcar", itens: "3 itens", entrega: "entrega 21/05 10h", valor: "R$ 1.890", status: "aguardando", statusTexto: "Aguardando" },
-        { estabelecimento: "Padaria Trigo Dourado", itens: "8 itens", entrega: "entrega 21/05 15h", valor: "R$ 6.320", status: "producao", statusTexto: "Em produção" },
-        { estabelecimento: "Café & Cia Express", itens: "2 itens", entrega: "entrega 22/05 08h", valor: "R$ 980", status: "pronto", statusTexto: "Pronto" },
-        { estabelecimento: "Mercearia Sabor Caseiro", itens: "5 itens", entrega: "entrega 17/05", valor: "R$ 2.750", status: "entregue", statusTexto: "Entregue" },
-        { estabelecimento: "Confeitaria Doce Encanto", itens: "4 itens", entrega: "entrega 22/05 17h", valor: "R$ 3.450", status: "aguardando", statusTexto: "Aguardando" },
-        { estabelecimento: "Padaria Estrela Dourada", itens: "6 itens", entrega: "entrega —", valor: "R$ 5.100", status: "cancelado", statusTexto: "Cancelado" },
-    ];
+  // Lista das opções de filtros com os códigos que a API espera
+  const opcoesFiltro = [
+    { label: "Todos", value: "TODOS" },
+    { label: "Aguardando", value: "AGUARDANDO" },
+    { label: "Em produção", value: "EM_PRODUCAO" },
+    { label: "Pronto", value: "PRONTO" },
+    { label: "Entregue", value: "ENTREGUE" },
+    { label: "Cancelado", value: "CANCELADO" },
+  ];
 
-    return (
-        <div className="tudoPedidos">  {/*Div q abriga tudo*/}
+  // 3. Função responsável por buscar os pedidos no backend
+  const carregarPedidos = async (status) => {
+    try {
+      // Se for "TODOS", não passa query param. Caso contrário, envia ?status=NOME
+      const url = status && status !== "TODOS"
+        ? `http://localhost:3000/pedidos?status=${status}`
+        : "http://localhost:3000/pedidos";
 
-            <Sidebar paginaAtiva="Pedidos" /> {/*Menu lateral, coloquei "Pedidos" como página ativa para "Pedidos" no menu lateral ficar clarinho*/}
+      const response = await fetch(url);
+      const result = await response.json();
 
-            <div className="tudoMenosSidebar"> {/*Tudo menos o sidebar q ta acima*/}
+      // Atualiza o estado com a lista 'data' retornada pelo backend
+      if (result.data) {
+        setPedidos(result.data);
+      } else if (Array.isArray(result)) {
+        setPedidos(result);
+      }
+    } catch (error) {
+      console.error("Erro ao carregar pedidos da API:", error);
+    }
+  };
 
-                <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
+  // 4. Executa a busca sempre que a página carrega ou quando o filtro muda
+  useEffect(() => {
+    carregarPedidos(filtroAtivo);
+  }, [filtroAtivo]);
 
-                <div className="conteudoPedidos conteudoPedidos2"> {/*Div com o conteúdo da página*/}
+  // Função auxiliar para formatar a badge do status
+  const formatarStatus = (status) => {
+    switch (status) {
+      case "EM_PRODUCAO":
+        return { classe: "producao", texto: "Em produção" };
+      case "AGUARDANDO":
+        return { classe: "aguardando", texto: "Aguardando" };
+      case "PRONTO":
+        return { classe: "pronto", texto: "Pronto" };
+      case "ENTREGUE":
+        return { classe: "entregue", texto: "Entregue" };
+      case "CANCELADO":
+        return { classe: "cancelado", texto: "Cancelado" };
+      default:
+        return { classe: "aguardando", texto: status };
+    }
+  };
 
-                    {/*linha de cima: título + subtítulo*/}
-                    <div className="topoPedidos">
-                        <div>
-                            <h1 className="tituloPedidos">Pedidos</h1>
-                            <p className="subtituloPedidos">Pedidos de padarias, mercados e lojas — controle de status e prazo.</p>
-                        </div>
+  return (
+    <div className="tudoPedidos">
+      <Sidebar paginaAtiva="Pedidos" />
 
-                        
-                    </div>
+      <div className="tudoMenosSidebar">
+        <Header nomeIndustria="Sweet Sunset" />
 
-                    {/*abas de filtro -- só visuais por enquanto, ainda não funcionam de verdade (sem backend)*/}
-                    <div className="filtrosPedidosEButton">
-                        <div className="filtroPedido ativo">Todos</div>
-                        <div className="filtroPedido">Aguardando</div>
-                        <div className="filtroPedido">Em produção</div>
-                        <div className="filtroPedido">Pronto</div>
-                        <div className="filtroPedido">Entregue</div>
-                        <div className="filtroPedido">Cancelado</div>
+        <div className="conteudoPedidos conteudoPedidos2">
+          {/* Topo da página */}
+          <div className="topoPedidos">
+            <div>
+              <h1 className="tituloPedidos">Pedidos</h1>
+              <p className="subtituloPedidos">
+                Pedidos de padarias, mercados e lojas — controle de status e prazo.
+              </p>
+            </div>
+          </div>
 
-                        <Link to="/pedidos/registrar" className="botaoNovoPedido">  
-                            <Button id="buttonNovoPedido" texto="+ Novo pedido"></Button>
-                        </Link>
-                    </div>
-
-                    
-
-                    {/*grade de cards -- .map() percorre a lista "pedidos" e cria um card pra cada posição, igual já fizemos no Select e no Estoque*/}
-                    <div className="listaPedidos">
-                        {pedidos.map((pedido, index) => (
-                            <div className="cardPedido" key={index}>
-
-                                {/*tarja do status, alinhada à direita do card*/}
-                                <div className="topoCardPedido">
-                                    <span className={"statusPedido " + pedido.status}>
-                                        {pedido.statusTexto}
-                                    </span>
-                                </div>
-
-                                <h2 className="nomeEstabelecimento">{pedido.estabelecimento}</h2>
-
-                                <p className="infoPedido">{pedido.itens} · {pedido.entrega}</p>
-
-                                <div className="rodapeCardPedido">
-                                    <p className="valorPedido">{pedido.valor}</p>
-
-                                    <div className="botaoDetalhes"> {/*ainda sem onClick -- vai abrir a tela de detalhes do pedido quando ela existir*/}
-                                        <Link to={`/pedidos/detalhes/${pedido.id}`} className="botaoDetalhes">
-                                            <Button texto="Detalhes"></Button>
-                                        </Link>
-                                    </div>
-                                </div>
-
-                            </div>
-                        ))}
-                    </div>
-
+          {/* Abas de Filtros com onClick funcional */}
+          <div className="filtrosPedidosEButton">
+            <div className="filtrosContainer" style={{ display: 'flex', gap: '8px' }}>
+              {opcoesFiltro.map((opcao) => (
+                <div
+                  key={opcao.value}
+                  className={`filtroPedido ${filtroAtivo === opcao.value ? "ativo" : ""}`}
+                  onClick={() => setFiltroAtivo(opcao.value)}
+                  style={{ cursor: "pointer" }}
+                >
+                  {opcao.label}
                 </div>
-
+              ))}
             </div>
 
+            <Link to="/pedidos/registrar" className="botaoNovoPedido">
+              <Button id="buttonNovoPedido" texto="+ Novo pedido" />
+            </Link>
+          </div>
+
+          {/* Grade de Cards alimentada dinamicamente pelo Backend */}
+          <div className="listaPedidos">
+            {pedidos.length === 0 ? (
+              <p style={{ marginTop: "20px" }}>Nenhum pedido encontrado para este status.</p>
+            ) : (
+              pedidos.map((pedido) => {
+                const infoStatus = formatarStatus(pedido.status);
+
+                return (
+                  <div className="cardPedido" key={pedido.id}>
+                    {/* Badge de status */}
+                    <div className="topoCardPedido">
+                      <span className={`statusPedido ${infoStatus.classe}`}>
+                        {infoStatus.texto}
+                      </span>
+                    </div>
+
+                    <h2 className="nomeEstabelecimento">{pedido.cliente || pedido.estabelecimento}</h2>
+
+                    <p className="infoPedido">
+                      {pedido.itensCount ? `${pedido.itensCount} itens` : pedido.itens} · {pedido.entrega}
+                    </p>
+
+                    <div className="rodapeCardPedido">
+                      <p className="valorPedido">
+                        {typeof pedido.valorTotal === "number"
+                          ? `R$ ${pedido.valorTotal.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`
+                          : pedido.valorTotal || pedido.valor}
+                      </p>
+
+                      <div className="botaoDetalhes">
+                        <Link to={`/pedidos/detalhes/${pedido.id}`}>
+                          <Button texto="Detalhes" />
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                );
+              })
+            )}
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default Pedidos;
