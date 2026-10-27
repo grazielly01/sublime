@@ -1,3 +1,8 @@
+<<<<<<< Updated upstream
+=======
+
+/* DIV QUE ABRIGA TUDO */
+>>>>>>> Stashed changes
 .tudoConfiguracoes {
     display: flex;
     width: 93%;
@@ -31,6 +36,7 @@
     margin-right: 11.5%;
 }
 
+<<<<<<< Updated upstream
 
 /* ---------- TOPO ---------- APROVADO */
 
@@ -38,6 +44,11 @@
 .topoConfiguracoes {
     margin-bottom: 34px;
     margin-top: -24px;
+=======
+.tudoConfiguracoes .conteudoConfiguracoes2 {
+  margin-top: 7.5%;
+  margin-right: 11.5%;
+>>>>>>> Stashed changes
 }
 
 
