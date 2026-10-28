@@ -49,7 +49,7 @@ function Alertas() {
   // 4. Função para dispensar/deletar um alerta
   const dispensarAlerta = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/alertas/${id}`, {
+      const response = await fetch(`http://localhost:3000/alertas`, {
         method: "DELETE",
       });
 
