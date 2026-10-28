@@ -403,9 +403,9 @@ body {
   text-align: center;
   white-space: nowrap;
 }
- 
-.statusEmProducao  { background: #FEF3C7; color: #92400E; }
-.statusNaoIniciado { background: #FDE8EA; color: #B91C1C; }
+
+.statusEmProducao  { background: hsl(341, 100%, 93%); color: #cb294c; }
+.statusAguardando { background: #FEF3C7; color: #92400E; }
 .statusPronto      { background: #DCFCE7; color: #166534; }
 .statusEntregue    { background: #EEEAE9; color: #6B6361; }
  

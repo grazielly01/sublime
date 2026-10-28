@@ -66,7 +66,7 @@ function VisaoGeral() {
 
   const pedidosRecentes = [
     { cliente: "Padaria Seu Zé", itens: "45 bolos formigueiro", status: "Em produção", horario: "Hoje 16:30h" },
-    { cliente: "Padaria Estrella", itens: "30 donuts m., 30 donuts c.", status: "Não iniciado", horario: "13/06 09h" },
+    { cliente: "Padaria Estrella", itens: "30 donuts m., 30 donuts c.", status: "Aguardando", horario: "13/06 09h" },
     { cliente: "Delícias da Cidinha", itens: "30 ovos de páscoa", status: "Pronto", horario: "Hoje 17h" },
     { cliente: "Confeitaria Arco-Íris", itens: "15 cupcakes, 20 cookies", status: "Entregue", horario: "Ontem 08h" },
   ];
@@ -82,7 +82,7 @@ function VisaoGeral() {
     {
       titulo: "Zerar todos os pedidos atrasados em 4 dias",
       descricao: "Zerar os 5 pedidos atrasados: Mousse de limão, Donuts Formigueiro, Bolos de Cenoura e Copos da Felicidade",
-      status: "Não iniciado",
+      status: "Aguardando",
       horario: "15/09 09h",
     },
     {
