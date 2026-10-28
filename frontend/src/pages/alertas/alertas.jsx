@@ -18,12 +18,12 @@ function Alertas() {
     { label: "Produção", value: "PRODUCAO" },
   ];
 
-  // 2. Função para buscar alertas do Backend
+  // 2. Função para buscar alertas do Backend (utiliza rotas relativas para funcionar na Vercel e localmente)
   const carregarAlertas = async (categoria) => {
     try {
       const url = categoria && categoria !== "TODOS"
-        ? `http://localhost:3000/alertas?categoria=${categoria}`
-        : "http://localhost:3000/alertas";
+        ? `/alertas?categoria=${categoria}`
+        : "/alertas";
 
       const response = await fetch(url);
       const result = await response.json();
@@ -46,10 +46,10 @@ function Alertas() {
     carregarAlertas(filtroAtivo);
   }, [filtroAtivo]);
 
-  // 4. Função para dispensar/deletar um alerta
+  // 4. Função para dispensar/deletar um alerta enviando o ID na URL
   const dispensarAlerta = async (id) => {
     try {
-      const response = await fetch(`http://localhost:3000/alertas`, {
+      const response = await fetch(`/alertas/${id}`, {
         method: "DELETE",
       });
 
