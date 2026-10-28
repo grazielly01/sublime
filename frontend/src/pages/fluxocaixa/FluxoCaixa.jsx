@@ -1,11 +1,53 @@
 import "./fluxocaixa.css";
+import "./fluxocaixaMovimentacao.css"; // Importa o CSS das movimentações pra fazer o popup
+import "./fluxocaixadespesa.css";     // Importa o CSS das despesas pra fazer o pupup
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
+import { useState } from "react"; 
+
+const IconeSeta = ({ tipo }) =>
+  tipo === "entrada" ? (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M7 17L17 7M17 7H8M17 7v9" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ) : (
+    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M17 7L7 17M7 17h9M7 17V8" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+
+const IconeChevron = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M6 15l6-6 6 6" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
+
+const IconeSetaSaida = () => (
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M17 7L7 17M7 17h9M7 17V8" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+  </svg>
+);
 
 function FluxoCaixa() {
   const navigate = useNavigate();
+
+  // Estados para controlar a abertura dos dois novos pop-ups
+  const [modalMovimentacoesAberto, setModalMovimentacoesAberto] = useState(false);
+  const [modalDespesasAberto, setModalDespesasAberto] = useState(false);
+
+  // Estados pros pop-up de movimentaçoess
+  const [abertosGrupos, setAbertosGrupos] = useState({
+    Hoje: true,
+    Ontem: false,
+    "01/05": true,
+  });
+
+  const alternarGrupo = (titulo) => {
+    setAbertosGrupos((prev) => ({ ...prev, [titulo]: !prev[titulo] }));
+  };
+
   const movimentos = [
     {
       tipo: "entrada",
@@ -60,6 +102,92 @@ function FluxoCaixa() {
     ["Produção extra", "R$ 300,00"],
   ];
 
+  // Dados completos para o pop-up de movimentações
+  const gruposMovimentacoesCompleto = [
+    {
+      titulo: "Hoje",
+      itens: [
+        {
+          tipo: "entrada",
+          titulo: "Venda — Padaria Estrella",
+          data: "03/05",
+          itens: "15 Torta de Limão 22cm, 30 Cupcake Red Velvet, 28 Brownie Avelã, 40 Cupcake Morango",
+          categoria: "Outros",
+          valor: "R$ 2.700",
+        },
+        {
+          tipo: "entrada",
+          titulo: "Venda — Sonda Supermercado",
+          data: "03/05",
+          itens: "15 Bolo Formigueiro, 15 Bolo Chocolate Branco, 15 Bolo Sensação, 15 Bolo Meio Amargo, 15 Ninho",
+          categoria: "Venda de produto",
+          valor: "R$ 745",
+        },
+        {
+          tipo: "saida",
+          titulo: "Compra — Serviço encanador",
+          data: "03/05",
+          itens: "Conserto sanitário masculino",
+          categoria: "Conserto/manutenção",
+          valor: "R$ 1.200",
+        },
+      ],
+    },
+    {
+      titulo: "Ontem",
+      itens: [],
+    },
+    {
+      titulo: "01/05",
+      itens: [
+        {
+          tipo: "saida",
+          titulo: "Compra — Embalagens Personalizadas",
+          data: "01/05",
+          itens: "Embalagens Personalizadas",
+          categoria: "Compra de insumo",
+          valor: "R$ 2.080",
+        },
+        {
+          tipo: "entrada",
+          titulo: "Venda — Tia Bete Doces",
+          data: "01/05",
+          itens: "16 Mousse Maracujá, 10 Pizza Brownie, 10 Copo Felicidade Surpresa de Uva, 15 Vulcão Chocolate",
+          categoria: "Venda de produto",
+          valor: "R$ 922",
+        },
+        {
+          tipo: "saida",
+          titulo: "Compra — Farinha de Trigo 30kg",
+          data: "01/05",
+          itens: "Farinha de trigo 30kg",
+          categoria: "Compra de insumo",
+          valor: "R$ 1.052",
+        },
+        {
+          tipo: "entrada",
+          titulo: "Venda — Doceria Super Magic",
+          data: "01/05",
+          itens: "Pedido personalizado",
+          categoria: "Venda de produto",
+          valor: "R$ 2.700",
+        },
+      ],
+    },
+  ];
+
+  // Dados completos para o pop-up de maiores despesas
+  const despesasCompletas = [
+    { nome: "Folha salarial", detalhe: "Pagamento de funcionário", valor: "R$ 8.400" },
+    { nome: "Farinha e açúcar (lote mensal)", detalhe: "Compra de insumo", valor: "R$ 3.120" },
+    { nome: "Energia elétrica industrial", detalhe: "Contas", valor: "R$ 1.950" },
+    { nome: "Embalagens personalizadas", detalhe: "Compra de insumo", valor: "R$ 2.760" },
+    { nome: "Manutenção de equipamentos industriais", detalhe: "Conserto/manutenção", valor: "R$ 4.300" },
+    { nome: "Gás industrial", detalhe: "Contas", valor: "R$ 2.650" },
+    { nome: "Fretes e entregas", detalhe: "Fretes/entregas", valor: "R$ 2.100" },
+    { nome: "Ingredientes complementares e especiais", detalhe: "Compra de insumo", valor: "R$ 1.780" },
+  ];
+
   const voltar = () => {
     window.history.back();
   };
@@ -73,7 +201,7 @@ function FluxoCaixa() {
 
         <main className="conteudoFluxoCaixa">
 
-          {/* CABEÇALHO. aprovado */}
+          {/* CABEÇALHO */}
           <div className="topoFluxoCaixa">
             <div className="tituloComVoltar">
               <button
@@ -101,102 +229,51 @@ function FluxoCaixa() {
             </p>
           </div>
 
-          {/* CARDS SUPERIORES. APROVADO */}
+          {/* CARDS SUPERIORES */}
           <section className="resumoFluxo">
-
             <div className="cardFluxo">
-              <span className="labelFluxo">
-                Entradas Totais
-              </span>
-
-              <strong className="valorFluxo">
-                R$ 52.430,00
-              </strong>
+              <span className="labelFluxo">Entradas Totais</span>
+              <strong className="valorFluxo">R$ 52.430,00</strong>
             </div>
-
             <div className="cardFluxo">
-              <span className="labelFluxo">
-                Despesas Totais
-              </span>
-
-              <strong className="valorFluxo">
-                R$ 18.220,00
-              </strong>
+              <span className="labelFluxo">Despesas Totais</span>
+              <strong className="valorFluxo">R$ 18.220,00</strong>
             </div>
-
             <div className="cardFluxo">
-              <span className="labelFluxo">
-                Lucro Líquido
-              </span>
-
-              <strong className="valorFluxo">
-                R$ 34.210,00
-              </strong>
+              <span className="labelFluxo">Lucro Líquido</span>
+              <strong className="valorFluxo">R$ 34.210,00</strong>
             </div>
-
             <div className="cardFluxo cardSaldoFinal">
-              <span className="labelFluxo">
-                Margem de Lucro
-              </span>
-
-              <strong className="valorFluxo">
-                65,2%
-              </strong>
+              <span className="labelFluxo">Margem de Lucro</span>
+              <strong className="valorFluxo">65,2%</strong>
             </div>
-
           </section>
 
           {/* GRÁFICO DE BARRAS */}
           <section className="cardGraficoFluxo">
-
-  <div className="cabecalhoCardFluxo">
-    <h2>Fluxo de Caixa (Mês)</h2>
-
-    <div className="acoesGrafico">
-      <div className="botoesFluxo">
-  <button
-    className="botaoSaida"
-    type="button"
-    onClick={() => navigate("/fluxocaixaregistrar")}
-  >
-    + Saída
-  </button>
-
-  <button
-    className="botaoEntrada"
-    type="button"
-    onClick={() => navigate("/fluxocaixaentrada")}
-  >
-    + Entrada
-  </button>
-</div>
-
-
-      <div className="legendaGrafico">
-        <span>
-          <i className="legendaEntrada"></i>
-          Entradas
-        </span>
-
-        <span>
-          <i className="legendaSaida"></i>
-          Saídas
-        </span>
-      </div>
-    </div>
-  </div>
-
-  <div className="graficoBarras">
-
-              <div className="eixoY">
-                <span>60k</span>
-                <span>40k</span>
-                <span>20k</span>
-                <span>0</span>
+            <div className="cabecalhoCardFluxo">
+              <h2>Fluxo de Caixa (Mês)</h2>
+              <div className="acoesGrafico">
+                <div className="botoesFluxo">
+                  <button className="botaoSaida" type="button" onClick={() => navigate("/fluxocaixaregistrar")}>
+                    + Saída
+                  </button>
+                  <button className="botaoEntrada" type="button" onClick={() => navigate("/fluxocaixaentrada")}>
+                    + Entrada
+                  </button>
+                </div>
+                <div className="legendaGrafico">
+                  <span><i className="legendaEntrada"></i>Entradas</span>
+                  <span><i className="legendaSaida"></i>Saídas</span>
+                </div>
               </div>
+            </div>
 
+            <div className="graficoBarras">
+              <div className="eixoY">
+                <span>60k</span><span>40k</span><span>20k</span><span>0</span>
+              </div>
               <div className="areaBarras">
-
                 <div className="linhaGrafico linha60"></div>
                 <div className="linhaGrafico linha40"></div>
                 <div className="linhaGrafico linha20"></div>
@@ -209,7 +286,6 @@ function FluxoCaixa() {
                   </div>
                   <span>07/09</span>
                 </div>
-
                 <div className="grupoBarras">
                   <div className="parBarras">
                     <div className="barra entrada" style={{ height: "76%" }}></div>
@@ -217,7 +293,6 @@ function FluxoCaixa() {
                   </div>
                   <span>08/09</span>
                 </div>
-
                 <div className="grupoBarras">
                   <div className="parBarras">
                     <div className="barra entrada" style={{ height: "64%" }}></div>
@@ -225,7 +300,6 @@ function FluxoCaixa() {
                   </div>
                   <span>15/09</span>
                 </div>
-
                 <div className="grupoBarras">
                   <div className="parBarras">
                     <div className="barra entrada" style={{ height: "70%" }}></div>
@@ -233,7 +307,6 @@ function FluxoCaixa() {
                   </div>
                   <span>22/09</span>
                 </div>
-
                 <div className="grupoBarras">
                   <div className="parBarras">
                     <div className="barra entrada" style={{ height: "82%" }}></div>
@@ -241,69 +314,29 @@ function FluxoCaixa() {
                   </div>
                   <span>29/09</span>
                 </div>
-
               </div>
             </div>
-
           </section>
 
           {/* EVOLUÇÃO DO SALDO */}
           <section className="cardGraficoFluxo">
-
             <div className="cabecalhoCardFluxo">
               <h2>Evolução do saldo</h2>
             </div>
-
             <div className="graficoLinha">
-
-              <div className="linhasLinha">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
-              </div>
-
+              <div className="linhasLinha"><span></span><span></span><span></span><span></span></div>
               <div className="eixoLinhaY">
-                <span>32k</span>
-                <span>24k</span>
-                <span>16k</span>
-                <span>8k</span>
-                <span>0</span>
+                <span>32k</span><span>24k</span><span>16k</span><span>8k</span><span>0</span>
               </div>
-
-              <svg
-                className="svgLinha"
-                viewBox="0 0 1000 250"
-                preserveAspectRatio="none"
-              >
-                <polyline
-                  points="20,205 190,180 360,185 530,145 700,125 850,88 980,52"
-                  fill="none"
-                  stroke="#9d0926"
-                  strokeWidth="3"
-                />
-
-                <circle cx="20" cy="205" r="5" />
-                <circle cx="190" cy="180" r="5" />
-                <circle cx="360" cy="185" r="5" />
-                <circle cx="530" cy="145" r="5" />
-                <circle cx="700" cy="125" r="5" />
-                <circle cx="850" cy="88" r="5" />
-                <circle cx="980" cy="52" r="5" />
+              <svg className="svgLinha" viewBox="0 0 1000 250" preserveAspectRatio="none">
+                <polyline points="20,205 190,180 360,185 530,145 700,125 850,88 980,52" fill="none" stroke="#9d0926" strokeWidth="3" />
+                <circle cx="20" cy="205" r="5" /><circle cx="190" cy="180" r="5" /><circle cx="360" cy="185" r="5" />
+                <circle cx="530" cy="145" r="5" /><circle cx="700" cy="125" r="5" /><circle cx="850" cy="88" r="5" /><circle cx="980" cy="52" r="5" />
               </svg>
-
               <div className="datasLinha">
-                <span>01/09</span>
-                <span>05</span>
-                <span>10</span>
-                <span>15</span>
-                <span>20</span>
-                <span>25</span>
-                <span>30</span>
+                <span>01/09</span><span>05</span><span>10</span><span>15</span><span>20</span><span>25</span><span>30</span>
               </div>
-
             </div>
-
           </section>
 
           {/* DUAS COLUNAS */}
@@ -311,195 +344,237 @@ function FluxoCaixa() {
 
             {/* MOVIMENTAÇÕES */}
             <div className="cardMovimentacoes">
-
-             <div className="cabecalhoCardFluxo cabecalhoLista">
-  <h2>Movimentações recentes</h2>
-
-  <button onClick={() => navigate("/fluxocaixamovimentacao")}>
-    Ver todas
-  </button>
-</div>
-
-              <div className="listaMovimentacoes">
-
-  {movimentos.map((m, i) => (
-  <div
-    className="movimentacao"
-    key={i}
-    onClick={() =>
-      m.tipo === "entrada"
-        ? navigate("/fluxocaixadetalhes")
-        : navigate("/fluxocaixasaida")
-    }
-  >
-    <div className="infoMovimentacao">
-      <span
-        className={
-          m.tipo === "entrada"
-            ? "iconeMovimentacao entradaIcone"
-            : "iconeMovimentacao saidaIcone"
-        }
-      >
-        {m.tipo === "entrada" ? "↓" : "↑"}
-      </span>
-      <strong>{m.descricao}</strong>
-    </div>
-
-    <span
-      className={
-        m.tipo === "entrada"
-          ? "valorEntrada"
-          : "valorSaida"
-      }
-    >
-      {m.tipo === "entrada" ? "+" : "-"}
-      {m.valor}
-    </span>
-  </div>
-))}
-
+              <div className="cabecalhoCardFluxo cabecalhoLista">
+                <h2>Movimentações Recentes</h2>
+                
+                
+                <button onClick={() => setModalMovimentacoesAberto(true)}>
+                  Ver todas
+                </button>
               </div>
 
+              <div className="listaMovimentacoes">
+                {movimentos.map((m, i) => (
+                  <div
+                    className="movimentacao"
+                    key={i}
+                    onClick={() =>
+                      m.tipo === "entrada"
+                        ? navigate("/fluxocaixadetalhes")
+                        : navigate("/fluxocaixasaida")
+                    }
+                  >
+                    <div className="infoMovimentacao">
+                      <span className={m.tipo === "entrada" ? "iconeMovimentacao entradaIcone" : "iconeMovimentacao saidaIcone"}>
+                        {m.tipo === "entrada" ? "↓" : "↑"}
+                      </span>
+                      <strong>{m.descricao}</strong>
+                    </div>
+                    <span className={m.tipo === "entrada" ? "valorEntrada" : "valorSaida"}>
+                      {m.tipo === "entrada" ? "+" : "-"}{m.valor}
+                    </span>
+                  </div>
+                ))}
+              </div>
             </div>
 
             {/* MAIORES DESPESAS */}
             <div className="cardMovimentacoes">
-
-             <div className="cabecalhoCardFluxo cabecalhoLista">
-  <h2>Movimentações recentes</h2>
-
-  <button onClick={() => navigate("/fluxocaixadespesa")}>
-    Ver todas
-  </button>
-</div>
-
-
-              <div className="listaMovimentacoes">
-
-                {maioresDespesas.map((d, i) => (
-                  <div className="movimentacao" key={i}>
-
-                    <div className="infoMovimentacao">
-                      <span className="iconeDespesa">
-                        -
-                      </span>
-
-                      <strong>{d.nome}</strong>
-                    </div>
-
-                    <span className="valorSaida">
-                      {d.valor}
-                    </span>
-
-                  </div>
-                ))}
-
+              <div className="cabecalhoCardFluxo cabecalhoLista">
+                <h2>Maiores Despesas</h2>
+                {/* 4. Botão alterado para abrir o pop-up */}
+                <button onClick={() => setModalDespesasAberto(true)}>
+                  Ver todas
+                </button>
               </div>
 
+              <div className="listaMovimentacoes">
+                {maioresDespesas.map((d, i) => (
+                  <div className="movimentacao" key={i}>
+                    <div className="infoMovimentacao">
+                      <span className="iconeDespesa">-</span>
+                      <strong>{d.nome}</strong>
+                    </div>
+                    <span className="valorSaida">{d.valor}</span>
+                  </div>
+                ))}
+              </div>
             </div>
 
           </section>
 
           {/* RESUMO INFERIOR */}
           <section className="resumoInferior">
-
             <div className="miniCard">
               <span>Lucro do mês</span>
               <strong>R$ 32.210,00</strong>
               <small>+12,4% em relação ao mês anterior</small>
             </div>
-
             <div className="miniCard">
               <span>Lucro da semana</span>
               <strong>R$ 5.338,60</strong>
               <small>+6,2% em relação à semana anterior</small>
             </div>
-
             <div className="miniCard">
               <span>Lucro do dia</span>
               <strong>R$ 982,00</strong>
               <small>+4,3% em relação a ontem</small>
             </div>
-
           </section>
 
           {/* DESPESAS FIXAS E VARIÁVEIS */}
           <section className="cardDespesas">
-
             <div className="cabecalhoCardFluxo">
               <h2>Despesas fixas x despesas variáveis (mês)</h2>
             </div>
-
             <div className="conteudoDespesas">
-
-              {/* DONUT */}
               <div className="areaPizza">
-
                 <div className="pizza">
                   <div className="centroPizza">
                     <strong>R$ 20.500,00</strong>
                     <span>Total de despesas</span>
                   </div>
                 </div>
-
                 <div className="legendaPizza">
-                  <div>
-                    <i className="pontoFixo"></i>
-                    Despesas fixas (58,5%)
-                  </div>
-
-                  <div>
-                    <i className="pontoVariavel"></i>
-                    Despesas variáveis (41,5%)
-                  </div>
+                  <div><i className="pontoFixo"></i>Despesas fixas (58,5%)</div>
+                  <div><i className="pontoVariavel"></i>Despesas variáveis (41,5%)</div>
                 </div>
-
               </div>
 
-              {/* TABELA FIXAS */}
               <div className="tabelaDespesa">
-
                 <h3>Despesas fixas</h3>
-
                 {despesasFixas.map((item, i) => (
                   <div className="linhaDespesa" key={i}>
                     <span>{item[0]}</span>
                     <strong>{item[1]}</strong>
                   </div>
                 ))}
-
                 <div className="totalDespesa">
                   <span>Total fixas</span>
                   <strong>R$ 12.000,00</strong>
                 </div>
-
               </div>
 
-              {/* TABELA VARIÁVEIS */}
               <div className="tabelaDespesa">
-
                 <h3>Despesas variáveis</h3>
-
                 {despesasVariaveis.map((item, i) => (
                   <div className="linhaDespesa" key={i}>
                     <span>{item[0]}</span>
                     <strong>{item[1]}</strong>
                   </div>
                 ))}
-
                 <div className="totalDespesa">
                   <span>Total variáveis</span>
                   <strong>R$ 8.500,00</strong>
                 </div>
-
               </div>
-
             </div>
-
           </section>
 
         </main>
       </div>
+
+      {/* POP-UP: MOVIMENTAÇÕES RECENTES*/}
+      {modalMovimentacoesAberto && (
+        <div className="modalOverlay">
+          <div className="modalConteudo" style={{ maxWidth: "800px" }}>
+            <div className="modalCabecalho">
+              <h2>Movimentações recentes</h2>
+              <button className="botaoFecharModal" onClick={() => setModalMovimentacoesAberto(false)}>
+                &times;
+              </button>
+            </div>
+            <div className="modalCorpo">
+              <div className="listaCompletaMovimentacoes" style={{ background: "transparent", border: "none", boxShadow: "none", padding: 0 }}>
+                {gruposMovimentacoesCompleto.map((grupo) => {
+                  const aberto = abertosGrupos[grupo.titulo];
+                  return (
+                    <div className="grupoMovimentacoes" key={grupo.titulo}>
+                      <button
+                        type="button"
+                        className={`cabecalhoGrupo ${aberto ? "" : "fechado"}`}
+                        onClick={() => alternarGrupo(grupo.titulo)}
+                      >
+                        <h2>{grupo.titulo}</h2>
+                        <IconeChevron />
+                      </button>
+
+                      {aberto && grupo.itens.length > 0 && (
+                        <div className="itensGrupo">
+                          {grupo.itens.map((item, i) => (
+                            <div className="movimentacao" key={i}>
+                              <div className="infoMovimentacaoCompleta">
+                                <span className={`iconeMovimentacaoCompleta ${item.tipo === "entrada" ? "iconeEntrada" : "iconeSaida"}`}>
+                                  <IconeSeta tipo={item.tipo} />
+                                </span>
+
+                                <div className="textoMovimentacao">
+                                  <strong>{item.titulo}</strong>
+                                  <div className="metaMovimentacao">
+                                    <span className="tagTipo">{item.tipo === "entrada" ? "Entrada" : "Saída"}</span>
+                                    <span className="separador">·</span>
+                                    <span>{item.data}</span>
+                                    <span className="separador">·</span>
+                                    <span>{item.itens}</span>
+                                    <span className="separador">·</span>
+                                    <span>{item.categoria}</span>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <span className={`valorMovimentacaoCompleta ${item.tipo}`}>
+                                {item.tipo === "entrada" ? `+ ${item.valor}` : item.valor}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/*  POP-UP: MAIORES DESPESA */}
+      {modalDespesasAberto && (
+        <div className="modalOverlay">
+          <div className="modalConteudo" style={{ maxWidth: "750px" }}>
+            <div className="modalCabecalho">
+              <h2>Maiores despesas</h2>
+              <button className="botaoFecharModal" onClick={() => setModalDespesasAberto(false)}>
+                &times;
+              </button>
+            </div>
+            <div className="modalCorpo">
+              <div className="listaCompletaDespesas" style={{ background: "transparent", border: "none", boxShadow: "none", padding: 0 }}>
+                {despesasCompletas.map((d, i) => (
+                  <div className="despesa" key={i}>
+                    <div className="infoDespesaWrapper">
+                      <span className="iconeSaida">
+                        <IconeSetaSaida />
+                      </span>
+
+                      <div className="infoDespesa">
+                        <strong>{d.nome}</strong>
+                        <p>
+                          <span>Saída</span>
+                          <span className="separador">·</span>
+                          <span>{d.detalhe}</span>
+                        </p>
+                      </div>
+                    </div>
+
+                    <span className="valorSaida">{d.valor}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
