@@ -13,9 +13,9 @@ class fluxoController {
       const startDate = new Date(year, month - 1, 1);
       const endDate = new Date(year, month, 0, 23, 59, 59);
 
-      // -----------------------------------------------------------------
+    
       // 1. Procura as transações do mês filtrado com as respetivas categorias
-      // -----------------------------------------------------------------
+     
       const monthTransactions = await prisma.transaction.findMany({
         where: {
           date: {
@@ -28,9 +28,8 @@ class fluxoController {
         },
       });
 
-      // -----------------------------------------------------------------
       // 2. Cálculo dos KPIs Principais (Entradas, Saídas, Lucro e Margem)
-      // -----------------------------------------------------------------
+      
       let totalIncome = 0;
       let totalExpenses = 0;
 
@@ -50,9 +49,8 @@ class fluxoController {
         ? Number(((netProfit / totalIncome) * 100).toFixed(1)) 
         : 0;
 
-      // -----------------------------------------------------------------
       // 3. Procura as 5 Movimentações Mais Recentes
-      // -----------------------------------------------------------------
+
       const recentTransactions = await prisma.transaction.findMany({
         take: 5,
         orderBy: { date: 'desc' }, // Mais recentes primeiro
@@ -65,9 +63,8 @@ class fluxoController {
         },
       });
 
-      // -----------------------------------------------------------------
       // 4. Procura as 5 Maiores Despesas Recentes
-      // -----------------------------------------------------------------
+ 
       const topExpenses = await prisma.transaction.findMany({
         where: { type: 'EXPENSE' },
         take: 5,
@@ -80,9 +77,9 @@ class fluxoController {
         },
       });
 
-      // -----------------------------------------------------------------
+
       // 5. Separação das Despesas em Fixas e Variáveis
-      // -----------------------------------------------------------------
+    
       const fixedList = [];
       const variableList = [];
       let totalFixed = 0;
@@ -104,9 +101,9 @@ class fluxoController {
 
       const totalCategoryExpenses = totalFixed + totalVariable;
 
-      // -----------------------------------------------------------------
+
       // 6. Envia a resposta organizada para o React (Frontend)
-      // -----------------------------------------------------------------
+
       return res.json({
         kpis: {
           totalIncome,

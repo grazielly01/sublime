@@ -6,8 +6,8 @@ const usuarioRoutes = require('./routes/usuarioRoutes');
 const estoqueRoutes = require('./routes/estoqueRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const producaoRoutes = require('./routes/producaoRoutes');
-
-// Adicione junto com as outras rotas
+const pedidoRoutes = require('./routes/pedidoRoutes'); 
+const alertasRoutes = require('./routes/alertasRoutes'); 
 
 const app = express();
 
@@ -25,6 +25,8 @@ app.use('/usuarios', usuarioRoutes);
 app.use('/estoque', estoqueRoutes);
 app.use('/dashboard', dashboardRoutes);
 app.use('/producao', producaoRoutes);
+app.use('/pedidos', pedidoRoutes); 
+app.use('/alertas', alertasRoutes);
 
 // Exporta a aplicação configurada
 module.exports = app;
