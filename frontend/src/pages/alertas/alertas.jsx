@@ -1,12 +1,10 @@
-
 import { useState, useEffect } from "react";
 import "./alertas.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 import Alert from "../../componentes/Alerts/Alerts.jsx";
 
-// Endereço do backend configurado na Vercel
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 function Alertas() {
   const [alertas, setAlertas] = useState([]);
@@ -26,16 +24,16 @@ function Alertas() {
     try {
       setCarregando(true);
 
-      if (!API_URL) {
-        throw new Error("VITE_API_URL não está configurada.");
-      }
-
       const url =
         categoria && categoria !== "TODOS"
           ? `${API_URL}/alertas?categoria=${encodeURIComponent(categoria)}`
           : `${API_URL}/alertas`;
 
-      const response = await fetch(url);
+      const response = await fetch(url, {
+        headers: {
+          Accept: "application/json",
+        },
+      });
 
       if (!response.ok) {
         throw new Error(`Erro HTTP: ${response.status}`);
@@ -43,10 +41,7 @@ function Alertas() {
 
       const result = await response.json();
 
-      setAlertas(
-        Array.isArray(result.data) ? result.data : []
-      );
-
+      setAlertas(Array.isArray(result.data) ? result.data : []);
     } catch (error) {
       console.error("Erro ao carregar alertas:", error);
       setAlertas([]);
@@ -65,16 +60,16 @@ function Alertas() {
     try {
       const response = await fetch(`${API_URL}/alertas/${id}`, {
         method: "DELETE",
+        headers: {
+          Accept: "application/json",
+        },
       });
 
       if (!response.ok) {
         throw new Error(`Erro HTTP: ${response.status}`);
       }
 
-      setAlertas((prev) =>
-        prev.filter((item) => item.id !== id)
-      );
-
+      setAlertas((prev) => prev.filter((item) => item.id !== id));
     } catch (error) {
       console.error("Erro ao dispensar alerta:", error);
       alert("Não foi possível dispensar o alerta.");
@@ -89,7 +84,6 @@ function Alertas() {
         <Header nomeIndustria="Sweet Sunset" />
 
         <div className="conteudoAlertas conteudoAlertas2">
-
           <h1 className="tituloAlertas">Alertas</h1>
 
           <p className="subtituloAlertas">
@@ -115,11 +109,8 @@ function Alertas() {
 
           {/* Lista de alertas */}
           <div className="listaAlertas">
-
             {carregando ? (
-              <p style={{ marginTop: "20px" }}>
-                Carregando alertas...
-              </p>
+              <p style={{ marginTop: "20px" }}>Carregando alertas...</p>
             ) : alertas.length === 0 ? (
               <p style={{ marginTop: "20px" }}>
                 Nenhum alerta nesta categoria.
@@ -136,7 +127,6 @@ function Alertas() {
                 />
               ))
             )}
-
           </div>
         </div>
       </div>

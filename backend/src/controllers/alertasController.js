@@ -44,6 +44,9 @@ let alertasMock = [
 class AlertasController {
   // GET /alertas - Lista alertas com suporte a filtro ?categoria=ESTOQUE
   async listar(req, res) {
+
+    console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+
     const { categoria } = req.query;
 
     let resultado = alertasMock;
