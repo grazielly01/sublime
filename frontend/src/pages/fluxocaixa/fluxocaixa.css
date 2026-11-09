@@ -181,7 +181,7 @@
 
 .cabecalhoCardFluxo {
   min-height: 52px;
-  padding: 16px 20px;
+  padding: 16px 26px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -457,7 +457,7 @@
 .duasColunasFluxo {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 18px;
+  gap: 20px;
   margin-bottom: 18px;
 }
 
@@ -499,7 +499,7 @@
 
 .movimentacao {
   min-height: 50px;
-  padding: 8px 20px;
+  padding: 10px 20px;
   box-sizing: border-box;
 
   display: flex;
@@ -549,11 +549,13 @@
 
 .entradaIcone {
   background: linear-gradient(135deg, #4FA463, #3F8F4F);
+/*margin-left: 26px;*/
 }
 
 .saidaIcone,
 .iconeDespesa {
   background: linear-gradient(135deg, #C8213D, #A60027);
+  /*margin-left: 26px;*/
 }
 
 .valorEntrada,
@@ -561,6 +563,7 @@
   white-space: nowrap;
   font: 700 14px "Inter", sans-serif;
   font-variant-numeric: tabular-nums;
+/*margin-right: 26px; comentei pra nao dar um possivel conflito com o commit que a grazy ta tentando resolver*/
 }
 
 .valorEntrada { color: #1F7A3A; }
