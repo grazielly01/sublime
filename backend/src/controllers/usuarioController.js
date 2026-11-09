@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 // Chave secreta para assinar o JWT (ideal guardar em variável de ambiente no .env)
-const JWT_SECRET = process.env.JWT_SECRET || 'sublime_chave_secreta_super_segura';
+const JWT_SECRET = process.env.JWT_SECRET || 'sublime_chave_secreta';
 
 // Array mockado em memória
 let usuariosMock = [
