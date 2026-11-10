@@ -1,15 +1,15 @@
-### ==========================================
-### 1. TELA: VISÃO GERAL / SAÚDE DA API
-### ==========================================
+
+### 1. TELA: VISÃO GERAL / SAÚDE DA API. Instalar o REST todas as vezes
+
 
 ### 1.1 Verificação de integridade do servidor
 GET http://localhost:3000/
 Accept: application/json
 
 
-### ==========================================
+
 ### 2. TELA: MINHA CONTA / USUÁRIOS
-### ==========================================
+
 
 ### 2.1 Obter dados do utilizador logado / perfil
 GET http://localhost:3000/usuarios/perfil
@@ -25,9 +25,9 @@ Content-Type: application/json
 }
 
 
-### ==========================================
+
 ### 3. TELA: DASHBOARD / FLUXO DE CAIXA
-### ==========================================
+
 
 ### 3.1 Consultar KPIs e lançamentos do mês
 GET http://localhost:3000/dashboard?month=10&year=2026
@@ -45,9 +45,9 @@ Content-Type: application/json
 }
 
 
-### ==========================================
+
 ### 4. TELA: ESTOQUE DE INSUMOS
-### ==========================================
+
 
 ### 4.1 Listar insumos com alerta "abaixo do mínimo" e regra PEPS
 GET http://localhost:3000/estoque
@@ -71,9 +71,9 @@ Content-Type: application/json
 }
 
 
-### ==========================================
+
 ### 5. TELA: PRODUÇÃO
-### ==========================================
+
 
 ### 5.1 Listar KPIs de produção e Fila de Ordens
 GET http://localhost:3000/producao

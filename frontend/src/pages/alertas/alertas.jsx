@@ -1,83 +1,137 @@
+import { useState, useEffect } from "react";
 import "./alertas.css";
-import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes*/
-import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes*/
-import Alert from "../../componentes/Alerts/Alerts.jsx";  /*Importando o componente Alert (o cardzinho de alerta) da pasta componentes*/
-import { motion } from "motion/react";
+import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
+import Header from "../../componentes/Header/Header.jsx";
+import Alert from "../../componentes/Alerts/Alerts.jsx";
+
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
 
 function Alertas() {
+  const [alertas, setAlertas] = useState([]);
+  const [filtroAtivo, setFiltroAtivo] = useState("TODOS");
+  const [carregando, setCarregando] = useState(true);
 
-    /* Lista (array) de alertas (por enquanto só pra gente visualizar a tela)
-    Quando o backend existir, essa lista vai vir da API, calculada automaticamente a partir do estoque, validade, financeiro e pedidos*/
+  const opcoesFiltro = [
+    { label: "Todos", value: "TODOS" },
+    { label: "Pedidos", value: "PEDIDOS" },
+    { label: "Estoque", value: "ESTOQUE" },
+    { label: "Financeiro", value: "FINANCEIRO" },
+    { label: "Produção", value: "PRODUCAO" },
+  ];
 
-    const alertas = [
-        {
-            titulo: "Fermento químico abaixo do mínimo",
-            descricao: "Apenas 2kg restantes (mínimo 5kg). Produção de bolos em risco para amanhã.",
-            prioridade: "alta",
+  // Buscar alertas no backend
+  const carregarAlertas = async (categoria) => {
+    try {
+      setCarregando(true);
+
+      const url =
+        categoria && categoria !== "TODOS"
+          ? `${API_URL}/alertas?categoria=${encodeURIComponent(categoria)}`
+          : `${API_URL}/alertas`;
+
+      const response = await fetch(url, {
+        headers: {
+          Accept: "application/json",
         },
-        {
-            titulo: "Validade próxima — Ovos brancos",
-            descricao: "Lote LT-0422 (1.800 un) vence em 02/06/2026 — priorizar no PEPS.",
-            prioridade: "alta",
+      });
+
+      if (!response.ok) {
+        throw new Error(`Erro HTTP: ${response.status}`);
+      }
+
+      const result = await response.json();
+
+      setAlertas(Array.isArray(result.data) ? result.data : []);
+    } catch (error) {
+      console.error("Erro ao carregar alertas:", error);
+      setAlertas([]);
+    } finally {
+      setCarregando(false);
+    }
+  };
+
+  // Atualizar quando mudar o filtro
+  useEffect(() => {
+    carregarAlertas(filtroAtivo);
+  }, [filtroAtivo]);
+
+  // Dispensar alerta
+  const dispensarAlerta = async (id) => {
+    try {
+      const response = await fetch(`${API_URL}/alertas/${id}`, {
+        method: "DELETE",
+        headers: {
+          Accept: "application/json",
         },
-        {
-            titulo: "Margem caindo — Torta de Limão",
-            descricao: "Custo dos ingredientes subiu 8% no mês. Revisar preço de venda.",
-            prioridade: "media",
-        },
-        {
-            titulo: "Manteiga sem sal abaixo do mínimo",
-            descricao: "18kg restantes (mínimo 20kg). Estoque suficiente para 4 dias.",
-            prioridade: "media",
-        },
-        {
-            titulo: "Pedido #2340 sem confirmação do cliente",
-            descricao: "Mercado Bom Preço não confirmou entrega de amanhã às 09h.",
-            prioridade: "baixa",
-        },
-    ];
+      });
 
-    return (
-        <div className="tudoAlertas">  {/*Div q abriga tudo*/}
+      if (!response.ok) {
+        throw new Error(`Erro HTTP: ${response.status}`);
+      }
 
-            <Sidebar paginaAtiva="Alertas" /> {/*Menu lateral, coloquei "Alertas" como página ativa para "Alertas" no menu lateral ficar clarinho*/}
+      setAlertas((prev) => prev.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error("Erro ao dispensar alerta:", error);
+      alert("Não foi possível dispensar o alerta.");
+    }
+  };
 
-            <div className="tudoMenosSidebar"> {/*Tudo menos o sidebar q ta acima*/}
+  return (
+    <div className="tudoAlertas">
+      <Sidebar paginaAtiva="Alertas" />
 
-                <Header nomeIndustria="Sweet Sunset" /> {/*componente header*/}
+      <div className="tudoMenosSidebar">
+        <Header nomeIndustria="Sweet Sunset" />
 
-                <div className="conteudoAlertas conteudoAlertas2"> {/*Div com o conteúdo da página*/}
+        <div className="conteudoAlertas conteudoAlertas2">
+          <h1 className="tituloAlertas">Alertas</h1>
 
-                    <h1 className="tituloAlertas">Alertas</h1>
-                    <p className="subtituloAlertas">Notificações automáticas de estoque, validade, financeiro e pedidos.</p>
+          <p className="subtituloAlertas">
+            Notificações automáticas de estoque, validade,
+            financeiro e pedidos.
+          </p>
 
-                    {/*abas de filtro -- só visuais por enquanto, ainda não funcionam de verdade (sem backend)*/}
-                    <div className="filtrosAlertas">
-                        <div className="filtroAlerta ativo">Todos</div>
-                        <div className="filtroAlerta">Pedidos</div>
-                        <div className="filtroAlerta">Estoque</div>
-                        <div className="filtroAlerta">Financeiro</div>
-                        <div className="filtroAlerta">Produção</div>
-                    </div>
+          {/* Filtros */}
+          <div className="filtrosAlertas">
+            {opcoesFiltro.map((opcao) => (
+              <div
+                key={opcao.value}
+                className={`filtroAlerta ${
+                  filtroAtivo === opcao.value ? "ativo" : ""
+                }`}
+                onClick={() => setFiltroAtivo(opcao.value)}
+                style={{ cursor: "pointer" }}
+              >
+                {opcao.label}
+              </div>
+            ))}
+          </div>
 
-                    {/*lista de alertas -- .map() percorre o array "alertas" e cria um <Alert> pra cada posição, igual já fizemos no Select e no Estoque*/}
-                    <div className="listaAlertas">
-                        {alertas.map((alerta, index) => (
-                            <Alert
-                                key={index}
-                                titulo={alerta.titulo}
-                                descricao={alerta.descricao}
-                                prioridade={alerta.prioridade}
-                            />
-                        ))}
-                    </div>
-
-                </div>
-
-            </div>
-
+          {/* Lista de alertas */}
+          <div className="listaAlertas">
+            {carregando ? (
+              <p style={{ marginTop: "20px" }}>Carregando alertas...</p>
+            ) : alertas.length === 0 ? (
+              <p style={{ marginTop: "20px" }}>
+                Nenhum alerta nesta categoria.
+              </p>
+            ) : (
+              alertas.map((alerta) => (
+                <Alert
+                  key={alerta.id}
+                  id={alerta.id}
+                  titulo={alerta.titulo}
+                  descricao={alerta.descricao}
+                  prioridade={alerta.prioridade?.toLowerCase()}
+                  onDispensar={() => dispensarAlerta(alerta.id)}
+                />
+              ))
+            )}
+          </div>
         </div>
-    );
+      </div>
+    </div>
+  );
 }
 
 export default Alertas;

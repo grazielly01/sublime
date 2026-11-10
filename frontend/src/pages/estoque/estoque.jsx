@@ -1,20 +1,22 @@
 import "./estoque.css";
 import "./registrarInsumo.css";
 import "./detalhesInsumo.css";
-import Input from "../../componentes/Input/Input.jsx";
-import Button from "../../componentes/Button/Button.jsx";
-import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
-import Header from "../../componentes/Header/Header.jsx";
+import { Link } from "react-router-dom";
+import Input from "../../componentes/Input/Input.jsx";     
+import Button from "../../componentes/Button/Button.jsx";   
+import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  
+import Header from "../../componentes/Header/Header.jsx";  
 import { motion } from "motion/react";
 import Select from "../../componentes/Select/Select.jsx";
 import { useState } from "react";
 
 function Estoque() {
-    // Estados para controlar os modais
+    // Estados para controlar os pop-ups
     const [modalNovoInsumoAberto, setModalNovoInsumoAberto] = useState(false);
     const [modalDetalhesAberto, setModalDetalhesAberto] = useState(false);
     const [insumoSelecionado, setInsumoSelecionado] = useState(null);
 
+    /*essa const abaixo é o array de insumos do estoque original*/
     const insumos = [
         { nome: "Chocolate ao leite Callebaut 80g", lote: "LT-0421", quantidade: "52", minimo: "15", validade: "12/08/2026", custo: "R$ 78.50", status: "ok", categoria: "Cacau e chocolates" },
         { nome: "Farinha de trigo especial 300g", lote: "LT-0425", quantidade: "2", minimo: "6", validade: "30/11/2026", custo: "R$ 142.00", status: "repor", categoria: "Farinhas e massas" },
@@ -42,18 +44,25 @@ function Estoque() {
     };
 
     return (
-        <div className="tudoEstoque">
-            <Sidebar paginaAtiva="Estoque" />
+        <div className="tudoEstoque"> 
 
-            <div className="tudoMenosSidebar">
-                <Header nomeIndustria="Sweet Sunset" />
+            <Sidebar paginaAtiva="Estoque" /> 
 
-                <div className="conteudoEstoque conteudoEstoque2">
+            <div className="tudoMenosSidebar"> 
+
+                <Header nomeIndustria="Sweet Sunset" /> 
+
+                <div className="conteudoEstoque conteudoEstoque2"> 
+
                     <h1 className="tituloEstoque">Estoque de insumos</h1>
                     <p className="subtituloEstoque">Controle por lote e validade — sistema PEPS (usar primeiro o mais antigo)</p>
 
+                    
                     <div className="barraFiltros">
+
                         <div className="ladoEsquerdoFiltros">
+
+                            {/*campo de busca*/}
                             <div className="buscaComIcone">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#870B22" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-search-icon lucide-search">
                                     <path d="m21 21-4.34-4.34"/>
@@ -62,31 +71,46 @@ function Estoque() {
                                 <Input placeholder="Buscar insumo.." required={false} />
                             </div>
 
+                            {/*aviso de quantos insumos estão abaixo do mínimo*/}
                             <div className="avisoMinimo">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-triangle-alert-icon lucide-triangle-alert">
-                                    <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
-                                    <path d="M12 9v4"/>
-                                    <path d="M12 17h.01"/>
-                                </svg>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-triangle-alert-icon lucide-triangle-alert">
+                                <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/>
+                                <path d="M12 9v4"/>
+                                <path d="M12 17h.01"/>
+                            </svg>
                                 8 abaixo do mínimo
                             </div>
                         </div>
 
                         <div className="ladoDireitoFiltros">
+
+                            }
                             <Select id="selectFiltroInsumo" options={[
-                                "Farinhas e massas", "Cacau e chocolates", "Laticínios",
-                                "Ovos e derivados", "Gorduras/óleos", "Fermentos",
-                                "Frutas" , "Confeitos e finalizações", "Essências e aromatizantes",
-                                "Corantes", "Embalagens", "Decorações", "Outros"]}
+                                "Farinhas e massas",
+                                "Cacau e chocolates",
+                                "Laticínios",
+                                "Ovos e derivados",
+                                "Gorduras/óleos",
+                                "Fermentos",
+                                "Frutas" ,
+                                "Confeitos e finalizações",
+                                "Essências e aromatizantes",
+                                "Corantes",
+                                "Embalagens",
+                                "Decorações",
+                                "Outros"]}
                             />
 
+                            
                             <button type="button" onClick={() => setModalNovoInsumoAberto(true)} style={{ background: 'none', border: 'none', padding: 0, cursor: 'pointer' }}>
-                                <Button texto="Novo insumo" />
+                                <Button texto="+ Novo insumo" />
                             </button>
                         </div>
                     </div>
 
+                    
                     <table className="tabelaEstoque">
+
                         <thead>
                             <tr>
                                 <th>Insumo</th>
@@ -103,7 +127,7 @@ function Estoque() {
                             {insumos.map((insumo, index) => (
                                 <tr key={index}>
                                     <td>
-                                        
+                                       
                                         <span 
                                             onClick={() => abrirDetalhes(insumo)} 
                                             className="botaoDetalhesInsumo" 
@@ -129,7 +153,7 @@ function Estoque() {
                 </div>
             </div>
 
-            {/*pop-up registrar novo insumo*/}
+            {/* pop-up registrar novo insumo */}
             {modalNovoInsumoAberto && (
                 <div className="modalOverlay">
                     <div className="modalConteudo">
@@ -253,7 +277,7 @@ function Estoque() {
 
                                 <div className="modalRodopedioBotoes">
                                     <div onClick={() => setModalDetalhesAberto(false)} style={{ cursor: "pointer" }}>
-                                        <Button texto="Excluir" className="modalBotaoCancelar" />
+                                        <Button texto="Excluir" className="modalBotaoExcluir" />
                                     </div>
                                     <Button texto="Editar" className="modalBotaoSalvar" />
                                 </div>

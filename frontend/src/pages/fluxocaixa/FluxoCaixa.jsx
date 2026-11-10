@@ -32,11 +32,11 @@ const IconeSetaSaida = () => (
 function FluxoCaixa() {
   const navigate = useNavigate();
 
-  // Estados dos modais inferiores (já adicionados anteriormente)
+  // Estados dos modais inferiores
   const [modalMovimentacoesAberto, setModalMovimentacoesAberto] = useState(false);
   const [modalDespesasAberto, setModalDespesasAberto] = useState(false);
 
-  // Novos estados para os modais superiores (+ Saída e + Entrada)
+  // Estados para os modais superiores (+ Saída e + Entrada)
   const [modalRegistrarSaidaAberto, setModalRegistrarSaidaAberto] = useState(false);
   const [modalRegistrarEntradaAberto, setModalRegistrarEntradaAberto] = useState(false);
 
@@ -199,7 +199,6 @@ function FluxoCaixa() {
 
               <div className="acoesGrafico">
                 <div className="botoesFluxo">
-                  {/* Botão + Saída abre o pop-up */}
                   <button
                     className="botaoSaida"
                     type="button"
@@ -208,7 +207,6 @@ function FluxoCaixa() {
                     + Saída
                   </button>
 
-                  {/* Botão + Entrada abre o pop-up */}
                   <button
                     className="botaoEntrada"
                     type="button"
@@ -443,9 +441,7 @@ function FluxoCaixa() {
         </main>
       </div>
 
-      {/* =====================================================
-         POP-UP: MOVIMENTAÇÕES RECENTES (Já adicionado por você)
-      ===================================================== */}
+      {/* POP-UP: MOVIMENTAÇÕES RECENTES */}
       {modalMovimentacoesAberto && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "750px" }}>
@@ -498,9 +494,7 @@ function FluxoCaixa() {
         </div>
       )}
 
-      {/* =====================================================
-         POP-UP: MAIORES DESPESAS (Já adicionado por você)
-      ===================================================== */}
+      {/* POP-UP: MAIORES DESPESAS */}
       {modalDespesasAberto && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "700px" }}>
@@ -528,9 +522,7 @@ function FluxoCaixa() {
         </div>
       )}
 
-      {/* =====================================================
-         POP-UP: REGISTRAR NOVA SAÍDA (Novo)
-      ===================================================== */}
+      {/* POP-UP: REGISTRAR NOVA SAÍDA */}
       {modalRegistrarSaidaAberto && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "800px" }}>
@@ -624,9 +616,7 @@ function FluxoCaixa() {
         </div>
       )}
 
-      {/* =====================================================
-         POP-UP: REGISTRAR NOVA ENTRADA (Novo)
-      ===================================================== */}
+      {/* POP-UP: REGISTRAR NOVA ENTRADA */}
       {modalRegistrarEntradaAberto && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "800px" }}>
