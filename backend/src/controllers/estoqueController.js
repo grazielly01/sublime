@@ -3,7 +3,7 @@ let insumosMock = [
   {
     id: 1,
     nome: "Chocolate ao leite Callebaut 80g",
-    categoria: "Cacau e chocolates", // <-- Adicionado
+    categoria: "Cacau e chocolates", 
     lote: "LT-0421",
     quantidade: 52,
     minimo: 15,
@@ -13,7 +13,7 @@ let insumosMock = [
   {
     id: 2,
     nome: "Farinha de trigo especial 300g",
-    categoria: "Farinhas e massas", // <-- Adicionado
+    categoria: "Farinhas e massas", 
     lote: "LT-0425",
     quantidade: 2,
     minimo: 6,

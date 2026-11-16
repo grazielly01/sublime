@@ -1,10 +1,8 @@
 const prisma = require('../config/database');
 
-
 class DashboardController {
   async obterVisaoGeral(req, res) {
     try {
-      // 1. Cards de Resumo (Métricas do Topo)
 
       // Faturamento do mês (Soma dos pedidos do mês atual)
       const inicioMes = new Date(new Date().getFullYear(), new Date().getMonth(), 1);
