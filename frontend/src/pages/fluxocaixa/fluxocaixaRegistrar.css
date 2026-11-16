@@ -8,7 +8,7 @@
 .tudoMenosSidebar {
    flex: 1;
   width: 100%;
-  min-width: 0; /* importante: sem isso, flex items às vezes não encolhem/esticam corretamente */
+  min-width: 0; 
   display: flex;
   flex-direction: column;
 }
@@ -17,12 +17,10 @@
    flex: 1;
   width: 100%;
   box-sizing: border-box;
-  padding: 34px 24px 50px; /* era 34px 60px 50px — reduzi bastante a lateral */
+  padding: 34px 24px 50px; 
 }
 
-/* =====================================================
-   TÍTULO COM SETA DE VOLTAR. APROVANDO
-===================================================== */
+/*TÍTULO COM SETA DE VOLTAR*/
 
 .topoFluxoCaixaRegistrar {
   display: flex;
@@ -62,9 +60,7 @@
   margin: 0;
 }
 
-/* =====================================================
-   FORMULÁRIO
-===================================================== */
+/* FORMULÁRIO */
 
 .formFluxoCaixaRegistrar label {
   display: flex;
@@ -196,9 +192,7 @@
   pointer-events: none;
 }
 
-/* =====================================================
-   ÁREA DE UPLOAD
-===================================================== */
+/*  ÁREA DE UPLOAD */
 
 .areaUpload {
   display: flex;
@@ -242,9 +236,7 @@
   color: #21813a;
 }
 
-/* =====================================================
-   AÇÕES
-===================================================== */
+/* AÇÕES */
 
 .acoesFluxoCaixaRegistrar {
   display: flex;
@@ -282,9 +274,7 @@
 .botaoRegistrar:hover {
   background: #80071f;
 }
-/* =====================================================
-   RESPONSIVIDADE
-===================================================== */
+/*RESPONSIVIDADE */
 
 @media (max-width: 900px) {
   .linhaFormRegistrar.colunas4 {

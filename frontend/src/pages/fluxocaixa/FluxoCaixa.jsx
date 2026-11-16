@@ -1,11 +1,12 @@
 import "./fluxocaixa.css";
-import "./fluxocaixaMovimentacao.css"; // Importa o CSS das movimentações pra fazer o popup
-import "./fluxocaixadespesa.css";     // Importa o CSS das despesas pra fazer o pupup
+import "./fluxocaixaMovimentacao.css";
+import "./fluxocaixadespesa.css";
+import "./fluxocaixaDetalhes.css";
+import "./fluxocaixaSaida.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 import { useNavigate } from "react-router-dom";
-import { motion } from "motion/react";
-import { useState } from "react"; 
+import { useState } from "react";
 
 const IconeSeta = ({ tipo }) =>
   tipo === "entrada" ? (
@@ -33,11 +34,80 @@ const IconeSetaSaida = () => (
 function FluxoCaixa() {
   const navigate = useNavigate();
 
-  // Estados para controlar a abertura dos dois novos pop-ups
+  // Estados dos pop-ups de listas e cadastros
   const [modalMovimentacoesAberto, setModalMovimentacoesAberto] = useState(false);
   const [modalDespesasAberto, setModalDespesasAberto] = useState(false);
+  const [modalRegistrarSaidaAberto, setModalRegistrarSaidaAberto] = useState(false);
+  const [modalRegistrarEntradaAberto, setModalRegistrarEntradaAberto] = useState(false);
 
-  // Estados pros pop-up de movimentaçoess
+  // Estados do pop-up de Detalhes da Entrada
+  const [modalDetalhesEntradaAberto, setModalDetalhesEntradaAberto] = useState(false);
+  const [entradaSelecionada, setEntradaSelecionada] = useState(null);
+  const [nomeArquivoDetalhes, setNomeArquivoDetalhes] = useState("");
+  const [editandoDetalhes, setEditandoDetalhes] = useState(false);
+
+  // Estados do pop-up de Detalhes da Saída
+  const [modalDetalhesSaidaAberto, setModalDetalhesSaidaAberto] = useState(false);
+  const [saidaSelecionada, setSaidaSelecionada] = useState(null);
+  const [nomeArquivoDetalhesSaida, setNomeArquivoDetalhesSaida] = useState("");
+  const [editandoDetalhesSaida, setEditandoDetalhesSaida] = useState(false);
+
+  // Estados dos uploads de comprovante nos modais de registro
+  const [nomeArquivoSaida, setNomeArquivoSaida] = useState("");
+  const [nomeArquivoEntrada, setNomeArquivoEntrada] = useState("");
+
+  const handleArquivoSaida = (e) => {
+    const arquivo = e.target.files?.[0];
+    setNomeArquivoSaida(arquivo ? arquivo.name : "");
+  };
+
+  const handleArquivoEntrada = (e) => {
+    const arquivo = e.target.files?.[0];
+    setNomeArquivoEntrada(arquivo ? arquivo.name : "");
+  };
+
+  const handleArquivoDetalhes = (e) => {
+    const arquivo = e.target.files?.[0];
+    setNomeArquivoDetalhes(arquivo ? arquivo.name : "");
+  };
+
+  const handleArquivoDetalhesSaida = (e) => {
+    const arquivo = e.target.files?.[0];
+    setNomeArquivoDetalhesSaida(arquivo ? arquivo.name : "");
+  };
+
+  // Função para abrir o pop-up de detalhes da entrada
+  const abrirDetalhesEntrada = (item) => {
+    setEntradaSelecionada({
+      titulo: item.descricao || item.titulo,
+      data: item.dataCompleta || item.data || "03/05/2026",
+      categoria: item.categoria || "Venda de produto",
+      valor: (item.valor || "0,00").replace("R$ ", ""),
+      itens: item.itens || "15 Torta de Limão 22cm, 30 Cupcake Red Velvet, 28 Brownie Avelã, 40 Cupcake Morango",
+      observacoes: item.observacoes || "",
+    });
+    setNomeArquivoDetalhes("");
+    setEditandoDetalhes(false);
+    setModalDetalhesEntradaAberto(true);
+  };
+
+  // Função para abrir o pop-up de detalhes da saída
+  const abrirDetalhesSaida = (item) => {
+    setSaidaSelecionada({
+      titulo: item.descricao || item.titulo,
+      data: item.dataCompleta || item.data || "03/05/2026",
+      categoria: item.categoria || "Insumos",
+      valor: (item.valor || "0,00").replace("R$ ", ""),
+      descricao: item.itens || item.descricao || "Compra de matéria-prima para produção",
+      tipoDespesa: item.tipoDespesa || "Variável",
+      observacoes: item.observacoes || "",
+    });
+    setNomeArquivoDetalhesSaida("");
+    setEditandoDetalhesSaida(false);
+    setModalDetalhesSaidaAberto(true);
+  };
+
+  // Estados dos grupos no pop-up de movimentações
   const [abertosGrupos, setAbertosGrupos] = useState({
     Hoje: true,
     Ontem: false,
@@ -49,11 +119,54 @@ function FluxoCaixa() {
   };
 
   const movimentos = [
-    { tipo: "entrada", descricao: "Venda – Padaria São José", valor: "R$ 2.760" },
-    { tipo: "saida", descricao: "Compra – Chocolate Callebaut 10kg", valor: "R$ 1.240" },
-    { tipo: "saida", descricao: "Compra – Farinha de trigo 25kg", valor: "R$ 615" },
-    { tipo: "entrada", descricao: "Venda – Vila Bela Bolos", valor: "R$ 1.840" },
-    { tipo: "saida", descricao: "Compra – Chocolate Callebaut 5kg", valor: "R$ 625" },
+    {
+      tipo: "entrada",
+      descricao: "Venda – Padaria São José",
+      valor: "R$ 2.760,00",
+      dataCompleta: "03/05/2026",
+      categoria: "Venda de produto",
+      itens: "20 Bolo de Cenoura c/ Chocolate, 35 Brigadeiro Gourmet, 15 Torta de Limão",
+      observacoes: "Pagamento via PIX na entrega.",
+    },
+    {
+      tipo: "saida",
+      descricao: "Compra – Chocolate Callebaut 10kg",
+      valor: "R$ 1.240,00",
+      dataCompleta: "03/05/2026",
+      categoria: "Compra de insumo",
+      itens: "Chocolate ao leite Callebaut 10kg (Lote LT-0421)",
+      tipoDespesa: "Variável",
+      observacoes: "Fornecedor oficial.",
+    },
+    {
+      tipo: "saida",
+      descricao: "Compra – Farinha de trigo 25kg",
+      valor: "R$ 615,00",
+      dataCompleta: "02/05/2026",
+      categoria: "Compra de insumo",
+      itens: "Saco de Farinha de trigo especial 25kg",
+      tipoDespesa: "Variável",
+      observacoes: "",
+    },
+    {
+      tipo: "entrada",
+      descricao: "Venda – Vila Bela Bolos",
+      valor: "R$ 1.840,00",
+      dataCompleta: "02/05/2026",
+      categoria: "Encomenda",
+      itens: "12 Bolo Red Velvet, 25 Brownie Tradicional",
+      observacoes: "",
+    },
+    {
+      tipo: "saida",
+      descricao: "Compra – Chocolate Callebaut 5kg",
+      valor: "R$ 625,00",
+      dataCompleta: "01/05/2026",
+      categoria: "Compra de insumo",
+      itens: "Chocolate meio amargo Callebaut 5kg",
+      tipoDespesa: "Variável",
+      observacoes: "",
+    },
   ];
 
   const maioresDespesas = [
@@ -82,7 +195,6 @@ function FluxoCaixa() {
     ["Produção extra", "R$ 300,00"],
   ];
 
-  // Dados completos para o pop-up de movimentações
   const gruposMovimentacoesCompleto = [
     {
       titulo: "Hoje",
@@ -91,25 +203,30 @@ function FluxoCaixa() {
           tipo: "entrada",
           titulo: "Venda — Padaria Estrella",
           data: "03/05",
+          dataCompleta: "03/05/2026",
           itens: "15 Torta de Limão 22cm, 30 Cupcake Red Velvet, 28 Brownie Avelã, 40 Cupcake Morango",
           categoria: "Outros",
-          valor: "R$ 2.700",
+          valor: "R$ 2.700,00",
         },
         {
           tipo: "entrada",
           titulo: "Venda — Sonda Supermercado",
           data: "03/05",
+          dataCompleta: "03/05/2026",
           itens: "15 Bolo Formigueiro, 15 Bolo Chocolate Branco, 15 Bolo Sensação, 15 Bolo Meio Amargo, 15 Ninho",
           categoria: "Venda de produto",
-          valor: "R$ 745",
+          valor: "R$ 745,00",
         },
         {
           tipo: "saida",
           titulo: "Compra — Serviço encanador",
           data: "03/05",
+          dataCompleta: "03/05/2026",
           itens: "Conserto sanitário masculino",
           categoria: "Conserto/manutenção",
-          valor: "R$ 1.200",
+          tipoDespesa: "Variável",
+          observacoes: "do seu Zé (o melhor)",
+          valor: "R$ 1.200,00",
         },
       ],
     },
@@ -124,50 +241,40 @@ function FluxoCaixa() {
           tipo: "saida",
           titulo: "Compra — Embalagens Personalizadas",
           data: "01/05",
+          dataCompleta: "01/05/2026",
           itens: "Embalagens Personalizadas",
           categoria: "Compra de insumo",
-          valor: "R$ 2.080",
+          tipoDespesa: "Variável",
+          valor: "R$ 2.080,00",
         },
         {
           tipo: "entrada",
           titulo: "Venda — Tia Bete Doces",
           data: "01/05",
+          dataCompleta: "01/05/2026",
           itens: "16 Mousse Maracujá, 10 Pizza Brownie, 10 Copo Felicidade Surpresa de Uva, 15 Vulcão Chocolate",
           categoria: "Venda de produto",
-          valor: "R$ 922",
+          valor: "R$ 922,00",
         },
         {
           tipo: "saida",
           titulo: "Compra — Farinha de Trigo 30kg",
           data: "01/05",
+          dataCompleta: "01/05/2026",
           itens: "Farinha de trigo 30kg",
           categoria: "Compra de insumo",
-          valor: "R$ 1.052",
+          tipoDespesa: "Variável",
+          valor: "R$ 1.052,00",
         },
         {
           tipo: "entrada",
           titulo: "Venda — Doceria Super Magic",
           data: "01/05",
+          dataCompleta: "01/05/2026",
           itens: "Pedido personalizado",
           categoria: "Venda de produto",
-          valor: "R$ 2.700",
+          valor: "R$ 2.700,00",
         },
-      ],
-    },
-  ];
-
-  // Dados completos para o pop-up de maiores despesas
-        { tipo: "entrada", titulo: "Venda — Padaria Estrella", data: "03/05", itens: "15 Torta de Limão 22cm, 30 Cupcake Red Velvet", categoria: "Outros", valor: "R$ 2.700" },
-        { tipo: "entrada", titulo: "Venda — Sonda Supermercado", data: "03/05", itens: "15 Bolo Formigueiro, 15 Bolo Chocolate Branco", categoria: "Venda de produto", valor: "R$ 745" },
-        { tipo: "saida", titulo: "Compra — Serviço encanador", data: "03/05", itens: "Conserto sanitário masculino", categoria: "Conserto/manutenção", valor: "R$ 1.200" },
-      ],
-    },
-    { titulo: "Ontem", itens: [] },
-    {
-      titulo: "01/05",
-      itens: [
-        { tipo: "saida", titulo: "Compra — Embalagens Personalizadas", data: "01/05", itens: "Embalagens Personalizadas", categoria: "Compra de insumo", valor: "R$ 2.080" },
-        { tipo: "entrada", titulo: "Venda — Tia Bete Doces", data: "01/05", itens: "16 Mousse Maracujá, 10 Pizza Brownie", categoria: "Venda de produto", valor: "R$ 922" },
       ],
     },
   ];
@@ -195,7 +302,6 @@ function FluxoCaixa() {
         <Header nomeIndustria="Sweet Sunset" />
 
         <main className="conteudoFluxoCaixa">
-
           {/* CABEÇALHO */}
           <div className="topoFluxoCaixa">
             <div className="tituloComVoltar">
@@ -250,24 +356,6 @@ function FluxoCaixa() {
               <h2>Fluxo de Caixa (Mês)</h2>
               <div className="acoesGrafico">
                 <div className="botoesFluxo">
-                  <button className="botaoSaida" type="button" onClick={() => navigate("/fluxocaixaregistrar")}>
-                    + Saída
-                  </button>
-                  <button className="botaoEntrada" type="button" onClick={() => navigate("/fluxocaixaentrada")}>
-                    + Entrada
-                  </button>
-                </div>
-                <div className="legendaGrafico">
-                  <span><i className="legendaEntrada"></i>Entradas</span>
-                  <span><i className="legendaSaida"></i>Saídas</span>
-                </div>
-              </div>
-            </div>
-
-
-              <div className="acoesGrafico">
-                <div className="botoesFluxo">
-                  {/* Botão + Saída abre o pop-up */}
                   <button
                     className="botaoSaida"
                     type="button"
@@ -276,7 +364,6 @@ function FluxoCaixa() {
                     + Saída
                   </button>
 
-                  {/* Botão + Entrada abre o pop-up */}
                   <button
                     className="botaoEntrada"
                     type="button"
@@ -348,14 +435,6 @@ function FluxoCaixa() {
               <h2>Evolução do saldo</h2>
             </div>
             <div className="graficoLinha">
-              <div className="linhasLinha"><span></span><span></span><span></span><span></span></div>
-              <div className="eixoLinhaY">
-                <span>32k</span><span>24k</span><span>16k</span><span>8k</span><span>0</span>
-              </div>
-              <svg className="svgLinha" viewBox="0 0 1000 250" preserveAspectRatio="none">
-                <polyline points="20,205 190,180 360,185 530,145 700,125 850,88 980,52" fill="none" stroke="#9d0926" strokeWidth="3" />
-                <circle cx="20" cy="205" r="5" /><circle cx="190" cy="180" r="5" /><circle cx="360" cy="185" r="5" />
-                <circle cx="530" cy="145" r="5" /><circle cx="700" cy="125" r="5" /><circle cx="850" cy="88" r="5" /><circle cx="980" cy="52" r="5" />
               <div className="linhasLinha">
                 <span></span><span></span><span></span><span></span>
               </div>
@@ -365,7 +444,12 @@ function FluxoCaixa() {
               </div>
 
               <svg className="svgLinha" viewBox="0 0 1000 250" preserveAspectRatio="none">
-                <polyline points="20,205 190,180 360,185 530,145 700,125 850,88 980,52" fill="none" stroke="#9d0926" strokeWidth="3" />
+                <polyline
+                  points="20,205 190,180 360,185 530,145 700,125 850,88 980,52"
+                  fill="none"
+                  stroke="#9d0926"
+                  strokeWidth="3"
+                />
                 <circle cx="20" cy="205" r="5" />
                 <circle cx="190" cy="180" r="5" />
                 <circle cx="360" cy="185" r="5" />
@@ -374,6 +458,7 @@ function FluxoCaixa() {
                 <circle cx="850" cy="88" r="5" />
                 <circle cx="980" cy="52" r="5" />
               </svg>
+
               <div className="datasLinha">
                 <span>01/09</span><span>05</span><span>10</span><span>15</span><span>20</span><span>25</span><span>30</span>
               </div>
@@ -382,15 +467,11 @@ function FluxoCaixa() {
 
           {/* DUAS COLUNAS */}
           <section className="duasColunasFluxo">
-
             {/* MOVIMENTAÇÕES */}
             <div className="cardMovimentacoes">
               <div className="cabecalhoCardFluxo cabecalhoLista">
-                <h2>Movimentações Recentes</h2>
-                
-                
                 <h2>Movimentações recentes</h2>
-                <button onClick={() => setModalMovimentacoesAberto(true)}>
+                <button type="button" onClick={() => setModalMovimentacoesAberto(true)}>
                   Ver todas
                 </button>
               </div>
@@ -400,22 +481,29 @@ function FluxoCaixa() {
                   <div
                     className="movimentacao"
                     key={i}
+                    style={{ cursor: "pointer" }}
                     onClick={() =>
                       m.tipo === "entrada"
-                        ? navigate("/fluxocaixadetalhes")
-                        : navigate("/fluxocaixasaida")
+                        ? abrirDetalhesEntrada(m)
+                        : abrirDetalhesSaida(m)
                     }
                   >
-                  <div className="movimentacao" key={i}>
                     <div className="infoMovimentacao">
-                      <span className={m.tipo === "entrada" ? "iconeMovimentacao entradaIcone" : "iconeMovimentacao saidaIcone"}>
+                      <span
+                        className={
+                          m.tipo === "entrada"
+                            ? "iconeMovimentacao entradaIcone"
+                            : "iconeMovimentacao saidaIcone"
+                        }
+                      >
                         {m.tipo === "entrada" ? "↓" : "↑"}
                       </span>
                       <strong>{m.descricao}</strong>
                     </div>
 
                     <span className={m.tipo === "entrada" ? "valorEntrada" : "valorSaida"}>
-                      {m.tipo === "entrada" ? "+" : "-"}{m.valor}
+                      {m.tipo === "entrada" ? "+" : "-"}
+                      {m.valor}
                     </span>
                   </div>
                 ))}
@@ -425,10 +513,8 @@ function FluxoCaixa() {
             {/* MAIORES DESPESAS */}
             <div className="cardMovimentacoes">
               <div className="cabecalhoCardFluxo cabecalhoLista">
-                <h2>Maiores Despesas</h2>
-                {/* 4. Botão alterado para abrir o pop-up */}
                 <h2>Maiores despesas</h2>
-                <button onClick={() => setModalDespesasAberto(true)}>
+                <button type="button" onClick={() => setModalDespesasAberto(true)}>
                   Ver todas
                 </button>
               </div>
@@ -445,7 +531,6 @@ function FluxoCaixa() {
                 ))}
               </div>
             </div>
-
           </section>
 
           {/* RESUMO INFERIOR */}
@@ -515,31 +600,386 @@ function FluxoCaixa() {
               </div>
             </div>
           </section>
-
         </main>
       </div>
 
-      {/* POP-UP: MOVIMENTAÇÕES RECENTES*/}
-      {modalMovimentacoesAberto && (
+      {/* =====================================================
+         POP-UP: DETALHES DA ENTRADA
+      ===================================================== */}
+      {modalDetalhesEntradaAberto && entradaSelecionada && (
         <div className="modalOverlay">
-          <div className="modalConteudo" style={{ maxWidth: "800px" }}>
+          <div className="modalConteudo" style={{ maxWidth: "820px" }}>
             <div className="modalCabecalho">
-              <h2>Movimentações recentes</h2>
-              <button className="botaoFecharModal" onClick={() => setModalMovimentacoesAberto(false)}>
+              <h2>Detalhes da entrada</h2>
+              <button
+                type="button"
+                className="botaoFecharModal"
+                onClick={() => setModalDetalhesEntradaAberto(false)}
+              >
                 &times;
               </button>
+            </div>
+            <div className="modalCorpo">
+              <div className="detalhesMovimentacao">
+                {/* Linha 1: Título / Data / Categoria / Valor */}
+                <div className="linhaDetalhes colunas4">
+                  <label>
+                    Título da entrada
+                    <input
+                      type="text"
+                      value={entradaSelecionada.titulo}
+                      readOnly={!editandoDetalhes}
+                      onChange={(e) =>
+                        setEntradaSelecionada({ ...entradaSelecionada, titulo: e.target.value })
+                      }
+                    />
+                  </label>
+
+                  <label className="campoData">
+                    Data da entrada
+                    <div className="wrapperInput">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="1.6" />
+                        <path d="M3 9h18" stroke="currentColor" strokeWidth="1.6" />
+                        <path d="M8 3v4M16 3v4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                      </svg>
+                      <input
+                        type="text"
+                        value={entradaSelecionada.data}
+                        readOnly={!editandoDetalhes}
+                        onChange={(e) =>
+                          setEntradaSelecionada({ ...entradaSelecionada, data: e.target.value })
+                        }
+                      />
+                    </div>
+                  </label>
+
+                  <label>
+                    Categoria
+                    <input
+                      type="text"
+                      value={entradaSelecionada.categoria}
+                      readOnly={!editandoDetalhes}
+                      onChange={(e) =>
+                        setEntradaSelecionada({ ...entradaSelecionada, categoria: e.target.value })
+                      }
+                    />
+                  </label>
+
+                  <label className="campoValor">
+                    Valor
+                    <div className="wrapperInput">
+                      <span className="prefixoValor">R$</span>
+                      <input
+                        type="text"
+                        value={entradaSelecionada.valor}
+                        readOnly={!editandoDetalhes}
+                        onChange={(e) =>
+                          setEntradaSelecionada({ ...entradaSelecionada, valor: e.target.value })
+                        }
+                      />
+                    </div>
+                  </label>
+                </div>
+
+                {/* Descrição */}
+                <label>
+                  Descrição
+                  <input
+                    type="text"
+                    value={entradaSelecionada.itens}
+                    readOnly={!editandoDetalhes}
+                    onChange={(e) =>
+                      setEntradaSelecionada({ ...entradaSelecionada, itens: e.target.value })
+                    }
+                  />
+                </label>
+
+                {/* Anexar comprovante */}
+                <label>
+                  Anexar comprovante (opcional)
+                  <label className="areaUpload" htmlFor="comprovanteDetalhesModal">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M12 16V4M12 4l-4 4M12 4l4 4"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    <span>Clique aqui para anexar ou arraste o arquivo aqui</span>
+                    <span>PDF, JPG, JPEG ou PNG (máx. 10MB)</span>
+                    <input
+                      id="comprovanteDetalhesModal"
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png"
+                      onChange={handleArquivoDetalhes}
+                    />
+                  </label>
+                  {nomeArquivoDetalhes && (
+                    <span className="nomeArquivo">Arquivo selecionado: {nomeArquivoDetalhes}</span>
+                  )}
+                </label>
+
+                {/* Observações */}
+                <label>
+                  Observações (opcional)
+                  <textarea
+                    placeholder="Informações adicionais sobre esta entrada..."
+                    value={entradaSelecionada.observacoes}
+                    readOnly={!editandoDetalhes}
+                    onChange={(e) =>
+                      setEntradaSelecionada({ ...entradaSelecionada, observacoes: e.target.value })
+                    }
+                  />
+                </label>
+
+                {/* Ações */}
+                <div className="acoesDetalhes">
+                  <button
+                    type="button"
+                    className="botaoExcluir"
+                    onClick={() => {
+                      setModalDetalhesEntradaAberto(false);
+                      navigate("/fluxocaixaexcluir2");
+                    }}
+                  >
+                    Excluir
+                  </button>
+                  <button
+                    type="button"
+                    className="botaoEditar"
+                    onClick={() => setEditandoDetalhes(!editandoDetalhes)}
+                  >
+                    {editandoDetalhes ? "Salvar" : "Editar"}
+                  </button>
+                  <button
+                    type="button"
+                    className="botaoVoltarModalDetalhes"
+                    onClick={() => setModalDetalhesEntradaAberto(false)}
+                  >
+                    Voltar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* =====================================================
-         POP-UP: MOVIMENTAÇÕES RECENTES (Já adicionado por você)
+         POP-UP: DETALHES DA SAÍDA (Novo)
       ===================================================== */}
+      {modalDetalhesSaidaAberto && saidaSelecionada && (
+        <div className="modalOverlay">
+          <div className="modalConteudo" style={{ maxWidth: "820px" }}>
+            <div className="modalCabecalho">
+              <h2>Detalhes da saída</h2>
+              <button
+                type="button"
+                className="botaoFecharModal"
+                onClick={() => setModalDetalhesSaidaAberto(false)}
+              >
+                &times;
+              </button>
+            </div>
+            <div className="modalCorpo">
+              <div className="detalhesSaida">
+                {/* Linha 1: Título / Data / Categoria / Valor */}
+                <div className="linhaSaida colunas4">
+                  <label>
+                    Título da saída
+                    <input
+                      type="text"
+                      value={saidaSelecionada.titulo}
+                      readOnly={!editandoDetalhesSaida}
+                      onChange={(e) =>
+                        setSaidaSelecionada({ ...saidaSelecionada, titulo: e.target.value })
+                      }
+                    />
+                  </label>
+
+                  <label className="campoData">
+                    Data da saída
+                    <div className="wrapperInput">
+                      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="3" y="5" width="18" height="16" rx="2" stroke="currentColor" strokeWidth="1.6" />
+                        <path d="M3 9h18" stroke="currentColor" strokeWidth="1.6" />
+                        <path d="M8 3v4M16 3v4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+                      </svg>
+                      <input
+                        type="text"
+                        value={saidaSelecionada.data}
+                        readOnly={!editandoDetalhesSaida}
+                        onChange={(e) =>
+                          setSaidaSelecionada({ ...saidaSelecionada, data: e.target.value })
+                        }
+                      />
+                    </div>
+                  </label>
+
+                  <label>
+                    Categoria
+                    <input
+                      type="text"
+                      value={saidaSelecionada.categoria}
+                      readOnly={!editandoDetalhesSaida}
+                      onChange={(e) =>
+                        setSaidaSelecionada({ ...saidaSelecionada, categoria: e.target.value })
+                      }
+                    />
+                  </label>
+
+                  <label className="campoValor">
+                    Valor
+                    <div className="wrapperInput">
+                      <span className="prefixoValor">R$</span>
+                      <input
+                        type="text"
+                        value={saidaSelecionada.valor}
+                        readOnly={!editandoDetalhesSaida}
+                        onChange={(e) =>
+                          setSaidaSelecionada({ ...saidaSelecionada, valor: e.target.value })
+                        }
+                      />
+                    </div>
+                  </label>
+                </div>
+
+                {/* Linha 2: Descrição / Fixa ou variável */}
+                <div className="linhaSaida colunas2">
+                  <label>
+                    Descrição
+                    <input
+                      type="text"
+                      value={saidaSelecionada.descricao}
+                      readOnly={!editandoDetalhesSaida}
+                      onChange={(e) =>
+                        setSaidaSelecionada({ ...saidaSelecionada, descricao: e.target.value })
+                      }
+                    />
+                  </label>
+
+                  <label>
+                    Fixa ou variável
+                    <input
+                      type="text"
+                      value={saidaSelecionada.tipoDespesa}
+                      readOnly={!editandoDetalhesSaida}
+                      onChange={(e) =>
+                        setSaidaSelecionada({ ...saidaSelecionada, tipoDespesa: e.target.value })
+                      }
+                    />
+                  </label>
+                </div>
+
+                {/* Anexar comprovante */}
+                <label>
+                  Anexar comprovante (opcional)
+                  <label className="areaUpload" htmlFor="comprovanteDetalhesSaidaModal">
+                    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path
+                        d="M12 16V4M12 4l-4 4M12 4l4 4"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                      <path
+                        d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"
+                        stroke="currentColor"
+                        strokeWidth="1.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                    <span>Clique aqui para anexar ou arraste o arquivo aqui</span>
+                    <span>PDF, JPG, JPEG ou PNG (máx. 10MB)</span>
+                    <input
+                      id="comprovanteDetalhesSaidaModal"
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png"
+                      onChange={handleArquivoDetalhesSaida}
+                    />
+                  </label>
+                  {nomeArquivoDetalhesSaida && (
+                    <span className="nomeArquivo">Arquivo selecionado: {nomeArquivoDetalhesSaida}</span>
+                  )}
+                </label>
+
+                {/* Observações */}
+                <label>
+                  Observações (opcional)
+                  <textarea
+                    placeholder="Informações adicionais sobre esta saída..."
+                    value={saidaSelecionada.observacoes}
+                    readOnly={!editandoDetalhesSaida}
+                    onChange={(e) =>
+                      setSaidaSelecionada({ ...saidaSelecionada, observacoes: e.target.value })
+                    }
+                  />
+                </label>
+
+                {/* Ações */}
+                <div className="acoesSaida">
+                  <button
+                    type="button"
+                    className="botaoExcluir"
+                    onClick={() => {
+                      setModalDetalhesSaidaAberto(false);
+                      navigate("/fluxocaixaexcluir1");
+                    }}
+                  >
+                    Excluir
+                  </button>
+                  <button
+                    type="button"
+                    className="botaoEditar"
+                    onClick={() => setEditandoDetalhesSaida(!editandoDetalhesSaida)}
+                  >
+                    {editandoDetalhesSaida ? "Salvar" : "Editar"}
+                  </button>
+                  <button
+                    type="button"
+                    className="botaoVoltarModalSaida"
+                    onClick={() => setModalDetalhesSaidaAberto(false)}
+                  >
+                    Voltar
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* POP-UP: MOVIMENTAÇÕES RECENTES */}
       {modalMovimentacoesAberto && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "750px" }}>
             <div className="modalCabecalho">
               <h2>Movimentações recentes</h2>
-              <button className="botaoFecharModal" onClick={() => setModalMovimentacoesAberto(false)}>&times;</button>
+              <button
+                type="button"
+                className="botaoFecharModal"
+                onClick={() => setModalMovimentacoesAberto(false)}
+              >
+                &times;
+              </button>
             </div>
             <div className="modalCorpo">
-              <div className="listaCompletaMovimentacoes" style={{ background: "transparent", border: "none", boxShadow: "none", padding: 0 }}>
+              <div
+                className="listaCompletaMovimentacoes"
+                style={{ background: "transparent", border: "none", boxShadow: "none", padding: 0 }}
+              >
                 {gruposMovimentacoesCompleto.map((grupo) => {
                   const aberto = abertosGrupos[grupo.titulo];
                   return (
@@ -553,23 +993,37 @@ function FluxoCaixa() {
                         <IconeChevron />
                       </button>
 
-                      <button type="button" className={`cabecalhoGrupo ${aberto ? "" : "fechado"}`} onClick={() => alternarGrupo(grupo.titulo)}>
-                        <h2>{grupo.titulo}</h2>
-                        <IconeChevron />
-                      </button>
                       {aberto && grupo.itens.length > 0 && (
                         <div className="itensGrupo">
                           {grupo.itens.map((item, i) => (
-                            <div className="movimentacao" key={i}>
+                            <div
+                              className="movimentacao"
+                              key={i}
+                              style={{ cursor: "pointer" }}
+                              onClick={() => {
+                                setModalMovimentacoesAberto(false);
+                                if (item.tipo === "entrada") {
+                                  abrirDetalhesEntrada(item);
+                                } else {
+                                  abrirDetalhesSaida(item);
+                                }
+                              }}
+                            >
                               <div className="infoMovimentacaoCompleta">
-                                <span className={`iconeMovimentacaoCompleta ${item.tipo === "entrada" ? "iconeEntrada" : "iconeSaida"}`}>
+                                <span
+                                  className={`iconeMovimentacaoCompleta ${
+                                    item.tipo === "entrada" ? "iconeEntrada" : "iconeSaida"
+                                  }`}
+                                >
                                   <IconeSeta tipo={item.tipo} />
                                 </span>
 
                                 <div className="textoMovimentacao">
                                   <strong>{item.titulo}</strong>
                                   <div className="metaMovimentacao">
-                                    <span className="tagTipo">{item.tipo === "entrada" ? "Entrada" : "Saída"}</span>
+                                    <span className="tagTipo">
+                                      {item.tipo === "entrada" ? "Entrada" : "Saída"}
+                                    </span>
                                     <span className="separador">·</span>
                                     <span>{item.data}</span>
                                     <span className="separador">·</span>
@@ -580,9 +1034,6 @@ function FluxoCaixa() {
                                 </div>
                               </div>
 
-                                  </div>
-                                </div>
-                              </div>
                               <span className={`valorMovimentacaoCompleta ${item.tipo}`}>
                                 {item.tipo === "entrada" ? `+ ${item.valor}` : item.valor}
                               </span>
@@ -599,27 +1050,25 @@ function FluxoCaixa() {
         </div>
       )}
 
-      {/*  POP-UP: MAIORES DESPESA */}
-      {modalDespesasAberto && (
-        <div className="modalOverlay">
-          <div className="modalConteudo" style={{ maxWidth: "750px" }}>
-            <div className="modalCabecalho">
-              <h2>Maiores despesas</h2>
-              <button className="botaoFecharModal" onClick={() => setModalDespesasAberto(false)}>
-                &times;
-              </button>
-      {/* =====================================================
-         POP-UP: MAIORES DESPESAS (Já adicionado por você)
-      ===================================================== */}
+      {/* POP-UP: MAIORES DESPESAS */}
       {modalDespesasAberto && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "700px" }}>
             <div className="modalCabecalho">
               <h2>Maiores despesas</h2>
-              <button className="botaoFecharModal" onClick={() => setModalDespesasAberto(false)}>&times;</button>
+              <button
+                type="button"
+                className="botaoFecharModal"
+                onClick={() => setModalDespesasAberto(false)}
+              >
+                &times;
+              </button>
             </div>
             <div className="modalCorpo">
-              <div className="listaCompletaDespesas" style={{ background: "transparent", border: "none", boxShadow: "none", padding: 0 }}>
+              <div
+                className="listaCompletaDespesas"
+                style={{ background: "transparent", border: "none", boxShadow: "none", padding: 0 }}
+              >
                 {despesasCompletas.map((d, i) => (
                   <div className="despesa" key={i}>
                     <div className="infoDespesaWrapper">
@@ -636,13 +1085,6 @@ function FluxoCaixa() {
                         </p>
                       </div>
                     </div>
-
-                      <span className="iconeSaida"><IconeSetaSaida /></span>
-                      <div className="infoDespesa">
-                        <strong>{d.nome}</strong>
-                        <p><span>Saída</span><span className="separador">·</span><span>{d.detalhe}</span></p>
-                      </div>
-                    </div>
                     <span className="valorSaida">{d.valor}</span>
                   </div>
                 ))}
@@ -652,18 +1094,28 @@ function FluxoCaixa() {
         </div>
       )}
 
-      {/* =====================================================
-         POP-UP: REGISTRAR NOVA SAÍDA (Novo)
-      ===================================================== */}
+      {/* POP-UP: REGISTRAR NOVA SAÍDA */}
       {modalRegistrarSaidaAberto && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "800px" }}>
             <div className="modalCabecalho">
               <h2>Registrar nova saída</h2>
-              <button className="botaoFecharModal" onClick={() => setModalRegistrarSaidaAberto(false)}>&times;</button>
+              <button
+                type="button"
+                className="botaoFecharModal"
+                onClick={() => setModalRegistrarSaidaAberto(false)}
+              >
+                &times;
+              </button>
             </div>
             <div className="modalCorpo">
-              <form className="formFluxoCaixaRegistrar" onSubmit={(e) => { e.preventDefault(); setModalRegistrarSaidaAberto(false); }}>
+              <form
+                className="formFluxoCaixaRegistrar"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setModalRegistrarSaidaAberto(false);
+                }}
+              >
                 <div className="linhaFormRegistrar colunas4">
                   <label>
                     Título da saída<span className="obrigatorio">*</span>
@@ -682,7 +1134,7 @@ function FluxoCaixa() {
                   </label>
                   <label>
                     Categoria<span className="obrigatorio">*</span>
-                    <select defaultValue="">
+                    <select defaultValue="" required>
                       <option value="" disabled>Selecione uma categoria</option>
                       <option value="insumos">Insumos</option>
                       <option value="folha">Folha de pagamento</option>
@@ -695,7 +1147,7 @@ function FluxoCaixa() {
                     Valor<span className="obrigatorio">*</span>
                     <div className="wrapperInput">
                       <span className="prefixoValor">R$</span>
-                      <input type="text" placeholder="0,0" required />
+                      <input type="text" placeholder="0,00" required />
                     </div>
                   </label>
                 </div>
@@ -707,7 +1159,7 @@ function FluxoCaixa() {
                   </label>
                   <label>
                     Fixa ou variável<span className="obrigatorio">*</span>
-                    <select defaultValue="">
+                    <select defaultValue="" required>
                       <option value="" disabled>Selecione</option>
                       <option value="fixa">Fixa</option>
                       <option value="variavel">Variável</option>
@@ -724,9 +1176,16 @@ function FluxoCaixa() {
                     </svg>
                     <span>Clique aqui para anexar ou arraste o arquivo aqui</span>
                     <span>PDF, JPG, JPEG ou PNG (máx. 10MB)</span>
-                    <input id="comprovanteSaidaModal" type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={handleArquivoSaida} />
+                    <input
+                      id="comprovanteSaidaModal"
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png"
+                      onChange={handleArquivoSaida}
+                    />
                   </label>
-                  {nomeArquivoSaida && <span className="nomeArquivo">Arquivo selecionado: {nomeArquivoSaida}</span>}
+                  {nomeArquivoSaida && (
+                    <span className="nomeArquivo">Arquivo selecionado: {nomeArquivoSaida}</span>
+                  )}
                 </label>
 
                 <label>
@@ -735,7 +1194,11 @@ function FluxoCaixa() {
                 </label>
 
                 <div className="acoesFluxoCaixaRegistrar">
-                  <button type="button" className="botaoCancelar" onClick={() => setModalRegistrarSaidaAberto(false)}>
+                  <button
+                    type="button"
+                    className="botaoCancelar"
+                    onClick={() => setModalRegistrarSaidaAberto(false)}
+                  >
                     Cancelar
                   </button>
                   <button type="submit" className="botaoRegistrar">
@@ -748,18 +1211,28 @@ function FluxoCaixa() {
         </div>
       )}
 
-      {/* =====================================================
-         POP-UP: REGISTRAR NOVA ENTRADA (Novo)
-      ===================================================== */}
+      {/* POP-UP: REGISTRAR NOVA ENTRADA */}
       {modalRegistrarEntradaAberto && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "800px" }}>
             <div className="modalCabecalho">
               <h2>Registrar nova entrada</h2>
-              <button className="botaoFecharModal" onClick={() => setModalRegistrarEntradaAberto(false)}>&times;</button>
+              <button
+                type="button"
+                className="botaoFecharModal"
+                onClick={() => setModalRegistrarEntradaAberto(false)}
+              >
+                &times;
+              </button>
             </div>
             <div className="modalCorpo">
-              <form className="formFluxoCaixaEntrada" onSubmit={(e) => { e.preventDefault(); setModalRegistrarEntradaAberto(false); }}>
+              <form
+                className="formFluxoCaixaEntrada"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  setModalRegistrarEntradaAberto(false);
+                }}
+              >
                 <div className="linhaFormEntrada colunas4">
                   <label>
                     Título da entrada<span className="obrigatorio">*</span>
@@ -778,10 +1251,10 @@ function FluxoCaixa() {
                   </label>
                   <label>
                     Categoria<span className="obrigatorio">*</span>
-                    <select defaultValue="">
+                    <select defaultValue="" required>
                       <option value="" disabled>Selecione uma categoria</option>
-                      <option value="venda">Venda</option>
-                      <option value="servico">Prestação de serviço</option>
+                      <option value="venda">Venda de produto</option>
+                      <option value="encomenda">Encomenda</option>
                       <option value="outros">Outros</option>
                     </select>
                   </label>
@@ -789,7 +1262,7 @@ function FluxoCaixa() {
                     Valor<span className="obrigatorio">*</span>
                     <div className="wrapperInput">
                       <span className="prefixoValor">R$</span>
-                      <input type="text" placeholder="0,0" required />
+                      <input type="text" placeholder="0,00" required />
                     </div>
                   </label>
                 </div>
@@ -808,9 +1281,16 @@ function FluxoCaixa() {
                     </svg>
                     <span>Clique aqui para anexar ou arraste o arquivo aqui</span>
                     <span>PDF, JPG, JPEG ou PNG (máx. 10MB)</span>
-                    <input id="comprovanteEntradaModal" type="file" accept=".pdf,.jpg,.jpeg,.png" onChange={handleArquivoEntrada} />
+                    <input
+                      id="comprovanteEntradaModal"
+                      type="file"
+                      accept=".pdf,.jpg,.jpeg,.png"
+                      onChange={handleArquivoEntrada}
+                    />
                   </label>
-                  {nomeArquivoEntrada && <span className="nomeArquivo">Arquivo selecionado: {nomeArquivoEntrada}</span>}
+                  {nomeArquivoEntrada && (
+                    <span className="nomeArquivo">Arquivo selecionado: {nomeArquivoEntrada}</span>
+                  )}
                 </label>
 
                 <label>
@@ -819,7 +1299,11 @@ function FluxoCaixa() {
                 </label>
 
                 <div className="acoesFluxoCaixaEntrada">
-                  <button type="button" className="botaoCancelar" onClick={() => setModalRegistrarEntradaAberto(false)}>
+                  <button
+                    type="button"
+                    className="botaoCancelar"
+                    onClick={() => setModalRegistrarEntradaAberto(false)}
+                  >
                     Cancelar
                   </button>
                   <button type="submit" className="botaoRegistrar">
