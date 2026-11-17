@@ -8,7 +8,7 @@
 .tudoMenosSidebar {
   flex: 1;
   width: 100%;
-  min-width: 0; /* importante: sem isso, flex items às vezes não encolhem/esticam corretamente */
+  min-width: 0; 
   display: flex;
   flex-direction: column;
 }
@@ -17,11 +17,9 @@
   flex: 1;
   width: 100%;
   box-sizing: border-box;
-  padding: 34px 24px 50px; /* era 34px 60px 50px — reduzi bastante a lateral */
+  padding: 34px 24px 50px;
 }
-/* =====================================================
-   TÍTULO COM SETA DE VOLTAR. APROVANDO
-===================================================== */
+
 
 .topoFluxoCaixaMovimentacao {
   display: flex;
@@ -61,9 +59,7 @@
   margin: 0;
 }
 
-/* =====================================================
-   CARD DA LISTA
-===================================================== */
+/* CARD DA LISTA*/
 
 .listaCompletaMovimentacoes {
   background: #fff9f7;
@@ -91,7 +87,7 @@
 }
 
 .cabecalhoGrupo h2 {
-  font: 700 19px "Playfair Display", serif;
+  font: 600 20px "Poppins";
   color: #241416;
   margin: 0;
 }
@@ -112,9 +108,7 @@
   flex-direction: column;
 }
 
-/* =====================================================
-   LINHA DE MOVIMENTAÇÃO
-===================================================== */
+/* LINHA DE MOVIMENTAÇÃO*/
 
 .movimentacao {
   display: flex;
@@ -208,9 +202,7 @@
   color: #1c1416;
 }
 
-/* =====================================================
-   RESPONSIVIDADE
-===================================================== */
+/* RESPONSIVIDADE */
 
 @media (max-width: 700px) {
   .conteudoFluxoCaixaMovimentacao {

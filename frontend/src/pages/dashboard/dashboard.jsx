@@ -1,9 +1,479 @@
 import "./dashboard.css";
+import { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 import { motion } from "motion/react";
 
+const metasPadrao = [
+  { id: "m1", titulo: "Meta de faturamento", tipo: "moeda", atual: 91000, meta: 100000 },
+  { id: "m2", titulo: "Pedidos do mês", tipo: "numero", atual: 142, meta: 160 },
+  { id: "m3", titulo: "Novos clientes B2B", tipo: "numero", atual: 7, meta: 10 },
+];
+
+const LIMITE_DE_METAS = 6;
+const CHAVE_METAS = "dashboardMetas"; 
+
+function formatarValor(valor, tipo) {
+  const n = Number(valor) || 0;
+
+  if (tipo === "moeda") {
+    if (Math.abs(n) >= 1000) {
+      return `R$ ${(n / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}k`;
+    }
+    return `R$ ${n.toLocaleString("pt-BR")}`;
+  }
+
+  return n.toLocaleString("pt-BR");
+}
+
+function calcularPorcentagem(atual, meta) {
+  const a = Number(atual);
+  const m = Number(meta);
+  if (!Number.isFinite(a) || !Number.isFinite(m) || m <= 0) return 0;
+  return Math.round((a / m) * 100);
+}
+
+/* lê as metas salvas. Se não tiver nada (ou estiver com defeito), usa as padrão.
+   O try/catch garante que nunca dá erro, mesmo se o navegador bloquear o armazenamento. */
+function lerMetasSalvas() {
+  try {
+    const bruto = localStorage.getItem(CHAVE_METAS);
+    if (!bruto) return metasPadrao;
+
+    const lista = JSON.parse(bruto);
+    const valida =
+      Array.isArray(lista) &&
+      lista.every(
+        (m) =>
+          m &&
+          typeof m.titulo === "string" &&
+          Number.isFinite(Number(m.atual)) &&
+          Number.isFinite(Number(m.meta))
+      );
+
+    if (!valida) return metasPadrao;
+
+    return lista.map((m, i) => ({
+      id: m.id ?? `salva${i}`,
+      titulo: m.titulo,
+      tipo: m.tipo === "moeda" ? "moeda" : "numero",
+      atual: Number(m.atual),
+      meta: Number(m.meta),
+    }));
+  } catch {
+    return metasPadrao;
+  }
+}
+
+function criarId() {
+  return "m" + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+}
+
+/* no popup os campos são editados como texto; só viram número ao salvar */
+function paraRascunho(m) {
+  return {
+    id: m.id,
+    titulo: m.titulo,
+    tipo: m.tipo,
+    atual: String(m.atual),
+    meta: String(m.meta),
+  };
+}
+
+
+/* pop-up de gerenciar metas */
+function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
+  const [rascunho, setRascunho] = useState(() => metas.map(paraRascunho));
+  const [erros, setErros] = useState({});
+  const [saindo, setSaindo] = useState(false); /*true durante a animação de saída*/
+
+  const janelaRef = useRef(null);
+  const botaoXRef = useRef(null);
+  const timerRef = useRef(null);
+  const fecharRef = useRef(null);
+
+  /* fecha o popup com uma pequena animação de saída */
+  function fechar() {
+    if (saindo) return;
+    setSaindo(true);
+    timerRef.current = setTimeout(onFechar, 160);
+  }
+
+  /* guarda sempre a versão mais nova do "fechar" pro ESC usar */
+  useEffect(() => {
+    fecharRef.current = fechar;
+  });
+
+  /* quando abre: foca no primeiro campo, trava a rolagem da página e escuta o ESC.
+     Quando fecha: devolve tudo como estava. */
+  useEffect(() => {
+    const primeiroCampo = janelaRef.current?.querySelector("input");
+    (primeiroCampo || botaoXRef.current)?.focus();
+
+    const overflowAnterior = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+
+    function aoPressionarEsc(e) {
+      if (e.key === "Escape" && fecharRef.current) fecharRef.current();
+    }
+    document.addEventListener("keydown", aoPressionarEsc);
+
+    return () => {
+      document.body.style.overflow = overflowAnterior;
+      document.removeEventListener("keydown", aoPressionarEsc);
+      clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  /* mantém o Tab "preso" dentro do popup (acessibilidade) */
+  function aoPressionarTab(e) {
+    if (e.key !== "Tab" || !janelaRef.current) return;
+
+    const focaveis = janelaRef.current.querySelectorAll(
+      'button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
+    );
+    if (focaveis.length === 0) return;
+
+    const primeiro = focaveis[0];
+    const ultimo = focaveis[focaveis.length - 1];
+
+    if (e.shiftKey && document.activeElement === primeiro) {
+      e.preventDefault();
+      ultimo.focus();
+    } else if (!e.shiftKey && document.activeElement === ultimo) {
+      e.preventDefault();
+      primeiro.focus();
+    }
+  }
+
+  /* digitou em algum campo */
+  function atualizarCampo(id, campo, valor) {
+    setRascunho((atual) => atual.map((m) => (m.id === id ? { ...m, [campo]: valor } : m)));
+
+    /* apaga o aviso de erro daquele campo assim que o usuário mexe nele */
+    setErros((atual) => {
+      if (!atual[id] || !atual[id][campo]) return atual;
+      const copia = { ...atual, [id]: { ...atual[id] } };
+      delete copia[id][campo];
+      return copia;
+    });
+  }
+
+  function adicionarMeta() {
+    if (rascunho.length >= LIMITE_DE_METAS) return;
+
+    const novoId = criarId();
+    setRascunho((atual) => [
+      ...atual,
+      { id: novoId, titulo: "", tipo: "numero", atual: "0", meta: "" },
+    ]);
+
+    /* depois que o campo aparece, leva o foco e a rolagem até ele */
+    setTimeout(() => {
+      const cartao = janelaRef.current?.querySelector(`[data-meta-id="${novoId}"]`);
+      cartao?.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      cartao?.querySelector("input")?.focus();
+    }, 30);
+  }
+
+  function removerMeta(id) {
+    setRascunho((atual) => atual.filter((m) => m.id !== id));
+    setErros((atual) => {
+      const copia = { ...atual };
+      delete copia[id];
+      return copia;
+    });
+  }
+
+  function restaurarPadrao() {
+    setRascunho(metasPadrao.map(paraRascunho));
+    setErros({});
+  }
+
+  /* aq salva as alteraçoes de metas */
+  function salvar(e) {
+    e.preventDefault();
+
+    const novosErros = {};
+
+    rascunho.forEach((m) => {
+      const erro = {};
+
+      if (!m.titulo.trim()) erro.titulo = "Dê um nome para a meta.";
+
+      const meta = Number(m.meta);
+      if (m.meta === "" || !Number.isFinite(meta) || meta <= 0) {
+        erro.meta = "Informe uma meta maior que zero.";
+      }
+
+      const atual = Number(m.atual);
+      if (m.atual === "" || !Number.isFinite(atual) || atual < 0) {
+        erro.atual = "Informe um valor de 0 ou mais.";
+      }
+
+      if (Object.keys(erro).length > 0) novosErros[m.id] = erro;
+    });
+
+    if (Object.keys(novosErros).length > 0) {
+      setErros(novosErros);
+      setTimeout(() => {
+        janelaRef.current?.querySelector('[aria-invalid="true"]')?.focus();
+      }, 0);
+      return;
+    }
+
+    onSalvar(
+      rascunho.map((m) => ({
+        id: m.id,
+        titulo: m.titulo.trim(),
+        tipo: m.tipo,
+        atual: Number(m.atual),
+        meta: Number(m.meta),
+      }))
+    );
+
+    fechar();
+  }
+
+  return (
+    <div
+      className={`gmOverlay ${saindo ? "saindo" : ""}`}
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) fechar();
+      }}
+    >
+      {/* janela do popup */}
+      <div
+        ref={janelaRef}
+        className="gmJanela"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="gmTitulo"
+        onKeyDown={aoPressionarTab}
+      >
+        {/* cabeçalho */}
+        <div className="gmCabecalho">
+          <div>
+            <h2 id="gmTitulo" className="gmTitulo">Gerenciar metas</h2>
+            <p className="gmSubtitulo">
+              Personalize as metas do mês que aparecem no Dashboard.
+            </p>
+          </div>
+
+          <button
+            ref={botaoXRef}
+            type="button"
+            className="gmBotaoX"
+            onClick={fechar}
+            aria-label="Fechar"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"
+              strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <form className="gmForm" onSubmit={salvar} noValidate>
+
+          {/* lista de metas (rola dentro do popup se tiver muitas) */}
+          <div className="gmCorpo">
+
+            {rascunho.length === 0 && (
+              <p className="gmVazio">
+                Nenhuma meta definida. Clique em "Adicionar meta" para criar a primeira.
+              </p>
+            )}
+
+            {rascunho.map((m, indice) => {
+              const erro = erros[m.id] || {};
+              const pct = calcularPorcentagem(m.atual, m.meta);
+              const comPrefixo = m.tipo === "moeda";
+
+              return (
+                <div key={m.id} className="gmMeta" data-meta-id={m.id}>
+
+                  {/* nome + botão de remover */}
+                  <div className="gmMetaTopo">
+                    <div className="gmCampo gmCampoNome">
+                      <label className="gmRotulo" htmlFor={`gm-titulo-${m.id}`}>
+                        Meta {indice + 1}
+                      </label>
+                      <input
+                        id={`gm-titulo-${m.id}`}
+                        className="gmInput"
+                        type="text"
+                        maxLength={50}
+                        placeholder="Ex.: Meta de faturamento"
+                        value={m.titulo}
+                        aria-invalid={erro.titulo ? "true" : "false"}
+                        onChange={(e) => atualizarCampo(m.id, "titulo", e.target.value)}
+                      />
+                      {erro.titulo && <p className="gmErro">{erro.titulo}</p>}
+                    </div>
+
+                    <button
+                      type="button"
+                      className="gmRemover"
+                      onClick={() => removerMeta(m.id)}
+                      aria-label={`Remover meta ${m.titulo || indice + 1}`}
+                      title="Remover meta"
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                        strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                        <path d="M3 6h18" />
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                        <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  {/* tipo, valor atual e meta */}
+                  <div className="gmCampos">
+                    <div className="gmCampo">
+                      <label className="gmRotulo" htmlFor={`gm-tipo-${m.id}`}>Tipo</label>
+                      <select
+                        id={`gm-tipo-${m.id}`}
+                        className="gmSelect"
+                        value={m.tipo}
+                        onChange={(e) => atualizarCampo(m.id, "tipo", e.target.value)}
+                      >
+                        <option value="moeda">Valor em R$</option>
+                        <option value="numero">Quantidade</option>
+                      </select>
+                    </div>
+
+                    <div className="gmCampo">
+                      <label className="gmRotulo" htmlFor={`gm-atual-${m.id}`}>Valor atual</label>
+                      <div className={`gmInputWrap ${comPrefixo ? "comPrefixo" : ""}`}>
+                        {comPrefixo && <span className="gmPrefixo">R$</span>}
+                        <input
+                          id={`gm-atual-${m.id}`}
+                          className="gmInput"
+                          type="number"
+                          min="0"
+                          step="any"
+                          inputMode="decimal"
+                          value={m.atual}
+                          aria-invalid={erro.atual ? "true" : "false"}
+                          onChange={(e) => atualizarCampo(m.id, "atual", e.target.value)}
+                        />
+                      </div>
+                      {erro.atual && <p className="gmErro">{erro.atual}</p>}
+                    </div>
+
+                    <div className="gmCampo">
+                      <label className="gmRotulo" htmlFor={`gm-meta-${m.id}`}>Meta</label>
+                      <div className={`gmInputWrap ${comPrefixo ? "comPrefixo" : ""}`}>
+                        {comPrefixo && <span className="gmPrefixo">R$</span>}
+                        <input
+                          id={`gm-meta-${m.id}`}
+                          className="gmInput"
+                          type="number"
+                          min="0"
+                          step="any"
+                          inputMode="decimal"
+                          placeholder="0"
+                          value={m.meta}
+                          aria-invalid={erro.meta ? "true" : "false"}
+                          onChange={(e) => atualizarCampo(m.id, "meta", e.target.value)}
+                        />
+                      </div>
+                      {erro.meta && <p className="gmErro">{erro.meta}</p>}
+                    </div>
+                  </div>
+
+                  {/* prévia do progresso, muda enquanto o usuário digita */}
+                  <div className="gmPreview">
+                    <div className="gmPreviewBarra">
+                      <div style={{ width: `${Math.min(pct, 100)}%` }}></div>
+                    </div>
+                    <span className="gmPreviewPct">{pct}%</span>
+                  </div>
+                </div>
+              );
+            })}
+
+            <button
+              type="button"
+              className="gmAdicionar"
+              onClick={adicionarMeta}
+              disabled={rascunho.length >= LIMITE_DE_METAS}
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"
+                strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M12 5v14" />
+                <path d="M5 12h14" />
+              </svg>
+              Adicionar meta
+            </button>
+
+            {rascunho.length >= LIMITE_DE_METAS && (
+              <p className="gmDica">Você pode ter até {LIMITE_DE_METAS} metas.</p>
+            )}
+          </div>
+
+          {/* rodapé com as ações */}
+          <div className="gmRodape">
+            <button type="button" className="gmBotaoRestaurar" onClick={restaurarPadrao}>
+              Restaurar padrão
+            </button>
+
+            <div className="gmAcoes">
+              <button type="button" className="gmBotaoSecundario" onClick={fechar}>
+                Cancelar
+              </button>
+              <button type="submit" className="gmBotaoPrimario">
+                Salvar alterações
+              </button>
+            </div>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  );
+}
+
+
 function Dashboard() {
+
+  /* metas do mês ficam salvas no navegador */
+  const [metas, setMetas] = useState(lerMetasSalvas);
+  const [modalMetasAberto, setModalMetasAberto] = useState(false);
+  const [avisoMetas, setAvisoMetas] = useState(false);
+  const botaoGerenciarRef = useRef(null);
+  const avisoTimerRef = useRef(null);
+
+  /* salva as metas sempre que mudarem */
+  useEffect(() => {
+    try {
+      localStorage.setItem(CHAVE_METAS, JSON.stringify(metas));
+    } catch {
+      /* se o navegador bloquear o armazenamento, só não salva */
+    }
+  }, [metas]);
+
+  /* limpa o timer do aviso se o usuário sair da página */
+  useEffect(() => {
+    return () => clearTimeout(avisoTimerRef.current);
+  }, []);
+
+  function salvarMetas(novasMetas) {
+    setMetas(novasMetas);
+    setAvisoMetas(true);
+    clearTimeout(avisoTimerRef.current);
+    avisoTimerRef.current = setTimeout(() => setAvisoMetas(false), 2600);
+  }
+
+  /* ao fechar, devolve o foco pro botão "Gerenciar" (acessibilidade) */
+  function fecharModalMetas() {
+    setModalMetasAberto(false);
+    botaoGerenciarRef.current?.focus();
+  }
+
   const resumo = [
     {
       titulo: "Estoque",
@@ -59,27 +529,6 @@ function Dashboard() {
       variacao: "-0,4pp",
       tipo: "positivo",
       icone: "%",
-    },
-  ];
-
-  const metas = [
-    {
-      titulo: "Meta de faturamento",
-      atual: "R$ 91k",
-      meta: "R$ 100k",
-      porcentagem: 91,
-    },
-    {
-      titulo: "Pedidos do mês",
-      atual: "142",
-      meta: "160",
-      porcentagem: 89,
-    },
-    {
-      titulo: "Novos clientes B2B",
-      atual: "7",
-      meta: "10",
-      porcentagem: 70,
     },
   ];
 
@@ -399,31 +848,64 @@ function Dashboard() {
               <div className="cardDashboard cardMetasDashboard">
                 <div className="cabecalhoCardDashboard">
                   <h3>Metas do mês</h3>
+
+                  {/* botão que abre o popup pra personalizar as metas */}
+                  <button
+                    ref={botaoGerenciarRef}
+                    type="button"
+                    className="botaoGerenciarMetas"
+                    aria-haspopup="dialog"
+                    onClick={() => setModalMetasAberto(true)}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                      strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <path d="M21 4h-7" />
+                      <path d="M10 4H3" />
+                      <path d="M21 12h-9" />
+                      <path d="M8 12H3" />
+                      <path d="M21 20h-5" />
+                      <path d="M12 20H3" />
+                      <path d="M14 2v4" />
+                      <path d="M8 10v4" />
+                      <path d="M16 18v4" />
+                    </svg>
+                    Gerenciar
+                  </button>
                 </div>
 
-                {metas.map((meta, i) => (
-                  <div className="metaDashboard" key={i}>
-                    <div className="linhaMeta">
-                      <span>{meta.titulo}</span>
-                      <strong>
-                        {meta.atual}
-                        <small> / {meta.meta}</small>
-                      </strong>
-                    </div>
+                {metas.length === 0 && (
+                  <p className="metasVazio">
+                    Nenhuma meta definida. Clique em "Gerenciar" para criar suas metas.
+                  </p>
+                )}
 
-                    <div className="barraMeta">
-                      <div
-                        style={{
-                          width: `${meta.porcentagem}%`,
-                        }}
-                      ></div>
-                    </div>
+                {metas.map((meta) => {
+                  const porcentagem = calcularPorcentagem(meta.atual, meta.meta);
 
-                    <span className="porcentagemMeta">
-                      {meta.porcentagem}%
-                    </span>
-                  </div>
-                ))}
+                  return (
+                    <div className="metaDashboard" key={meta.id}>
+                      <div className="linhaMeta">
+                        <span>{meta.titulo}</span>
+                        <strong>
+                          {formatarValor(meta.atual, meta.tipo)}
+                          <small> / {formatarValor(meta.meta, meta.tipo)}</small>
+                        </strong>
+                      </div>
+
+                      <div className="barraMeta">
+                        <div
+                          style={{
+                            width: `${Math.min(porcentagem, 100)}%`,
+                          }}
+                        ></div>
+                      </div>
+
+                      <span className="porcentagemMeta">
+                        {porcentagem}%
+                      </span>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -862,6 +1344,25 @@ function Dashboard() {
 
         </main>
       </div>
+
+      {/* Popup de gerenciar metas e aviso de "salvo".*/}
+      {modalMetasAberto &&
+        createPortal(
+          <ModalGerenciarMetas
+            metas={metas}
+            onSalvar={salvarMetas}
+            onFechar={fecharModalMetas}
+          />,
+          document.body
+        )}
+
+      {avisoMetas &&
+        createPortal(
+          <div className="gmToast" role="status">
+            Metas atualizadas com sucesso
+          </div>,
+          document.body
+        )}
     </div>
   );
 }

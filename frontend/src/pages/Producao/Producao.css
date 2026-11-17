@@ -210,9 +210,7 @@
   transform-origin: left;
 }
 
-/* =====================================================
-   FILA DE PRODUÇÃO
-===================================================== */
+/* FILA DE PRODUÇÃO */
 .queue {
   background: var(--white);
   border: 1px solid var(--line);
@@ -544,4 +542,80 @@
     flex-direction: column;
     gap: 3px;
   }
+}
+
+
+
+/*ESTILOS DO POP-UP (MODAL) */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(43, 43, 43, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.modalConteudo {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--raio-card);
+  box-shadow: 0 10px 25px rgba(60, 20, 20, 0.2);
+  width: 90%;
+  max-width: 620px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  animation: entrarModal 0.3s cubic-bezier(0.5, 1, 0.36, 1) both;
+  box-sizing: border-box;
+}
+
+.modalCabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--divisor);
+  padding-bottom: 12px;
+}
+
+.modalCabecalho h2 {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.botaoFecharModal {
+  background: none;
+  border: none;
+  font-size: 24px;
+  color: var(--texto-secundario);
+  cursor: pointer;
+  padding: 0 8px;
+  border-radius: 4px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.botaoFecharModal:hover {
+  background: var(--rosa-suave);
+  color: var(--wine);
+}
+
+.modalCorpo {
+  overflow-y: auto;
+  max-height: calc(75vh - 60px);
+  padding-right: 4px;
+}
+
+@keyframes entrarModal {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
