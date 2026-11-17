@@ -530,11 +530,13 @@
 
 .entradaIcone {
   background: linear-gradient(135deg, #4FA463, #3F8F4F);
+/*margin-left: 26px;*/
 }
 
 .saidaIcone,
 .iconeDespesa {
   background: linear-gradient(135deg, #C8213D, #A60027);
+  /*margin-left: 26px;*/
 }
 
 .valorEntrada,
@@ -542,7 +544,11 @@
   white-space: nowrap;
   font: 700 14px "Inter", sans-serif;
   font-variant-numeric: tabular-nums;
+<<<<<<< HEAD
   margin-right: 26px;
+=======
+/*margin-right: 26px; comentei pra nao dar um possivel conflito com o commit que a grazy ta tentando resolver*/
+>>>>>>> b5fc5d4 (POP-UP ESTOQUE)
 }
 
 .valorEntrada { color: #1F7A3A; }
