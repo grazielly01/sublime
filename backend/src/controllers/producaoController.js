@@ -18,7 +18,34 @@ let ordensMock = [
     quantidadeFeita: 200,
     status: "CONCLUIDO",
     tempoEstimado: "Finalizado às 10h12"
-  }
+  },
+  {
+    id: 3,
+    produto: "Torta de Limão 22cm",
+    equipe: "Equipe A",
+    quantidadeTotal: 18,
+    quantidadeFeita: 6,
+    status: "EM_ANDAMENTO",
+    tempoEstimado: "1h 30min restantes"
+  },
+  {
+    id: 4,
+    produto: "Copo da Felicidade",
+    equipe: "Equipe C",
+    quantidadeTotal: 120,
+    quantidadeFeita: 0,
+    status: "NA FILA",
+    tempoEstimado: "iniciar às 14h00"
+  },
+  {
+    id: 5,
+    produto: "Bolo de Chocolate 1kg",
+    equipe: "Equipe B",
+    quantidadeTotal: 30,
+    quantidadeFeita: 0,
+    status: "NA FILA",
+    tempoEstimado: "Iniciar às 15h30"
+  },
 ];
 
 class ProducaoController {

@@ -100,6 +100,9 @@ let pedidosMock = [
 class PedidoController {
   // GET /pedidos - Aceita filtro por Query Param: ?status=AGUARDANDO
   async listar(req, res) {
+
+    console.log("pppppppppppppppppppppppppppppppppp");
+
     const { status } = req.query;
 
     let resultado = pedidosMock;

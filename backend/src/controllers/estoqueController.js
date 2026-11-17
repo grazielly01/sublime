@@ -1,8 +1,9 @@
-// Array que simula a tabela do banco de dados no Node.js
+// Array que simula a tabela do banco de dados no Node.js - ADICIONADO CATEGORIA
 let insumosMock = [
   {
     id: 1,
     nome: "Chocolate ao leite Callebaut 80g",
+    categoria: "Cacau e chocolates", 
     lote: "LT-0421",
     quantidade: 52,
     minimo: 15,
@@ -12,6 +13,7 @@ let insumosMock = [
   {
     id: 2,
     nome: "Farinha de trigo especial 300g",
+    categoria: "Farinhas e massas", 
     lote: "LT-0425",
     quantidade: 2,
     minimo: 6,
@@ -31,7 +33,7 @@ class EstoqueController {
 
       return {
         ...item,
-        status: precisaRepor ? "Repor" : "OK"
+        status: precisaRepor ? "Repor" : "OK" // Retorna exatamente "Repor" ou "OK"
       };
     });
 
@@ -44,11 +46,13 @@ class EstoqueController {
 
   // POST /estoque
   async criar(req, res) {
-    const { nome, lote, quantidade, minimo, validade, custo } = req.body;
+    // Adicionado 'categoria' na desestruturação
+    const { nome, categoria, lote, quantidade, minimo, validade, custo } = req.body;
 
     const novoItem = {
       id: insumosMock.length + 1,
       nome,
+      categoria: categoria || "Outros", // <-- Salva a categoria enviada ou joga em "Outros"
       lote,
       quantidade: Number(quantidade),
       minimo: Number(minimo),
