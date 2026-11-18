@@ -1,219 +1,240 @@
-/*         DIV Q ABRIGA TUDO         */
 
-.tudoRegistrarProdutos{
-    width: 93%;
-    min-height: 170vh;
-    display: flex;
+
+.formRegistrarProdutosModal {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  padding-top: 4px;
+  box-sizing: border-box;
 }
 
-/*        TUDO MENOS A SIDEBAR        */
+/* Divide o modal em 2 colunas: campos (esquerda) e imagem/valores (direita) */
+.areaFormularioModal {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+}
 
-.tudoMenosSidebar{
-    display: flex;
+.colunaEsquerdaModal {
+  flex: 1.7;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.colunaDireitaModal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.linha1Modal {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+.campoRegistrarModal {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  width: 100%;
+}
+
+.campoRegistrarModal label {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 6px;
+  color: #1f2937;
+}
+
+.campoRegistrarModal label span {
+  color: #cf0003;
+}
+
+.campoNomeModal {
+  flex: 2;
+}
+
+.campoCategoriaModal {
+  flex: 1.2;
+}
+
+/* Select de Categoria no Modal */
+.formRegistrarProdutosModal select,
+#selectCategoriaRegistrar {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border: 1px solid #c9939a;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: #1f2937;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.formRegistrarProdutosModal select:focus,
+#selectCategoriaRegistrar:focus {
+  border-color: #8e1027;
+  box-shadow: 0 0 0 3px rgba(142, 16, 39, 0.1);
+}
+
+/* Inputs e Textareas no Modal */
+.formRegistrarProdutosModal input,
+.formRegistrarProdutosModal textarea {
+  width: 100%;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  border: 1px solid #c9939a;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: #1f2937;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.formRegistrarProdutosModal input {
+  height: 40px;
+}
+
+.formRegistrarProdutosModal textarea {
+  resize: vertical;
+}
+
+.formRegistrarProdutosModal input:focus,
+.formRegistrarProdutosModal textarea:focus {
+  border-color: #8e1027;
+  box-shadow: 0 0 0 3px rgba(142, 16, 39, 0.1);
+}
+
+.campoDescricaoProdutoModal textarea {
+  min-height: 50px;
+}
+
+.campoReceitaProdutoModal textarea {
+  min-height: 80px;
+}
+
+/* ÁREA DE UPLOAD DE IMAGEM*/
+
+.campoImagemModal {
+  display: flex;
+  flex-direction: column;
+}
+
+.areaUploadModal {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+  background-color: #fbeded;
+  border: 2px dashed #ecb9ac;
+  border-radius: 8px;
+  padding: 12px;
+  box-sizing: border-box;
+  cursor: pointer;
+  min-height: 90px;
+}
+
+.areaUploadModal svg {
+  width: 22px;
+  height: 22px;
+  color: #870b22;
+}
+
+.textoUploadModal {
+  margin: 2px 0 0 0;
+  font-size: 12px;
+  color: #444;
+}
+
+.textoUploadPequenoModal {
+  margin: 0;
+  font-size: 11px;
+  color: #888;
+}
+
+.colunaValoresModal {
+  display: flex;
+  gap: 10px;
+}
+
+.colunaValoresModal .campoRegistrarModal {
+  flex: 1;
+}
+
+/*botoes*/
+
+.botoesRegistrarProdutosModal {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  width: 100%;
+}
+
+.botoesRegistrarProdutosModal button {
+  width: auto;
+  min-width: 110px;
+  height: 38px;
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.botaoContornoModal {
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+}
+
+.botaoContornoModal:hover {
+  background-color: #f9fafb;
+}
+
+.botaoPreenchidoModal {
+  background-color: #8e1027;
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(142, 16, 39, 0.25);
+}
+
+.botaoPreenchidoModal:hover {
+  background-color: #6f0c1e;
+}
+
+/*RESPONSIVIDADE */
+
+@media (max-width: 768px) {
+  .areaFormularioModal {
     flex-direction: column;
-    width: 100%;
-    min-height: 100vh;
-    box-sizing: border-box;
-    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
-    background-color: #FDEDE8;
-}
-
-
-/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
-
-.conteudoRegistrarProdutos{
-    padding-top: 6%;
-    box-sizing: border-box;
-}
-
-.tituloESetinha{
-    display: flex;
-    align-items: center;
     gap: 16px;
-    margin-bottom: 2%;
-}
+  }
 
-.tituloRegistrarProdutos{
-    font-size: 350%;
-    color: #870B22;
-    font-weight: 600;
-}
+  .botoesRegistrarProdutosModal {
+    flex-direction: column-reverse;
+  }
 
-.svgSetinha{
-    cursor: pointer;
-}
-
-
-/*        JANELA BRANCA COM OS DADOS DO PRODUTO        */
-
-.janelaRegistrarProdutos{
-    background-color: white;
-    border: 1px solid #870B22;
-    border-radius: 12px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    padding: 28px 32px;
-    margin-top: 32px;
-}
-
-/*divide a janela em 2 colunas: campos (esquerda, mais larga) e imagem + valores (direita, mais estreita)*/
-.areaFormulario{
-    display: flex;
-    gap: 28px;
-}
-
-.colunaEsquerda{
-    flex: 1.8; /*ocupa bem mais espaço q a coluna da imagem*/
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-.colunaDireita{
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.linha1{
-    display: flex;
-    gap: 24px;
-}
-
-.campoRegistrar{
-    display: flex;
-    flex-direction: column;
-}
-
-.campoRegistrar label{
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #000;
-}
-
-label span{
-    color: #CF0003; /*deixa o * de campo obrigatório em vermelho*/
-}
-
-.campoNome{
-    flex: 2; /*campi "Nome do produto" ocupa mais espaço q Categoria*/
-}
-
-.campoCategoria{
-    flex: 1.2;
-}
-
-/*Descrição e Receita ocupam a largura toda da coluna esquerda*/
-.campoDescricaoProduto,
-.campoReceitaProduto{
+  .botoesRegistrarProdutosModal button {
     width: 100%;
-}
-
-#textArea{
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.campoReceitaProduto{
-    flex: 1; /*deixa a Receita crescer e ocupar o espaço vertical que sobrar na coluna*/
-}
-
-#selectCategoriaRegistrar{
-    width: 100%;
-    background-color: white;
-    border: solid 1px #870B22;
-}
-
-.campoRegistrar .input{
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/*deixando a caixa dee texto da Receita mais alta que a de Descrição*/
-.campoReceitaProduto .textarea{
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 140px;
-}
-
-.campoDescricaoProduto .textarea{
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 60px;
-}
-
-
-/*        ÁREA DE UPLOAD DE IMAGEM        */
-
-.campoImagem{
-    flex: 1; /*cresce e empurra a caixa de Custo pro final da coluna direita*/
-}
-
-.areaUpload{
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 6px;
-    background-color: #FDEDE8;
-    border: 2px dashed #ecb9ac;
-    border-radius: 10px;
-    padding: 20px;
-    box-sizing: border-box;
-    cursor: pointer; /*mostra q dá pra clicar, mesmo ainda sem funcionar de verdade*/
-}
-
-.areaUpload svg{
-    width: 26px;
-    height: 26px;
-}
-
-.textoUpload{
-    margin: 4px 0 0 0;
-    font-size: 13px;
-    color: #444;
-}
-
-.textoUploadPequeno{
-    margin: 0;
-    font-size: 12px;
-    color: #999;
-}
-
-
-/*        CUSTO E VALOR (empilhados embaixo da imagem)        */
-
-.colunaValores{
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
-
-/*        BOTÕES DE AÇÃO (Cancelar e Registrar)        */
-
-.botoesRegistrarProdutos{
-    display: flex;
-    justify-content: flex-end;
-    gap: 16px;
-    margin-top: 28px;
-}
-
-.botoesRegistrarProdutos .button{
-    width: auto;
-    padding: 12px 32px;
-    border-radius: 30px;
-}
-
-.botaoContorno .button{
-    background-color: white;
-    border: 1px solid #870B22;
-    color: #000;
-}
-
-.botaoContorno .button:hover{
-    background-color: #fdf0ee;
+  }
 }
