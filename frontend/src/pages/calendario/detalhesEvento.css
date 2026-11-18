@@ -1,187 +1,177 @@
-/*         DIV Q ABRIGA TUDO         */
 
-
-.tudoDetalhesEvento{
-    width: 93%;
-    min-height: 170vh;
-    display: flex;
+.formDetalhesEventoModal {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  padding-top: 6px;
+  box-sizing: border-box;
 }
-
-
-/*        TUDO MENOS A SIDEBAR. APROVADO        */
-
-
-.tudoMenosSidebar{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    min-height: 100vh;
-    box-sizing: border-box;
-    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
-    background-color: #FDEDE8;
-}
-
-
-/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
-
-
-.conteudoDetalhesEvento{
-    padding-top: 6%;
-    box-sizing: border-box;
-}
-
-
-.tituloESetinha{
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-
-.tituloDetalhesEvento{
-    margin: 0;
-    font-size: 350%;
-    color: #870B22;
-}
-
-
-.svgSetinha{
-    cursor: pointer;
-}
-
-
-/*        JANELA BRANCA COM OS DADOS DO EVENTO        */
-
-
-.janelaDetalhesEvento{
-    background-color: white;
-    border: 1px solid #870B22;
-    border-radius: 12px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    padding: 28px 32px;
-    margin-top: 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
-}
-
 
 .linhaDetalhes1,
-.linhaDetalhes2{
-    display: flex;
-    gap: 24px;
+.linhaDetalhes2 {
+  display: flex;
+  gap: 18px;
+  width: 100%;
 }
 
+.campoDetalhe {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
 
-.campoDetalhe{
-    display: flex;
+.campoDetalhe label {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  color: #1f2937;
+}
+
+.campoTitulo {
+  flex: 2.4;
+}
+
+.campoCategoriaEvento {
+  flex: 1.2;
+}
+
+.campoPrazoEvento {
+  flex: 1.2;
+}
+
+.campoDescricaoEvento {
+  flex: 2.4;
+}
+
+/* Select de Categoria dentro do modal */
+.formDetalhesEventoModal select,
+#selectCategoriaDetalhesEvento {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border: 1px solid #c9939a;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #1f2937;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.formDetalhesEventoModal select:disabled,
+#selectCategoriaDetalhesEvento:disabled {
+  background-color: #f9f6f6;
+  color: #374151;
+  cursor: default;
+  opacity: 1;
+}
+
+.formDetalhesEventoModal select:focus,
+#selectCategoriaDetalhesEvento:focus {
+  border-color: #870b22;
+  box-shadow: 0 0 0 3px rgba(135, 11, 34, 0.1);
+}
+
+/* Inputs ocupando 100% do espaço */
+.campoDetalhe .input,
+.formDetalhesEventoModal input {
+  width: 100%;
+  height: 44px;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  border: 1px solid #c9939a;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #1f2937;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.campoDetalhe .input:disabled,
+.formDetalhesEventoModal input:disabled {
+  background-color: #f9f6f6;
+  color: #374151;
+  cursor: default;
+}
+
+.campoDetalhe .input:focus,
+.formDetalhesEventoModal input:focus {
+  border-color: #870b22;
+  box-shadow: 0 0 0 3px rgba(135, 11, 34, 0.1);
+}
+
+/* Ícone dentro do campo de Prazo */
+.inputComIcone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.inputComIcone svg {
+  position: absolute;
+  left: 12px;
+  width: 17px;
+  height: 17px;
+  color: #870b22;
+  pointer-events: none;
+}
+
+.inputComIcone .input,
+.inputComIcone input {
+  padding-left: 38px;
+}
+
+/*BOTÕES DE AÇÃO (Excluir e Editar) */
+
+.botoesDetalhesEvento {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.botoesDetalhesEvento .button {
+  width: auto;
+  padding: 11px 28px;
+  border-radius: 999px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.botaoContorno .button {
+  background-color: #ffffff;
+  border: 1px solid #870b22;
+  color: #1f2937;
+}
+
+.botaoContorno .button:hover {
+  background-color: #fdf0ee;
+}
+
+/*RESPONSIVIDADE*/
+
+@media (max-width: 650px) {
+  .linhaDetalhes1,
+  .linhaDetalhes2 {
     flex-direction: column;
-}
-
-
-.campoDetalhe label{
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #000;
-}
-
-
-.campoTitulo{
-    flex: 2.5;
-}
-
-
-.campoCategoriaEvento{
-    flex: 1;
-}
-
-
-.campoPrazoEvento{
-    flex: 1;
-}
-
-
-#inputPrazo{
-    width: 110%;
-}
-
-
-.campoDescricaoEvento{
-    flex: 3.5;
-}
-
-
-#selectCategoriaDetalhesEvento{
-    width: 100%;
-    background-color: white;
-    border: solid 1px #870B22;
-}
-
-
-/*os Inputs dessa tela ocupam 100% do espaço do campo*/
-.campoDetalhe .input{
-    width: 100%;
-    box-sizing: border-box;
-}
-
-
-/*campo desabilitado fica com um fundo levemente acinzentadoi*/
-.campoDetalhe .input:disabled{
-    background-color: #f7f7f7;
-    color: #333;
-    cursor: default;
-}
-
-
-/*ícone dentro do campo de Prazo*/
-.inputComIcone{
-    position: relative;
-    display: flex;
-    align-items: center;
-}
-
-
-.inputComIcone svg{
-    position: absolute;
-    left: 14px;
-    width: 18px;
-    height: 18px;
-    color: #870B22;
-    pointer-events: none;
-}
-
-
-.inputComIcone .input{
-    padding-left: 42px;
-}
-
-
-/*        BOTÕES DE AÇÃO (Excluir e Editar)        */
-
-
-.botoesDetalhesEvento{
-    display: flex;
-    justify-content: flex-end;
     gap: 16px;
-    margin-top: 28px;
-}
+  }
 
+  .botoesDetalhesEvento {
+    flex-direction: column-reverse;
+  }
 
-.botoesDetalhesEvento .button{
-    width: auto;
-    padding: 12px 32px;
-    border-radius: 30px;
-}
-
-
-.botaoContorno .button{
-    background-color: white;
-    border: 1px solid #870B22;
-    color: #000;
-}
-
-
-.botaoContorno .button:hover{
-    background-color: #fdf0ee;
+  .botoesDetalhesEvento .button {
+    width: 100%;
+  }
 }
