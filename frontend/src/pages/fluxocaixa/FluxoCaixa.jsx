@@ -6,7 +6,79 @@ import "./fluxocaixaSaida.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+
+const API_CAIXA = "/caixa";
+
+async function cadastrarTransacao(dados) {
+  const response = await fetch(API_CAIXA, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(dados),
+  });
+  const resultado = await response.json();
+  if (!response.ok) {
+    throw new Error(resultado.error || "Erro ao cadastrar transação");
+  }
+  return resultado;
+}
+
+async function listarTransacoes() {
+  const response = await fetch(API_CAIXA);
+  if (!response.ok) {
+    throw new Error("Erro ao buscar transações");
+  }
+  return response.json();
+}
+
+async function excluirTransacao(id) {
+  const response = await fetch(`${API_CAIXA}/${id}`, {
+    method: "DELETE",
+  });
+  const resultado = await response.json();
+  if (!response.ok) {
+    throw new Error(resultado.error || "Erro ao excluir transação");
+  }
+  return resultado;
+}
+
+function calcularFluxoCaixa(movimentacoes = []) {
+  const entradas = movimentacoes.filter(
+    (item) => item.type === "INCOME" || item.tipo === "entrada"
+  );
+  const saidas = movimentacoes.filter(
+    (item) => item.type === "EXPENSE" || item.tipo === "saida"
+  );
+
+  const totalEntradas = entradas.reduce(
+    (total, item) => total + Number(item.amount ?? item.valor ?? 0),
+    0
+  );
+  const totalSaidas = saidas.reduce(
+    (total, item) => total + Number(item.amount ?? item.valor ?? 0),
+    0
+  );
+
+  const despesasFixas = saidas
+    .filter((item) => item.category === "FIXED" || item.categoriaDespesa === "fixa")
+    .reduce((total, item) => total + Number(item.amount ?? item.valor ?? 0), 0);
+
+  const despesasVariaveis = saidas
+    .filter((item) => item.category === "VARIABLE" || item.categoriaDespesa === "variavel")
+    .reduce((total, item) => total + Number(item.amount ?? item.valor ?? 0), 0);
+
+  const saldoFinal = totalEntradas - totalSaidas;
+
+  return {
+    totalEntradas,
+    totalSaidas,
+    saldoFinal,
+    despesasFixas,
+    despesasVariaveis,
+    quantidadeEntradas: entradas.length,
+    quantidadeSaidas: saidas.length,
+  };
+}
 
 const IconeSeta = ({ tipo }) =>
   tipo === "entrada" ? (
@@ -34,27 +106,149 @@ const IconeSetaSaida = () => (
 function FluxoCaixa() {
   const navigate = useNavigate();
 
-  // Estados dos pop-ups de listas e cadastros
+  const [cardAtivo, setCardAtivo] = useState("margem");
+  const [botaoAtivo, setBotaoAtivo] = useState("entrada");
+
   const [modalMovimentacoesAberto, setModalMovimentacoesAberto] = useState(false);
   const [modalDespesasAberto, setModalDespesasAberto] = useState(false);
   const [modalRegistrarSaidaAberto, setModalRegistrarSaidaAberto] = useState(false);
   const [modalRegistrarEntradaAberto, setModalRegistrarEntradaAberto] = useState(false);
 
-  // Estados do pop-up de Detalhes da Entrada
+  const [formSaida, setFormSaida] = useState({
+    description: "",
+    date: new Date().toISOString().slice(0, 10),
+    categoriaVisual: "",
+    amount: "",
+    detalhes: "",
+    category: "VARIABLE",
+    observacoes: "",
+  });
+
+  const [formEntrada, setFormEntrada] = useState({
+    description: "",
+    date: new Date().toISOString().slice(0, 10),
+    categoriaVisual: "",
+    amount: "",
+    detalhes: "",
+    observacoes: "",
+  });
+
+  const [transacoesApi, setTransacoesApi] = useState([]);
+
   const [modalDetalhesEntradaAberto, setModalDetalhesEntradaAberto] = useState(false);
   const [entradaSelecionada, setEntradaSelecionada] = useState(null);
   const [nomeArquivoDetalhes, setNomeArquivoDetalhes] = useState("");
   const [editandoDetalhes, setEditandoDetalhes] = useState(false);
 
-  // Estados do pop-up de Detalhes da Saída
   const [modalDetalhesSaidaAberto, setModalDetalhesSaidaAberto] = useState(false);
   const [saidaSelecionada, setSaidaSelecionada] = useState(null);
   const [nomeArquivoDetalhesSaida, setNomeArquivoDetalhesSaida] = useState("");
   const [editandoDetalhesSaida, setEditandoDetalhesSaida] = useState(false);
 
-  // Estados dos uploads de comprovante nos modais de registro
   const [nomeArquivoSaida, setNomeArquivoSaida] = useState("");
   const [nomeArquivoEntrada, setNomeArquivoEntrada] = useState("");
+
+  const carregarTransacoes = async () => {
+    try {
+      const dados = await listarTransacoes();
+      setTransacoesApi(Array.isArray(dados) ? dados : dados.data || []);
+    } catch (error) {
+      console.error("Erro ao carregar transações:", error.message);
+    }
+  };
+
+  useEffect(() => {
+    carregarTransacoes();
+  }, []);
+
+  const handleClicarSaida = () => {
+    setBotaoAtivo("saida");
+    setModalRegistrarSaidaAberto(true);
+  };
+
+  const handleClicarEntrada = () => {
+    setBotaoAtivo("entrada");
+    setModalRegistrarEntradaAberto(true);
+  };
+
+  const handleSalvarSaida = async (e) => {
+    e.preventDefault();
+    const valorNumerico = Number(String(formSaida.amount).replace(/\./g, "").replace(",", "."));
+
+    const payload = {
+      description: formSaida.description,
+      amount: valorNumerico,
+      type: "EXPENSE",
+      category: formSaida.category,
+      date: formSaida.date,
+    };
+
+    try {
+      await cadastrarTransacao(payload);
+      await carregarTransacoes();
+      setFormSaida({
+        description: "",
+        date: new Date().toISOString().slice(0, 10),
+        categoriaVisual: "",
+        amount: "",
+        detalhes: "",
+        category: "VARIABLE",
+        observacoes: "",
+      });
+      setNomeArquivoSaida("");
+      setModalRegistrarSaidaAberto(false);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const handleSalvarEntrada = async (e) => {
+    e.preventDefault();
+    const valorNumerico = Number(String(formEntrada.amount).replace(/\./g, "").replace(",", "."));
+
+    const payload = {
+      description: formEntrada.description,
+      amount: valorNumerico,
+      type: "INCOME",
+      category: null,
+      date: formEntrada.date,
+    };
+
+    try {
+      await cadastrarTransacao(payload);
+      await carregarTransacoes();
+      setFormEntrada({
+        description: "",
+        date: new Date().toISOString().slice(0, 10),
+        categoriaVisual: "",
+        amount: "",
+        detalhes: "",
+        observacoes: "",
+      });
+      setNomeArquivoEntrada("");
+      setModalRegistrarEntradaAberto(false);
+    } catch (error) {
+      alert(error.message);
+    }
+  };
+
+  const handleExcluirTransacao = async (id, rotaFallback) => {
+    if (id) {
+      try {
+        await excluirTransacao(id);
+        await carregarTransacoes();
+        setModalDetalhesEntradaAberto(false);
+        setModalDetalhesSaidaAberto(false);
+        return;
+      } catch (error) {
+        alert(error.message);
+        return;
+      }
+    }
+    setModalDetalhesEntradaAberto(false);
+    setModalDetalhesSaidaAberto(false);
+    navigate(rotaFallback);
+  };
 
   const handleArquivoSaida = (e) => {
     const arquivo = e.target.files?.[0];
@@ -76,13 +270,13 @@ function FluxoCaixa() {
     setNomeArquivoDetalhesSaida(arquivo ? arquivo.name : "");
   };
 
-  // Função para abrir o pop-up de detalhes da entrada
   const abrirDetalhesEntrada = (item) => {
     setEntradaSelecionada({
+      id: item.id || null,
       titulo: item.descricao || item.titulo,
       data: item.dataCompleta || item.data || "03/05/2026",
       categoria: item.categoria || "Venda de produto",
-      valor: (item.valor || "0,00").replace("R$ ", ""),
+      valor: String(item.valor || "0,00").replace("R$ ", ""),
       itens: item.itens || "15 Torta de Limão 22cm, 30 Cupcake Red Velvet, 28 Brownie Avelã, 40 Cupcake Morango",
       observacoes: item.observacoes || "",
     });
@@ -91,13 +285,13 @@ function FluxoCaixa() {
     setModalDetalhesEntradaAberto(true);
   };
 
-  // Função para abrir o pop-up de detalhes da saída
   const abrirDetalhesSaida = (item) => {
     setSaidaSelecionada({
+      id: item.id || null,
       titulo: item.descricao || item.titulo,
       data: item.dataCompleta || item.data || "03/05/2026",
       categoria: item.categoria || "Insumos",
-      valor: (item.valor || "0,00").replace("R$ ", ""),
+      valor: String(item.valor || "0,00").replace("R$ ", ""),
       descricao: item.itens || item.descricao || "Compra de matéria-prima para produção",
       tipoDespesa: item.tipoDespesa || "Variável",
       observacoes: item.observacoes || "",
@@ -107,7 +301,6 @@ function FluxoCaixa() {
     setModalDetalhesSaidaAberto(true);
   };
 
-  // Estados dos grupos no pop-up de movimentações
   const [abertosGrupos, setAbertosGrupos] = useState({
     Hoje: true,
     Ontem: false,
@@ -118,7 +311,7 @@ function FluxoCaixa() {
     setAbertosGrupos((prev) => ({ ...prev, [titulo]: !prev[titulo] }));
   };
 
-  const movimentos = [
+  const movimentosBase = [
     {
       tipo: "entrada",
       descricao: "Venda – Padaria São José",
@@ -168,6 +361,36 @@ function FluxoCaixa() {
       observacoes: "",
     },
   ];
+
+  const movimentosFormatadosApi = transacoesApi.map((t) => {
+    const ehEntrada = t.type === "INCOME" || t.tipo === "entrada";
+    const valorNum = Number(t.amount ?? t.valor ?? 0);
+
+    return {
+      ...t,
+      tipo: ehEntrada ? "entrada" : "saida",
+      descricao: t.description || t.descricao,
+      valor: valorNum.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
+      dataCompleta: t.date || "Hoje",
+      tipoDespesa: t.category === "FIXED" ? "Fixa" : "Variável",
+    };
+  });
+
+  const movimentos = [...movimentosFormatadosApi, ...movimentosBase];
+
+  const baseCalculo = [
+    { type: "INCOME", amount: 52430 },
+    { type: "EXPENSE", amount: 18220 },
+    ...transacoesApi,
+  ];
+  const resumo = calcularFluxoCaixa(baseCalculo);
+  const margemLucro =
+    resumo.totalEntradas > 0
+      ? ((resumo.saldoFinal / resumo.totalEntradas) * 100).toFixed(1).replace(".", ",")
+      : "0,0";
+
+  const formatarMoeda = (num) =>
+    Number(num).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
   const maioresDespesas = [
     { nome: "Folha de salários", valor: "R$ 4.500" },
@@ -330,23 +553,42 @@ function FluxoCaixa() {
             </p>
           </div>
 
-          {/* CARDS SUPERIORES */}
+          {/* 4 CARDS SUPERIORES QUE ALTERNAM AO CLICAR */}
           <section className="resumoFluxo">
-            <div className="cardFluxo">
+            <div
+              className={`cardFluxo ${cardAtivo === "entradas" ? "cardSaldoFinal" : ""}`}
+              onClick={() => setCardAtivo("entradas")}
+              style={{ cursor: "pointer" }}
+            >
               <span className="labelFluxo">Entradas Totais</span>
-              <strong className="valorFluxo">R$ 52.430,00</strong>
+              <strong className="valorFluxo">{formatarMoeda(resumo.totalEntradas)}</strong>
             </div>
-            <div className="cardFluxo">
+
+            <div
+              className={`cardFluxo ${cardAtivo === "despesas" ? "cardSaldoFinal" : ""}`}
+              onClick={() => setCardAtivo("despesas")}
+              style={{ cursor: "pointer" }}
+            >
               <span className="labelFluxo">Despesas Totais</span>
-              <strong className="valorFluxo">R$ 18.220,00</strong>
+              <strong className="valorFluxo">{formatarMoeda(resumo.totalSaidas)}</strong>
             </div>
-            <div className="cardFluxo">
+
+            <div
+              className={`cardFluxo ${cardAtivo === "lucro" ? "cardSaldoFinal" : ""}`}
+              onClick={() => setCardAtivo("lucro")}
+              style={{ cursor: "pointer" }}
+            >
               <span className="labelFluxo">Lucro Líquido</span>
-              <strong className="valorFluxo">R$ 34.210,00</strong>
+              <strong className="valorFluxo">{formatarMoeda(resumo.saldoFinal)}</strong>
             </div>
-            <div className="cardFluxo cardSaldoFinal">
+
+            <div
+              className={`cardFluxo ${cardAtivo === "margem" ? "cardSaldoFinal" : ""}`}
+              onClick={() => setCardAtivo("margem")}
+              style={{ cursor: "pointer" }}
+            >
               <span className="labelFluxo">Margem de Lucro</span>
-              <strong className="valorFluxo">65,2%</strong>
+              <strong className="valorFluxo">{margemLucro}%</strong>
             </div>
           </section>
 
@@ -357,17 +599,17 @@ function FluxoCaixa() {
               <div className="acoesGrafico">
                 <div className="botoesFluxo">
                   <button
-                    className="botaoSaida"
+                    className={botaoAtivo === "saida" ? "botaoEntrada" : "botaoSaida"}
                     type="button"
-                    onClick={() => setModalRegistrarSaidaAberto(true)}
+                    onClick={handleClicarSaida}
                   >
                     + Saída
                   </button>
 
                   <button
-                    className="botaoEntrada"
+                    className={botaoAtivo === "entrada" ? "botaoEntrada" : "botaoSaida"}
                     type="button"
-                    onClick={() => setModalRegistrarEntradaAberto(true)}
+                    onClick={handleClicarEntrada}
                   >
                     + Entrada
                   </button>
@@ -467,7 +709,6 @@ function FluxoCaixa() {
 
           {/* DUAS COLUNAS */}
           <section className="duasColunasFluxo">
-            {/* MOVIMENTAÇÕES */}
             <div className="cardMovimentacoes">
               <div className="cabecalhoCardFluxo cabecalhoLista">
                 <h2>Movimentações recentes</h2>
@@ -480,7 +721,7 @@ function FluxoCaixa() {
                 {movimentos.map((m, i) => (
                   <div
                     className="movimentacao"
-                    key={i}
+                    key={m.id || i}
                     style={{ cursor: "pointer" }}
                     onClick={() =>
                       m.tipo === "entrada"
@@ -510,7 +751,6 @@ function FluxoCaixa() {
               </div>
             </div>
 
-            {/* MAIORES DESPESAS */}
             <div className="cardMovimentacoes">
               <div className="cabecalhoCardFluxo cabecalhoLista">
                 <h2>Maiores despesas</h2>
@@ -603,9 +843,7 @@ function FluxoCaixa() {
         </main>
       </div>
 
-      {/* =====================================================
-         POP-UP: DETALHES DA ENTRADA
-      ===================================================== */}
+      {/* POP-UP: DETALHES DA ENTRADA */}
       {modalDetalhesEntradaAberto && entradaSelecionada && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "820px" }}>
@@ -621,7 +859,6 @@ function FluxoCaixa() {
             </div>
             <div className="modalCorpo">
               <div className="detalhesMovimentacao">
-                {/* Linha 1: Título / Data / Categoria / Valor */}
                 <div className="linhaDetalhes colunas4">
                   <label>
                     Título da entrada
@@ -682,7 +919,6 @@ function FluxoCaixa() {
                   </label>
                 </div>
 
-                {/* Descrição */}
                 <label>
                   Descrição
                   <input
@@ -695,25 +931,12 @@ function FluxoCaixa() {
                   />
                 </label>
 
-                {/* Anexar comprovante */}
                 <label>
                   Anexar comprovante (opcional)
                   <label className="areaUpload" htmlFor="comprovanteDetalhesModal">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M12 16V4M12 4l-4 4M12 4l4 4"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
+                      <path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     <span>Clique aqui para anexar ou arraste o arquivo aqui</span>
                     <span>PDF, JPG, JPEG ou PNG (máx. 10MB)</span>
@@ -729,7 +952,6 @@ function FluxoCaixa() {
                   )}
                 </label>
 
-                {/* Observações */}
                 <label>
                   Observações (opcional)
                   <textarea
@@ -742,15 +964,11 @@ function FluxoCaixa() {
                   />
                 </label>
 
-                {/* Ações */}
                 <div className="acoesDetalhes">
                   <button
                     type="button"
                     className="botaoExcluir"
-                    onClick={() => {
-                      setModalDetalhesEntradaAberto(false);
-                      navigate("/fluxocaixaexcluir2");
-                    }}
+                    onClick={() => handleExcluirTransacao(entradaSelecionada.id, "/fluxocaixaexcluir2")}
                   >
                     Excluir
                   </button>
@@ -775,9 +993,7 @@ function FluxoCaixa() {
         </div>
       )}
 
-      {/* =====================================================
-         POP-UP: DETALHES DA SAÍDA (Novo)
-      ===================================================== */}
+      {/* POP-UP: DETALHES DA SAÍDA */}
       {modalDetalhesSaidaAberto && saidaSelecionada && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "820px" }}>
@@ -793,7 +1009,6 @@ function FluxoCaixa() {
             </div>
             <div className="modalCorpo">
               <div className="detalhesSaida">
-                {/* Linha 1: Título / Data / Categoria / Valor */}
                 <div className="linhaSaida colunas4">
                   <label>
                     Título da saída
@@ -854,7 +1069,6 @@ function FluxoCaixa() {
                   </label>
                 </div>
 
-                {/* Linha 2: Descrição / Fixa ou variável */}
                 <div className="linhaSaida colunas2">
                   <label>
                     Descrição
@@ -881,25 +1095,12 @@ function FluxoCaixa() {
                   </label>
                 </div>
 
-                {/* Anexar comprovante */}
                 <label>
                   Anexar comprovante (opcional)
                   <label className="areaUpload" htmlFor="comprovanteDetalhesSaidaModal">
                     <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M12 16V4M12 4l-4 4M12 4l4 4"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                      <path
-                        d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3"
-                        stroke="currentColor"
-                        strokeWidth="1.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
+                      <path d="M12 16V4M12 4l-4 4M12 4l4 4" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+                      <path d="M4 16v3a2 2 0 002 2h12a2 2 0 002-2v-3" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
                     <span>Clique aqui para anexar ou arraste o arquivo aqui</span>
                     <span>PDF, JPG, JPEG ou PNG (máx. 10MB)</span>
@@ -915,7 +1116,6 @@ function FluxoCaixa() {
                   )}
                 </label>
 
-                {/* Observações */}
                 <label>
                   Observações (opcional)
                   <textarea
@@ -928,15 +1128,11 @@ function FluxoCaixa() {
                   />
                 </label>
 
-                {/* Ações */}
                 <div className="acoesSaida">
                   <button
                     type="button"
                     className="botaoExcluir"
-                    onClick={() => {
-                      setModalDetalhesSaidaAberto(false);
-                      navigate("/fluxocaixaexcluir1");
-                    }}
+                    onClick={() => handleExcluirTransacao(saidaSelecionada.id, "/fluxocaixaexcluir1")}
                   >
                     Excluir
                   </button>
@@ -1109,17 +1305,17 @@ function FluxoCaixa() {
               </button>
             </div>
             <div className="modalCorpo">
-              <form
-                className="formFluxoCaixaRegistrar"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setModalRegistrarSaidaAberto(false);
-                }}
-              >
+              <form className="formFluxoCaixaRegistrar" onSubmit={handleSalvarSaida}>
                 <div className="linhaFormRegistrar colunas4">
                   <label>
                     Título da saída<span className="obrigatorio">*</span>
-                    <input type="text" placeholder="Escreva aqui o título..." required />
+                    <input
+                      type="text"
+                      placeholder="Escreva aqui o título..."
+                      value={formSaida.description}
+                      onChange={(e) => setFormSaida({ ...formSaida, description: e.target.value })}
+                      required
+                    />
                   </label>
                   <label className="campoData">
                     Data da saída<span className="obrigatorio">*</span>
@@ -1129,12 +1325,21 @@ function FluxoCaixa() {
                         <path d="M3 9h18" stroke="currentColor" strokeWidth="1.6" />
                         <path d="M8 3v4M16 3v4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
                       </svg>
-                      <input type="date" required />
+                      <input
+                        type="date"
+                        value={formSaida.date}
+                        onChange={(e) => setFormSaida({ ...formSaida, date: e.target.value })}
+                        required
+                      />
                     </div>
                   </label>
                   <label>
                     Categoria<span className="obrigatorio">*</span>
-                    <select defaultValue="" required>
+                    <select
+                      value={formSaida.categoriaVisual}
+                      onChange={(e) => setFormSaida({ ...formSaida, categoriaVisual: e.target.value })}
+                      required
+                    >
                       <option value="" disabled>Selecione uma categoria</option>
                       <option value="insumos">Insumos</option>
                       <option value="folha">Folha de pagamento</option>
@@ -1147,7 +1352,13 @@ function FluxoCaixa() {
                     Valor<span className="obrigatorio">*</span>
                     <div className="wrapperInput">
                       <span className="prefixoValor">R$</span>
-                      <input type="text" placeholder="0,00" required />
+                      <input
+                        type="text"
+                        placeholder="0,00"
+                        value={formSaida.amount}
+                        onChange={(e) => setFormSaida({ ...formSaida, amount: e.target.value })}
+                        required
+                      />
                     </div>
                   </label>
                 </div>
@@ -1155,14 +1366,23 @@ function FluxoCaixa() {
                 <div className="linhaFormRegistrar colunas2">
                   <label>
                     Descrição<span className="obrigatorio">*</span>
-                    <input type="text" placeholder="Escreva aqui a descrição..." required />
+                    <input
+                      type="text"
+                      placeholder="Escreva aqui a descrição..."
+                      value={formSaida.detalhes}
+                      onChange={(e) => setFormSaida({ ...formSaida, detalhes: e.target.value })}
+                      required
+                    />
                   </label>
                   <label>
                     Fixa ou variável<span className="obrigatorio">*</span>
-                    <select defaultValue="" required>
-                      <option value="" disabled>Selecione</option>
-                      <option value="fixa">Fixa</option>
-                      <option value="variavel">Variável</option>
+                    <select
+                      value={formSaida.category}
+                      onChange={(e) => setFormSaida({ ...formSaida, category: e.target.value })}
+                      required
+                    >
+                      <option value="FIXED">Fixa</option>
+                      <option value="VARIABLE">Variável</option>
                     </select>
                   </label>
                 </div>
@@ -1190,7 +1410,11 @@ function FluxoCaixa() {
 
                 <label>
                   Observações (opcional)
-                  <textarea placeholder="Informações adicionais sobre esta saída..." />
+                  <textarea
+                    placeholder="Informações adicionais sobre esta saída..."
+                    value={formSaida.observacoes}
+                    onChange={(e) => setFormSaida({ ...formSaida, observacoes: e.target.value })}
+                  />
                 </label>
 
                 <div className="acoesFluxoCaixaRegistrar">
@@ -1226,17 +1450,17 @@ function FluxoCaixa() {
               </button>
             </div>
             <div className="modalCorpo">
-              <form
-                className="formFluxoCaixaEntrada"
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  setModalRegistrarEntradaAberto(false);
-                }}
-              >
+              <form className="formFluxoCaixaEntrada" onSubmit={handleSalvarEntrada}>
                 <div className="linhaFormEntrada colunas4">
                   <label>
                     Título da entrada<span className="obrigatorio">*</span>
-                    <input type="text" placeholder="Escreva aqui o título..." required />
+                    <input
+                      type="text"
+                      placeholder="Escreva aqui o título..."
+                      value={formEntrada.description}
+                      onChange={(e) => setFormEntrada({ ...formEntrada, description: e.target.value })}
+                      required
+                    />
                   </label>
                   <label className="campoData">
                     Data da entrada<span className="obrigatorio">*</span>
@@ -1246,12 +1470,21 @@ function FluxoCaixa() {
                         <path d="M3 9h18" stroke="currentColor" strokeWidth="1.6" />
                         <path d="M8 3v4M16 3v4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
                       </svg>
-                      <input type="date" required />
+                      <input
+                        type="date"
+                        value={formEntrada.date}
+                        onChange={(e) => setFormEntrada({ ...formEntrada, date: e.target.value })}
+                        required
+                      />
                     </div>
                   </label>
                   <label>
                     Categoria<span className="obrigatorio">*</span>
-                    <select defaultValue="" required>
+                    <select
+                      value={formEntrada.categoriaVisual}
+                      onChange={(e) => setFormEntrada({ ...formEntrada, categoriaVisual: e.target.value })}
+                      required
+                    >
                       <option value="" disabled>Selecione uma categoria</option>
                       <option value="venda">Venda de produto</option>
                       <option value="encomenda">Encomenda</option>
@@ -1262,14 +1495,26 @@ function FluxoCaixa() {
                     Valor<span className="obrigatorio">*</span>
                     <div className="wrapperInput">
                       <span className="prefixoValor">R$</span>
-                      <input type="text" placeholder="0,00" required />
+                      <input
+                        type="text"
+                        placeholder="0,00"
+                        value={formEntrada.amount}
+                        onChange={(e) => setFormEntrada({ ...formEntrada, amount: e.target.value })}
+                        required
+                      />
                     </div>
                   </label>
                 </div>
 
                 <label>
                   Descrição<span className="obrigatorio">*</span>
-                  <input type="text" placeholder="Escreva aqui a descrição..." required />
+                  <input
+                    type="text"
+                    placeholder="Escreva aqui a descrição..."
+                    value={formEntrada.detalhes}
+                    onChange={(e) => setFormEntrada({ ...formEntrada, detalhes: e.target.value })}
+                    required
+                  />
                 </label>
 
                 <label>
@@ -1295,7 +1540,11 @@ function FluxoCaixa() {
 
                 <label>
                   Observações (opcional)
-                  <textarea placeholder="Informações adicionais sobre esta entrada..." />
+                  <textarea
+                    placeholder="Informações adicionais sobre esta entrada..."
+                    value={formEntrada.observacoes}
+                    onChange={(e) => setFormEntrada({ ...formEntrada, observacoes: e.target.value })}
+                  />
                 </label>
 
                 <div className="acoesFluxoCaixaEntrada">

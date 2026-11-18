@@ -1,13 +1,14 @@
 const { Router } = require('express');
-const fluxoController = require('../controllers/fluxoController');
 const caixaController = require('../controllers/caixaController');
 
 const router = Router();
 
-// Rota GET para consultar o Dashboard -> GET /api/dashboard?month=10&year=2026
-router.get('/fluxo', fluxoController.getFluxoData);
+router.get('/', caixaController.getAll);
 
-// Rota POST para registar uma Entrada/Saída -> POST /api/transactions
-router.post('/caixa', caixaController.create);
+router.get('/listar', caixaController.getAll);
+router.get('/:id', caixaController.getById);
+
+router.post('/', caixaController.create);
+router.delete('/:id', caixaController.delete);
 
 module.exports = router;
