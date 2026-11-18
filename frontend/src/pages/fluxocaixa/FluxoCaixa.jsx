@@ -8,40 +8,83 @@ import Header from "../../componentes/Header/Header.jsx";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
-const API_CAIXA = "/caixa";
+const API_CAIXA = "http://localhost:3000/caixa";
+const STORAGE_KEY = "sublime_fluxo_caixa";
+
+function lerLocal() {
+  try {
+    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
+  } catch {
+    return [];
+  }
+}
+
+function salvarLocal(lista) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+}
 
 async function cadastrarTransacao(dados) {
-  const response = await fetch(API_CAIXA, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(dados),
-  });
-  const resultado = await response.json();
-  if (!response.ok) {
-    throw new Error(resultado.error || "Erro ao cadastrar transação");
+  try {
+    const response = await fetch(API_CAIXA, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
+    });
+    const texto = await response.text();
+    const resultado = texto ? JSON.parse(texto) : {};
+    if (!response.ok) {
+      throw new Error(resultado.error || "Erro na API");
+    }
+    return resultado;
+  } catch {
+    const nova = { ...dados, id: Date.now() };
+    const atuais = lerLocal();
+    salvarLocal([nova, ...atuais]);
+    return nova;
   }
-  return resultado;
 }
 
 async function listarTransacoes() {
-  const response = await fetch(API_CAIXA);
-  if (!response.ok) {
-    throw new Error("Erro ao buscar transações");
+  try {
+    const response = await fetch(API_CAIXA, {
+      headers: { Accept: "application/json" },
+    });
+    const texto = await response.text();
+
+    if (!response.ok) {
+      throw new Error(`Erro ${response.status} ao carregar transações`);
+    }
+
+    const resultado = texto ? JSON.parse(texto) : [];
+    return Array.isArray(resultado) ? resultado : resultado.data || [];
+  } catch (error) {
+    console.warn("API do caixa indisponível; usando dados locais.", error.message);
+    return lerLocal();
   }
-  return response.json();
 }
 
 async function excluirTransacao(id) {
-  const response = await fetch(`${API_CAIXA}/${id}`, {
+  const response = await fetch(`${API_CAIXA}/${encodeURIComponent(id)}`, {
     method: "DELETE",
   });
-  const resultado = await response.json();
-  if (!response.ok) {
-    throw new Error(resultado.error || "Erro ao excluir transação");
-  }
-  return resultado;
-}
 
+  if (!response.ok) {
+    const texto = await response.text();
+    let mensagem = "Erro ao excluir transação";
+
+    try {
+      mensagem = texto ? JSON.parse(texto).error || mensagem : mensagem;
+    } catch {
+      // Resposta não-JSON do servidor
+    }
+
+    throw new Error(mensagem);
+  }
+
+  const filtradas = lerLocal().filter((item) => String(item.id) !== String(id));
+  salvarLocal(filtradas);
+  return response;
+}
 function calcularFluxoCaixa(movimentacoes = []) {
   const entradas = movimentacoes.filter(
     (item) => item.type === "INCOME" || item.tipo === "entrada"
@@ -368,6 +411,7 @@ function FluxoCaixa() {
 
     return {
       ...t,
+      reactKey: `api-${t.id ?? `${t.description}-${t.date}-${valorNum}`}`,
       tipo: ehEntrada ? "entrada" : "saida",
       descricao: t.description || t.descricao,
       valor: valorNum.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
@@ -376,7 +420,12 @@ function FluxoCaixa() {
     };
   });
 
-  const movimentos = [...movimentosFormatadosApi, ...movimentosBase];
+  const movimentosBaseFormatados = movimentosBase.map((m, i) => ({
+    ...m,
+    reactKey: `base-${i}-${m.descricao}`,
+  }));
+
+  const movimentos = [...movimentosFormatadosApi, ...movimentosBaseFormatados];
 
   const baseCalculo = [
     { type: "INCOME", amount: 52430 },
@@ -721,7 +770,7 @@ function FluxoCaixa() {
                 {movimentos.map((m, i) => (
                   <div
                     className="movimentacao"
-                    key={m.id || i}
+                    key={m.reactKey || `movimento-${i}`}
                     style={{ cursor: "pointer" }}
                     onClick={() =>
                       m.tipo === "entrada"
