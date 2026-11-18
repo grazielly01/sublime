@@ -130,6 +130,7 @@
   font: 700 22px "Inter", sans-serif;
   letter-spacing: -0.02em;
   font-variant-numeric: tabular-nums;
+  margin-right: 26px;
 }
 
 
@@ -544,11 +545,7 @@
   white-space: nowrap;
   font: 700 14px "Inter", sans-serif;
   font-variant-numeric: tabular-nums;
-<<<<<<< HEAD
   margin-right: 26px;
-=======
-/*margin-right: 26px; comentei pra nao dar um possivel conflito com o commit que a grazy ta tentando resolver*/
->>>>>>> b5fc5d4 (POP-UP ESTOQUE)
 }
 
 .valorEntrada { color: #1F7A3A; }
