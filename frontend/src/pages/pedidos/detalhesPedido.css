@@ -1,162 +1,176 @@
-/*         DIV Q ABRIGA TUDO         */
-
-.tudoDetalhesPedido{
-    width: 93%;
-    min-height: 170vh;
-    display: flex;
-}
-
-/*        TUDO MENOS A SIDEBAR        */
-
-.tudoMenosSidebar{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    min-height: 100vh;
-    box-sizing: border-box;
-    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
-    background-color: #FDEDE8;
-}
 
 
-/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
-
-.conteudoDetalhesPedido{
-    padding-top: 6%;
-    box-sizing: border-box;
-}
-
-.tituloESetinha{
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.tituloDetalhesPedido{
-    margin: 0;
-    font-size: 350%;
-    color: #870B22;
-}
-
-.svgSetinha{
-    cursor: pointer;
-}
-
-
-/*        JANELA BRANCA COM OS DADOS DO PEDIDO        */
-
-.janelaDetalhesPedido{
-    background-color: white;
-    border: 1px solid #870B22;
-    border-radius: 12px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    padding: 28px 32px;
-    margin-top: 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 28px;
+.formDetalhesPedidoModal {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  padding-top: 6px;
+  box-sizing: border-box;
 }
 
 .linhaDetalhes1,
-.linhaDetalhes2{
-    display: flex;
-    gap: 24px;
+.linhaDetalhes2 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  width: 100%;
+  align-items: start;
 }
 
-.campoDetalhe{
-    display: flex;
-    flex-direction: column;
+.linhaDetalhes2 {
+  grid-template-columns: 1fr 2fr;
 }
 
-.campoDetalhe label{
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #000;
+.campoDetalhe {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  width: 100%;
 }
 
-.campoCliente{
-    flex: 1.6;
+.campoDetalhe label {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 8px;
+  color: #1f2937;
+  white-space: nowrap;
 }
 
-.campoStatus,
-.campoPrazo{
-    flex: 1.1;
+/* Select de Status dentro do modal */
+.formDetalhesPedidoModal select,
+#selectStatusDetalhesPedido {
+  width: 100%;
+  height: 44px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border: 1px solid #c9939a;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #1f2937;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-#inputPrazo{
-    width: 50vh;
+.formDetalhesPedidoModal select:disabled,
+#selectStatusDetalhesPedido:disabled {
+  background-color: #f9f6f6;
+  color: #374151;
+  cursor: default;
 }
 
-.campoQuantidade{
-    flex: 1;
+.formDetalhesPedidoModal select:focus,
+#selectStatusDetalhesPedido:focus {
+  border-color: #8e1027;
+  box-shadow: 0 0 0 3px rgba(142, 16, 39, 0.1);
 }
 
-.campoDescricao{
-    flex: 3.5;
+/* Inputs ocupando 100% do espaço */
+.campoDetalhe .input,
+.formDetalhesPedidoModal input {
+  width: 100%;
+  height: 44px;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  border: 1px solid #c9939a;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  color: #1f2937;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
-#selectStatusDetalhesPedido{
-    width: 100%;
-    background-color: white;
-    border: solid 1px #870B22;
+.campoDetalhe .input:disabled,
+.formDetalhesPedidoModal input:disabled {
+  background-color: #f9f6f6;
+  color: #374151;
+  cursor: default;
 }
 
-/*os Inputs dessa tela ocupam 100% do espaço do seu campo (controlado pelo flex acima)*/
-.campoDetalhe .input{
-    width: 100%;
-    box-sizing: border-box;
+.campoDetalhe .input:focus,
+.formDetalhesPedidoModal input:focus {
+  border-color: #8e1027;
+  box-shadow: 0 0 0 3px rgba(142, 16, 39, 0.1);
 }
 
-/*campo desabilitado ganha um fundo levemente acinzentado, reforçando q não dá pra editar aqui*/
-.campoDetalhe .input:disabled{
-    background-color: #f7f7f7;
-    color: #333;
-    cursor: default;
+/* Ícone dentro do campo de Prazo */
+.inputComIcone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
 }
 
-/*ícone dentro do campo de Prazo*/
-.inputComIcone{
-    position: relative;
-    display: flex;
-    align-items: center;
+.inputComIcone svg {
+  position: absolute;
+  left: 12px;
+  width: 17px;
+  height: 17px;
+  color: #8e1027;
+  pointer-events: none;
 }
 
-.inputComIcone svg{
-    position: absolute;
-    left: 14px;
-    width: 18px;
-    height: 18px;
-    color: #870B22;
-    pointer-events: none;
+.inputComIcone .input,
+.inputComIcone input {
+  padding-left: 38px;
 }
 
-.inputComIcone .input{
-    padding-left: 42px;
+/* BOTÕES DE AÇÃO (Excluir e Editar)*/
+
+.botoesDetalhesPedido {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 8px;
+  width: 100%;
 }
 
+.botoesDetalhesPedido .button {
+  width: auto;
+  min-width: 120px;
+  height: 42px;
+  padding: 10px 24px;
+  border-radius: 999px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
 
-/*        BOTÕES DE AÇÃO (Excluir e Editar)        */
+.botaoContorno .button {
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+}
 
-.botoesDetalhesPedido{
-    display: flex;
-    justify-content: flex-end;
+.botaoContorno .button:hover {
+  background-color: #f9fafb;
+}
+
+/*RESPONSIVIDADE */
+
+@media (max-width: 768px) {
+  .linhaDetalhes1,
+  .linhaDetalhes2 {
+    grid-template-columns: 1fr;
     gap: 16px;
-    margin-top: 28px;
-}
+  }
 
-.botoesDetalhesPedido .button{
-    width: auto;
-    padding: 12px 32px;
-    border-radius: 30px;
-}
+  .botoesDetalhesPedido {
+    flex-direction: column-reverse;
+  }
 
-.botaoContorno .button{
-    background-color: white;
-    border: 1px solid #870B22;
-    color: #000;
-}
-
-.botaoContorno .button:hover{
-    background-color: #fdf0ee;
+  .botoesDetalhesPedido .button {
+    width: 100%;
+  }
 }

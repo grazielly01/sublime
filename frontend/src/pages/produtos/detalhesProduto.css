@@ -1,204 +1,255 @@
-/*         DIV Q ABRIGA TUDO         */
 
-.tudoDetalhesProdutos{
-    width: 93%;
-    min-height: 170vh;
-    display: flex;
+.formDetalhesProdutosModal {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+  padding-top: 4px;
+  box-sizing: border-box;
 }
 
-/*        TUDO MENOS A SIDEBAR        */
+.areaFormularioDetalhesModal {
+  display: flex;
+  gap: 24px;
+  width: 100%;
+}
 
-.tudoMenosSidebar{
-    display: flex;
+.colunaEsquerdaDetalhesModal {
+  flex: 1.7;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.colunaDireitaDetalhesModal {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.linhaDetalhesModal {
+  display: flex;
+  gap: 16px;
+  width: 100%;
+}
+
+.campoDetalheModal {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  width: 100%;
+}
+
+.campoDetalheModal label {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  margin-bottom: 6px;
+  color: #1f2937;
+}
+
+.campoNomeDetalhesModal {
+  flex: 2;
+}
+
+.campoCategoriaDetalhesModal {
+  flex: 1.2;
+}
+
+/* Select e Inputs no Modal de Detalhes */
+.formDetalhesProdutosModal select,
+#selectCategoriaDetalhes {
+  width: 100%;
+  height: 40px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  background-color: #ffffff;
+  border: 1px solid #c9939a;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: #1f2937;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.formDetalhesProdutosModal select:disabled,
+#selectCategoriaDetalhes:disabled {
+  background-color: #f9f6f6;
+  color: #374151;
+  cursor: default;
+}
+
+.formDetalhesProdutosModal input,
+.formDetalhesProdutosModal textarea {
+  width: 100%;
+  padding: 8px 12px;
+  box-sizing: border-box;
+  border: 1px solid #c9939a;
+  border-radius: 8px;
+  background-color: #ffffff;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: #1f2937;
+  outline: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.formDetalhesProdutosModal input {
+  height: 40px;
+}
+
+.formDetalhesProdutosModal input:disabled,
+.formDetalhesProdutosModal textarea:disabled {
+  background-color: #f9f6f6;
+  color: #374151;
+  cursor: default;
+}
+
+.formDetalhesProdutosModal input:focus,
+.formDetalhesProdutosModal textarea:focus {
+  border-color: #8e1027;
+  box-shadow: 0 0 0 3px rgba(142, 16, 39, 0.1);
+}
+
+.campoDescricaoDetalhesModal textarea {
+  min-height: 50px;
+  resize: vertical;
+}
+
+.campoReceitaDetalhesModal textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+/* Imagem cadastrada exibida no modal */
+.campoImagemDetalhesModal {
+  display: flex;
+  flex-direction: column;
+}
+
+.imagemProdutoDetalhesModal {
+  width: 100%;
+  min-height: 110px;
+  background-color: #ffc8d2;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid #ecb9ac;
+  border-radius: 8px;
+  box-sizing: border-box;
+}
+
+.colunaValoresDetalhesModal {
+  display: flex;
+  gap: 10px;
+}
+
+.colunaValoresDetalhesModal .campoDetalheModal {
+  flex: 1;
+}
+
+/*BOTÕES (Excluir e Editar/Salvar)*/
+
+.botoesDetalhesProdutosModal {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+  width: 100%;
+}
+
+.botoesDetalhesProdutosModal button {
+  width: auto;
+  min-width: 110px;
+  height: 38px;
+  padding: 8px 20px;
+  border-radius: 999px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.botaoContornoDetalhesModal {
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #374151;
+}
+
+.botaoContornoDetalhesModal:hover {
+  background-color: #f9fafb;
+}
+
+.botaoPreenchidoDetalhesModal {
+  background-color: #8e1027;
+  border: none;
+  color: #ffffff;
+  box-shadow: 0 2px 6px rgba(142, 16, 39, 0.25);
+}
+
+.botaoPreenchidoDetalhesModal:hover {
+  background-color: #6f0c1e;
+}
+
+/* RESPONSIVIDADE*/
+
+@media (max-width: 768px) {
+  .areaFormularioDetalhesModal {
     flex-direction: column;
-    width: 100%;
-    min-height: 100vh;
-    box-sizing: border-box;
-    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
-    background-color: #FDEDE8;
-}
-
-
-/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
-
-.conteudoDetalhesProdutos{
-    padding-top: 6%;
-    box-sizing: border-box;
-}
-
-.tituloESetinha{
-    display: flex;
-    align-items: center;
     gap: 16px;
-}
+  }
 
-.tituloDetalhesProdutos{
-    margin: 0;
-    font-size: 350%;
-    color: #870B22;
-    font-weight: 600;
-}
+  .botoesDetalhesProdutosModal {
+    flex-direction: column-reverse;
+  }
 
-.svgSetinha{
-    cursor: pointer;
-}
-
-
-/*        JANELA BRANCA COM OS DADOS DO PRODUTO        */
-
-.janelaDetalhesProdutos{
-    background-color: white;
-    border: 1px solid #870B22;
-    border-radius: 12px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    padding: 28px 32px;
-    margin-top: 32px;
-}
-
-.areaFormulario{
-    display: flex;
-    gap: 28px;
-}
-
-.colunaEsquerda{
-    flex: 1.8;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-}
-
-.colunaDireita{
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.linha1{
-    display: flex;
-    gap: 24px;
-}
-
-.campoDetalhe{
-    display: flex;
-    flex-direction: column;
-}
-
-.campoDetalhe label{
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 8px;
-    color: #000;
-}
-
-.campoNome{
-    flex: 2;
-}
-
-.campoCategoria{
-    flex: 1.2;
-}
-
-.campoDescricaoProduto,
-.campoReceitaProduto{
+  .botoesDetalhesProdutosModal button {
     width: 100%;
-}
-
-.campoReceitaProduto{
-    flex: 1;
-}
-
-#selectCategoriaDetalhes{
-    width: 100%;
-    background-color: white;
-    border: solid 1px #870B22;
-}
-
-/*os Inputs dessa tela ocupam 100% do espaço do campo*/
-.campoDetalhe .input{
-    width: 100%;
-    box-sizing: border-box;
-}
-
-/*campo desabilitado fica com um fundo levemente acinzentado*/
-.campoDetalhe .input:disabled{
-    background-color: #f7f7f7;
-    color: #333;
-    cursor: default;
-}
-
-.campoReceitaProduto .textarea{
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 140px;
-}
-
-#textArea{
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.campoDescricaoProduto .textarea{
-    width: 100%;
-    box-sizing: border-box;
-    min-height: 60px;
-}
-
-.campoDetalhe .textarea:disabled{
-    background-color: #f7f7f7;
-    color: #333;
-    cursor: default;
+  }
 }
 
 
-/*        IMAGEM DO PRODUTO (já cadastrada, só exibindo)        */
 
-.campoImagem{
-    flex: 1;
+
+
+/* aqui é um estilo para poder mudar a foto na opçao de editar */
+
+.areaUploadDetalhesEdit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 4px;
+  background-color: #fbeded;
+  border: 2px dashed #ecb9ac;
+  border-radius: 8px;
+  padding: 12px;
+  box-sizing: border-box;
+  cursor: pointer;
+  min-height: 110px;
+  width: 100%;
+  transition: background-color 0.15s ease;
 }
 
-.imagemProdutoDetalhes{
-    flex: 1;
-    min-height: 160px;
-    background-color: #FFC8D2; /*aparece caso a imagem nao carregue por algum motivo*/
-    background-size: cover;
-    background-position: center;
-    border: 2px solid #ecb9ac;
-    border-radius: 10px;
-    box-sizing: border-box;
+.areaUploadDetalhesEdit:hover {
+  background-color: #f8dde2;
 }
 
-
-/*        CUSTO E VALOR (empilhados embaixo da imagem)        */
-
-.colunaValores{
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
+.areaUploadDetalhesEdit svg {
+  width: 22px;
+  height: 22px;
+  color: #870b22;
 }
 
-
-/*        BOTÕES DE AÇÃO (Excluir e Editar)        */
-
-.botoesDetalhesProdutos{
-    display: flex;
-    justify-content: flex-end;
-    gap: 16px;
-    margin-top: 28px;
-}
-
-.botoesDetalhesProdutos .button{
-    width: auto;
-    padding: 12px 32px;
-    border-radius: 30px;
-}
-
-.botaoContorno .button{
-    background-color: white;
-    border: 1px solid #870B22;
-    color: #000;
-}
-
-.botaoContorno .button:hover{
-    background-color: #fdf0ee;
+.textoUploadDetalhes {
+  margin: 2px 0 0 0;
+  font-size: 11px;
+  color: #444;
 }
