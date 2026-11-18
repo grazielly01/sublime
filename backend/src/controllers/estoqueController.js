@@ -86,8 +86,8 @@ let insumosMock = [
     nome: "Fermento especial 300g",
     categoria: "Fermentos",
     lote: "LT-0431",
-    quantidade: 2,
-    minimo: 6,
+    quantidade: 100,
+    minimo: 50,
     validade: "2026-11-30T00:00:00.000Z",
     custo: 142.00
   },
@@ -106,7 +106,7 @@ let insumosMock = [
     nome: "Morango congelado 300g",
     categoria: "Frutas",
     lote: "LT-0432",
-    quantidade: 10,
+    quantidade: 30,
     minimo: 15,
     validade: "2026-11-30T00:00:00.000Z",
     custo: 142.00
