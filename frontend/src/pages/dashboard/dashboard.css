@@ -1193,3 +1193,570 @@
     flex-wrap: wrap;
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   GERENCIAR METAS (botão + popup)
+   COLE ESTE BLOCO NO FINAL DO dashboard.css
+   Obs.: as classes do popup começam com "gm" (gerenciar metas)
+   para não conflitar com nenhuma outra tela.
+========================================================= */
+
+/* ---------- botão "Gerenciar" no card "Metas do mês" ---------- */
+.botaoGerenciarMetas {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 14px;
+  border: 1px solid #EDE3E1;
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: #7A6E6C;
+  font: 600 12px "Inter", sans-serif;
+  cursor: pointer;
+  box-shadow: 0 1px 3px rgba(60, 20, 20, 0.06);
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.botaoGerenciarMetas:hover {
+  background: #FBEAED;
+  border-color: #F0C4CC;
+  color: #8E1027;
+  transform: translateY(-1px);
+}
+
+.botaoGerenciarMetas:active {
+  transform: translateY(0);
+}
+
+.botaoGerenciarMetas:focus-visible {
+  outline: 2px solid #8E1027;
+  outline-offset: 2px;
+}
+
+.botaoGerenciarMetas svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* a barra do card acompanha a mudança de valor suavemente */
+.barraMeta div {
+  transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.metasVazio {
+  margin: 8px 0 0;
+  padding: 24px 16px;
+  border: 1px dashed #E0CFCC;
+  border-radius: 12px;
+  text-align: center;
+  font: 400 13px/1.5 "Inter", sans-serif;
+  color: #7A6E6C;
+}
+
+/* ---------- fundo escurecido ---------- */
+.gmOverlay {
+  position: fixed;
+  inset: 0;
+  z-index: 1100; /* acima do header (998) e da sidebar (999) */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  background: rgba(43, 23, 26, 0.45);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  font-family: "Inter", sans-serif;
+  animation: gmFundoEntrar 0.2s ease both;
+}
+
+.gmOverlay.saindo {
+  animation: gmFundoSair 0.16s ease both;
+}
+
+/* ---------- janela ---------- */
+.gmJanela {
+  display: flex;
+  flex-direction: column;
+  width: min(760px, 100%);
+  max-height: min(86vh, 800px);
+  background: #FFFFFF;
+  border: 1px solid #EDE3E1;
+  border-radius: 18px;
+  box-shadow: 0 24px 60px rgba(60, 20, 20, 0.28);
+  overflow: hidden;
+  color: #2B2B2B;
+  animation: gmJanelaEntrar 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.gmOverlay.saindo .gmJanela {
+  animation: gmJanelaSair 0.16s ease both;
+}
+
+.gmJanela :focus-visible {
+  outline: 2px solid #8E1027;
+  outline-offset: 2px;
+  border-radius: 8px;
+}
+
+@keyframes gmFundoEntrar { from { opacity: 0; } to { opacity: 1; } }
+@keyframes gmFundoSair   { from { opacity: 1; } to { opacity: 0; } }
+
+@keyframes gmJanelaEntrar {
+  from { opacity: 0; transform: translateY(24px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes gmJanelaSair {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(14px) scale(0.98); }
+}
+
+/* ---------- cabeçalho ---------- */
+.gmCabecalho {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 24px 24px 12px;
+}
+
+.gmTitulo {
+  margin: 0;
+  font: 600 20px "Inter", sans-serif;
+  letter-spacing: -0.01em;
+  color: #2B2B2B;
+}
+
+.gmSubtitulo {
+  margin: 4px 0 0;
+  font-size: 13px;
+  color: #7A6E6C;
+}
+
+.gmBotaoX {
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: none;
+  border-radius: 10px;
+  background: transparent;
+  color: #7A6E6C;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.gmBotaoX:hover {
+  background: #F6F2F1;
+  color: #2B2B2B;
+}
+
+.gmBotaoX svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* ---------- corpo (rola se tiver muitas metas) ---------- */
+.gmForm {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+}
+
+.gmCorpo {
+  flex: 1;
+  min-height: 0;
+  padding: 4px 24px 20px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #E0CFCC transparent;
+}
+
+.gmVazio {
+  margin: 12px 0 0;
+  padding: 28px 16px;
+  border: 1px dashed #E0CFCC;
+  border-radius: 12px;
+  text-align: center;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #7A6E6C;
+}
+
+/* cartão de cada meta */
+.gmMeta {
+  margin-top: 12px;
+  padding: 16px;
+  border: 1px solid #EDE3E1;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFFAFA 100%);
+}
+
+.gmMetaTopo {
+  display: flex;
+  align-items: flex-end;
+  gap: 12px;
+}
+
+.gmCampoNome {
+  flex: 1;
+}
+
+.gmCampos {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.gmCampo {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.gmRotulo {
+  font: 600 12px "Inter", sans-serif;
+  color: #7A6E6C;
+}
+
+.gmInput,
+.gmSelect {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  box-sizing: border-box;
+  border: 1px solid #EDE3E1;
+  border-radius: 10px;
+  background-color: #FFFFFF;
+  color: #2B2B2B;
+  font: 400 14px "Inter", sans-serif;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.gmInput::placeholder {
+  color: #A39896;
+}
+
+.gmInput:hover,
+.gmSelect:hover {
+  border-color: #E0CFCC;
+}
+
+.gmInput:focus,
+.gmSelect:focus {
+  outline: none;
+  border-color: #8E1027;
+  box-shadow: 0 0 0 3px rgba(142, 16, 39, 0.12);
+}
+
+.gmInput[aria-invalid="true"] {
+  border-color: #D26A6A;
+  box-shadow: 0 0 0 3px rgba(210, 106, 106, 0.15);
+}
+
+.gmSelect {
+  padding-right: 34px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237A6E6C' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* "R$" dentro do campo, quando o tipo é valor em reais */
+.gmInputWrap {
+  position: relative;
+}
+
+.gmPrefixo {
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font: 500 13px "Inter", sans-serif;
+  color: #A39896;
+  pointer-events: none;
+}
+
+.gmInputWrap.comPrefixo .gmInput {
+  padding-left: 36px;
+}
+
+.gmErro {
+  margin: 0;
+  font: 500 12px "Inter", sans-serif;
+  color: #B91C1C;
+}
+
+/* botão de remover */
+.gmRemover {
+  width: 42px;
+  height: 42px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  border: 1px solid #EDE3E1;
+  border-radius: 10px;
+  background: #FFFFFF;
+  color: #A39896;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+}
+
+.gmRemover:hover {
+  background: #FDE8EA;
+  border-color: #F6C9CF;
+  color: #B91C1C;
+}
+
+.gmRemover svg {
+  width: 17px;
+  height: 17px;
+}
+
+/* prévia do progresso (muda enquanto digita) */
+.gmPreview {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+}
+
+.gmPreviewBarra {
+  flex: 1;
+  height: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: #F0E4E3;
+}
+
+.gmPreviewBarra div {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #8E1027 0%, #B3213B 100%);
+  transition: width 0.3s ease;
+}
+
+.gmPreviewPct {
+  min-width: 44px;
+  text-align: right;
+  font: 700 12px "Inter", sans-serif;
+  font-variant-numeric: tabular-nums;
+  color: #2B2B2B;
+}
+
+/* adicionar meta */
+.gmAdicionar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 14px;
+  padding: 13px;
+  box-sizing: border-box;
+  border: 1px dashed #E0CFCC;
+  border-radius: 14px;
+  background: transparent;
+  color: #8E1027;
+  font: 600 13px "Inter", sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.gmAdicionar:hover:not(:disabled) {
+  background: #FBEAED;
+  border-color: #F0C4CC;
+}
+
+.gmAdicionar:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.gmAdicionar svg {
+  width: 16px;
+  height: 16px;
+}
+
+.gmDica {
+  margin: 8px 0 0;
+  text-align: center;
+  font-size: 12px;
+  color: #A39896;
+}
+
+/* ---------- rodapé ---------- */
+.gmRodape {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 16px 24px;
+  border-top: 1px solid #F3ECEA;
+  background: #FDFAF9;
+}
+
+.gmAcoes {
+  display: flex;
+  gap: 10px;
+}
+
+.gmBotaoRestaurar {
+  padding: 8px 10px;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #7A6E6C;
+  font: 600 13px "Inter", sans-serif;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.gmBotaoRestaurar:hover {
+  background: #F6F2F1;
+  color: #2B2B2B;
+}
+
+.gmBotaoSecundario,
+.gmBotaoPrimario {
+  height: 40px;
+  padding: 0 22px;
+  border-radius: 999px;
+  font: 600 13px "Inter", sans-serif;
+  cursor: pointer;
+}
+
+.gmBotaoSecundario {
+  border: 1px solid #E0CFCC;
+  background: #FFFFFF;
+  color: #8E1027;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.gmBotaoSecundario:hover {
+  background: #FBEAED;
+  border-color: #F0C4CC;
+  transform: translateY(-1px);
+}
+
+.gmBotaoPrimario {
+  border: none;
+  color: #FFFFFF;
+  background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 45%, #B3213B 100%);
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  box-shadow: 0 2px 6px rgba(142, 16, 39, 0.25);
+  transition: background-position 0.5s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.gmBotaoPrimario:hover {
+  background-position: 100% 50%;
+  box-shadow: 0 4px 12px rgba(142, 16, 39, 0.35);
+  transform: translateY(-1px);
+}
+
+/* ---------- aviso "Metas atualizadas" ---------- */
+.gmToast {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 28px;
+  width: fit-content;
+  max-width: calc(100% - 32px);
+  margin: 0 auto;
+  z-index: 1200;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: #2B2B2B;
+  color: #FFFFFF;
+  font: 500 14px "Inter", sans-serif;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  animation: gmToastEntrar 0.25s ease both;
+}
+
+@keyframes gmToastEntrar {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- acessibilidade e telas pequenas ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .gmOverlay,
+  .gmOverlay.saindo,
+  .gmJanela,
+  .gmOverlay.saindo .gmJanela,
+  .gmToast {
+    animation: none;
+  }
+
+  .botaoGerenciarMetas,
+  .gmBotaoPrimario,
+  .gmBotaoSecundario,
+  .barraMeta div {
+    transition: none;
+  }
+}
+
+@media (max-width: 640px) {
+  .gmOverlay {
+    padding: 12px;
+  }
+
+  .gmJanela {
+    max-height: 92vh;
+  }
+
+  .gmCabecalho,
+  .gmCorpo,
+  .gmRodape {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .gmCampos {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .gmCampos .gmCampo:first-child {
+    grid-column: 1 / -1;
+  }
+
+  .gmRodape {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .gmAcoes {
+    flex-direction: column-reverse;
+  }
+
+  .gmBotaoSecundario,
+  .gmBotaoPrimario {
+    width: 100%;
+  }
+}

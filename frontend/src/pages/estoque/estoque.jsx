@@ -9,12 +9,12 @@ import Select from "../../componentes/Select/Select.jsx";
 import { useState, useEffect } from "react";
 
 function Estoque() {
-    // Estados para armazenar os dados do estoque
+    // Dados do estoque
     const [insumos, setInsumos] = useState([]);
     const [carregando, setCarregando] = useState(true);
     const [erro, setErro] = useState("");
-    
-    // Estados mínimos para controlar os seletores de filtros
+
+    // Filtros
     const [busca, setBusca] = useState("");
     const [categoriaSelecionada, setCategoriaSelecionada] = useState("");
 
@@ -44,7 +44,7 @@ function Estoque() {
                 return resposta.json();
             })
             .then((dados) => {
-                if (dados && Array.isArray(dados.data)) {
+                if (Array.isArray(dados.data)) {
                     setInsumos(dados.data);
                 }
             })
@@ -105,9 +105,18 @@ function Estoque() {
 
     const formatarDataBR = (dataIso) => {
         if (!dataIso) return "";
+
         const partes = dataIso.split("T")[0].split("-");
+
         if (partes.length !== 3) return dataIso;
+
         return `${partes[2]}/${partes[1]}/${partes[0]}`;
+    };
+
+    // Abrir detalhes
+    const abrirDetalhes = (insumo) => {
+        setInsumoSelecionado(insumo);
+        setModalDetalhesAberto(true);
     };
 
     return (
@@ -122,18 +131,22 @@ function Estoque() {
                     <p className="subtituloEstoque">Controle por lote e validade — sistema PEPS (usar primeiro o mais antigo)</p>
 
                     <div className="barraFiltros">
+
                         <div className="ladoEsquerdoFiltros">
+
                             <div className="buscaComIcone">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#870B22" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="lucide lucide-search">
                                     <path d="m21 21-4.34-4.34"/>
                                     <circle cx="11" cy="11" r="8"/>
                                 </svg>
-                                <Input 
-                                    placeholder="Buscar insumo.." 
-                                    required={false} 
+
+                                <Input
+                                    placeholder="Buscar insumo.."
+                                    required={false}
                                     value={busca}
                                     onChange={(e) => setBusca(e.target.value)}
-                                /> 
+                                />
+
                             </div>
 
                             <div className="avisoMinimo">
@@ -142,13 +155,17 @@ function Estoque() {
                                     <path d="M12 9v4"/>
                                     <path d="M12 17h.01"/>
                                 </svg>
+
                                 {abaixoMinimo} abaixo do mínimo
+
                             </div>
+
                         </div>
 
                         <div className="ladoDireitoFiltros">
-                            <Select 
-                                id="selectFiltroInsumo" 
+
+                            <Select
+                                id="selectFiltroInsumo"
                                 options={[
                                     "Todos",
                                     "Farinhas e massas",
@@ -165,7 +182,9 @@ function Estoque() {
                                     "Decorações",
                                     "Outros"
                                 ]}
-                                onChange={(e) => setCategoriaSelecionada(e.target.value)}
+                                onChange={(e) =>
+                                    setCategoriaSelecionada(e.target.value)
+                                }
                             />
 
                             {/* Botão aciona a abertura do pop-up modal */}
@@ -177,9 +196,11 @@ function Estoque() {
                                 Novo insumo
                             </button>
                         </div>
+
                     </div>
 
                     <table className="tabelaEstoque">
+
                         <thead>
                             <tr>
                                 <th>Insumo</th>
@@ -191,7 +212,9 @@ function Estoque() {
                                 <th>Status</th>
                             </tr>
                         </thead>
+
                         <tbody>
+
                             {carregando && (
                                 <tr><td colSpan="7">Carregando estoque...</td></tr>
                             )}
@@ -221,7 +244,9 @@ function Estoque() {
                                 </tr>
                             ))}
                         </tbody>
+
                     </table>
+
                 </div>
             </div>
 

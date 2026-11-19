@@ -1,34 +1,119 @@
-const prisma = require('../lib/prisma');
 
-class caixaController {
-  // Método para criar uma nova transação (Entrada ou Saída). teste
+const transacoes = require('../data/transacoes');
+
+class CaixaController {
+
+  // Cadastrar entrada ou saída
   async create(req, res) {
     try {
-      const { description, amount, type, categoryId, date } = req.body;
+      const {
+        description,
+        amount,
+        type,
+        category,
+        date
+      } = req.body;
 
-      // Validação simples dos campos obrigatórios
-      if (!description || !amount || !type || !date) {
-        return res.status(400).json({ error: 'Preencha todos os campos obrigatórios.' });
+      if (
+        !description ||
+        amount === undefined ||
+        amount === null ||
+        !type ||
+        !date
+      ) {
+        return res.status(400).json({
+          error: 'Preencha todos os campos obrigatórios.'
+        });
       }
 
-      // Regista a transação na base de dados
-      const caixa = await prisma.caixa.create({
-        data: {
-          description,
-          amount: parseFloat(amount), // Garante que é enviado como número decimal
-          type,    
-          categoryId: categoryId || null,
-          date: new Date(date),       // Converte a string de data para objeto Date
-        },
+      const valor = Number(amount);
+
+      if (!Number.isFinite(valor) || valor <= 0) {
+        return res.status(400).json({
+          error: 'Informe um valor válido maior que zero.'
+        });
+      }
+
+      if (!['INCOME', 'EXPENSE'].includes(type)) {
+        return res.status(400).json({
+          error: 'Tipo de transação inválido.'
+        });
+      }
+
+      if (
+        type === 'EXPENSE' &&
+        !['FIXED', 'VARIABLE'].includes(category)
+      ) {
+        return res.status(400).json({
+          error: 'Informe uma categoria válida.'
+        });
+      }
+
+      const dataValida =
+        /^\d{4}-\d{2}-\d{2}$/.test(date) &&
+        !Number.isNaN(Date.parse(`${date}T00:00:00`)) &&
+        new Date(`${date}T00:00:00`).toISOString().slice(0, 10) === date;
+
+      if (!dataValida) {
+        return res.status(400).json({
+          error: 'Data da transação inválida.'
+        });
+      }
+
+      const caixa = transacoes.add({
+        description: description.trim(),
+        amount: valor,
+        type,
+        category: type === 'EXPENSE' ? category : null,
+        date
       });
 
-      // Retorna a transação criada com código HTTP 201 (Created)
-      return res.status(201).json(transaction);
+      return res.status(201).json({
+        message: 'Transação registrada com sucesso!',
+        transaction: caixa
+      });
+
     } catch (error) {
       console.error('Erro no caixaController:', error);
-      return res.status(500).json({ error: 'Erro ao registrar a transação.' });
+
+      return res.status(500).json({
+        error: 'Erro ao registrar a transação.'
+      });
     }
+  }
+
+  // Listar transações
+  async getAll(req, res) {
+    return res.json(transacoes.getAll());
+  }
+
+  // Buscar por ID
+  async getById(req, res) {
+    const caixa = transacoes.getById(req.params.id);
+
+    if (!caixa) {
+      return res.status(404).json({
+        error: 'Transação não encontrada.'
+      });
+    }
+
+    return res.json(caixa);
+  }
+
+  // Excluir transação
+  async delete(req, res) {
+    const removida = transacoes.remove(req.params.id);
+
+    if (!removida) {
+      return res.status(404).json({
+        error: 'Transação não encontrada.'
+      });
+    }
+
+    return res.json({
+      message: 'Transação excluída com sucesso!'
+    });
   }
 }
 
-module.exports = new caixaController();
+module.exports = new CaixaController();

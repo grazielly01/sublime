@@ -20,9 +20,8 @@
   padding: 34px 24px 50px;
 }
 
-/* =====================================================
-   TÍTULO COM SETA DE VOLTAR. APROVADO
-===================================================== */
+
+
 
 .topoFluxoCaixaDespesa {
   display: flex;
@@ -62,9 +61,7 @@
   margin: 0;
 }
 
-/* =====================================================
-   CARD DA LISTA
-===================================================== */
+/* CARD DA LISTA*/
 
 .listaCompletaDespesas {
   background: #fff9f7;
@@ -150,9 +147,7 @@
   flex-shrink: 0;
 }
 
-/* =====================================================
-   RESPONSIVIDADE
-===================================================== */
+/* RESPONSIVIDADE */
 
 @media (max-width: 700px) {
   .conteudoFluxoCaixaDespesa {

@@ -1,88 +1,18 @@
-.tudoFluxoCaixaSaida {
-  display: flex;
-  min-height: 100vh;
-  width: 100%;
-  background: #fff5f3;
-}
-
-.tudoMenosSidebar {
-  flex: 1;
-  width: 100%;
-  min-width: 0;
-  display: flex;
-  flex-direction: column;
-}
-
-.conteudoFluxoCaixaSaida {
-  flex: 1;
-  width: 100%;
-  box-sizing: border-box;
-  padding: 34px 24px 50px;
-}
-
-/* =====================================================
-   TÍTULO COM SETA DE VOLTAR. APROVADO
-===================================================== */
-
-.topoFluxoCaixaSaida {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  margin-bottom: 25px;
-}
-
-.botaoVoltarSaida {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 36px;
-  height: 36px;
-  border: none;
-  background: transparent;
-  color: #8e0d24;
-  cursor: pointer;
-  flex-shrink: 0;
-  border-radius: 50%;
-  transition: background 0.15s ease, transform 0.15s ease;
-}
-
-.botaoVoltarSaida:hover {
-  background: #ffe5e8;
-  transform: translateX(-2px);
-}
-
-.botaoVoltarSaida svg {
-  width: 26px;
-  height: 26px;
-}
-
-.tituloFluxoCaixaSaida {
-  color: #8e0d24;
-  font: 700 32px "Playfair Display", serif;
-  margin: 0;
-}
-
-/* =====================================================
-   CARD DE DETALHES
-===================================================== */
+/*DETALHES DE SAÍDA */
 
 .detalhesSaida {
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  background: #fff9f7;
-  border: 1px solid #efc5c8;
-  border-radius: 14px;
-  padding: 30px 40px;
+  gap: 18px;
+  background: transparent;
   box-sizing: border-box;
   width: 100%;
-  box-shadow: 0 2px 10px rgba(80, 20, 30, 0.06);
 }
 
 /* Linhas do grid */
 .linhaSaida {
   display: grid;
-  gap: 18px;
+  gap: 16px;
 }
 
 .linhaSaida.colunas4 {
@@ -117,6 +47,7 @@
 
 .detalhesSaida input:read-only,
 .detalhesSaida textarea:read-only {
+  background: #fff9f7;
   cursor: default;
 }
 
@@ -138,7 +69,8 @@
   width: 100%;
 }
 
-/* Campo valor com prefixo R$ centralizado */
+
+
 .campoValor .wrapperInput input {
   padding-left: 34px;
 }
@@ -153,7 +85,7 @@
   pointer-events: none;
 }
 
-/* Campo data com ícone centralizado */
+/* Campo data com ícone*/
 .campoData .wrapperInput input {
   padding-left: 34px;
 }
@@ -169,9 +101,7 @@
   pointer-events: none;
 }
 
-/* =====================================================
-   ÁREA DE UPLOAD (mesmo padrão das outras telas)
-===================================================== */
+/* ÁREA DE UPLOAD */
 
 .areaUpload {
   display: flex;
@@ -182,7 +112,7 @@
   border: 1.5px dashed #efb4bd;
   border-radius: 10px;
   background: #ffe9ec;
-  padding: 26px 16px;
+  padding: 20px 16px;
   cursor: pointer;
   transition: background 0.15s ease, border-color 0.15s ease;
   text-align: center;
@@ -210,20 +140,18 @@
 }
 
 .nomeArquivo {
-  margin-top: 8px;
+  margin-top: 6px;
   font: 500 12px "Inter", sans-serif;
   color: #21813a;
 }
 
-/* =====================================================
-   AÇÕES
-===================================================== */
+/*AÇÕES DO POP-UP DE SAÍDA */
 
 .acoesSaida {
   display: flex;
   justify-content: flex-end;
   gap: 12px;
-  margin-top: 6px;
+  margin-top: 8px;
 }
 
 .botaoExcluir {
@@ -256,9 +184,22 @@
   background: #80071f;
 }
 
-/* =====================================================
-   RESPONSIVIDADE
-===================================================== */
+.botaoVoltarModalSaida {
+  background: #fff;
+  color: #241416;
+  border: 1px solid #efc5c8;
+  border-radius: 8px;
+  padding: 9px 22px;
+  font: 600 13px "Inter", sans-serif;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.botaoVoltarModalSaida:hover {
+  background: #f8ecee;
+}
+
+/* RESPONSIVIDADE*/
 
 @media (max-width: 900px) {
   .linhaSaida.colunas4 {
@@ -271,15 +212,7 @@
 }
 
 @media (max-width: 560px) {
-  .conteudoFluxoCaixaSaida {
-    padding: 24px 16px 40px;
-  }
-
   .linhaSaida.colunas4 {
     grid-template-columns: 1fr;
-  }
-
-  .tituloFluxoCaixaSaida {
-    font-size: 24px;
   }
 }

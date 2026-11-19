@@ -1,137 +1,149 @@
-// Importamos a instância do Prisma Client configurada
-const prisma = require('../lib/prisma');
 
-class fluxoController {
-  // Método responsável por procurar e calcular os dados do dashboard
-  async getFluxodData(req, res) {
+const transacoes = require('../data/transacoes');
+
+class FluxoController {
+
+  async getFluxoData(req, res) {
     try {
-      // Obtém o mês e ano da query string ou define o mês/ano atual por padrão
-      const month = parseInt(req.query.month) || new Date().getMonth() + 1;
-      const year = parseInt(req.query.year) || new Date().getFullYear();
+      const month = Number(req.query.month) || new Date().getMonth() + 1;
+      const year = Number(req.query.year) || new Date().getFullYear();
 
-      // Cria a data inicial (dia 1 às 00:00:00) e final (último dia do mês às 23:59:59)
-      const startDate = new Date(year, month - 1, 1);
-      const endDate = new Date(year, month, 0, 23, 59, 59);
+      if (
+        !Number.isInteger(month) || month < 1 || month > 12 ||
+        !Number.isInteger(year) || year < 1
+      ) {
+        return res.status(400).json({
+          error: 'Mês ou ano inválido.'
+        });
+      }
 
-    
-      // 1. Procura as transações do mês filtrado com as respetivas categorias
-     
-      const monthTransactions = await prisma.transaction.findMany({
-        where: {
-          date: {
-            gte: startDate, // Maior ou igual ao primeiro dia do mês
-            lte: endDate,   // Menor ou igual ao último dia do mês
-          },
-        },
-        include: {
-          category: true, // Inclui os dados da categoria vinculada
-        },
+      // Filtrar transações do mês
+      const monthTransactions = transacoes.getAll().filter(t => {
+        const [ano, mes] = t.date.split('-').map(Number);
+        return ano === year && mes === month;
       });
 
-      // 2. Cálculo dos KPIs Principais (Entradas, Saídas, Lucro e Margem)
-      
+      // KPIs
       let totalIncome = 0;
       let totalExpenses = 0;
 
-      // Percorre as transações do mês para somar entradas e saídas
-      monthTransactions.forEach((transaction) => {
-        const val = Number(transaction.amount);
-        if (transaction.type === 'INCOME') {
-          totalIncome += val;
-        } else if (transaction.type === 'EXPENSE') {
-          totalExpenses += val;
+      monthTransactions.forEach(t => {
+        if (t.type === 'INCOME') {
+          totalIncome += t.amount;
+        } else if (t.type === 'EXPENSE') {
+          totalExpenses += t.amount;
         }
       });
 
-      // Cálculos de Lucro Líquido e Margem de Lucro (%)
       const netProfit = totalIncome - totalExpenses;
-      const profitMargin = totalIncome > 0 
-        ? Number(((netProfit / totalIncome) * 100).toFixed(1)) 
+
+      const profitMargin = totalIncome > 0
+        ? Number(((netProfit / totalIncome) * 100).toFixed(1))
         : 0;
 
-      // 3. Procura as 5 Movimentações Mais Recentes
+      // Movimentações recentes do mês
+      const recentTransactions = [...monthTransactions]
+        .sort((a, b) => b.date.localeCompare(a.date))
+        .slice(0, 5);
 
-      const recentTransactions = await prisma.transaction.findMany({
-        take: 5,
-        orderBy: { date: 'desc' }, // Mais recentes primeiro
-        select: {
-          id: true,
-          description: true,
-          amount: true,
-          type: true,
-          date: true,
-        },
-      });
+      // Maiores despesas do mês
+      const topExpenses = monthTransactions
+        .filter(t => t.type === 'EXPENSE')
+        .sort((a, b) => b.amount - a.amount)
+        .slice(0, 5);
 
-      // 4. Procura as 5 Maiores Despesas Recentes
- 
-      const topExpenses = await prisma.transaction.findMany({
-        where: { type: 'EXPENSE' },
-        take: 5,
-        orderBy: { amount: 'desc' }, // Maiores valores primeiro
-        select: {
-          id: true,
-          description: true,
-          amount: true,
-          date: true,
-        },
-      });
+      // Despesas fixas e variáveis
+      const fixedList = monthTransactions
+        .filter(t => t.type === 'EXPENSE' && t.category === 'FIXED');
 
+      const variableList = monthTransactions
+        .filter(t => t.type === 'EXPENSE' && t.category === 'VARIABLE');
 
-      // 5. Separação das Despesas em Fixas e Variáveis
-    
-      const fixedList = [];
-      const variableList = [];
-      let totalFixed = 0;
-      let totalVariable = 0;
+      const totalFixed = fixedList.reduce((sum, t) => sum + t.amount, 0);
 
-      // Filtra apenas despesas com categoria associada
-      monthTransactions
-        .filter((t) => t.type === 'EXPENSE' && t.category)
-        .forEach((t) => {
-          const val = Number(t.amount);
-          if (t.category.type === 'FIXED') {
-            fixedList.push({ name: t.category.name, amount: val });
-            totalFixed += val;
-          } else if (t.category.type === 'VARIABLE') {
-            variableList.push({ name: t.category.name, amount: val });
-            totalVariable += val;
-          }
-        });
+      const totalVariable = variableList.reduce((sum, t) => sum + t.amount, 0);
 
       const totalCategoryExpenses = totalFixed + totalVariable;
 
+      // Gráfico: entradas e saídas por dia
+      const daysInMonth = new Date(year, month, 0).getDate();
 
-      // 6. Envia a resposta organizada para o React (Frontend)
+      const chart = {
+        labels: [],
+        income: [],
+        expenses: [],
+        balance: []
+      };
 
+      let accumulatedBalance = 0;
+
+      for (let day = 1; day <= daysInMonth; day++) {
+        const dayTransactions = monthTransactions.filter(t => {
+          const dia = Number(t.date.split('-')[2]);
+          return dia === day;
+        });
+
+        const income = dayTransactions
+          .filter(t => t.type === 'INCOME')
+          .reduce((sum, t) => sum + t.amount, 0);
+
+        const expenses = dayTransactions
+          .filter(t => t.type === 'EXPENSE')
+          .reduce((sum, t) => sum + t.amount, 0);
+
+        accumulatedBalance += income - expenses;
+
+        chart.labels.push(day);
+        chart.income.push(income);
+        chart.expenses.push(expenses);
+        chart.balance.push(accumulatedBalance);
+      }
+
+      // Resposta
       return res.json({
+        period: { month, year },
+
         kpis: {
           totalIncome,
           totalExpenses,
           netProfit,
           profitMargin,
+          finalBalance: netProfit
         },
-        recentTransactions: {
-          all: recentTransactions.map((t) => ({ ...t, amount: Number(t.amount) })),
-          topExpenses: topExpenses.map((t) => ({ ...t, amount: Number(t.amount) })),
-        },
+
+        chart,
+
+        recentTransactions,
+
+        topExpenses,
+
         expensesBreakdown: {
           totals: {
             fixed: totalFixed,
             variable: totalVariable,
-            fixedPercentage: totalCategoryExpenses > 0 ? Number(((totalFixed / totalCategoryExpenses) * 100).toFixed(1)) : 0,
-            variablePercentage: totalCategoryExpenses > 0 ? Number(((totalVariable / totalCategoryExpenses) * 100).toFixed(1)) : 0,
+
+            fixedPercentage: totalCategoryExpenses > 0
+              ? Number(((totalFixed / totalCategoryExpenses) * 100).toFixed(1))
+              : 0,
+
+            variablePercentage: totalCategoryExpenses > 0
+              ? Number(((totalVariable / totalCategoryExpenses) * 100).toFixed(1))
+              : 0
           },
+
           fixedList,
-          variableList,
-        },
+          variableList
+        }
       });
+
     } catch (error) {
-      console.error('Erro no DashboardController:', error);
-      return res.status(500).json({ error: 'Erro ao carregar dados do dashboard.' });
+      console.error('Erro no FluxoController:', error);
+
+      return res.status(500).json({
+        error: 'Erro ao carregar dados do fluxo de caixa.'
+      });
     }
   }
 }
 
-// Exporta uma instância única do controller
-module.exports = new fluxoController();
+module.exports = new FluxoController();

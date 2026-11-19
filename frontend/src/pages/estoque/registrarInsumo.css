@@ -158,3 +158,219 @@
 .botaoContorno .button:hover{
     background-color: #fdf0ee;
 }
+
+
+
+
+
+
+
+
+
+/* Container Principal do Modal */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(43, 43, 43, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+  animation: fadeInModal 0.25s ease forwards;
+}
+
+.modalConteudo {
+  background: var(--cor-card, #FFFFFF);
+  border: 1px solid var(--cor-borda, #EDE3E1);
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(60, 20, 20, 0.15);
+  width: 92%;
+  max-width: 780px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  animation: slideUpModal 0.3s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.modalCabecalho {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 28px;
+  border-bottom: 1px solid #F3ECEA;
+  background: #FFF7F8;
+}
+
+.modalCabecalho h2 {
+  margin: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 20px;
+  font-weight: 700;
+  color: #8E1027;
+}
+
+.botaoFecharModal {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  color: #7A6E6C;
+  cursor: pointer;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background 0.2s, color 0.2s;
+}
+
+.botaoFecharModal:hover {
+  background: #FBEAED;
+  color: #8E1027;
+}
+
+.modalCorpo {
+  padding: 28px;
+  overflow-y: auto;
+  max-height: calc(85vh - 80px);
+}
+
+
+
+
+.formModalInsumo {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.modalGridLinha1 {
+  display: grid;
+  grid-template-columns: 2fr 1.2fr 1fr;
+  gap: 16px;
+}
+
+.modalGridLinha2 {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  gap: 16px;
+}
+
+
+
+
+.modalCorpo .campoRegistrar {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.modalCorpo .campoRegistrar label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2B2B2B;
+  margin-bottom: 0;
+}
+
+.modalCorpo .input,
+.modalCorpo select,
+.modalCorpo #selectRegistrarInsumo {
+  width: 100% !important;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #EDE3E1;
+  border-radius: 10px;
+  background: #FFFFFF;
+  font: 400 14px "Inter", sans-serif;
+  color: #2B2B2B;
+  box-sizing: border-box;
+}
+
+.modalCorpo input:focus, 
+.modalCorpo select:focus {
+  outline: none;
+  border-color: #8E1027;
+  box-shadow: 0 0 0 3px rgba(142, 16, 39, 0.1);
+}
+
+.modalCorpo #inputValidade {
+  width: 100% !important;
+}
+
+.modalCorpo #selectRegistrarInsumo {
+  width: 100% !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%237A6E6C' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+
+
+.modalRodopedioBotoes {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 10px;
+  padding-top: 20px;
+  border-top: 1px solid #F3ECEA;
+ 
+}
+
+.modalRodopedioBotoes .button {
+  height: 42px;
+  padding: 0 24px;
+  border-radius: 999px;
+  font: 600 13px "Inter", sans-serif;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.modalBotaoCancelar {
+  background-color: #FFFFFF !important;
+  border: 1px solid #8E1027 !important;
+  color: #8E1027 !important;
+}
+
+.modalBotaoCancelar:hover {
+  background-color: #FAF6F5 !important;
+  color: #2B2B2B !important;
+}
+
+.modalBotaoSalvar {
+  background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 45%, #B3213B 100%) !important;
+  color: #FFFFFF !important;
+  border: none !important;
+  box-shadow: 0 2px 6px rgba(142, 16, 39, 0.25);
+}
+
+.modalBotaoSalvar:hover {
+  box-shadow: 0 4px 12px rgba(142, 16, 39, 0.35);
+  transform: translateY(-1px);
+}
+
+@keyframes fadeInModal {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUpModal {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .modalGridLinha1, .modalGridLinha2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+

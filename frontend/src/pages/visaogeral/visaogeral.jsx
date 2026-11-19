@@ -4,7 +4,7 @@ import Header from "../../componentes/Header/Header.jsx";
 import Button from "../../componentes/Button/Button.jsx";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function VisaoGeral() {
   const navigate = useNavigate();
@@ -12,6 +12,52 @@ function VisaoGeral() {
   // Estados para controlar os dois popups separadamente
   const [modalMetasAberto, setModalMetasAberto] = useState(false);
   const [modalPedidosAberto, setModalPedidosAberto] = useState(false); // Novo estado para Pedidos
+
+  //esses 2 guardam: a quantidade de pedidos abertos e a de itens em baixa
+  const [pedidosAbertos, setPedidosAbertos] = useState("...");
+  const [itensEmBaixa, setItensEmBaixa] = useState("...");
+
+  //busca os indicadores da tela Visao geral assim que a tela abre
+  useEffect(() => {
+
+  //função que busca os dados no backend
+  const carregarIndicadores = async () => {
+    try {
+
+      //faz a requisição pra rota do dashboard
+      const resposta = await fetch("http://localhost:3000/dashboard/resumo");
+
+      //verifica se a requisição funcionou
+      if (!resposta.ok) {
+        throw new Error("Erro ao buscar os indicadores.");
+      }
+
+      //converte a resposta para JSON
+      const resultado = await resposta.json();
+
+      //atualiza a quantidade de pedidos abertos
+      setPedidosAbertos(resultado.data.pedidosAbertos);
+
+      //atualiza a quantidade de itens em baixa
+      setItensEmBaixa(resultado.data.itensEmBaixa);
+
+    } catch (erro) {
+
+      //mostra o erro no console se der erro
+      console.error("Erro ao carregar indicadores:", erro);
+
+      //mostra um traço nos cards caso não consiga carregar
+      setPedidosAbertos("—");
+      setItensEmBaixa("—");
+
+    }
+  };
+
+  //executa a const/a busca
+  carregarIndicadores();
+
+}, []);
+
 
   const kpis = [
     {
@@ -28,7 +74,7 @@ function VisaoGeral() {
     },
     {
       titulo: "Pedidos abertos",
-      valor: "23",
+      valor: pedidosAbertos,     //ao inves dum valor fixo como estava antes, agr o valor é pego da variavel "pedidosAbertos"
       variacao: "+5 hoje",
       tipo: "positivo",
       icone: (
@@ -56,7 +102,7 @@ function VisaoGeral() {
     },
     {
       titulo: "Itens em baixa",
-      valor: "4",
+      valor: itensEmBaixa,     //ao inves dum valor fixo como estava antes, agr o valor é pego da variavel "itensEmBaixa"
       variacao: "Reposição urgente",
       tipo: "negativo",
       icone: (
@@ -71,7 +117,7 @@ function VisaoGeral() {
 
   const pedidosRecentes = [
     { cliente: "Padaria Seu Zé", itens: "45 bolos formigueiro", status: "Em produção", horario: "Hoje 16:30h" },
-    { cliente: "Padaria Estrella", itens: "30 donuts m., 30 donuts c.", status: "Não iniciado", horario: "13/06 09h" },
+    { cliente: "Padaria Estrella", itens: "30 donuts m., 30 donuts c.", status: "Aguardando", horario: "13/06 09h" },
     { cliente: "Delícias da Cidinha", itens: "30 ovos de páscoa", status: "Pronto", horario: "Hoje 17h" },
     { cliente: "Confeitaria Arco-Íris", itens: "15 cupcakes, 20 cookies", status: "Entregue", horario: "Ontem 08h" },
   ];
@@ -87,7 +133,7 @@ function VisaoGeral() {
     {
       titulo: "Zerar todos os pedidos atrasados em 4 dias",
       descricao: "Zerar os 5 pedidos atrasados: Mousse de limão, Donuts Formigueiro, Bolos de Cenoura e Copos da Felicidade",
-      status: "Não iniciado",
+      status: "Aguardando",
       horario: "15/09 09h",
     },
     {
