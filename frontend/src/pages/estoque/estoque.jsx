@@ -1,4 +1,3 @@
-
 import "./estoque.css";
 import "./registrarInsumo.css";
 import "./detalhesInsumo.css";

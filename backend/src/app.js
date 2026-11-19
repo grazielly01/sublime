@@ -9,6 +9,7 @@ const producaoRoutes = require('./routes/producaoRoutes');
 const pedidoRoutes = require('./routes/pedidoRoutes'); 
 const alertasRoutes = require('./routes/alertasRoutes'); 
 const caixaRoutes = require('./routes/caixaRoutes');
+const visaoGeralRoutes = require('./routes/visaoGeralRoutes');
 const app = express();
 
 // Middlewares
@@ -28,6 +29,7 @@ app.use('/producao', producaoRoutes);
 app.use('/pedidos', pedidoRoutes); 
 app.use('/alertas', alertasRoutes);
 app.use('/caixa', caixaRoutes);
+app.use('/visaoGeral', visaoGeralRoutes);
 
 // Exporta a aplicação configurada
 module.exports = app;
