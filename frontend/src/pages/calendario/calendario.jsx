@@ -361,9 +361,7 @@ function Calendario() {
         </div>
       </div>
 
-      {/* =====================================================
-         POP-UP 1: DETALHES DO EVENTO
-      ===================================================== */}
+      {/* pop up 1 detalhes do evento */}
       {modalDetalhesEventoAberto && eventoSelecionado && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "740px" }}>
@@ -495,9 +493,7 @@ function Calendario() {
         </div>
       )}
 
-      {/* =====================================================
-         POP-UP 2: CONFIRMAR EXCLUSÃO DO EVENTO
-      ===================================================== */}
+      {/* pop up 2, exlusao do evento */}
       {modalConfirmarExclusaoAberto && eventoSelecionado && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "460px" }}>
@@ -569,9 +565,7 @@ function Calendario() {
         </div>
       )}
 
-      {/* =====================================================
-         POP-UP 3: REGISTRAR NOVO EVENTO
-      ===================================================== */}
+      {/*pop up registrar novo evento*/}
       {modalNovoEventoAberto && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "740px" }}>

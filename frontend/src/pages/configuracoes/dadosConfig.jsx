@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import "./dadosConfig.css";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
@@ -8,20 +8,51 @@ import { motion } from "motion/react";
 function DadosConfig() {
   const navigate = useNavigate();
 
+  // Estados dos dados da indústria
+  const [razaoSocial, setRazaoSocial] = useState("Sweet Sunset Indústria de Confeitaria LTDA");
+  const [nomeFantasia, setNomeFantasia] = useState("Sweet Sunset");
+  const [cnpj, setCnpj] = useState("12.345.678/9000-90");
+  const [inscricaoEstadual, setInscricaoEstadual] = useState("12.345.678/9000-90");
+  const [inscricaoMunicipal, setInscricaoMunicipal] = useState("12.345.678/9000-90");
+  const [dataFundacao, setDataFundacao] = useState("01/02/2021");
+  const [telefone, setTelefone] = useState("(11) 98765-4321");
+  const [email, setEmail] = useState("Contato@SweetSunset.com.br");
+
+  const [cep, setCep] = useState("01234-567");
+  const [rua, setRua] = useState("Rua da Alegria");
+  const [numero, setNumero] = useState("012");
+  const [complemento, setComplemento] = useState("-");
+  const [bairro, setBairro] = useState("Bairro da Riqueza");
+  const [cidade, setCidade] = useState("São Paulo");
+  const [estado, setEstado] = useState("SP");
+
+  // Estados para controlar os modais
+  const [modalCadastraisAberto, setModalCadastraisAberto] = useState(false);
+  const [modalEnderecoAberto, setModalEnderecoAberto] = useState(false);
+
+  const salvarCadastrais = (e) => {
+    e.preventDefault();
+    setModalCadastraisAberto(false);
+  };
+
+  const salvarEndereco = (e) => {
+    e.preventDefault();
+    setModalEnderecoAberto(false);
+  };
+
   return (
     <div className="tudoDadosConfig">
       <Sidebar paginaAtiva="Configurações" />
 
-      <div className="tudoMenosSidebar tudoMenosSidebarDadosConfig">
+      <div className="tudoMenosSidebar">
         <Header nomeIndustria="Sweet Sunset" />
 
         <main className="conteudoDadosConfig">
-          {/* Topo com Seta de Voltar e Título. APROVANDO */}
           <div className="topoDadosConfig">
             <button
               type="button"
               className="botaoVoltarConfig"
-              onClick={() => navigate(-1)}
+              onClick={() => navigate("/configuracoes")}
               title="Voltar"
             >
               ←
@@ -29,158 +60,269 @@ function DadosConfig() {
             <h1 className="tituloDadosConfig">Dados da indústria</h1>
           </div>
 
-          {/* Card Único envelopando os dados */}
-          <div className="cardDadosConfig">
-            {/* --- SEÇÃO: DADOS CADASTRAIS --- */}
-            <section className="secaoBlocoConfig">
-              <h2 className="subtituloDadosConfig">Dados cadastrais</h2>
+          {/* Lista de botões divididos */}
+          <div className="cardsDadosConfigLista">
+            <div
+              className="cardOpcaoDados"
+              onClick={() => setModalCadastraisAberto(true)}
+            >
+              <h2>Dados cadastrais</h2>
+              <p>Razão social, CNPJ, Inscrição estadual, Contatos...</p>
+            </div>
 
-              {/* Linha 1 */}
-              <div className="linhaGrid2">
-                <label className="campoFormConfig">
-                  <span>Razão social:</span>
-                  <input
-                    type="text"
-                    defaultValue="Sweet Sunset Indústria de Confeitaria LTDA"
-                  />
-                </label>
-                <label className="campoFormConfig">
-                  <span>Nome fantasia:</span>
-                  <input type="text" defaultValue="Sweet Sunset" />
-                </label>
-              </div>
-
-              {/* Linha 2 */}
-              <div className="linhaGrid3">
-                <label className="campoFormConfig">
-                  <span>CNPJ:</span>
-                  <input type="text" defaultValue="12.345.678/9000-90" />
-                </label>
-                <label className="campoFormConfig">
-                  <span>Inscrição estadual:</span>
-                  <input type="text" defaultValue="12.345.678/9000-90" />
-                </label>
-                <label className="campoFormConfig">
-                  <span>Inscrição municipal:</span>
-                  <input type="text" defaultValue="12.345.678/9000-90" />
-                </label>
-              </div>
-
-              {/* Linha 3 */}
-              <div className="linhaGrid3">
-                <label className="campoFormConfig">
-                  <span>Data de fundação:</span>
-                  <div className="inputComIconeEsquerda">
-                    <svg
-                      className="iconeInput"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                      <line x1="16" y1="2" x2="16" y2="6" />
-                      <line x1="8" y1="2" x2="8" y2="6" />
-                      <line x1="3" y1="10" x2="21" y2="10" />
-                    </svg>
-                    <input type="text" defaultValue="01/02/2021" />
-                  </div>
-                </label>
-                <label className="campoFormConfig">
-                  <span>Telefone:</span>
-                  <input type="tel" defaultValue="(11) 98765-4321" />
-                </label>
-                <label className="campoFormConfig">
-                  <span>E-mail:</span>
-                  <input
-                    type="email"
-                    defaultValue="Contato@SweetSunset.com.br"
-                  />
-                </label>
-              </div>
-            </section>
-
-            {/* --- SEÇÃO: ENDEREÇO --- */}
-            <section className="secaoBlocoConfig">
-              <h2 className="subtituloDadosConfig">Endereço</h2>
-
-              {/* Linha 1 Endereço */}
-              <div className="linhaGridEndereco1">
-                <label className="campoFormConfig">
-                  <span>CEP:</span>
-                  <div className="inputComIconeDireita">
-                    <input type="text" defaultValue="01234-567" />
-                    <svg
-                      className="iconeLupa"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <circle cx="11" cy="11" r="8" />
-                      <line x1="21" y1="21" x2="16.65" y2="16.65" />
-                    </svg>
-                  </div>
-                </label>
-                <label className="campoFormConfig">
-                  <span>Rua/avenida:</span>
-                  <input type="text" defaultValue="Rua da Alegria" />
-                </label>
-                <label className="campoFormConfig">
-                  <span>Número:</span>
-                  <input type="text" defaultValue="012" />
-                </label>
-                <label className="campoFormConfig">
-                  <span>Complemento:</span>
-                  <input type="text" defaultValue="-" />
-                </label>
-              </div>
-
-              {/* Linha 2 Endereço */}
-              <div className="linhaGridEndereco2">
-                <label className="campoFormConfig">
-                  <span>Bairro:</span>
-                  <input type="text" defaultValue="Bairro da Riqueza" />
-                </label>
-                <label className="campoFormConfig">
-                  <span>Cidade:</span>
-                  <div className="containerSelect">
-                    <select defaultValue="São Paulo">
-                      <option value="São Paulo">São Paulo</option>
-                    </select>
-                  </div>
-                </label>
-                <label className="campoFormConfig">
-                  <span>Estado:</span>
-                  <div className="containerSelect">
-                    <select defaultValue="SP">
-                      <option value="SP">SP</option>
-                    </select>
-                  </div>
-                </label>
-
-                {/* Botão Salvar Alinhado na mesma linha */}
-                <div className="containerBotaoSalvar">
-                  <button type="button" className="botaoSalvarConfig">
-                    <svg
-                      className="iconeSalvar"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    >
-                      <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
-                      <polyline points="17 21 17 13 7 13 7 21" />
-                      <polyline points="7 3 7 8 15 8" />
-                    </svg>
-                    Salvar alterações
-                  </button>
-                </div>
-              </div>
-            </section>
+            <div
+              className="cardOpcaoDados"
+              onClick={() => setModalEnderecoAberto(true)}
+            >
+              <h2>Endereço</h2>
+              <p>CEP, Rua, Número, Bairro, Cidade, Estado...</p>
+            </div>
           </div>
         </main>
       </div>
+
+      {/* =====================================================
+         POP-UP MODAL: EDITAR DADOS CADASTRAIS
+      ===================================================== */}
+      {modalCadastraisAberto && (
+        <div className="modalOverlay">
+          <div className="modalConteudo" style={{ maxWidth: "860px" }}>
+            <div className="modalCabecalho">
+              <h2>Editar dados cadastrais</h2>
+              <button
+                type="button"
+                className="botaoFecharModal"
+                onClick={() => setModalCadastraisAberto(false)}
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className="modalCorpo">
+              <form onSubmit={salvarCadastrais} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                <div style={{ display: "flex", gap: "16px" }}>
+                  <div style={{ flex: 2, display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>Razão social:</label>
+                    <input
+                      type="text"
+                      value={razaoSocial}
+                      onChange={(e) => setRazaoSocial(e.target.value)}
+                      required
+                      style={{ height: "40px", padding: "0 12px", border: "1px solid #c9939a", borderRadius: "8px" }}
+                    />
+                  </div>
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>Nome fantasia:</label>
+                    <input
+                      type="text"
+                      value={nomeFantasia}
+                      onChange={(e) => setNomeFantasia(e.target.value)}
+                      required
+                      style={{ height: "40px", padding: "0 12px", border: "1px solid #c9939a", borderRadius: "8px" }}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", gap: "16px" }}>
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>CNPJ:</label>
+                    <input
+                      type="text"
+                      value={cnpj}
+                      onChange={(e) => setCnpj(e.target.value)}
+                      required
+                      style={{ height: "40px", padding: "0 12px", border: "1px solid #c9939a", borderRadius: "8px" }}
+                    />
+                  </div>
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>Inscrição estadual:</label>
+                    <input
+                      type="text"
+                      value={inscricaoEstadual}
+                      onChange={(e) => setInscricaoEstadual(e.target.value)}
+                      style={{ height: "40px", padding: "0 12px", border: "1px solid #c9939a", borderRadius: "8px" }}
+                    />
+                  </div>
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>Inscrição municipal:</label>
+                    <input
+                      type="text"
+                      value={inscricaoMunicipal}
+                      onChange={(e) => setInscricaoMunicipal(e.target.value)}
+                      style={{ height: "40px", padding: "0 12px", border: "1px solid #c9939a", borderRadius: "8px" }}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", gap: "16px" }}>
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>Data de fundação:</label>
+                    <input
+                      type="text"
+                      value={dataFundacao}
+                      onChange={(e) => setDataFundacao(e.target.value)}
+                      style={{ height: "40px", padding: "0 12px", border: "1px solid #c9939a", borderRadius: "8px" }}
+                    />
+                  </div>
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>Telefone:</label>
+                    <input
+                      type="tel"
+                      value={telefone}
+                      onChange={(e) => setTelefone(e.target.value)}
+                      style={{ height: "40px", padding: "0 12px", border: "1px solid #c9939a", borderRadius: "8px" }}
+                    />
+                  </div>
+                  <div style={{ flex: 1, display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>E-mail:</label>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      style={{ height: "40px", padding: "0 12px", border: "1px solid #c9939a", borderRadius: "8px" }}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", marginTop: "16px" }}>
+                  <button
+                    type="button"
+                    onClick={() => setModalCadastraisAberto(false)}
+                    style={{ padding: "10px 20px", borderRadius: "999px", border: "1px solid #d1d5db", background: "#fff", cursor: "pointer", fontWeight: "600" }}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    style={{ padding: "10px 20px", borderRadius: "999px", border: "none", background: "#8e1027", color: "#fff", fontWeight: "600", cursor: "pointer" }}
+                  >
+                    Salvar alterações
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* =====================================================
+         POP-UP MODAL: EDITAR ENDEREÇO
+      ===================================================== */}
+      {modalEnderecoAberto && (
+        <div className="modalOverlay">
+          <div className="modalConteudo" style={{ maxWidth: "860px" }}>
+            <div className="modalCabecalho">
+              <h2>Editar endereço</h2>
+              <button
+                type="button"
+                className="botaoFecharModal"
+                onClick={() => setModalEnderecoAberto(false)}
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className="modalCorpo">
+              <form onSubmit={salvarEndereco} style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr 1fr 1fr", gap: "12px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>CEP:</label>
+                    <input
+                      type="text"
+                      value={cep}
+                      onChange={(e) => setCep(e.target.value)}
+                      required
+                      style={{ height: "40px", padding: "0 12px", border: "1px solid #c9939a", borderRadius: "8px" }}
+                    />
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>Rua/avenida:</label>
+                    <input
+                      type="text"
+                      value={rua}
+                      onChange={(e) => setRua(e.target.value)}
+                      required
+                      style={{ height: "40px", padding: "0 12px", border: "1px solid #c9939a", borderRadius: "8px" }}
+                    />
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>Número:</label>
+                    <input
+                      type="text"
+                      value={numero}
+                      onChange={(e) => setNumero(e.target.value)}
+                      required
+                      style={{ height: "40px", padding: "0 12px", border: "1px solid #c9939a", borderRadius: "8px" }}
+                    />
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>Complemento:</label>
+                    <input
+                      type="text"
+                      value={complemento}
+                      onChange={(e) => setComplemento(e.target.value)}
+                      style={{ height: "40px", padding: "0 12px", border: "1px solid #c9939a", borderRadius: "8px" }}
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr 1fr", gap: "12px" }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>Bairro:</label>
+                    <input
+                      type="text"
+                      value={bairro}
+                      onChange={(e) => setBairro(e.target.value)}
+                      required
+                      style={{ height: "40px", padding: "0 12px", border: "1px solid #c9939a", borderRadius: "8px" }}
+                    />
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>Cidade:</label>
+                    <select
+                      value={cidade}
+                      onChange={(e) => setCidade(e.target.value)}
+                      style={{ height: "40px", padding: "0 8px", border: "1px solid #c9939a", borderRadius: "8px", background: "#fff" }}
+                    >
+                      <option value="São Paulo">São Paulo</option>
+                      <option value="Rio de Janeiro">Rio de Janeiro</option>
+                      <option value="Campinas">Campinas</option>
+                    </select>
+                  </div>
+                  <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                    <label style={{ fontWeight: 600, fontSize: "13px" }}>Estado:</label>
+                    <select
+                      value={estado}
+                      onChange={(e) => setEstado(e.target.value)}
+                      style={{ height: "40px", padding: "0 8px", border: "1px solid #c9939a", borderRadius: "8px", background: "#fff" }}
+                    >
+                      <option value="SP">SP</option>
+                      <option value="RJ">RJ</option>
+                      <option value="MG">MG</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div style={{ display: "flex", justifyContent: "flex-end", gap: "12px", marginTop: "16px" }}>
+                  <button
+                    type="button"
+                    onClick={() => setModalEnderecoAberto(false)}
+                    style={{ padding: "10px 20px", borderRadius: "999px", border: "1px solid #d1d5db", background: "#fff", cursor: "pointer", fontWeight: "600" }}
+                  >
+                    Cancelar
+                  </button>
+                  <button
+                    type="submit"
+                    style={{ padding: "10px 20px", borderRadius: "999px", border: "none", background: "#8e1027", color: "#fff", fontWeight: "600", cursor: "pointer" }}
+                  >
+                    Salvar alterações
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

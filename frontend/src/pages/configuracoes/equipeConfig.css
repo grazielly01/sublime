@@ -1,34 +1,36 @@
-/* =========================================================
-   ESTRUTURA PRINCIPAL -> aprovando
-   ========================================================= */
+
 
 .tudoEquipeConfig {
   display: flex;
-  min-height: 170vh;
-  width: 100%;
-  background: #FDEDE8;
+  min-height: 100vh;
+  width: 60%;
+  background: #ffede9;
   box-sizing: border-box;
-  margin-left: -3.5%;
+  font-family: "Inter", sans-serif;
+  color: #2B2B2B;
 }
 
-.tudoMenosSidebar {
+.tudoEquipeConfig .tudoMenosSidebar {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
+  margin-left: 50px;
+  background-color: transparent;
 }
 
 .conteudoEquipeConfig {
   flex: 1;
   width: 100%;
-  padding: 100px 65px 0px;
+  max-width: 1200px;
+  padding: 6% 32px 32px 32px;
   box-sizing: border-box;
-  margin-top: -2.4%;
+  margin: 0 auto;
 }
 
-/* =========================================================
-   TOPO
-   ========================================================= */
+
+
+
 
 .topoEquipeConfig {
   width: 100%;
@@ -36,7 +38,7 @@
   align-items: center;
   justify-content: space-between;
   gap: 25px;
-  margin-bottom: 28px;
+  margin-bottom: 50px;
 }
 
 .tituloComVoltarEquipe {
@@ -47,458 +49,181 @@
 
 .tituloEquipeConfig {
   margin: 0;
-  color: #8e0d24;
-  font-family: "Playfair Display", Georgia, serif;
-  font-size: 38px;
+  color: #8E1027;
+  font-family: "Inter", sans-serif;
+  font-size: clamp(28px, 2.4vw, 34px);
   font-weight: 700;
   line-height: 1.2;
 }
 
-
-/* =========================================================
-   BOTÃO VOLTAR
-   ========================================================= */
+/* botao voltat */
 
 .botaoVoltarEquipe {
-  width: 40px;
-  height: 40px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: transparent;
+  background: none;
   border: none;
-
-  color: #7a0c22;
-
-  font-family: Arial, sans-serif;
-  font-size: 36px;
-  font-weight: 300;
-  line-height: 1;
-
+  color: #8E1027;
+  font-size: 32px;
   cursor: pointer;
-
   padding: 0;
-
-  transition:
-    transform 0.15s ease,
-    color 0.15s ease;
+  line-height: 1;
+  transition: transform 0.2s ease;
 }
 
 .botaoVoltarEquipe:hover {
   transform: translateX(-4px);
-  color: #5e081a;
 }
 
-/* =========================================================
-   BOTÃO REGISTRAR
-   ========================================================= */
+/*cards */
 
-.botaoRegistrarColaborador {
-  min-height: 46px;
-  padding: 0 24px;
-  background: #9d0926;
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
+.cardsEquipeConfigLista {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.cardOpcaoEquipe {
+  position: relative;
+  min-height: 88px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px 25px;
+  border: 1px solid #EDE3E1;
+  border-radius: 14px;
+  box-shadow: 0 1px 3px rgba(60, 20, 20, 0.06);
+  cursor: pointer;
+  background: linear-gradient(135deg, #FFFFFF 0%, #FFF7F8 45%, #FBE6EA 100%);
+  transition: all 0.3s ease;
+}
+
+.cardOpcaoEquipe:hover {
+  transform: translateY(-2px);
+  border-color: #F0C4CC;
+  box-shadow: 0 8px 20px rgba(142, 16, 39, 0.12);
+}
+
+.cardOpcaoEquipe h2 {
+  margin: 0 0 4px 0;
+  font-family: "Inter", sans-serif;
+  font-size: 17px;
+  font-weight: 600;
+  color: #2B2B2B;
+}
+
+.cardOpcaoEquipe p {
+  margin: 0;
   font-family: "Inter", sans-serif;
   font-size: 14px;
-  font-weight: 700;
+  color: #7A6E6C;
+}
+
+/* botao registrar*/
+
+.botaoRegistrarColaborador {
+  min-height: 42px;
+  padding: 0 20px;
+  background: #8E1027;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 600;
   cursor: pointer;
-  white-space: nowrap;
-  transition:
-    background-color 0.2s ease,
-    transform 0.15s ease,
-    box-shadow 0.2s ease;
+  transition: background-color 0.2s ease, transform 0.15s ease;
 }
 
 .botaoRegistrarColaborador:hover {
-  background: #80071f;
-  box-shadow: 0 4px 10px rgba(157, 9, 38, 0.18);
+  background: #6F0C1E;
 }
 
-.botaoRegistrarColaborador:active {
-  transform: scale(0.98);
-}
-
-
-/* =========================================================
-   CONTAINER DA TABELA
-   ========================================================= */
+/*container e tabela */
 
 .containerTabelaEquipe {
   width: 100%;
   overflow-x: auto;
-  background: #fff9f7;
-  border: 1px solid #efc5c8;
-  border-radius: 14px;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.04);
+  background: #FFFFFF;
+  border: 1px solid #EDE3E1;
+  border-radius: 12px;
 }
-
-
-/* =========================================================
-   TABELA
-   ========================================================= */
 
 .tabelaEquipeConfig {
   width: 100%;
-  min-width: 850px;
+  min-width: 700px;
   border-collapse: collapse;
-  border-spacing: 0;
-  background: #fff9f7;
 }
 
-/* =========================================================
-   FOTO + NOME DO COLABORADOR
-   ========================================================= */
+.tabelaEquipeConfig th {
+  height: 48px;
+  padding: 0 16px;
+  background: #FBEAED;
+  color: #8E1027;
+  text-align: left;
+  font-size: 13px;
+  font-weight: 700;
+  border-bottom: 1px solid #EDE3E1;
+}
+
+.tabelaEquipeConfig td {
+  height: 56px;
+  padding: 0 16px;
+  color: #2B2B2B;
+  text-align: left;
+  font-size: 14px;
+  border-bottom: 1px solid #F3ECEA;
+}
 
 .colaboradorInfo {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 12px;
 }
 
 .fotoColaborador {
-  width: 42px;
-  height: 42px;
-  min-width: 42px;
+  width: 36px;
+  height: 36px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: #ffe5e8;
-  border: 1px solid #efc5c8;
-  color: #8e0d24;
-  font-family: "Inter", sans-serif;
-  font-size: 15px;
+  background: #FBEAED;
+  color: #8E1027;
   font-weight: 700;
-  overflow: hidden;
-}
-
-.fotoColaborador span {
-  line-height: 1;
+  font-size: 14px;
 }
 
 .nomeColaborador {
   font-weight: 600;
-  color: #241416;
 }
 
-
-/* =========================================================
-   CABEÇALHO
-   ========================================================= */
-
-.tabelaEquipeConfig th {
-  height: 58px;
-
-  padding: 0 24px;
-
-  background: #ffe5e8;
-
-  color: #6f1728;
-
-  text-align: left;
-  vertical-align: middle;
-
-  font-family: "Inter", sans-serif;
-  font-size: 13px;
-  font-weight: 700;
-
-  border-bottom: 1px solid #efc5c8;
-}
-
-
-/* =========================================================
-   CÉLULAS
-   ========================================================= */
-
-.tabelaEquipeConfig td {
-  height: 68px;
-
-  padding: 0 24px;
-
-  color: #241416;
-
-  text-align: left;
-  vertical-align: middle;
-
-  font-family: "Inter", sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-
-  border-bottom: 1px solid #f0d6d8;
-
-  box-sizing: border-box;
-}
-
-
-/* =========================================================
-   ÚLTIMA LINHA
-   ========================================================= */
-
-.tabelaEquipeConfig tbody tr:last-child td {
-  border-bottom: none;
-}
-
-
-/* =========================================================
-   EFEITO NAS LINHAS
-   ========================================================= */
-
-.tabelaEquipeConfig tbody tr {
-  transition: background-color 0.15s ease;
-}
-
-.tabelaEquipeConfig tbody tr:hover {
-  background-color: #fff3f1;
-}
-
-
-/* =========================================================
-   COLUNA DE AÇÕES
-   ========================================================= */
-
-.celulaAcoes {
-  white-space: nowrap;
-  width: 130px;
-}
-
-
-/* =========================================================
-   BOTÕES DE AÇÃO
-   ========================================================= */
-
-.acao {
-  width: 38px;
-  height: 38px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-right: 8px;
-
-  background: transparent;
-  border: 1px solid transparent;
-  border-radius: 8px;
-
-  cursor: pointer;
-
-  transition:
-    background-color 0.2s ease,
-    border-color 0.2s ease,
-    transform 0.15s ease;
-}
-
-.acao:last-child {
-  margin-right: 0;
-}
-
-.acao:hover {
-  transform: translateY(-1px);
-}
-
-
-/* =========================================================
-   ÍCONE DE EDITAR
-   ========================================================= */
-
-.iconeEditar {
-  color: #7a0c22;
-
-  font-family: Arial, sans-serif;
-  font-size: 25px;
-  font-weight: 400;
-
-  line-height: 1;
-}
-
-.acao.editar:hover {
-  background: #fff0f2;
-  border-color: #efc5c8;
-}
-
-
-/* =========================================================
-   ÍCONE DE EXCLUIR
-   ========================================================= */
-
-.iconeExcluir {
-  color: #8e0d24;
-
-  font-family: Arial, sans-serif;
-  font-size: 30px;
-  font-weight: 300;
-
-  line-height: 0.8;
-}
-
-.acao.excluir:hover {
-  background: #fff0f2;
-  border-color: #efc5c8;
-}
-
-
-/* =========================================================
-   RESPONSIVIDADE
-   ========================================================= */
-
-@media (max-width: 1100px) {
-
-  .conteudoEquipeConfig {
-    padding: 32px 40px 50px;
+/* transiçaõ */
+@keyframes entradaEquipeConfig {
+  from { 
+    opacity: 0; 
+    transform: translateY(24px); 
   }
-
-  .tituloEquipeConfig {
-    font-size: 34px;
-  }
-
-  .tabelaEquipeConfig th,
-  .tabelaEquipeConfig td {
-    padding-left: 18px;
-    padding-right: 18px;
+  to   { 
+    opacity: 1; 
+    transform: translateY(0); 
   }
 }
 
-
-@media (max-width: 800px) {
-
-  .conteudoEquipeConfig {
-    padding: 28px 24px 40px;
+@media (prefers-reduced-motion: no-preference) {
+  .topoEquipeConfig,
+  .cardOpcaoEquipe {
+    animation: entradaEquipeConfig 0.7s cubic-bezier(0.22, 1, 0.36, 1) backwards;
   }
 
-  .topoEquipeConfig {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 18px;
+  .topoEquipeConfig { 
+    animation-delay: 0.08s; 
   }
 
-  .tituloComVoltarEquipe {
-    gap: 10px;
+  .cardsEquipeConfigLista .cardOpcaoEquipe:nth-child(1) { 
+    animation-delay: 0.18s; 
   }
 
-  .botaoVoltarEquipe {
-    width: 36px;
-    height: 36px;
-    font-size: 32px;
-  }
-
-  .tituloEquipeConfig {
-    font-size: 32px;
-  }
-
-  .botaoRegistrarColaborador {
-    width: 100%;
-  }
-
-  .containerTabelaEquipe {
-    border-radius: 12px;
-  }
-}
-
-
-@media (max-width: 550px) {
-
-  .conteudoEquipeConfig {
-    padding: 24px 16px 35px;
-  }
-
-  .tituloEquipeConfig {
-    font-size: 28px;
-  }
-
-  .botaoVoltarEquipe {
-    font-size: 30px;
-  }
-
-  .fotoColaborador {
-    width: 38px;
-    height: 38px;
-    min-width: 38px;
-    font-size: 14px;
-  }
-
-  .colaboradorInfo {
-    gap: 10px;
-  }
-
-  .tabelaEquipeConfig {
-    min-width: 780px;
-  }
-
-  .tabelaEquipeConfig th {
-    height: 52px;
-    font-size: 12px;
-  }
-
-  .tabelaEquipeConfig td {
-    height: 62px;
-    font-size: 13px;
-  }
-}
-
-/* =========================================================
-   TABLET
-   ========================================================= */
-
-@media (max-width: 800px) {
-
-  .conteudoEquipeConfig {
-    padding: 28px 24px 40px;
-  }
-
-  .topoEquipeConfig {
-    align-items: flex-start;
-    flex-direction: column;
-    gap: 18px;
-  }
-
-  .tituloEquipeConfig {
-    font-size: 32px;
-  }
-
-  .botaoRegistrarColaborador {
-    width: 100%;
-  }
-
-  .containerTabelaEquipe {
-    border-radius: 12px;
-  }
-}
-
-
-/* =========================================================
-   CELULAR
-   ========================================================= */
-
-@media (max-width: 550px) {
-
-  .conteudoEquipeConfig {
-    padding: 24px 16px 35px;
-  }
-
-  .tituloEquipeConfig {
-    font-size: 28px;
-  }
-
-  .botaoRegistrarColaborador {
-    min-height: 44px;
-    font-size: 13px;
-  }
-
-  .tabelaEquipeConfig {
-    min-width: 780px;
-  }
-
-  .tabelaEquipeConfig th {
-    height: 52px;
-    font-size: 12px;
-  }
-
-  .tabelaEquipeConfig td {
-    height: 62px;
-    font-size: 13px;
+  .cardsEquipeConfigLista .cardOpcaoEquipe:nth-child(2) { 
+    animation-delay: 0.25s; 
   }
 }

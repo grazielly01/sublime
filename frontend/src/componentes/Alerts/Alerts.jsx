@@ -9,7 +9,8 @@ function Alert({ /*criando o componente como function*/
     titulo,
     descricao,
     prioridade = "baixa", /*Alta, Média ou Baixa, mas fica "baixa" como padrão*/
-    onClick, /*função executada ao clicar em "Dispensar"*/
+    onDispensar, /*função executada ao clicar em "Dispensar"*/
+    onClick,     /*mantido caso algum outro lugar use onClick diretamente*/
 }) {
 
     /*definindo algumas informações de acordo com a prioridade*/
@@ -70,8 +71,8 @@ function Alert({ /*criando o componente como function*/
 
                 </div>
 
-                {/*botao dispensar*/}
-                <button className="dispensar" onClick={onClick}> {/*botao dispensar; tem sua classe; tem onClick pq ocorre algo qnd o user CLICA*/}
+                {/*botao dispensar funcionando*/}
+                <button className="dispensar" onClick={onDispensar || onClick}> 
                     ✕ Dispensar
                 </button>
             </div>
