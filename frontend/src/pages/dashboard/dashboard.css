@@ -1760,3 +1760,26 @@
     width: 100%;
   }
 }
+
+
+
+
+
+
+.botaoLinkDashboard {
+  padding: 5px 10px;
+  border-radius: 999px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.botaoLinkDashboard:hover {
+  background: var(--cor-rosa-suave);
+  color: var(--cor-primaria-hover);
+  text-decoration: none;
+}
+
+.gmCorpo .tabelaDashboard,
+.gmCorpo .listaAlertas,
+.gmCorpo .listaEntregas {
+  margin-top: 8px;
+}
