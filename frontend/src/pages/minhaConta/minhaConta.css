@@ -1,6 +1,4 @@
-
-
-/* fundo único da tela inteira  */
+/* fundo único da tela inteira */
 html:has(.tudoMinhaConta),
 body:has(.tudoMinhaConta),
 #root:has(.tudoMinhaConta) {
@@ -9,7 +7,7 @@ body:has(.tudoMinhaConta),
 
 /* DIV QUE ABRIGA TUDO */
 .tudoMinhaConta {
-  width: 93%;
+  width: 100%;
   min-height: 100vh;
   display: flex;
   background-color: #fcebe6;
@@ -17,6 +15,7 @@ body:has(.tudoMinhaConta),
   color: #2B2B2B;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 .tudoMinhaConta :focus-visible {
@@ -26,28 +25,35 @@ body:has(.tudoMinhaConta),
 }
 
 /* TUDO MENOS A SIDEBAR */
-.tudoMinhaConta .tudoMenosSidebar {
+.tudoMinhaConta .tudoMenosSidebar,
+.tudoMinhaConta .tudoMenosSidebarMinhaConta {
+  position: relative;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  flex: 1;
+  width: calc(100% - 68px);
   min-height: 100vh;
   box-sizing: border-box;
-  margin-left: 68px; /* espaço pro menu lateral fechado */
+  margin-left: 68px;
   background-color: transparent;
 }
 
-.tudoMinhaConta .tudoMenosSidebarMinhaConta {
-  position: fixed;
-}
-
-/* CONTEÚDO DA PÁGINA */
-.tudoMinhaConta .conteudoMinhaConta {
-  padding-top: -1%;
-  box-sizing: border-box;
-}
-
+/* CONTEÚDO OCUPANDO A TELA COM ~2 DEDOS (~32px) DE MARGEM LATERAL */
+.tudoMinhaConta .conteudoMinhaConta,
 .tudoMinhaConta .conteudoMinhaConta2 {
-  margin-top: 2.5%;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 55px 32px 44px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.tudoMinhaConta .cabecalhoMinhaConta {
+  width: 100%;
+  text-align: left;
 }
 
 .tudoMinhaConta .tituloMinhaConta {
@@ -66,16 +72,14 @@ body:has(.tudoMinhaConta),
   color: #7A6E6C;
 }
 
-
-
+/* GRID AMPLO OCUPANDO O ESPAÇO DISPONÍVEL */
 .tudoMinhaConta .duasAbas {
   display: grid;
-  grid-template-columns: minmax(280px, 380px) minmax(0, 1fr);
+  grid-template-columns: minmax(300px, 380px) minmax(0, 1fr);
+  align-items: stretch;
   gap: 24px;
-  width: auto;
-  height: auto;
-  margin-top: 32px;
-  margin-right: 5%;
+  width: 100%;
+  margin-top: 24px;
 }
 
 .tudoMinhaConta .abaEsquerda,
@@ -83,24 +87,23 @@ body:has(.tudoMinhaConta),
   display: flex;
   justify-content: center;
   align-items: center;
-  width: auto;
-  height: auto;
-  margin-right: 1px;
+  width: 100%;
   box-sizing: border-box;
   background-color: #ffffff;
   border: 1px solid #fff3f0;
   border-radius: 16px;
+  box-shadow: 0 4px 16px rgba(60, 20, 20, 0.05);
 }
 
-/* cartão de perfil: degrade*/
+/* cartão de perfil: degrade */
 .tudoMinhaConta .abaEsquerda {
   background: linear-gradient(180deg, #f9dee3 0%, #fffafa 170px);
   padding: 36px 28px;
 }
 
 .tudoMinhaConta .abaDireita {
-  align-items: flex-start;
-  padding: 36px 90px 40px;
+  align-items: center;
+  padding: 36px 44px 40px;
 }
 
 /* aba perfil */
@@ -109,14 +112,12 @@ body:has(.tudoMinhaConta),
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 22px;
+  gap: 20px;
   width: 100%;
-  height: auto;
 }
 
 .tudoMinhaConta .fotinhaENome {
-  width: auto;
-  height: auto;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -124,21 +125,49 @@ body:has(.tudoMinhaConta),
   text-align: center;
 }
 
-
-
+/* CONTAINER DA FOTO DE PERFIL */
 .tudoMinhaConta .iconUser {
   width: 140px;
   height: 140px;
-  margin: 0;
+  margin: 0 auto 16px;
   display: flex;
   justify-content: center;
   align-items: center;
-  border-radius: 90px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 3px solid #ffffff;
+  background-color: #8E1027;
+  box-shadow: 0 6px 16px rgba(142, 16, 39, 0.18);
+  flex-shrink: 0;
+  position: relative;
 }
 
-.tudoMinhaConta .iconUser img {
-  width: 140%;
-  margin-top: -2vh;
+.tudoMinhaConta .iconUser img,
+.tudoMinhaConta .fotoUsuarioReal {
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+  margin: 0;
+}
+
+.tudoMinhaConta .avatarPadraoCirculo {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #8E1027 0%, #B3213B 100%);
+}
+
+.tudoMinhaConta .avatarPadraoCirculo svg {
+  width: 78px;
+  height: 78px;
+  display: block;
 }
 
 .tudoMinhaConta .fotinhaENome h3 {
@@ -157,10 +186,8 @@ body:has(.tudoMinhaConta),
   color: #7A6E6C;
 }
 
-
 .tudoMinhaConta .tarjaPlano {
   width: 100%;
-  height: auto;
   box-sizing: border-box;
   padding: 14px 16px;
   background-color: #FBF3F2;
@@ -188,7 +215,7 @@ body:has(.tudoMinhaConta),
   color: #7A6E6C;
 }
 
-/* campo de arquivo escondido*/
+/* campo de arquivo escondido */
 .tudoMinhaConta .inputAlterarFoto {
   position: absolute;
   width: 1px;
@@ -201,12 +228,11 @@ body:has(.tudoMinhaConta),
   border: 0;
 }
 
-/* botão "Alterar foto": secundário (branco com borda) */
+/* botão "Alterar foto" */
 .tudoMinhaConta .botaoAlterarFoto {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: auto;
   min-width: 150px;
   height: 42px;
   padding: 0 22px;
@@ -229,14 +255,13 @@ body:has(.tudoMinhaConta),
   transform: translateY(-1px);
 }
 
-/*aba de dados pessoais*/
+/* aba de dados pessoais */
 .tudoMinhaConta .infosAbaDireita {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  justify-content: flex-start;
+  justify-content: center;
   width: 100%;
-  height: auto;
 }
 
 .tudoMinhaConta .infosAbaDireita h2 {
@@ -254,8 +279,7 @@ body:has(.tudoMinhaConta),
 .tudoMinhaConta .outrosInputs {
   display: flex;
   flex-direction: column;
-  align-items: stretch; /* os campos ocupam a largura toda (sem o truque de 430%) */
-  justify-content: flex-start;
+  align-items: stretch;
   gap: 6px;
   width: 100%;
 }
@@ -266,16 +290,18 @@ body:has(.tudoMinhaConta),
 }
 
 .tudoMinhaConta .labelsInputs {
+  display: inline-block;
   font-size: 13px;
   font-weight: 600;
   color: #2B2B2B;
+  margin-bottom: 4px;
 }
 
 /* campos de texto */
 .tudoMinhaConta .outrosInputs input {
   width: 100%;
-  height: 44px;
-  margin: 0 0 14px;
+  height: 46px;
+  margin: 0 0 12px;
   padding: 0 14px;
   box-sizing: border-box;
   border: 1px solid #EDE3E1;
@@ -309,7 +335,7 @@ body:has(.tudoMinhaConta),
   gap: 12px;
   width: 100%;
   align-items: center;
-  margin-top: 8px;
+  margin-top: 10px;
 }
 
 .tudoMinhaConta .botoesDadosPessoais button {
@@ -322,7 +348,6 @@ body:has(.tudoMinhaConta),
   font: 600 14px "Inter", sans-serif;
   cursor: pointer;
 }
-
 
 .tudoMinhaConta .botoesDadosPessoais button:not(#buttonAlterarSenha) {
   border: none;
@@ -340,8 +365,6 @@ body:has(.tudoMinhaConta),
   transform: translateY(-1px);
 }
 
-
-
 .tudoMinhaConta #buttonAlterarSenha {
   color: #8E1027;
   background: #FFFFFF;
@@ -357,7 +380,7 @@ body:has(.tudoMinhaConta),
   transform: translateY(-1px);
 }
 
-/* animacoezinhas */
+/* animacoes */
 @keyframes entradaMinhaConta {
   from { opacity: 0; translate: 0 24px; }
   to   { opacity: 1; translate: 0 0; }
@@ -408,11 +431,15 @@ body:has(.tudoMinhaConta),
 @media (max-width: 1000px) {
   .tudoMinhaConta .duasAbas {
     grid-template-columns: 1fr;
-    margin-right: 0;
   }
 }
 
 @media (max-width: 600px) {
+  .tudoMinhaConta .conteudoMinhaConta,
+  .tudoMinhaConta .conteudoMinhaConta2 {
+    padding: 20px 16px 32px;
+  }
+
   .tudoMinhaConta .abaDireita {
     padding: 24px 20px 28px;
   }
