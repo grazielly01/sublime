@@ -1,23 +1,69 @@
 import "./minhaConta.css";
-import { useState } from "react";
-import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";  /*Importando o componente sidebar da pasta componentes; APROVADO*/
-import Header from "../../componentes/Header/Header.jsx";  /*Importando o componente header da pasta componentes. */
-import Input from "../../componentes/Input/Input.jsx";      /*Importando o componente input da pasta componentes*/
-import Button from "../../componentes/Button/Button.jsx";   /*Importando o componente button da pasta componentes*/
+import { useState, useEffect } from "react";
+import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
+import Header from "../../componentes/Header/Header.jsx";
+import Input from "../../componentes/Input/Input.jsx";
+import Button from "../../componentes/Button/Button.jsx";
 import { motion } from "motion/react";
+
+const STORAGE_FOTO_KEY = "sweet_sunset_minha_conta_foto";
+
+const IconeBonecoBranco = () => (
+    <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+        <circle cx="12" cy="8.2" r="3.8" fill="#FFFFFF" />
+        <path
+            d="M5 19.6C5 16.5 8.13 14.2 12 14.2C15.87 14.2 19 16.5 19 19.6"
+            fill="#FFFFFF"
+        />
+    </svg>
+);
 
 function MinhaConta() {
     const [nome, setNome] = useState("");
     const [email, setEmail] = useState("");
     const [telefone, setTelefone] = useState("");
     const [cargo, setCargo] = useState("");
+    const [fotoUrl, setFotoUrl] = useState("");
+    const [fotoBase64, setFotoBase64] = useState("");
 
-    // Função de salvar alterada para PUT/PATCH e disparada no clique
+    useEffect(() => {
+        const fotoSalva = localStorage.getItem(STORAGE_FOTO_KEY);
+        if (fotoSalva) {
+            setFotoUrl(fotoSalva);
+            setFotoBase64(fotoSalva);
+        }
+    }, []);
+
+    const handleTrocarFoto = (e) => {
+        const arquivo = e.target.files?.[0];
+        if (!arquivo) return;
+
+        if (!arquivo.type.startsWith("image/")) {
+            alert("Selecione uma imagem válida (JPG, JPEG ou PNG).");
+            return;
+        }
+
+        const leitor = new FileReader();
+        leitor.onload = () => {
+            const resultado = leitor.result;
+            if (typeof resultado === "string") {
+                setFotoUrl(resultado);
+                setFotoBase64(resultado);
+                try {
+                    localStorage.setItem(STORAGE_FOTO_KEY, resultado);
+                } catch {
+                    // Mantém na sessão caso exceda o limite do localStorage
+                }
+            }
+        };
+        leitor.readAsDataURL(arquivo);
+        e.target.value = "";
+    };
+
     const salvarUsuario = async () => {
         try {
-            // Substitua '1' pelo ID dinâmico do usuário logado se houver
             const resposta = await fetch("http://localhost:3000/usuarios", {
-                method: "POST", 
+                method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
@@ -25,7 +71,8 @@ function MinhaConta() {
                     nome,
                     email,
                     telefone,
-                    cargo
+                    cargo,
+                    foto: fotoBase64 || null
                 })
             });
 
@@ -34,6 +81,7 @@ function MinhaConta() {
             alert("Informações salvas com sucesso!");
         } catch (error) {
             console.error("ERRO AO SALVAR USUÁRIO.", error);
+            alert("Não foi possível conectar ao servidor local, mas sua foto e dados na tela foram mantidos.");
         }
     };
 
@@ -45,15 +93,27 @@ function MinhaConta() {
                 <Header nomeIndustria="Sweet Sunset" />
 
                 <div className="conteudoMinhaConta conteudoMinhaConta2">
-                    <h1 className="tituloMinhaConta">Minha conta</h1>
-                    <p className="subtituloMinhaConta">Suas informações pessoais</p>
+                    <div className="cabecalhoMinhaConta">
+                        <h1 className="tituloMinhaConta">Minha conta</h1>
+                        <p className="subtituloMinhaConta">Suas informações pessoais</p>
+                    </div>
 
                     <div className="duasAbas">
                         <div className="abaEsquerda">
                             <div className="infosAbaEsquerda">
                                 <div className="fotinhaENome">
                                     <div className="iconUser">
-                                        <img src="../img/icon-user.png" alt="user" />
+                                        {fotoUrl ? (
+                                            <img
+                                                src={fotoUrl}
+                                                alt="Foto de perfil do usuário"
+                                                className="fotoUsuarioReal"
+                                            />
+                                        ) : (
+                                            <div className="avatarPadraoCirculo">
+                                                <IconeBonecoBranco />
+                                            </div>
+                                        )}
                                     </div>
                                     <h3>{nome || "Mariana Oliveira"}</h3>
                                     <p>{cargo || "Gerente"}</p>
@@ -65,8 +125,16 @@ function MinhaConta() {
                                 </div>
 
                                 <div className="alterarFoto">
-                                    <input className="inputAlterarFoto" type="file" id="uploadImagemMinhaConta" accept=".jpg,.jpeg,.png"/>
-                                    <label htmlFor="uploadImagemMinhaConta" className="botaoAlterarFoto">Alterar foto</label>
+                                    <input
+                                        className="inputAlterarFoto"
+                                        type="file"
+                                        id="uploadImagemMinhaConta"
+                                        accept="image/png,image/jpeg,image/jpg,image/webp"
+                                        onChange={handleTrocarFoto}
+                                    />
+                                    <label htmlFor="uploadImagemMinhaConta" className="botaoAlterarFoto">
+                                        Alterar foto
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -78,47 +146,46 @@ function MinhaConta() {
                                 <div className="outrosInputs">
                                     <div>
                                         <label className="labelsInputs">Nome completo</label>
-                                        <Input 
-                                            type="text" 
-                                            placeholder="Mariana Oliveira Moraes" 
-                                            value={nome} 
-                                            onChange={(e) => setNome(e.target.value)} 
+                                        <Input
+                                            type="text"
+                                            placeholder="Mariana Oliveira Moraes"
+                                            value={nome}
+                                            onChange={(e) => setNome(e.target.value)}
                                         />
                                     </div>
 
                                     <div>
                                         <label className="labelsInputs">Email</label>
-                                        <Input 
-                                            type="email" 
-                                            placeholder="MarianaOlive077@gmail.com" 
-                                            value={email} 
-                                            onChange={(e) => setEmail(e.target.value)} 
+                                        <Input
+                                            type="email"
+                                            placeholder="MarianaOlive077@gmail.com"
+                                            value={email}
+                                            onChange={(e) => setEmail(e.target.value)}
                                         />
                                     </div>
 
                                     <div>
                                         <label className="labelsInputs">Telefone</label>
-                                        <Input 
-                                            type="text" 
-                                            placeholder="(11) 9 8765-4321" 
-                                            value={telefone} 
-                                            onChange={(e) => setTelefone(e.target.value)} 
+                                        <Input
+                                            type="text"
+                                            placeholder="(11) 9 8765-4321"
+                                            value={telefone}
+                                            onChange={(e) => setTelefone(e.target.value)}
                                         />
                                     </div>
 
                                     <div>
                                         <label className="labelsInputs">Cargo</label>
-                                        <Input 
-                                            type="text" 
-                                            placeholder="Gerente" 
-                                            value={cargo} 
-                                            onChange={(e) => setCargo(e.target.value)} 
+                                        <Input
+                                            type="text"
+                                            placeholder="Gerente"
+                                            value={cargo}
+                                            onChange={(e) => setCargo(e.target.value)}
                                         />
                                     </div>
                                 </div>
 
                                 <div className="botoesDadosPessoais">
-                                    {/* Adicionado o onClick apontando para a função salvarUsuario */}
                                     <Button texto="Salvar" onClick={salvarUsuario} />
                                     <Button id="buttonAlterarSenha" type="button" texto="Alterar senha" />
                                 </div>

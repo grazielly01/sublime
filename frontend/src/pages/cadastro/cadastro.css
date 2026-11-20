@@ -1,195 +1,490 @@
-/*         ESTRUTURA GERAL (div q abriga as duas metades)        */
+/* =========================================================
+   TELA DE CADASTRO — ESTILO FLUIDO, PROFISSIONAL E SUAVE
+   ========================================================= */
+.tudoCadastro {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  background-color: #FDEDE8;
+  font-family: "DM Sans", "Inter", "Trebuchet MS", sans-serif;
+  color: #222222;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
 
-.tudoCadastro{
+.tudoCadastro :focus-visible {
+  outline: 2px solid #870B22;
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   METADE ESQUERDA (MARCA E APRESENTAÇÃO)
+   ========================================================= */
+.tudoCadastro .metadeBonita {
+  position: relative;
+  width: 50%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 40px 44px;
+  background-color: #26070d;
+  background-image:
+    linear-gradient(160deg, rgba(24, 4, 9, 0.58) 0%, rgba(56, 8, 18, 0.42) 55%, rgba(20, 4, 8, 0.72) 100%),
+    url("/img/fundo-login.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tudoCadastro .topoMarca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tudoCadastro .iconeMarca {
+  width: 64px;
+  height: 64px;
+  padding: 3px;
+  box-sizing: border-box;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.28));
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tudoCadastro .topoMarca:hover .iconeMarca {
+  transform: scale(1.04) rotate(-2deg);
+}
+
+.tudoCadastro .textoMarca {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tudoCadastro .palavraMarca {
+  height: 26px;
+  width: auto;
+  display: block;
+}
+
+.tudoCadastro .industriaB2B {
+  margin: 0 0 0 4px;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: "Inter", "DM Sans", sans-serif;
+  color: rgba(245, 224, 220, 0.82);
+}
+
+.tudoCadastro .meioMarca {
+  width: 100%;
+  max-width: 540px;
+  margin: 32px 0;
+}
+
+.tudoCadastro .fraseMarca {
+  width: 100%;
+  max-width: 540px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.25));
+}
+
+.tudoCadastro .descricaoMarca {
+  margin: 18px 0 0 4px;
+  max-width: 440px;
+  font-family: "Inter", "DM Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: rgba(255, 250, 248, 0.9);
+}
+
+.tudoCadastro .direitosAutorais {
+  margin: 0 0 0 4px;
+  font-size: 13.5px;
+  color: rgba(235, 196, 186, 0.78);
+}
+
+/* =========================================================
+   METADE DIREITA (FORMULÁRIO DE CADASTRO)
+   ========================================================= */
+.tudoCadastro .metadePratica {
+  width: 50%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 40px 32px;
+  background: radial-gradient(circle at top right, #fff7f4 0%, #FDEDE8 62%, #f9dfd7 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tudoCadastro .conteudoPratico {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.tudoCadastro .formCadastro {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.tudoCadastro .tituloCadastro {
+  margin: 0 0 24px 0;
+  width: 100%;
+  text-align: left;
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-size: clamp(32px, 3.4vw, 44px);
+  font-weight: 700;
+  line-height: 1.12;
+  letter-spacing: -0.025em;
+  color: #870B22;
+}
+
+.tudoCadastro .mensagemErroCadastro {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #fde4e8;
+  border: 1px solid #e6a8b2;
+  color: #870B22;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.tudoCadastro .campoCadastro {
+  margin-bottom: 16px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.tudoCadastro .labelCampo {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Inter", "DM Sans", sans-serif;
+  color: #2b2022;
+}
+
+.tudoCadastro .inputComIcone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  border-radius: 10px;
+  box-sizing: border-box;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tudoCadastro .inputComIcone:focus-within {
+  transform: translateY(-1px);
+}
+
+.tudoCadastro .inputComIcone > div,
+.tudoCadastro .inputComIcone .input {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 1 1 auto !important;
+  margin: 0 !important;
+  box-sizing: border-box;
+}
+
+.tudoCadastro .inputComIcone svg {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: #870B22;
+  opacity: 0.78;
+  pointer-events: none;
+  z-index: 2;
+  transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+}
+
+.tudoCadastro .inputComIcone:focus-within svg {
+  color: #870B22;
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+.tudoCadastro .inputComIcone input,
+.tudoCadastro .inputComIcone .input input,
+.tudoCadastro #inputNome,
+.tudoCadastro #inputTelefone,
+.tudoCadastro #inputEmail {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  margin: 0 !important;
+  padding-left: 42px !important;
+  padding-right: 14px !important;
+  box-sizing: border-box !important;
+  border-radius: 10px !important;
+  border: 1px solid #e3c8c2 !important;
+  background-color: #ffffff !important;
+  color: #222222 !important;
+  font-family: "Inter", "DM Sans", sans-serif !important;
+  font-size: 14.5px !important;
+  box-shadow: 0 2px 6px rgba(82, 33, 33, 0.04);
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.25s ease,
+    background-color 0.22s ease;
+}
+
+.tudoCadastro .inputComIcone input:hover,
+.tudoCadastro .inputComIcone .input input:hover {
+  border-color: #cf9fa6 !important;
+}
+
+.tudoCadastro .inputComIcone input:focus,
+.tudoCadastro .inputComIcone .input input:focus {
+  outline: none !important;
+  border-color: #870B22 !important;
+  background-color: #fffdfd !important;
+  box-shadow:
+    0 0 0 4px rgba(135, 11, 34, 0.12),
+    0 6px 14px rgba(135, 11, 34, 0.06) !important;
+}
+
+/* Select de cargo alinhado à largura total */
+.tudoCadastro #selectCargo,
+.tudoCadastro .campoCadastro select {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 46px;
+  padding: 10px 14px;
+  box-sizing: border-box;
+  border-radius: 10px;
+  border: 1px solid #e3c8c2;
+  background-color: #ffffff;
+  color: #222222;
+  font-family: "Inter", "DM Sans", sans-serif;
+  font-size: 14.5px;
+  box-shadow: 0 2px 6px rgba(82, 33, 33, 0.04);
+  transition: border-color 0.22s ease, box-shadow 0.25s ease;
+}
+
+.tudoCadastro #selectCargo:focus,
+.tudoCadastro .campoCadastro select:focus {
+  outline: none;
+  border-color: #870B22;
+  box-shadow: 0 0 0 4px rgba(135, 11, 34, 0.12);
+}
+
+/* Botão Cadastrar */
+.tudoCadastro .botaoCadastrar {
+  margin-top: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tudoCadastro .botaoCadastrar .button,
+.tudoCadastro .botaoCadastrar button {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 46px;
+  margin: 0 !important;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #6e081b 0%, #870B22 52%, #b01836 100%);
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  color: #ffffff;
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+  cursor: pointer;
+  box-shadow:
+    0 8px 18px rgba(135, 11, 34, 0.24),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.14);
+  transition:
+    background-position 0.45s ease,
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease;
+}
+
+.tudoCadastro .botaoCadastrar .button:hover,
+.tudoCadastro .botaoCadastrar button:hover {
+  background-position: 100% 50%;
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 24px rgba(135, 11, 34, 0.32),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.14);
+}
+
+.tudoCadastro .botaoCadastrar .button:active,
+.tudoCadastro .botaoCadastrar button:active {
+  transform: translateY(0) scale(0.988);
+}
+
+.tudoCadastro .jaTemConta {
+  margin: 18px 0 0;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  color: #655658;
+}
+
+.tudoCadastro .linkVoltarLogin {
+  color: #870B22;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1.5px solid rgba(135, 11, 34, 0.35);
+  padding-bottom: 1px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tudoCadastro .linkVoltarLogin:hover {
+  color: #b41534;
+  border-bottom-color: #b41534;
+}
+
+/* =========================================================
+   ANIMAÇÕES DE ENTRADA SUAVE E FLUIDA
+   ========================================================= */
+@keyframes cadastroPainelEntrar {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cadastroItemCascata {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tudoCadastro .metadeBonita {
+    animation: cadastroPainelEntrar 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .tudoCadastro .tituloCadastro,
+  .tudoCadastro .campoCadastro:nth-of-type(1),
+  .tudoCadastro .campoCadastro:nth-of-type(2),
+  .tudoCadastro .campoCadastro:nth-of-type(3),
+  .tudoCadastro .campoCadastro:nth-of-type(4),
+  .tudoCadastro .botaoCadastrar,
+  .tudoCadastro .jaTemConta {
+    animation: cadastroItemCascata 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  .tudoCadastro .tituloCadastro {
+    animation-delay: 0.1s;
+  }
+
+  .tudoCadastro .campoCadastro:nth-of-type(1) {
+    animation-delay: 0.16s;
+  }
+
+  .tudoCadastro .campoCadastro:nth-of-type(2) {
+    animation-delay: 0.22s;
+  }
+
+  .tudoCadastro .campoCadastro:nth-of-type(3) {
+    animation-delay: 0.28s;
+  }
+
+  .tudoCadastro .campoCadastro:nth-of-type(4) {
+    animation-delay: 0.34s;
+  }
+
+  .tudoCadastro .botaoCadastrar {
+    animation-delay: 0.4s;
+  }
+
+  .tudoCadastro .jaTemConta {
+    animation-delay: 0.45s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tudoCadastro .metadeBonita,
+  .tudoCadastro .tituloCadastro,
+  .tudoCadastro .campoCadastro,
+  .tudoCadastro .botaoCadastrar,
+  .tudoCadastro .jaTemConta {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+@media (max-width: 960px) {
+  .tudoCadastro {
+    flex-direction: column;
+  }
+
+  .tudoCadastro .metadeBonita,
+  .tudoCadastro .metadePratica {
     width: 100%;
-    height: 100vh; 
-    display: flex; 
+    min-height: auto;
+  }
+
+  .tudoCadastro .metadeBonita {
+    padding: 32px 28px;
+    gap: 28px;
+  }
+
+  .tudoCadastro .meioMarca {
+    margin: 12px 0;
+  }
+
+  .tudoCadastro .metadePratica {
+    padding: 44px 24px 56px;
+  }
 }
 
+@media (max-width: 480px) {
+  .tudoCadastro .metadeBonita {
+    padding: 24px 20px;
+  }
 
-/*        METADE ESQUERDA (bonita)        */
+  .tudoCadastro .iconeMarca {
+    width: 52px;
+    height: 52px;
+  }
 
-.metadeBonita{
-    width: 50%;
-    height: 100%;
-    box-sizing: border-box;
-    padding: 40px;
-    background-image: url("/img/fundo-login.png"); /*a foto marrom fica em public/imagens*/
-    background-size: cover; /*a foto cobre a div toda, sem esticar/deformar*/
-    background-position: center;
-    display: flex;
-    flex-direction: column; /*empilha: topo, meio e rodapé*/
-    justify-content: space-between; /*espalha bem: topo no topo, rodapé embaixo, meio no meio*/
-}
-
-/*topo: logo + "Sublime" + "Indústria B2B"*/
-.topoMarca{
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-
-.iconeMarca{
-    width: 65px;
-    height: 65px;
-    padding: 2px;
-    box-sizing: border-box;
-    object-fit: contain; /*a imagem não estica/deforma dentro do círculo*/
-}
-
-.textoMarca{
-    display: flex;
-    flex-direction: column; /*"Sublime" em cima, "Indústria B2B" embaixo*/
-}
-
-.palavraMarca{
-    height: 25px;
-    width: auto; /*mantém a proporção original da imagem*/
-}
-
-.industriaB2B{
-    margin-left: 6px;
-    margin-bottom: -5px;
-    font-size: 13px;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    color: #c7c7c7;
-}
-
-/*frase impactante e descriçao*/
-.meioMarca{
-    max-width: 550px;
-    margin-bottom: 12%;
-}
-
-.fraseMarca{
-    width: 100%;
-    max-width: 550px;
-    height: auto;
-}
-
-.descricaoMarca{
-    margin-top: 16px;
-    margin-left: 2.5%;
-    width: 45vh;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    font-size: 15px;
-    line-height: 1.6;
-    color: #fffefee3;
-}
-
-.direitosAutorais{
-    margin: 0;
-    margin-left: 5px;
+  .tudoCadastro .descricaoMarca {
     font-size: 14px;
-    color: #d9b3a8;
-}
+  }
 
-
-/*        METADE DIREITA (formulário prático)         */
-
-.metadePratica{
-    width: 50%;
-    height: 100%;
-    box-sizing: border-box;
-    background-color: #FDEDE8;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.conteudoPratico{
-    width: 100%;
-    max-width: 450px; /*largura do "bloco" do formulário inteiro*/
-}
-
-.tituloCadastro{
-    margin: 0 0 28px 0;
-    font-size: 340%;
-    color: #870B22;
-}
-
-.campoLogin{
-    margin-bottom: 22px;
-}
-
-.labelCampo{
-    display: block;
-    margin-bottom: 6px;
-    font-size: 120%;
-    font-weight: 600;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-    color: #222;
-}
-
-#inputNome{
-    width: 450px;
-}
-
-#inputTelefone{
-    width: 450px;
-}
-
-#inputEmail{
-    width: 450px;
-}
-
-#inputNomeFabrica{
-    width: 450px;
-}
-
-#selectCargo{
-    width: 450px;
-    background-color: rgb(255, 255, 255);
-    border: 1px solid #870B22;
-}
-
-#inputSenha{
-    width: 450px;
-}
-
-.espacoEntreInputs{
-    height: 2vh;
-}
-
-.linhaLabelSenha{
-    display: flex;
-    justify-content: space-between; 
-    align-items: center;
-}
-
-/*caixinha que "embrulha" o Input pra dar pra por o ícone dentro dele*/
-.inputComIcone{
-    position: relative; /*é a partir daqui que o ícone se posiciona*/
-    display: flex;
-    align-items: center;
-}
-
-.selectComIcone{
-    position: relative; /*é a partir daqui que o ícone se posiciona*/
-    display: flex;
-    align-items: center;
-}
-
-.inputComIcone svg{
-    position: absolute; /*tira o ícone do alinhamento padrão e deixa ele "flutuar" por cima do Input bem bonitinho*/
-    left: 14px;
-    width: 18px;
-    height: 18px;
-    color: #870B22;
-    pointer-events: none; /*permite clicar "através" do ícone e cair direto no campo de texto*/
-}
-
-.inputComIcone .input{
-    width: 100%;
-    padding-left: 42px; /*espacinho pro ícone não ficar em cima do texto digitado*/
-    box-sizing: border-box;
-}
-
-/*mesma ideia aqui: sobrescrevendo só a largura do Button nessa tela*/
-.botaoCadastrar .button{
-    width: 100%;
-}
-
-.botaoCadastrar{
-    margin-top: 6px;
+  .tudoCadastro .metadePratica {
+    padding: 32px 18px 44px;
+  }
 }
