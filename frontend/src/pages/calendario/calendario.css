@@ -636,3 +636,13 @@
   from { opacity: 0; transform: translateY(14px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+
+
+
+.celulaDia.hoje .numeroDia {
+  background: #800000;
+  color: #fff;
+  border-radius: 50%;
+  padding: 2px 8px;
+}
