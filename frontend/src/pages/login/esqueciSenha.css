@@ -1,0 +1,574 @@
+/* =========================================================
+   TELA ESQUECI MINHA SENHA — ESTILO FLUIDO, PROFISSIONAL E SUAVE
+   ========================================================= */
+.tudoEsqueciSenha {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  background-color: #FDEDE8;
+  font-family: "DM Sans", "Inter", "Trebuchet MS", sans-serif;
+  color: #222222;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.tudoEsqueciSenha :focus-visible {
+  outline: 2px solid #870B22;
+  outline-offset: 2px;
+}
+
+/* =========================================================
+   METADE ESQUERDA (MARCA E APRESENTAÇÃO)
+   ========================================================= */
+.tudoEsqueciSenha .metadeBonita {
+  position: relative;
+  width: 50%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 40px 44px;
+  background-color: #26070d;
+  background-image:
+    linear-gradient(160deg, rgba(24, 4, 9, 0.58) 0%, rgba(56, 8, 18, 0.42) 55%, rgba(20, 4, 8, 0.72) 100%),
+    url("/img/fundo-login.png");
+  background-size: cover;
+  background-position: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.tudoEsqueciSenha .topoMarca {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.tudoEsqueciSenha .iconeMarca {
+  width: 64px;
+  height: 64px;
+  padding: 3px;
+  box-sizing: border-box;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.28));
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tudoEsqueciSenha .topoMarca:hover .iconeMarca {
+  transform: scale(1.04) rotate(-2deg);
+}
+
+.tudoEsqueciSenha .textoMarca {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.tudoEsqueciSenha .palavraMarca {
+  height: 26px;
+  width: auto;
+  display: block;
+}
+
+.tudoEsqueciSenha .industriaB2B {
+  margin: 0 0 0 4px;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: "Inter", "DM Sans", sans-serif;
+  color: rgba(245, 224, 220, 0.82);
+}
+
+.tudoEsqueciSenha .meioMarca {
+  width: 100%;
+  max-width: 540px;
+  margin: 32px 0;
+}
+
+.tudoEsqueciSenha .fraseMarca {
+  width: 100%;
+  max-width: 540px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 6px 18px rgba(0, 0, 0, 0.25));
+}
+
+.tudoEsqueciSenha .descricaoMarca {
+  margin: 18px 0 0 4px;
+  max-width: 440px;
+  font-family: "Inter", "DM Sans", sans-serif;
+  font-size: 15px;
+  font-weight: 400;
+  line-height: 1.65;
+  color: rgba(255, 250, 248, 0.9);
+}
+
+.tudoEsqueciSenha .direitosAutorais {
+  margin: 0 0 0 4px;
+  font-size: 13.5px;
+  color: rgba(235, 196, 186, 0.78);
+}
+
+/* =========================================================
+   METADE DIREITA (RECUPERAÇÃO DE SENHA)
+   ========================================================= */
+.tudoEsqueciSenha .metadePratica {
+  width: 50%;
+  min-height: 100vh;
+  box-sizing: border-box;
+  padding: 40px 32px;
+  background: radial-gradient(circle at top right, #fff7f4 0%, #FDEDE8 62%, #f9dfd7 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tudoEsqueciSenha .conteudoPratico {
+  width: 100%;
+  max-width: 440px;
+  margin: 0 auto;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.tudoEsqueciSenha .botaoVoltarLogin {
+  align-self: flex-start;
+  background: none;
+  border: none;
+  padding: 0;
+  margin-bottom: 18px;
+  font-family: "Inter", "DM Sans", sans-serif;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #870B22;
+  cursor: pointer;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
+}
+
+.tudoEsqueciSenha .botaoVoltarLogin:hover {
+  color: #b41534;
+  transform: translateX(-3px);
+}
+
+.tudoEsqueciSenha .tituloEsqueciSenha {
+  margin: 0 0 10px 0;
+  width: 100%;
+  text-align: left;
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-size: clamp(30px, 3.3vw, 42px);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  color: #870B22;
+}
+
+.tudoEsqueciSenha .subtituloEsqueciSenha {
+  margin: 0 0 24px 0;
+  width: 100%;
+  text-align: left;
+  font-family: "Inter", "DM Sans", sans-serif;
+  font-size: 14.5px;
+  line-height: 1.6;
+  color: #655658;
+}
+
+.tudoEsqueciSenha .formEsqueciSenha {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.tudoEsqueciSenha .mensagemErroEsqueci {
+  margin: 0 0 16px;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: #fde4e8;
+  border: 1px solid #e6a8b2;
+  color: #870B22;
+  font-size: 13.5px;
+  font-weight: 600;
+}
+
+.tudoEsqueciSenha .campoEsqueciSenha {
+  margin-bottom: 20px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+}
+
+.tudoEsqueciSenha .labelCampo {
+  display: block;
+  margin-bottom: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  font-family: "Inter", "DM Sans", sans-serif;
+  color: #2b2022;
+}
+
+.tudoEsqueciSenha .inputComIcone {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+  border-radius: 10px;
+  box-sizing: border-box;
+  transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.tudoEsqueciSenha .inputComIcone:focus-within {
+  transform: translateY(-1px);
+}
+
+.tudoEsqueciSenha .inputComIcone > div,
+.tudoEsqueciSenha .inputComIcone .input {
+  width: 100% !important;
+  max-width: 100% !important;
+  flex: 1 1 auto !important;
+  margin: 0 !important;
+  box-sizing: border-box;
+}
+
+.tudoEsqueciSenha .inputComIcone svg {
+  position: absolute;
+  left: 14px;
+  width: 18px;
+  height: 18px;
+  color: #870B22;
+  opacity: 0.78;
+  pointer-events: none;
+  z-index: 2;
+  transition: color 0.2s ease, opacity 0.2s ease, transform 0.2s ease;
+}
+
+.tudoEsqueciSenha .inputComIcone:focus-within svg {
+  color: #870B22;
+  opacity: 1;
+  transform: scale(1.04);
+}
+
+.tudoEsqueciSenha .inputComIcone input,
+.tudoEsqueciSenha .inputComIcone .input input,
+.tudoEsqueciSenha #inputEmailRecuperacao {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+  height: 46px !important;
+  min-height: 46px !important;
+  margin: 0 !important;
+  padding-left: 42px !important;
+  padding-right: 14px !important;
+  box-sizing: border-box !important;
+  border-radius: 10px !important;
+  border: 1px solid #e3c8c2 !important;
+  background-color: #ffffff !important;
+  color: #222222 !important;
+  font-family: "Inter", "DM Sans", sans-serif !important;
+  font-size: 14.5px !important;
+  box-shadow: 0 2px 6px rgba(82, 33, 33, 0.04);
+  transition:
+    border-color 0.22s ease,
+    box-shadow 0.25s ease,
+    background-color 0.22s ease;
+}
+
+.tudoEsqueciSenha .inputComIcone input:hover,
+.tudoEsqueciSenha .inputComIcone .input input:hover {
+  border-color: #cf9fa6 !important;
+}
+
+.tudoEsqueciSenha .inputComIcone input:focus,
+.tudoEsqueciSenha .inputComIcone .input input:focus {
+  outline: none !important;
+  border-color: #870B22 !important;
+  background-color: #fffdfd !important;
+  box-shadow:
+    0 0 0 4px rgba(135, 11, 34, 0.12),
+    0 6px 14px rgba(135, 11, 34, 0.06) !important;
+}
+
+/* Botão enviar instruções */
+.tudoEsqueciSenha .botaoEnviarLink {
+  margin-top: 6px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.tudoEsqueciSenha .botaoEnviarLink .button,
+.tudoEsqueciSenha .botaoEnviarLink button {
+  width: 100% !important;
+  max-width: 100% !important;
+  min-height: 46px;
+  margin: 0 !important;
+  border: none;
+  border-radius: 999px;
+  background: linear-gradient(120deg, #6e081b 0%, #870B22 52%, #b01836 100%);
+  background-size: 220% 100%;
+  background-position: 0% 50%;
+  color: #ffffff;
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-size: 15.5px;
+  font-weight: 700;
+  letter-spacing: 0.015em;
+  cursor: pointer;
+  box-shadow:
+    0 8px 18px rgba(135, 11, 34, 0.24),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.14);
+  transition:
+    background-position 0.45s ease,
+    transform 0.22s cubic-bezier(0.22, 1, 0.36, 1),
+    box-shadow 0.25s ease;
+}
+
+.tudoEsqueciSenha .botaoEnviarLink .button:hover,
+.tudoEsqueciSenha .botaoEnviarLink button:hover {
+  background-position: 100% 50%;
+  transform: translateY(-2px);
+  box-shadow:
+    0 12px 24px rgba(135, 11, 34, 0.32),
+    inset 0 -2px 0 rgba(0, 0, 0, 0.14);
+}
+
+.tudoEsqueciSenha .botaoEnviarLink .button:active,
+.tudoEsqueciSenha .botaoEnviarLink button:active {
+  transform: translateY(0) scale(0.988);
+}
+
+/* Card de confirmação após envio */
+.tudoEsqueciSenha .cardConfirmacaoEnvio {
+  width: 100%;
+  padding: 24px;
+  border-radius: 16px;
+  background: linear-gradient(160deg, #fff7f8 0%, #ffe9ed 100%);
+  border: 1px solid #efc5c8;
+  box-shadow: 0 8px 20px rgba(135, 11, 34, 0.08);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-sizing: border-box;
+  animation: esqueciItemCascata 0.4s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.tudoEsqueciSenha .iconeSucessoEnvio {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(135, 11, 34, 0.12);
+  color: #870B22;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 12px;
+}
+
+.tudoEsqueciSenha .iconeSucessoEnvio svg {
+  width: 22px;
+  height: 22px;
+}
+
+.tudoEsqueciSenha .tituloConfirmacaoEnvio {
+  margin: 0 0 6px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #870B22;
+}
+
+.tudoEsqueciSenha .textoConfirmacaoEnvio {
+  margin: 0 0 18px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: #4d3c3f;
+}
+
+.tudoEsqueciSenha .acoesConfirmacaoEnvio {
+  width: 100%;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.tudoEsqueciSenha .botaoReenviarEmail,
+.tudoEsqueciSenha .botaoIrLogin {
+  flex: 1 1 140px;
+  min-height: 40px;
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-family: "DM Sans", "Inter", sans-serif;
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.tudoEsqueciSenha .botaoReenviarEmail {
+  background: #ffffff;
+  color: #2b2022;
+  border: 1px solid #e3c8c2;
+}
+
+.tudoEsqueciSenha .botaoReenviarEmail:hover {
+  border-color: #870B22;
+  color: #870B22;
+  transform: translateY(-1px);
+}
+
+.tudoEsqueciSenha .botaoIrLogin {
+  background: #870B22;
+  color: #ffffff;
+  border: none;
+}
+
+.tudoEsqueciSenha .botaoIrLogin:hover {
+  background: #6e081b;
+  transform: translateY(-1px);
+}
+
+.tudoEsqueciSenha .lembrouSenha {
+  margin: 20px 0 0;
+  width: 100%;
+  text-align: center;
+  font-size: 14px;
+  color: #655658;
+}
+
+.tudoEsqueciSenha .linkVoltarLogin {
+  color: #870B22;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1.5px solid rgba(135, 11, 34, 0.35);
+  padding-bottom: 1px;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease;
+}
+
+.tudoEsqueciSenha .linkVoltarLogin:hover {
+  color: #b41534;
+  border-bottom-color: #b41534;
+}
+
+/* =========================================================
+   ANIMAÇÕES DE ENTRADA SUAVE E FLUIDA
+   ========================================================= */
+@keyframes esqueciPainelEntrar {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes esqueciItemCascata {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .tudoEsqueciSenha .metadeBonita {
+    animation: esqueciPainelEntrar 0.65s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .tudoEsqueciSenha .botaoVoltarLogin,
+  .tudoEsqueciSenha .tituloEsqueciSenha,
+  .tudoEsqueciSenha .subtituloEsqueciSenha,
+  .tudoEsqueciSenha .formEsqueciSenha,
+  .tudoEsqueciSenha .lembrouSenha {
+    animation: esqueciItemCascata 0.5s cubic-bezier(0.22, 1, 0.36, 1) backwards;
+  }
+
+  .tudoEsqueciSenha .botaoVoltarLogin {
+    animation-delay: 0.08s;
+  }
+
+  .tudoEsqueciSenha .tituloEsqueciSenha {
+    animation-delay: 0.14s;
+  }
+
+  .tudoEsqueciSenha .subtituloEsqueciSenha {
+    animation-delay: 0.2s;
+  }
+
+  .tudoEsqueciSenha .formEsqueciSenha {
+    animation-delay: 0.26s;
+  }
+
+  .tudoEsqueciSenha .lembrouSenha {
+    animation-delay: 0.32s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tudoEsqueciSenha .metadeBonita,
+  .tudoEsqueciSenha .botaoVoltarLogin,
+  .tudoEsqueciSenha .tituloEsqueciSenha,
+  .tudoEsqueciSenha .subtituloEsqueciSenha,
+  .tudoEsqueciSenha .formEsqueciSenha,
+  .tudoEsqueciSenha .cardConfirmacaoEnvio,
+  .tudoEsqueciSenha .lembrouSenha {
+    animation: none;
+    transition: none;
+  }
+}
+
+/* =========================================================
+   RESPONSIVIDADE
+   ========================================================= */
+@media (max-width: 960px) {
+  .tudoEsqueciSenha {
+    flex-direction: column;
+  }
+
+  .tudoEsqueciSenha .metadeBonita,
+  .tudoEsqueciSenha .metadePratica {
+    width: 100%;
+    min-height: auto;
+  }
+
+  .tudoEsqueciSenha .metadeBonita {
+    padding: 32px 28px;
+    gap: 28px;
+  }
+
+  .tudoEsqueciSenha .meioMarca {
+    margin: 12px 0;
+  }
+
+  .tudoEsqueciSenha .metadePratica {
+    padding: 44px 24px 56px;
+  }
+}
+
+@media (max-width: 480px) {
+  .tudoEsqueciSenha .metadeBonita {
+    padding: 24px 20px;
+  }
+
+  .tudoEsqueciSenha .iconeMarca {
+    width: 52px;
+    height: 52px;
+  }
+
+  .tudoEsqueciSenha .descricaoMarca {
+    font-size: 14px;
+  }
+
+  .tudoEsqueciSenha .metadePratica {
+    padding: 32px 18px 44px;
+  }
+}
