@@ -85,6 +85,7 @@ async function excluirTransacao(id) {
   salvarLocal(filtradas);
   return response;
 }
+
 function calcularFluxoCaixa(movimentacoes = []) {
   const entradas = movimentacoes.filter(
     (item) => item.type === "INCOME" || item.tipo === "entrada"
@@ -156,6 +157,7 @@ function FluxoCaixa() {
   const [modalDespesasAberto, setModalDespesasAberto] = useState(false);
   const [modalRegistrarSaidaAberto, setModalRegistrarSaidaAberto] = useState(false);
   const [modalRegistrarEntradaAberto, setModalRegistrarEntradaAberto] = useState(false);
+  const [confirmacaoExclusao, setConfirmacaoExclusao] = useState(null);
 
   const [formSaida, setFormSaida] = useState({
     description: "",
@@ -203,6 +205,15 @@ function FluxoCaixa() {
   useEffect(() => {
     carregarTransacoes();
   }, []);
+
+  useEffect(() => {
+    if (!confirmacaoExclusao) return;
+    const aoPressionarEsc = (e) => {
+      if (e.key === "Escape") setConfirmacaoExclusao(null);
+    };
+    document.addEventListener("keydown", aoPressionarEsc);
+    return () => document.removeEventListener("keydown", aoPressionarEsc);
+  }, [confirmacaoExclusao]);
 
   const handleClicarSaida = () => {
     setBotaoAtivo("saida");
@@ -275,11 +286,15 @@ function FluxoCaixa() {
     }
   };
 
-  const handleExcluirTransacao = async (id, rotaFallback) => {
+  const handleExcluirTransacao = async (alvo) => {
+    if (!alvo) return;
+    const { id, rotaFallback } = alvo;
+
     if (id) {
       try {
         await excluirTransacao(id);
         await carregarTransacoes();
+        setConfirmacaoExclusao(null);
         setModalDetalhesEntradaAberto(false);
         setModalDetalhesSaidaAberto(false);
         return;
@@ -288,6 +303,8 @@ function FluxoCaixa() {
         return;
       }
     }
+
+    setConfirmacaoExclusao(null);
     setModalDetalhesEntradaAberto(false);
     setModalDetalhesSaidaAberto(false);
     navigate(rotaFallback);
@@ -1017,7 +1034,15 @@ function FluxoCaixa() {
                   <button
                     type="button"
                     className="botaoExcluir"
-                    onClick={() => handleExcluirTransacao(entradaSelecionada.id, "/fluxocaixaexcluir2")}
+                    onClick={() =>
+                      setConfirmacaoExclusao({
+                        tipo: "entrada",
+                        id: entradaSelecionada.id,
+                        titulo: entradaSelecionada.titulo,
+                        valor: entradaSelecionada.valor,
+                        rotaFallback: "/fluxocaixaexcluir2",
+                      })
+                    }
                   >
                     Excluir
                   </button>
@@ -1181,7 +1206,15 @@ function FluxoCaixa() {
                   <button
                     type="button"
                     className="botaoExcluir"
-                    onClick={() => handleExcluirTransacao(saidaSelecionada.id, "/fluxocaixaexcluir1")}
+                    onClick={() =>
+                      setConfirmacaoExclusao({
+                        tipo: "saida",
+                        id: saidaSelecionada.id,
+                        titulo: saidaSelecionada.titulo,
+                        valor: saidaSelecionada.valor,
+                        rotaFallback: "/fluxocaixaexcluir1",
+                      })
+                    }
                   >
                     Excluir
                   </button>
@@ -1609,6 +1642,63 @@ function FluxoCaixa() {
                   </button>
                 </div>
               </form>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Pop up de exclusao */}
+      {confirmacaoExclusao && (
+        <div
+          className="modalOverlay"
+          style={{ zIndex: 1100 }}
+          onMouseDown={(e) => {
+            if (e.target === e.currentTarget) setConfirmacaoExclusao(null);
+          }}
+        >
+          <div
+            className="modalConteudo modalConfirmacaoExclusao"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="tituloConfirmacaoExclusao"
+          >
+            <div className="modalCabecalho">
+              <h2 id="tituloConfirmacaoExclusao">
+                Confirmar exclusão {confirmacaoExclusao.tipo === "entrada" ? "da entrada" : "da saída"}
+              </h2>
+              <button
+                type="button"
+                className="botaoFecharModal"
+                aria-label="Fechar confirmação"
+                onClick={() => setConfirmacaoExclusao(null)}
+              >
+                &times;
+              </button>
+            </div>
+
+            <div className="modalCorpo">
+              <p className="textoConfirmacaoExclusao">
+                Tem certeza que deseja excluir{" "}
+                <strong>{confirmacaoExclusao.titulo || "esta movimentação"}</strong>
+                {confirmacaoExclusao.valor ? ` (R$ ${confirmacaoExclusao.valor})` : ""}? Essa ação não poderá ser desfeita.
+              </p>
+
+              <div className="acoesConfirmacaoExclusao">
+                <button
+                  type="button"
+                  className="botaoCancelar"
+                  onClick={() => setConfirmacaoExclusao(null)}
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="button"
+                  className="botaoExcluir"
+                  onClick={() => handleExcluirTransacao(confirmacaoExclusao)}
+                >
+                  Sim, excluir
+                </button>
+              </div>
             </div>
           </div>
         </div>
