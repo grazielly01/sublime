@@ -229,7 +229,6 @@ const pad2 = (n) => String(n).padStart(2, "0");
 function extrairDataPartes(dataValor) {
   const texto = String(dataValor ?? "").trim();
 
-  // Formato ISO: YYYY-MM-DD
   const isoMatch = texto.match(/^(\d{4})-(\d{2})-(\d{2})/);
   if (isoMatch) {
     return {
@@ -239,7 +238,6 @@ function extrairDataPartes(dataValor) {
     };
   }
 
-  // Formato BR: DD/MM/YYYY
   const brMatch = texto.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
   if (brMatch) {
     return {
@@ -351,6 +349,7 @@ function montarDadosGraficos(transacoesDoMes, mes, ano) {
       Y_BASE -
       ((saldo - eixoLinha.base) / (eixoLinha.topo - eixoLinha.base)) * (Y_BASE - Y_TOPO),
     saldo,
+    diaLabel: i === 0 ? `01/${pad2(mes)}` : `Dia ${pad2(dias[i])}/${pad2(mes)}`,
   }));
 
   const rotulosLinha = dias.map((d, i) => (i === 0 ? `01/${pad2(mes)}` : pad2(d)));
@@ -363,6 +362,7 @@ function FluxoCaixa() {
 
   const [cardAtivo, setCardAtivo] = useState("margem");
   const [botaoAtivo, setBotaoAtivo] = useState("entrada");
+  const [tooltipGrafico, setTooltipGrafico] = useState(null);
 
   const [modalMovimentacoesAberto, setModalMovimentacoesAberto] = useState(false);
   const [modalDespesasAberto, setModalDespesasAberto] = useState(false);
@@ -770,7 +770,6 @@ function FluxoCaixa() {
       reactKey: m.baseKey,
     }));
 
-  // Lista consolidada de todas as movimentações ativas (aparecem em Movimentações recentes, cards e gráficos)
   const movimentos = [...movimentosFormatadosApi, ...movimentosBaseFormatados];
 
   const hoje = new Date();
@@ -824,7 +823,18 @@ function FluxoCaixa() {
   const formatarMoeda = (num) =>
     Number(num).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
-  // Grupos dinâmicos para o pop-up "Movimentações recentes"
+  const atualizarPosicaoTooltip = (e, dados) => {
+    setTooltipGrafico({
+      x: e.clientX,
+      y: e.clientY,
+      ...dados,
+    });
+  };
+
+  const esconderTooltip = () => {
+    setTooltipGrafico(null);
+  };
+
   const mapearItemModal = (item) => ({
     id: item.id,
     baseKey: item.baseKey || null,
@@ -1033,17 +1043,53 @@ function FluxoCaixa() {
                 <div className="linhaGrafico linha0"></div>
 
                 {graficos.barras.map((b) => (
-                  <div className="grupoBarras" key={b.rotulo}>
+                  <div
+                    className="grupoBarras"
+                    key={b.rotulo}
+                    onMouseEnter={(e) =>
+                      atualizarPosicaoTooltip(e, {
+                        titulo: `Período ${b.rotulo}`,
+                        itens: [
+                          {
+                            cor: "entrada",
+                            rotulo: "Entradas",
+                            valor: formatarMoeda(b.entradas),
+                          },
+                          {
+                            cor: "saida",
+                            rotulo: "Saídas",
+                            valor: formatarMoeda(b.saidas),
+                          },
+                        ],
+                      })
+                    }
+                    onMouseMove={(e) =>
+                      atualizarPosicaoTooltip(e, {
+                        titulo: `Período ${b.rotulo}`,
+                        itens: [
+                          {
+                            cor: "entrada",
+                            rotulo: "Entradas",
+                            valor: formatarMoeda(b.entradas),
+                          },
+                          {
+                            cor: "saida",
+                            rotulo: "Saídas",
+                            valor: formatarMoeda(b.saidas),
+                          },
+                        ],
+                      })
+                    }
+                    onMouseLeave={esconderTooltip}
+                  >
                     <div className="parBarras">
                       <div
                         className="barra entrada"
                         style={{ height: `${b.alturaEntrada}%` }}
-                        title={`Entradas: ${formatarMoeda(b.entradas)}`}
                       ></div>
                       <div
                         className="barra saida"
                         style={{ height: `${b.alturaSaida}%` }}
-                        title={`Saídas: ${formatarMoeda(b.saidas)}`}
                       ></div>
                     </div>
                     <span>{b.rotulo}</span>
@@ -1078,9 +1124,37 @@ function FluxoCaixa() {
                     strokeWidth="3"
                   />
                   {graficos.pontosLinha.map((p) => (
-                    <circle key={p.x} cx={p.x} cy={p.y} r="5">
-                      <title>{formatarMoeda(p.saldo)}</title>
-                    </circle>
+                    <circle
+                      key={p.x}
+                      cx={p.x}
+                      cy={p.y}
+                      r="5"
+                      onMouseEnter={(e) =>
+                        atualizarPosicaoTooltip(e, {
+                          titulo: p.diaLabel,
+                          itens: [
+                            {
+                              cor: p.saldo >= 0 ? "entrada" : "saida",
+                              rotulo: "Saldo acumulado",
+                              valor: formatarMoeda(p.saldo),
+                            },
+                          ],
+                        })
+                      }
+                      onMouseMove={(e) =>
+                        atualizarPosicaoTooltip(e, {
+                          titulo: p.diaLabel,
+                          itens: [
+                            {
+                              cor: p.saldo >= 0 ? "entrada" : "saida",
+                              rotulo: "Saldo acumulado",
+                              valor: formatarMoeda(p.saldo),
+                            },
+                          ],
+                        })
+                      }
+                      onMouseLeave={esconderTooltip}
+                    />
                   ))}
                 </svg>
 
@@ -1092,6 +1166,29 @@ function FluxoCaixa() {
               </div>
             </div>
           </section>
+
+          {/* TOOLTIP FLUTUANTE */}
+          {tooltipGrafico && (
+            <div
+              className="tooltipGrafico"
+              style={{ left: `${tooltipGrafico.x}px`, top: `${tooltipGrafico.y}px` }}
+            >
+              <div className="tooltipGraficoTitulo">{tooltipGrafico.titulo}</div>
+              {tooltipGrafico.itens.map((item, idx) => (
+                <div className="tooltipGraficoLinha" key={idx}>
+                  <span>
+                    <i
+                      className={
+                        item.cor === "entrada" ? "tooltipPontoEntrada" : "tooltipPontoSaida"
+                      }
+                    />
+                    {item.rotulo}
+                  </span>
+                  <strong>{item.valor}</strong>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* DUAS COLUNAS */}
           <section className="duasColunasFluxo">
