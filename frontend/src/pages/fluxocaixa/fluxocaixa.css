@@ -1,4 +1,4 @@
-/*VARIÁVEIS */
+/* VARIÁVEIS */
 :root {
   --cor-primaria: #8E1027;
   --cor-primaria-hover: #6f0c1e;
@@ -68,7 +68,7 @@
   font-weight: 700;
   line-height: 1.3;
   letter-spacing: -0.02em;
-  color: #8c1b30
+  color: #8c1b30;
 }
 
 .subtituloFluxoCaixa {
@@ -77,13 +77,12 @@
   font: 400 15px "Inter", sans-serif;
 }
 
-/* CARDS DO TOPO*/
+/* CARDS DO TOPO */
 .resumoFluxo {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 18px;
   margin-bottom: 22px;
-  
 }
 
 .cardFluxo {
@@ -93,16 +92,12 @@
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio-card);
   box-shadow: var(--sombra-card);
-
   display: flex;
   flex-direction: column;
   justify-content: center;
-
-
   background: linear-gradient(135deg, #FFFFFF 0%, #FFF7F8 45%, #FBE6EA 100%);
   background-size: 220% 220%;
   background-position: 0% 0%;
-
   transition:
     background-position 0.7s ease,
     box-shadow 0.3s ease,
@@ -133,7 +128,6 @@
   margin-right: 26px;
 }
 
-
 .cardSaldoFinal {
   background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 50%, #B3213B 100%);
   background-size: 220% 100%;
@@ -156,7 +150,7 @@
   color: #fff;
 }
 
-/*  CARDS GERAIS */
+/* CARDS GERAIS */
 .cardGraficoFluxo,
 .cardMovimentacoes,
 .cardDespesas {
@@ -168,13 +162,9 @@
   margin-bottom: 2.5%;
 }
 
-.cardGraficoFluxo {
-  margin-bottom: 2.5%;
-}
-
 .cabecalhoCardFluxo {
   min-height: 52px;
-  padding: 16px 26px;
+  padding: 18px 26px 10px;
   box-sizing: border-box;
   display: flex;
   align-items: center;
@@ -192,7 +182,7 @@
 .cardGraficoFluxo .legendaGrafico {
   display: flex;
   justify-content: flex-start;
-  gap: 14px;
+  gap: 16px;
   margin-top: 0;
   font: 500 12px "Inter", sans-serif;
   color: var(--cor-texto-secundario);
@@ -214,7 +204,7 @@
 .legendaEntrada { background: var(--cor-entrada); }
 .legendaSaida   { background: var(--cor-saida); }
 
-/*  AÇÕES DO GRÁFICO  */
+/* AÇÕES DO GRÁFICO */
 .acoesGrafico {
   display: flex;
   flex-direction: column;
@@ -275,37 +265,50 @@
   transform: translateY(0);
 }
 
-/* GRÁFICO DE BARRAS= */
+/* =====================================================
+   GRÁFICO DE BARRAS (CORRIGIDO E SUAVE)
+===================================================== */
 .graficoBarras {
-  height: 200px;
+  height: 230px;
   display: flex;
-  padding: 4px 22px 16px 50px;
+  align-items: stretch;
+  gap: 14px;
+  padding: 14px 26px 18px 26px;
   box-sizing: border-box;
   position: relative;
 }
 
 .eixoY {
-  position: absolute;
-  left: 14px;
-  top: 6px;
-  bottom: 27px;
-
+  width: 46px;
+  height: calc(100% - 24px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: flex-end;
+  padding-right: 4px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
 
+.eixoY span {
   color: var(--cor-texto-suave);
-  font: 400 11px "Inter", sans-serif;
+  font: 500 11px "Inter", sans-serif;
   font-variant-numeric: tabular-nums;
+  line-height: 1;
+  transform: translateY(-4px);
+  white-space: nowrap;
 }
 
 .areaBarras {
   position: relative;
   flex: 1;
+  min-width: 0;
   height: 100%;
   display: flex;
   justify-content: space-around;
   align-items: flex-end;
+  padding: 0 8px;
+  box-sizing: border-box;
 }
 
 .linhaGrafico {
@@ -313,107 +316,146 @@
   left: 0;
   right: 0;
   border-top: 1px dashed var(--cor-divisor);
+  pointer-events: none;
 }
 
 .linha60 { top: 0; }
-.linha40 { top: 33%; }
-.linha20 { top: 66%; }
-.linha0  { bottom: 22px; }
+.linha40 { top: calc((100% - 24px) * 0.333); }
+.linha20 { top: calc((100% - 24px) * 0.666); }
+.linha0  { bottom: 24px; border-top-style: solid; border-top-color: var(--cor-borda); }
 
 .grupoBarras {
   height: 100%;
-  width: 65px;
-
+  min-width: 58px;
+  max-width: 110px;
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-end;
-
   position: relative;
   z-index: 2;
 }
 
 .parBarras {
-  height: calc(100% - 22px);
+  height: calc(100% - 24px);
+  width: 100%;
   display: flex;
   align-items: flex-end;
-  gap: 5px;
+  justify-content: center;
+  gap: 6px;
 }
 
 .barra {
-  width: 12px;
-  border-radius: 5px 5px 0 0;
+  width: 14px;
+  min-height: 0;
+  border-radius: 6px 6px 0 0;
   transform-origin: bottom;
-  transition: filter 0.2s;
+  transition:
+    height 0.65s var(--suave),
+    filter 0.22s ease,
+    transform 0.22s var(--suave);
+  cursor: pointer;
 }
 
 .barra:hover {
-  filter: brightness(1.12);
+  filter: brightness(1.08);
+  transform: scaleX(1.08);
 }
 
 .barra.entrada {
-  background: linear-gradient(180deg, #4FA463 0%, #3F8F4F 100%);
+  background: linear-gradient(180deg, #52ad67 0%, #3F8F4F 100%);
+  box-shadow: 0 2px 6px rgba(63, 143, 79, 0.18);
 }
 
 .barra.saida {
-  background: linear-gradient(180deg, #B3213B 0%, #8E1027 100%);
+  background: linear-gradient(180deg, #b8233e 0%, #8E1027 100%);
+  box-shadow: 0 2px 6px rgba(142, 16, 39, 0.18);
 }
 
 .grupoBarras > span {
-  margin-top: 6px;
+  margin-top: 8px;
   color: var(--cor-texto-secundario);
-  font: 500 11px "Inter", sans-serif;
+  font: 500 11.5px "Inter", sans-serif;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
 }
 
-/*  GRÁFICO DE LINHA */
+/* =====================================================
+   GRÁFICO DE LINHA — EVOLUÇÃO DO SALDO (CORRIGIDO)
+===================================================== */
 .graficoLinha {
-  height: 200px;
+  height: 235px;
   position: relative;
-  margin: 8px 22px 16px 50px;
-  border-bottom: 1px solid var(--cor-borda);
-}
-
-.linhasLinha {
-  position: absolute;
-  inset: 10px 0 25px;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.linhasLinha span {
-  width: 100%;
-  border-top: 1px dashed var(--cor-divisor);
+  align-items: stretch;
+  gap: 14px;
+  padding: 14px 26px 18px 26px;
+  box-sizing: border-box;
 }
 
 .eixoLinhaY {
-  position: absolute;
-  left: -36px;
-  top: 10px;
-  bottom: 25px;
-
+  width: 48px;
+  height: calc(100% - 26px);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  align-items: flex-end;
+  padding-right: 4px;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  z-index: 2;
+}
 
+.eixoLinhaY span {
   color: var(--cor-texto-suave);
-  font: 400 11px "Inter", sans-serif;
+  font: 500 11px "Inter", sans-serif;
   font-variant-numeric: tabular-nums;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.campoLinhaGrafico {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.linhasLinha {
+  position: relative;
+  flex: 1;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--cor-borda);
+  box-sizing: border-box;
+}
+
+.linhasLinha span {
+  display: block;
+  width: 100%;
+  height: 0;
+  border-top: 1px dashed var(--cor-divisor);
 }
 
 .svgLinha {
   position: absolute;
-  left: 0;
-  right: 0;
   top: 0;
+  left: 0;
   width: 100%;
-  height: calc(100% - 22px);
+  height: calc(100% - 24px);
   overflow: visible;
+  z-index: 2;
 }
 
-
-.svgLinha path,
 .svgLinha polyline {
+  fill: none;
+  stroke: var(--cor-primaria);
+  stroke-width: 3px;
   vector-effect: non-scaling-stroke;
   stroke-linejoin: round;
   stroke-linecap: round;
@@ -421,22 +463,35 @@
 
 .svgLinha circle {
   fill: var(--cor-primaria);
+  stroke: #ffffff;
+  stroke-width: 2px;
+  cursor: pointer;
+  transition: r 0.2s ease, fill 0.2s ease;
+}
+
+.svgLinha circle:hover {
+  r: 7;
+  fill: #b3213b;
 }
 
 .datasLinha {
-  position: absolute;
-  bottom: 2px;
-  left: 0;
-  right: 0;
-
+  height: 24px;
+  width: 100%;
   display: flex;
   justify-content: space-between;
-
+  align-items: center;
+  padding-top: 6px;
+  box-sizing: border-box;
   color: var(--cor-texto-secundario);
-  font: 500 11px "Inter", sans-serif;
+  font: 500 11.5px "Inter", sans-serif;
+  font-variant-numeric: tabular-nums;
 }
 
-/*  DUAS COLUNAS */
+.datasLinha span {
+  white-space: nowrap;
+}
+
+/* DUAS COLUNAS */
 .duasColunasFluxo {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -450,6 +505,7 @@
 
 .cabecalhoLista {
   border-bottom: 1px solid var(--cor-divisor);
+  padding-bottom: 14px;
 }
 
 .cabecalhoLista button {
@@ -459,7 +515,6 @@
   padding: 7px 16px;
   font: 600 11px "Inter", sans-serif;
   cursor: pointer;
-
   background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 45%, #B3213B 100%);
   background-size: 220% 100%;
   background-position: 0% 50%;
@@ -482,7 +537,6 @@
   min-height: 50px;
   padding: 10px 20px;
   box-sizing: border-box;
-
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -526,18 +580,15 @@
   color: #fff;
   font: 700 12px "Inter", sans-serif;
   margin-left: 23px;
-  
 }
 
 .entradaIcone {
   background: linear-gradient(135deg, #4FA463, #3F8F4F);
-/*margin-left: 26px;*/
 }
 
 .saidaIcone,
 .iconeDespesa {
   background: linear-gradient(135deg, #C8213D, #A60027);
-  /*margin-left: 26px;*/
 }
 
 .valorEntrada,
@@ -551,7 +602,7 @@
 .valorEntrada { color: #1F7A3A; }
 .valorSaida   { color: #7A1626; }
 
-/* RESUMO INFERIOR*/
+/* RESUMO INFERIOR */
 .resumoInferior {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -564,14 +615,11 @@
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio-card);
   box-shadow: var(--sombra-card);
-
   display: flex;
   flex-direction: column;
-
   background: linear-gradient(135deg, #FFFFFF 0%, #FFF7F8 45%, #FBE6EA 100%);
   background-size: 220% 220%;
   background-position: 0% 0%;
-
   transition:
     background-position 0.7s ease,
     box-shadow 0.3s ease,
@@ -605,7 +653,7 @@
   font: 500 12px "Inter", sans-serif;
 }
 
-/* DESPESAS FIXAS E VARIÁVEIS*/
+/* DESPESAS FIXAS E VARIÁVEIS */
 .cardDespesas {
   margin-bottom: 30px;
 }
@@ -629,12 +677,10 @@
   width: 135px;
   height: 135px;
   border-radius: 50%;
-
   background: conic-gradient(
     #8E1027 0deg 211deg,
     #F4B6C2 211deg 360deg
   );
-
   position: relative;
   display: flex;
   align-items: center;
@@ -646,7 +692,6 @@
   height: 82px;
   border-radius: 50%;
   background: #fff;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -667,11 +712,9 @@
 
 .legendaPizza {
   margin-top: 12px;
-
   display: flex;
   flex-direction: column;
   gap: 6px;
-
   color: var(--cor-texto-secundario);
   font: 500 12px "Inter", sans-serif;
 }
@@ -699,11 +742,9 @@
 .tabelaDespesa h3 {
   margin: 0 0 6px;
   padding: 9px 12px;
-
   border-radius: 8px;
   background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 60%, #B3213B 100%);
   color: #fff;
-
   font: 700 13px "Inter", sans-serif;
 }
 
@@ -716,11 +757,9 @@
   display: flex;
   justify-content: space-between;
   gap: 10px;
-
   padding: 8px 12px;
   border-bottom: 1px solid var(--cor-divisor);
   transition: background 0.15s;
-
   color: var(--cor-texto-secundario);
   font: 400 13px "Inter", sans-serif;
 }
@@ -739,14 +778,11 @@
 .totalDespesa {
   margin-top: 4px;
   padding: 9px 12px;
-
   display: flex;
   justify-content: space-between;
-
   background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 60%, #B3213B 100%);
   color: #fff;
   border-radius: 8px;
-
   font: 700 13px "Inter", sans-serif;
   font-variant-numeric: tabular-nums;
 }
@@ -756,7 +792,7 @@
   color: #5A2530;
 }
 
-/* ICONES  */
+/* ICONES */
 .iconeMovimentacao svg,
 .iconeDespesa svg {
   width: 13px;
@@ -783,60 +819,55 @@
   stroke-width: 2.4;
 }
 
-/* ANIMAÇÕES  */
+/* ANIMAÇÕES */
 @keyframes entradaCarga {
   from { opacity: 0; translate: 0 24px; }
   to   { opacity: 1; translate: 0 0; }
 }
- 
+
 @keyframes surgirRolagem {
   from { opacity: 0; translate: 0 32px; }
   to   { opacity: 1; translate: 0 0; }
 }
- 
+
 @keyframes crescerY {
   from { transform: scaleY(0); }
   to   { transform: scaleY(1); }
 }
- 
-/* linha do gráfico "desenhada" da esquerda para a direita */
+
 @keyframes revelarLinha {
   from { clip-path: inset(-12px 100% -12px -12px); }
   to   { clip-path: inset(-12px -12px -12px -12px); }
 }
- 
 
 .tituloFluxoCaixa    { --atraso: 0s; }
 .subtituloFluxoCaixa { --atraso: .08s; }
- 
+
 .cardFluxo:nth-child(1) { --atraso: .12s; }
 .cardFluxo:nth-child(2) { --atraso: .19s; }
 .cardFluxo:nth-child(3) { --atraso: .26s; }
 .cardFluxo:nth-child(4) { --atraso: .33s; }
- 
+
 .cardGraficoFluxo                      { --atraso: .4s; }
 .cardGraficoFluxo + .cardGraficoFluxo  { --atraso: .5s; }
- 
+
 .duasColunasFluxo .cardMovimentacoes:nth-child(1) { --atraso: .55s; }
 .duasColunasFluxo .cardMovimentacoes:nth-child(2) { --atraso: .63s; }
- 
+
 .miniCard:nth-child(1) { --atraso: .45s; }
 .miniCard:nth-child(2) { --atraso: .52s; }
 .miniCard:nth-child(3) { --atraso: .59s; }
- 
+
 .cardDespesas { --atraso: .5s; }
- 
-/* barras: uma coluna depois da outra */
+
 .grupoBarras                                              { --d: 0s; }
 .grupoBarras + .grupoBarras                               { --d: .10s; }
 .grupoBarras + .grupoBarras + .grupoBarras                { --d: .20s; }
 .grupoBarras + .grupoBarras + .grupoBarras + .grupoBarras { --d: .30s; }
 .grupoBarras + .grupoBarras + .grupoBarras + .grupoBarras + .grupoBarras { --d: .40s; }
 .grupoBarras + .grupoBarras + .grupoBarras + .grupoBarras + .grupoBarras + .grupoBarras { --d: .50s; }
- 
 
 @media (prefers-reduced-motion: no-preference) {
- 
   .tituloFluxoCaixa,
   .subtituloFluxoCaixa,
   .cardFluxo,
@@ -846,8 +877,7 @@
   .cardDespesas {
     animation: entradaCarga 0.7s var(--suave) var(--atraso, 0s) backwards;
   }
- 
-  /* linhas das movimentações entram uma por vez */
+
   .movimentacao {
     animation: entradaCarga 0.5s var(--suave) backwards;
   }
@@ -857,25 +887,21 @@
   .movimentacao:nth-child(4) { animation-delay: .88s; }
   .movimentacao:nth-child(5) { animation-delay: .94s; }
   .movimentacao:nth-child(6) { animation-delay: 1.00s; }
- 
-  
+
   .barra {
     animation: crescerY 0.9s var(--suave) calc(.75s + var(--d, 0s)) backwards;
   }
   .barra.saida {
     animation-delay: calc(.83s + var(--d, 0s));
   }
- 
 
   .svgLinha {
     animation: revelarLinha 1.3s var(--suave) .60s backwards;
   }
 }
- 
 
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
- 
     .cardGraficoFluxo,
     .cardMovimentacoes,
     .miniCard,
@@ -888,7 +914,7 @@
       animation-timeline: view(), auto;
       animation-range: entry 0% entry 30%, normal;
     }
- 
+
     .svgLinha {
       animation-name: revelarLinha, revelarLinha;
       animation-duration: auto, 1.3s;
@@ -900,16 +926,16 @@
     }
   }
 }
- 
+
 @media (prefers-reduced-motion: reduce) {
   .cardFluxo,
   .miniCard,
   .botaoSaida,
-  .botaoEntrada {
+  .botaoEntrada,
+  .barra {
     transition: none;
   }
 }
- 
 
 /* =====================================================
    RESPONSIVIDADE
@@ -972,20 +998,25 @@
     font-size: 26px;
   }
 
-  .graficoBarras {
-    padding-left: 38px;
+  .graficoBarras,
+  .graficoLinha {
+    padding: 12px 14px 16px;
+    gap: 8px;
+  }
+
+  .eixoY,
+  .eixoLinhaY {
+    width: 38px;
   }
 
   .grupoBarras {
-    width: 40px;
+    min-width: 40px;
   }
 
   .barra {
-    width: 8px;
+    width: 9px;
   }
 }
-
-
 
 /* =====================================================
    ESTILOS DO POP-UP (MODAL)
@@ -1063,14 +1094,7 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-
-
-
-
-
-
-
-/* pop up botao de exlcuir */
+/* POP-UP CONFIRMAÇÃO DE EXCLUSÃO */
 .modalConfirmacaoExclusao {
   max-width: 460px;
 }
