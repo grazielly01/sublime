@@ -434,6 +434,9 @@ UNLOCK TABLES;
 -- Dump completed on 2026-10-05 17:20:59
 
 
+
+
+
 ALTER TABLE fabrica
 ADD COLUMN razao_social_fabrica VARCHAR(120),
 ADD COLUMN cnpj_fabrica VARCHAR(18),
