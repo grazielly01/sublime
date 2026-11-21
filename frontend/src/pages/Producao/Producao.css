@@ -619,3 +619,13 @@
   from { opacity: 0; transform: translateY(12px); }
   to   { opacity: 1; transform: translateY(0); }
 }
+
+
+.mini-track span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--wine) 0%, var(--wine-claro) 100%);
+  transform-origin: left;
+  transition: width 0.35s var(--suave);
+}
