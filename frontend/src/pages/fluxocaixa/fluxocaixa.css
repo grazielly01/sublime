@@ -1156,80 +1156,233 @@
 
 
 
-
-
-
-
-/* animaçaozinha quando passa o cursor nos graficos*/
-.tooltipGrafico {
-  position: fixed;
-  z-index: 950;
-  pointer-events: none;
-  background: #2B1319;
-  color: #FFFFFF;
-  border: 1px solid rgba(255, 255, 255, 0.14);
-  border-radius: 10px;
-  padding: 10px 13px;
-  box-shadow: 0 10px 24px rgba(43, 19, 25, 0.26);
-  font-family: "Inter", sans-serif;
-  min-width: 148px;
-  transform: translate(12px, -50%);
-  animation: aparecerTooltip 0.15s var(--suave) both;
-}
-
-@keyframes aparecerTooltip {
-  from {
-    opacity: 0;
-    transform: translate(8px, -50%) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translate(12px, -50%) scale(1);
-  }
-}
-
-.tooltipGraficoTitulo {
-  font-size: 11.5px;
-  font-weight: 600;
-  color: #F6C5CE;
-  margin-bottom: 6px;
-  letter-spacing: 0.2px;
-}
-
-.tooltipGraficoLinha {
+.cabecalhoTabelaDespesa {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 12px;
-  font-size: 12px;
-  margin-top: 3px;
-  font-variant-numeric: tabular-nums;
+  gap: 10px;
+  margin-bottom: 12px;
+  position: relative;
 }
 
-.tooltipGraficoLinha span {
+.cabecalhoTabelaDespesa h3 {
+  margin: 0;
+}
+
+.menuDespesaWrapper {
+  position: relative;
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  color: #F9ECEF;
 }
 
-.tooltipGraficoLinha strong {
-  font-weight: 700;
+.botaoTresPontinhosDespesa {
+  width: 30px;
+  height: 30px;
+  border-radius: 999px;
+  border: 1px solid #E5D6D4;
+  background: #FAF6F5;
+  color: #6F0C1E;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.15s ease;
+}
+
+.botaoTresPontinhosDespesa:hover {
+  background: #FBEAED;
+  border-color: #8E1027;
+}
+
+.botaoTresPontinhosDespesa.aberto {
+  background: #8E1027;
   color: #FFFFFF;
+  border-color: #8E1027;
 }
 
-.tooltipPontoEntrada {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #52ad67;
-  display: inline-block;
+.dropdownDespesaOpcoes {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  min-width: 145px;
+  background: #FFFFFF;
+  border: 1px solid #EDE3E1;
+  border-radius: 12px;
+  box-shadow: 0 10px 24px rgba(43, 19, 25, 0.14);
+  padding: 6px;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: abrirMenuDespesa 0.15s ease both;
 }
 
-.tooltipPontoSaida {
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: #e03a58;
-  display: inline-block;
+@keyframes abrirMenuDespesa {
+  from {
+    opacity: 0;
+    transform: translateY(-4px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.dropdownDespesaOpcoes button {
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #2B2B2B;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.dropdownDespesaOpcoes button:hover {
+  background: #FAF6F5;
+  color: #8E1027;
+}
+
+.dropdownDespesaOpcoes button.opcaoExcluirDespesa:hover {
+  background: #FBEAED;
+  color: #8E1027;
+}
+
+.acoesEditarDespesaDiscreto {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.botaoSalvarDespesaDiscreto {
+  background: #8E1027;
+  color: #FFFFFF;
+  border: 1px solid #8E1027;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+}
+
+.botaoSalvarDespesaDiscreto:hover {
+  background: #6F0C1E;
+}
+
+.botaoCancelarDespesaDiscreto {
+  background: #FFFFFF;
+  color: #5A4E4C;
+  border: 1px solid #D5C7C5;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 11px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.botaoCancelarDespesaDiscreto:hover {
+  background: #FDEDE8;
+  color: #8E1027;
+  border-color: #C98A95;
+}
+
+.linhaDespesaEditavel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 0;
+  border-bottom: 1px solid #F3ECEA;
+}
+
+.camposLinhaDespesaEditavel {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.inputNomeDespesaInline {
+  flex: 1;
+  min-width: 110px;
+  padding: 4px 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  color: #2B2B2B;
+  background: #FAF6F5;
+  border: 1px solid #DFC5CA;
+  border-radius: 8px;
+}
+
+.inputNomeDespesaInline:focus {
+  outline: none;
+  background: #FFFFFF;
+  border-color: #8E1027;
+}
+
+.inputValorDespesaInline {
+  width: 98px;
+  padding: 4px 8px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  color: #2B2B2B;
+  background: #FAF6F5;
+  border: 1px solid #DFC5CA;
+  border-radius: 8px;
+}
+
+.inputValorDespesaInline:focus {
+  outline: none;
+  background: #FFFFFF;
+  border-color: #8E1027;
+  box-shadow: 0 0 0 3px rgba(142, 16, 39, 0.12);
+}
+
+.ladoDireitoLinhaDespesa {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.botaoRemoverDespesaLinha {
+  width: 24px;
+  height: 24px;
+  border-radius: 999px;
+  border: 1px solid #F0C4CC;
+  background: #FFF5F7;
+  color: #8E1027;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.botaoRemoverDespesaLinha:hover {
+  background: #8E1027;
+  color: #FFFFFF;
+  border-color: #8E1027;
 }

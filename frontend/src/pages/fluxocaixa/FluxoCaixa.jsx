@@ -10,6 +10,61 @@ import { useState, useEffect } from "react";
 
 const API_CAIXA = "http://localhost:3000/caixa";
 const STORAGE_KEY = "sublime_fluxo_caixa";
+const STORAGE_DESPESAS_FIXAS_VARIAVEIS = "sublime_despesas_fixas_variaveis";
+
+const DESPESAS_FIXAS_PADRAO = [
+  { nome: "Aluguel", valor: 3500 },
+  { nome: "Salários", valor: 5000 },
+  { nome: "Internet", valor: 200 },
+  { nome: "Sistema/assinaturas", valor: 300 },
+  { nome: "Energia base", valor: 800 },
+  { nome: "Manutenção", valor: 300 },
+];
+
+const DESPESAS_VARIAVEIS_PADRAO = [
+  { nome: "Matéria-prima", valor: 3500 },
+  { nome: "Embalagens", valor: 5000 },
+  { nome: "Fretes", valor: 200 },
+  { nome: "Taxas de entrega", valor: 300 },
+  { nome: "Horas extras", valor: 800 },
+  { nome: "Produção extra", valor: 300 },
+];
+
+function lerDespesasFixasVariaveis() {
+  try {
+    const salvo = JSON.parse(localStorage.getItem(STORAGE_DESPESAS_FIXAS_VARIAVEIS) || "null");
+    if (
+      salvo &&
+      Array.isArray(salvo.fixas) &&
+      Array.isArray(salvo.variaveis)
+    ) {
+      return {
+        fixas: salvo.fixas.map((item, idx) => ({
+          nome: item.nome ?? DESPESAS_FIXAS_PADRAO[idx]?.nome ?? `Item ${idx + 1}`,
+          valor: Number(item.valor) || 0,
+        })),
+        variaveis: salvo.variaveis.map((item, idx) => ({
+          nome: item.nome ?? DESPESAS_VARIAVEIS_PADRAO[idx]?.nome ?? `Item ${idx + 1}`,
+          valor: Number(item.valor) || 0,
+        })),
+      };
+    }
+  } catch {
+    // Fallback para valores padrão
+  }
+
+  return {
+    fixas: DESPESAS_FIXAS_PADRAO,
+    variaveis: DESPESAS_VARIAVEIS_PADRAO,
+  };
+}
+
+function salvarDespesasFixasVariaveis(fixas, variaveis) {
+  localStorage.setItem(
+    STORAGE_DESPESAS_FIXAS_VARIAVEIS,
+    JSON.stringify({ fixas, variaveis })
+  );
+}
 
 function lerLocal() {
   try {
@@ -223,6 +278,20 @@ const IconeSetaSaida = () => (
   </svg>
 );
 
+const IconeTresPontinhos = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="5" r="2" />
+    <circle cx="12" cy="12" r="2" />
+    <circle cx="12" cy="19" r="2" />
+  </svg>
+);
+
+const IconeFecharX = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 6L6 18M6 6l12 12" />
+  </svg>
+);
+
 // Gráficos dinâmicos
 const pad2 = (n) => String(n).padStart(2, "0");
 
@@ -360,6 +429,18 @@ function montarDadosGraficos(transacoesDoMes, mes, ano) {
 function FluxoCaixa() {
   const navigate = useNavigate();
 
+  const dadosDespesasIniciais = lerDespesasFixasVariaveis();
+  const [despesasFixas, setDespesasFixas] = useState(dadosDespesasIniciais.fixas);
+  const [despesasVariaveis, setDespesasVariaveis] = useState(dadosDespesasIniciais.variaveis);
+
+  // Estados do menu de três pontinhos e modos ("editar" | "excluir" | null)
+  const [menuFixasAberto, setMenuFixasAberto] = useState(false);
+  const [menuVariaveisAberto, setMenuVariaveisAberto] = useState(false);
+  const [modoFixas, setModoFixas] = useState(null);
+  const [modoVariaveis, setModoVariaveis] = useState(null);
+  const [rascunhoFixas, setRascunhoFixas] = useState([]);
+  const [rascunhoVariaveis, setRascunhoVariaveis] = useState([]);
+
   const [cardAtivo, setCardAtivo] = useState("margem");
   const [botaoAtivo, setBotaoAtivo] = useState("entrada");
   const [tooltipGrafico, setTooltipGrafico] = useState(null);
@@ -404,6 +485,118 @@ function FluxoCaixa() {
 
   const [nomeArquivoSaida, setNomeArquivoSaida] = useState("");
   const [nomeArquivoEntrada, setNomeArquivoEntrada] = useState("");
+
+  // Ações do menu de Despesas Fixas
+  const abrirAdicionarFixa = () => {
+    setMenuFixasAberto(false);
+    const base = despesasFixas.map((item) => ({
+      ...item,
+      valorTexto: Number(item.valor).toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+    }));
+    setRascunhoFixas([...base, { nome: "", valor: 0, valorTexto: "0,00" }]);
+    setModoFixas("editar");
+  };
+
+  const abrirEditarFixas = () => {
+    setMenuFixasAberto(false);
+    setRascunhoFixas(
+      despesasFixas.map((item) => ({
+        ...item,
+        valorTexto: Number(item.valor).toLocaleString("pt-BR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }),
+      }))
+    );
+    setModoFixas("editar");
+  };
+
+  const abrirExcluirFixas = () => {
+    setMenuFixasAberto(false);
+    setModoFixas("excluir");
+  };
+
+  const salvarFixas = () => {
+    const atualizadas = rascunhoFixas
+      .filter((item) => String(item.nome ?? "").trim() !== "")
+      .map((item) => ({
+        nome: String(item.nome).trim(),
+        valor: parseValorMoeda(item.valorTexto ?? item.valor),
+      }));
+    setDespesasFixas(atualizadas);
+    salvarDespesasFixasVariaveis(atualizadas, despesasVariaveis);
+    setModoFixas(null);
+  };
+
+  const cancelarFixas = () => {
+    setRascunhoFixas([]);
+    setModoFixas(null);
+  };
+
+  const removerItemFixo = (index) => {
+    const atualizadas = despesasFixas.filter((_, idx) => idx !== index);
+    setDespesasFixas(atualizadas);
+    salvarDespesasFixasVariaveis(atualizadas, despesasVariaveis);
+  };
+
+  // Ações do menu de Despesas Variáveis
+  const abrirAdicionarVariavel = () => {
+    setMenuVariaveisAberto(false);
+    const base = despesasVariaveis.map((item) => ({
+      ...item,
+      valorTexto: Number(item.valor).toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+    }));
+    setRascunhoVariaveis([...base, { nome: "", valor: 0, valorTexto: "0,00" }]);
+    setModoVariaveis("editar");
+  };
+
+  const abrirEditarVariaveis = () => {
+    setMenuVariaveisAberto(false);
+    setRascunhoVariaveis(
+      despesasVariaveis.map((item) => ({
+        ...item,
+        valorTexto: Number(item.valor).toLocaleString("pt-BR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }),
+      }))
+    );
+    setModoVariaveis("editar");
+  };
+
+  const abrirExcluirVariaveis = () => {
+    setMenuVariaveisAberto(false);
+    setModoVariaveis("excluir");
+  };
+
+  const salvarVariaveis = () => {
+    const atualizadas = rascunhoVariaveis
+      .filter((item) => String(item.nome ?? "").trim() !== "")
+      .map((item) => ({
+        nome: String(item.nome).trim(),
+        valor: parseValorMoeda(item.valorTexto ?? item.valor),
+      }));
+    setDespesasVariaveis(atualizadas);
+    salvarDespesasFixasVariaveis(despesasFixas, atualizadas);
+    setModoVariaveis(null);
+  };
+
+  const cancelarVariaveis = () => {
+    setRascunhoVariaveis([]);
+    setModoVariaveis(null);
+  };
+
+  const removerItemVariavel = (index) => {
+    const atualizadas = despesasVariaveis.filter((_, idx) => idx !== index);
+    setDespesasVariaveis(atualizadas);
+    salvarDespesasFixasVariaveis(despesasFixas, atualizadas);
+  };
 
   const carregarTransacoes = async () => {
     try {
@@ -823,6 +1016,55 @@ function FluxoCaixa() {
   const formatarMoeda = (num) =>
     Number(num).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
+  // Totais e percentuais dinâmicos de Despesas fixas x despesas variáveis
+  const listaFixasAtiva =
+    modoFixas === "editar"
+      ? rascunhoFixas.map((item) => ({
+          nome: item.nome,
+          valor: parseValorMoeda(item.valorTexto ?? item.valor),
+        }))
+      : despesasFixas;
+
+  const listaVariaveisAtiva =
+    modoVariaveis === "editar"
+      ? rascunhoVariaveis.map((item) => ({
+          nome: item.nome,
+          valor: parseValorMoeda(item.valorTexto ?? item.valor),
+        }))
+      : despesasVariaveis;
+
+  const totalFixas = listaFixasAtiva.reduce((acc, item) => acc + (Number(item.valor) || 0), 0);
+  const totalVariaveis = listaVariaveisAtiva.reduce((acc, item) => acc + (Number(item.valor) || 0), 0);
+  const totalDespesasFixasVariaveis = totalFixas + totalVariaveis;
+
+  const percFixasNumero =
+    totalDespesasFixasVariaveis > 0 ? (totalFixas / totalDespesasFixasVariaveis) * 100 : 0;
+  const percVariaveisNumero =
+    totalDespesasFixasVariaveis > 0 ? (totalVariaveis / totalDespesasFixasVariaveis) * 100 : 0;
+
+  const percFixasTexto = percFixasNumero.toFixed(1).replace(".", ",");
+  const percVariaveisTexto = percVariaveisNumero.toFixed(1).replace(".", ",");
+
+  // Conexão dinâmica de Maiores despesas com Despesas fixas e variáveis
+  const despesasCompletas = [
+    ...listaFixasAtiva.map((item) => ({
+      nome: item.nome,
+      detalhe: "Despesa fixa",
+      valorNumero: Number(item.valor) || 0,
+      valor: formatarMoeda(item.valor),
+    })),
+    ...listaVariaveisAtiva.map((item) => ({
+      nome: item.nome,
+      detalhe: "Despesa variável",
+      valorNumero: Number(item.valor) || 0,
+      valor: formatarMoeda(item.valor),
+    })),
+  ]
+    .filter((item) => item.nome.trim() !== "")
+    .sort((a, b) => b.valorNumero - a.valorNumero);
+
+  const maioresDespesas = despesasCompletas.slice(0, 5);
+
   const atualizarPosicaoTooltip = (e, dados) => {
     setTooltipGrafico({
       x: e.clientX,
@@ -881,43 +1123,6 @@ function FluxoCaixa() {
       titulo: "Outras movimentações",
       itens: itensOutrasDatas,
     },
-  ];
-
-  const maioresDespesas = [
-    { nome: "Folha de salários", valor: "R$ 4.500" },
-    { nome: "Matéria-prima", valor: "R$ 3.120" },
-    { nome: "Energia elétrica", valor: "R$ 1.950" },
-    { nome: "Embalagens personalizadas", valor: "R$ 1.250" },
-    { nome: "Manutenção de equipamentos", valor: "R$ 850" },
-  ];
-
-  const despesasFixas = [
-    ["Aluguel", "R$ 3.500,00"],
-    ["Salários", "R$ 5.000,00"],
-    ["Internet", "R$ 200,00"],
-    ["Sistema/assinaturas", "R$ 300,00"],
-    ["Energia base", "R$ 800,00"],
-    ["Manutenção", "R$ 300,00"],
-  ];
-
-  const despesasVariaveis = [
-    ["Matéria-prima", "R$ 3.500,00"],
-    ["Embalagens", "R$ 5.000,00"],
-    ["Fretes", "R$ 200,00"],
-    ["Taxas de entrega", "R$ 300,00"],
-    ["Horas extras", "R$ 800,00"],
-    ["Produção extra", "R$ 300,00"],
-  ];
-
-  const despesasCompletas = [
-    { nome: "Folha salarial", detalhe: "Pagamento de funcionário", valor: "R$ 8.400" },
-    { nome: "Farinha e açúcar (lote mensal)", detalhe: "Compra de insumo", valor: "R$ 3.120" },
-    { nome: "Energia elétrica industrial", detalhe: "Contas", valor: "R$ 1.950" },
-    { nome: "Embalagens personalizadas", detalhe: "Compra de insumo", valor: "R$ 2.760" },
-    { nome: "Manutenção de equipamentos industriais", detalhe: "Conserto/manutenção", valor: "R$ 4.300" },
-    { nome: "Gás industrial", detalhe: "Contas", valor: "R$ 2.650" },
-    { nome: "Fretes e entregas", detalhe: "Fretes/entregas", valor: "R$ 2.100" },
-    { nome: "Ingredientes complementares e especiais", detalhe: "Compra de insumo", valor: "R$ 1.780" },
   ];
 
   const voltar = () => {
@@ -1244,7 +1449,7 @@ function FluxoCaixa() {
 
               <div className="listaMovimentacoes">
                 {maioresDespesas.map((d, i) => (
-                  <div className="movimentacao" key={i}>
+                  <div className="movimentacao" key={`${d.nome}-${i}`}>
                     <div className="infoMovimentacao">
                       <span className="iconeDespesa">-</span>
                       <strong>{d.nome}</strong>
@@ -1282,43 +1487,276 @@ function FluxoCaixa() {
             </div>
             <div className="conteudoDespesas">
               <div className="areaPizza">
-                <div className="pizza">
+                <div
+                  className="pizza"
+                  style={{
+                    background: `conic-gradient(#8e1027 0% ${percFixasNumero}%, #f4b6c2 ${percFixasNumero}% 100%)`,
+                  }}
+                >
                   <div className="centroPizza">
-                    <strong>R$ 20.500,00</strong>
+                    <strong>{formatarMoeda(totalDespesasFixasVariaveis)}</strong>
                     <span>Total de despesas</span>
                   </div>
                 </div>
                 <div className="legendaPizza">
-                  <div><i className="pontoFixo"></i>Despesas fixas (58,5%)</div>
-                  <div><i className="pontoVariavel"></i>Despesas variáveis (41,5%)</div>
+                  <div>
+                    <i className="pontoFixo"></i>Despesas fixas ({percFixasTexto}%)
+                  </div>
+                  <div>
+                    <i className="pontoVariavel"></i>Despesas variáveis ({percVariaveisTexto}%)
+                  </div>
                 </div>
               </div>
 
+              {/* TABELA DESPESAS FIXAS */}
               <div className="tabelaDespesa">
-                <h3>Despesas fixas</h3>
-                {despesasFixas.map((item, i) => (
-                  <div className="linhaDespesa" key={i}>
-                    <span>{item[0]}</span>
-                    <strong>{item[1]}</strong>
-                  </div>
-                ))}
+                <div className="cabecalhoTabelaDespesa">
+                  <h3>Despesas fixas</h3>
+
+                  {modoFixas === "editar" ? (
+                    <div className="acoesEditarDespesaDiscreto">
+                      <button
+                        type="button"
+                        className="botaoSalvarDespesaDiscreto"
+                        onClick={salvarFixas}
+                      >
+                        Salvar
+                      </button>
+                      <button
+                        type="button"
+                        className="botaoCancelarDespesaDiscreto"
+                        onClick={cancelarFixas}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  ) : modoFixas === "excluir" ? (
+                    <button
+                      type="button"
+                      className="botaoSalvarDespesaDiscreto"
+                      onClick={() => setModoFixas(null)}
+                    >
+                      Concluir
+                    </button>
+                  ) : (
+                    <div className="menuDespesaWrapper">
+                      <button
+                        type="button"
+                        className={`botaoTresPontinhosDespesa ${menuFixasAberto ? "aberto" : ""}`}
+                        aria-label={menuFixasAberto ? "Fechar opções" : "Opções de despesas fixas"}
+                        onClick={() => {
+                          setMenuFixasAberto((prev) => !prev);
+                          setMenuVariaveisAberto(false);
+                        }}
+                      >
+                        {menuFixasAberto ? <IconeFecharX /> : <IconeTresPontinhos />}
+                      </button>
+
+                      {menuFixasAberto && (
+                        <div className="dropdownDespesaOpcoes">
+                          <button type="button" onClick={abrirAdicionarFixa}>
+                            + Adicionar
+                          </button>
+                          <button type="button" onClick={abrirEditarFixas}>
+                            Editar
+                          </button>
+                          <button
+                            type="button"
+                            className="opcaoExcluirDespesa"
+                            onClick={abrirExcluirFixas}
+                          >
+                            Excluir
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {(modoFixas === "editar" ? rascunhoFixas : despesasFixas).map((item, i) =>
+                  modoFixas === "editar" ? (
+                    <div className="linhaDespesaEditavel" key={`fixa-edit-${i}`}>
+                      <div className="camposLinhaDespesaEditavel">
+                        <input
+                          type="text"
+                          className="inputNomeDespesaInline"
+                          placeholder="Nome da despesa"
+                          value={item.nome}
+                          onChange={(e) => {
+                            const novoNome = e.target.value;
+                            setRascunhoFixas((prev) =>
+                              prev.map((linha, idx) =>
+                                idx === i ? { ...linha, nome: novoNome } : linha
+                              )
+                            );
+                          }}
+                        />
+                        <input
+                          type="text"
+                          className="inputValorDespesaInline"
+                          placeholder="0,00"
+                          value={item.valorTexto}
+                          onChange={(e) => {
+                            const novoTexto = e.target.value;
+                            setRascunhoFixas((prev) =>
+                              prev.map((linha, idx) =>
+                                idx === i ? { ...linha, valorTexto: novoTexto } : linha
+                              )
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="linhaDespesa" key={`${item.nome}-${i}`}>
+                      <span>{item.nome}</span>
+                      <div className="ladoDireitoLinhaDespesa">
+                        <strong>{formatarMoeda(item.valor)}</strong>
+                        {modoFixas === "excluir" && (
+                          <button
+                            type="button"
+                            className="botaoRemoverDespesaLinha"
+                            title="Excluir item"
+                            aria-label={`Excluir ${item.nome}`}
+                            onClick={() => removerItemFixo(i)}
+                          >
+                            &times;
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )
+                )}
+
                 <div className="totalDespesa">
                   <span>Total fixas</span>
-                  <strong>R$ 12.000,00</strong>
+                  <strong>{formatarMoeda(totalFixas)}</strong>
                 </div>
               </div>
 
+              {/* TABELA DESPESAS VARIÁVEIS */}
               <div className="tabelaDespesa">
-                <h3>Despesas variáveis</h3>
-                {despesasVariaveis.map((item, i) => (
-                  <div className="linhaDespesa" key={i}>
-                    <span>{item[0]}</span>
-                    <strong>{item[1]}</strong>
-                  </div>
-                ))}
+                <div className="cabecalhoTabelaDespesa">
+                  <h3>Despesas variáveis</h3>
+
+                  {modoVariaveis === "editar" ? (
+                    <div className="acoesEditarDespesaDiscreto">
+                      <button
+                        type="button"
+                        className="botaoSalvarDespesaDiscreto"
+                        onClick={salvarVariaveis}
+                      >
+                        Salvar
+                      </button>
+                      <button
+                        type="button"
+                        className="botaoCancelarDespesaDiscreto"
+                        onClick={cancelarVariaveis}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  ) : modoVariaveis === "excluir" ? (
+                    <button
+                      type="button"
+                      className="botaoSalvarDespesaDiscreto"
+                      onClick={() => setModoVariaveis(null)}
+                    >
+                      Concluir
+                    </button>
+                  ) : (
+                    <div className="menuDespesaWrapper">
+                      <button
+                        type="button"
+                        className={`botaoTresPontinhosDespesa ${menuVariaveisAberto ? "aberto" : ""}`}
+                        aria-label={menuVariaveisAberto ? "Fechar opções" : "Opções de despesas variáveis"}
+                        onClick={() => {
+                          setMenuVariaveisAberto((prev) => !prev);
+                          setMenuFixasAberto(false);
+                        }}
+                      >
+                        {menuVariaveisAberto ? <IconeFecharX /> : <IconeTresPontinhos />}
+                      </button>
+
+                      {menuVariaveisAberto && (
+                        <div className="dropdownDespesaOpcoes">
+                          <button type="button" onClick={abrirAdicionarVariavel}>
+                            + Adicionar
+                          </button>
+                          <button type="button" onClick={abrirEditarVariaveis}>
+                            Editar
+                          </button>
+                          <button
+                            type="button"
+                            className="opcaoExcluirDespesa"
+                            onClick={abrirExcluirVariaveis}
+                          >
+                            Excluir
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {(modoVariaveis === "editar" ? rascunhoVariaveis : despesasVariaveis).map((item, i) =>
+                  modoVariaveis === "editar" ? (
+                    <div className="linhaDespesaEditavel" key={`var-edit-${i}`}>
+                      <div className="camposLinhaDespesaEditavel">
+                        <input
+                          type="text"
+                          className="inputNomeDespesaInline"
+                          placeholder="Nome da despesa"
+                          value={item.nome}
+                          onChange={(e) => {
+                            const novoNome = e.target.value;
+                            setRascunhoVariaveis((prev) =>
+                              prev.map((linha, idx) =>
+                                idx === i ? { ...linha, nome: novoNome } : linha
+                              )
+                            );
+                          }}
+                        />
+                        <input
+                          type="text"
+                          className="inputValorDespesaInline"
+                          placeholder="0,00"
+                          value={item.valorTexto}
+                          onChange={(e) => {
+                            const novoTexto = e.target.value;
+                            setRascunhoVariaveis((prev) =>
+                              prev.map((linha, idx) =>
+                                idx === i ? { ...linha, valorTexto: novoTexto } : linha
+                              )
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="linhaDespesa" key={`${item.nome}-${i}`}>
+                      <span>{item.nome}</span>
+                      <div className="ladoDireitoLinhaDespesa">
+                        <strong>{formatarMoeda(item.valor)}</strong>
+                        {modoVariaveis === "excluir" && (
+                          <button
+                            type="button"
+                            className="botaoRemoverDespesaLinha"
+                            title="Excluir item"
+                            aria-label={`Excluir ${item.nome}`}
+                            onClick={() => removerItemVariavel(i)}
+                          >
+                            &times;
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )
+                )}
+
                 <div className="totalDespesa">
                   <span>Total variáveis</span>
-                  <strong>R$ 8.500,00</strong>
+                  <strong>{formatarMoeda(totalVariaveis)}</strong>
                 </div>
               </div>
             </div>
@@ -1783,7 +2221,7 @@ function FluxoCaixa() {
                 style={{ background: "transparent", border: "none", boxShadow: "none", padding: 0 }}
               >
                 {despesasCompletas.map((d, i) => (
-                  <div className="despesa" key={i}>
+                  <div className="despesa" key={`${d.nome}-${i}`}>
                     <div className="infoDespesaWrapper">
                       <span className="iconeSaida">
                         <IconeSetaSaida />
