@@ -1,9 +1,13 @@
+
 import "./dashboard.css";
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
-import { buscarDashboard, salvarMetas as salvarMetasAPI } from "../../services/dashboardService";
+import {
+  buscarDashboard,
+  salvarMetas as salvarMetasAPI,
+} from "../../services/dashboardService";
 
 const metasPadrao = [
   { id: "m1", titulo: "Meta de faturamento", tipo: "moeda", atual: 91000, meta: 100000 },
@@ -12,14 +16,26 @@ const metasPadrao = [
 ];
 
 const LIMITE_DE_METAS = 6;
+const CORES_MIX = ["#9b78d0", "#e8a1b5", "#f2c879", "#75b9a8"];
+
+function formatarMoeda(valor) {
+  return Number(valor || 0).toLocaleString("pt-BR", {
+    style: "currency",
+    currency: "BRL",
+    maximumFractionDigits: 0,
+  });
+}
 
 function formatarValor(valor, tipo) {
   const n = Number(valor) || 0;
 
   if (tipo === "moeda") {
     if (Math.abs(n) >= 1000) {
-      return `R$ ${(n / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}k`;
+      return `R$ ${(n / 1000).toLocaleString("pt-BR", {
+        maximumFractionDigits: 1,
+      })}k`;
     }
+
     return `R$ ${n.toLocaleString("pt-BR")}`;
   }
 
@@ -29,7 +45,9 @@ function formatarValor(valor, tipo) {
 function calcularPorcentagem(atual, meta) {
   const a = Number(atual);
   const m = Number(meta);
+
   if (!Number.isFinite(a) || !Number.isFinite(m) || m <= 0) return 0;
+
   return Math.round((a / m) * 100);
 }
 
@@ -47,9 +65,390 @@ function paraRascunho(m) {
   };
 }
 
-/* =========================================================
-   POP-UP GENÉRICO DE DETALHES / GERENCIAMENTO DOS CARDS
-========================================================= */
+function obterDataLocal(dataString) {
+  const [ano, mes, dia] = dataString.split("-").map(Number);
+  return new Date(ano, mes - 1, dia);
+}
+
+function formatarDataLocal(data) {
+  const ano = data.getFullYear();
+  const mes = String(data.getMonth() + 1).padStart(2, "0");
+  const dia = String(data.getDate()).padStart(2, "0");
+
+  return `${ano}-${mes}-${dia}`;
+}
+
+// Agora aceita também o período personalizado.
+function obterIntervalo(periodo, inicioPersonalizado = "", fimPersonalizado = "") {
+  if (periodo === "personalizado") {
+    const inicio = obterDataLocal(inicioPersonalizado);
+    const fim = obterDataLocal(fimPersonalizado);
+
+    inicio.setHours(0, 0, 0, 0);
+    fim.setHours(23, 59, 59, 999);
+
+    const dias = Math.max(
+      1,
+      Math.ceil((fim - inicio) / 86400000) + 1
+    );
+
+    const fimAnterior = new Date(inicio);
+    fimAnterior.setDate(fimAnterior.getDate() - 1);
+    fimAnterior.setHours(23, 59, 59, 999);
+
+    const inicioAnterior = new Date(fimAnterior);
+    inicioAnterior.setDate(inicioAnterior.getDate() - dias + 1);
+    inicioAnterior.setHours(0, 0, 0, 0);
+
+    return {
+      inicio,
+      fim,
+      inicioAnterior,
+      fimAnterior,
+    };
+  }
+
+  const dias =
+    periodo === "7d" ? 7 :
+    periodo === "30d" ? 30 :
+    periodo === "90d" ? 90 : 365;
+
+  const hoje = new Date();
+  hoje.setHours(23, 59, 59, 999);
+
+  const inicio = new Date(hoje);
+  inicio.setHours(0, 0, 0, 0);
+  inicio.setDate(inicio.getDate() - dias + 1);
+
+  const fimAnterior = new Date(inicio);
+  fimAnterior.setDate(fimAnterior.getDate() - 1);
+  fimAnterior.setHours(23, 59, 59, 999);
+
+  const inicioAnterior = new Date(fimAnterior);
+  inicioAnterior.setDate(inicioAnterior.getDate() - dias + 1);
+  inicioAnterior.setHours(0, 0, 0, 0);
+
+  return {
+    inicio,
+    fim: hoje,
+    inicioAnterior,
+    fimAnterior,
+  };
+}
+
+function filtrarPeriodo(
+  historico,
+  periodo,
+  anterior = false,
+  inicioPersonalizado = "",
+  fimPersonalizado = ""
+) {
+  const intervalo = obterIntervalo(
+    periodo,
+    inicioPersonalizado,
+    fimPersonalizado
+  );
+
+  const inicio = anterior
+    ? intervalo.inicioAnterior
+    : intervalo.inicio;
+
+  const fim = anterior
+    ? intervalo.fimAnterior
+    : intervalo.fim;
+
+  return (historico || []).filter((item) => {
+    if (!item.data) return false;
+
+    const data = obterDataLocal(item.data);
+
+    return data >= inicio && data <= fim;
+  });
+}
+
+function agruparHistorico(historico, periodo, campos) {
+  const grupos = {};
+
+  (historico || []).forEach((item) => {
+    const data = obterDataLocal(item.data);
+    const ano = data.getFullYear();
+    const mes = data.getMonth() + 1;
+    const dia = data.getDate();
+
+    let chave;
+    let rotulo;
+
+    if (periodo === "7d") {
+      chave = item.data;
+      rotulo = `${dia}/${mes}`;
+    } else if (periodo === "1a") {
+      chave = `${ano}-${String(mes).padStart(2, "0")}`;
+      rotulo = data.toLocaleDateString("pt-BR", { month: "short" });
+    } else {
+      const inicioSemana = new Date(data);
+      inicioSemana.setDate(data.getDate() - data.getDay());
+
+      chave = formatarDataLocal(inicioSemana);
+      rotulo = `${inicioSemana.getDate()}/${inicioSemana.getMonth() + 1}`;
+    }
+
+    if (!grupos[chave]) {
+      grupos[chave] = { mes: rotulo };
+
+      campos.forEach((campo) => {
+        grupos[chave][campo] = 0;
+      });
+    }
+
+    campos.forEach((campo) => {
+      grupos[chave][campo] += Number(item[campo]) || 0;
+    });
+  });
+
+  return Object.values(grupos);
+}
+
+function calcularVariacao(atual, anterior, inverter = false) {
+  if (!anterior) {
+    return { texto: "—", status: "neutro" };
+  }
+
+  const variacao = ((atual - anterior) / Math.abs(anterior)) * 100;
+  const sinal = variacao > 0 ? "+" : "";
+
+  const favoravel = inverter ? variacao <= 0 : variacao >= 0;
+
+  return {
+    texto: `${sinal}${variacao.toFixed(1).replace(".", ",")}%`,
+    status: favoravel ? "positivo" : "negativo",
+  };
+}
+
+function somar(historico, campo) {
+  return (historico || []).reduce(
+    (total, item) => total + (Number(item[campo]) || 0),
+    0
+  );
+}
+
+function calcularMedia(historico, campo) {
+  if (!historico?.length) return 0;
+
+  return historico.reduce(
+    (total, item) => total + (Number(item[campo]) || 0),
+    0
+  ) / historico.length;
+}
+
+function calcularResumoFinanceiro(atual, anterior) {
+  const receita = somar(atual, "receita");
+  const perdas = somar(atual, "perdas");
+  const lucro = somar(atual, "lucro");
+  const valorEmAberto = somar(atual, "valorEmAberto");
+
+  const receitaAnterior = somar(anterior, "receita");
+  const perdasAnterior = somar(anterior, "perdas");
+  const lucroAnterior = somar(anterior, "lucro");
+  const abertoAnterior = somar(anterior, "valorEmAberto");
+
+  const inadimplencia = receita > 0
+    ? (valorEmAberto / receita) * 100
+    : 0;
+
+  const inadimplenciaAnterior = receitaAnterior > 0
+    ? (abertoAnterior / receitaAnterior) * 100
+    : 0;
+
+  return [
+    {
+      titulo: "Lucro estimado",
+      valor: formatarMoeda(lucro),
+      variacao: calcularVariacao(lucro, lucroAnterior),
+      icone: "R$",
+    },
+    {
+      titulo: "Perdas em R$",
+      valor: formatarMoeda(perdas),
+      variacao: calcularVariacao(perdas, perdasAnterior, true),
+      icone: "↓",
+    },
+    {
+      titulo: "Faturamento",
+      valor: formatarMoeda(receita),
+      variacao: calcularVariacao(receita, receitaAnterior),
+      icone: "R$",
+    },
+    {
+      titulo: "Inadimplência",
+      valor: `${inadimplencia.toFixed(1).replace(".", ",")}%`,
+      variacao: calcularVariacao(
+        inadimplencia,
+        inadimplenciaAnterior,
+        true
+      ),
+      icone: "%",
+    },
+  ];
+}
+
+function calcularProducao(historico) {
+  if (!historico?.length) {
+    return {
+      oee: 0,
+      disponibilidade: 0,
+      desempenho: 0,
+      qualidade: 0,
+      quantidade: 0,
+    };
+  }
+
+  return {
+    oee: Math.round(calcularMedia(historico, "oee")),
+    disponibilidade: Math.round(calcularMedia(historico, "disponibilidade")),
+    desempenho: Math.round(calcularMedia(historico, "desempenho")),
+    qualidade: Math.round(calcularMedia(historico, "qualidade")),
+    quantidade: somar(historico, "quantidade"),
+  };
+}
+
+function calcularMixProducao(historico) {
+  const totais = {
+    bolos: 0,
+    docesFinos: 0,
+    tortas: 0,
+    cupcakes: 0,
+  };
+
+  (historico || []).forEach((item) => {
+    Object.keys(totais).forEach((categoria) => {
+      totais[categoria] += Number(item.mix?.[categoria]) || 0;
+    });
+  });
+
+  const total = Object.values(totais).reduce((a, b) => a + b, 0);
+
+  const nomes = {
+    bolos: "Bolos",
+    docesFinos: "Doces finos",
+    tortas: "Tortas",
+    cupcakes: "Cupcakes",
+  };
+
+  return {
+    categorias: Object.entries(totais).map(([chave, quantidade]) => ({
+      nome: nomes[chave],
+      quantidade,
+      percentual: total > 0
+        ? Math.round((quantidade / total) * 100)
+        : 0,
+    })),
+  };
+}
+
+function calcularTopProdutos(historico) {
+  const produtos = {};
+
+  (historico || []).forEach((dia) => {
+    (dia.vendasProdutos || []).forEach((item) => {
+      if (!produtos[item.produto]) {
+        produtos[item.produto] = {
+          nome: item.produto,
+          quantidade: 0,
+          faturamento: 0,
+        };
+      }
+
+      produtos[item.produto].quantidade += Number(item.quantidade) || 0;
+      produtos[item.produto].faturamento += Number(item.faturamento) || 0;
+    });
+  });
+
+  const lista = Object.values(produtos)
+    .sort((a, b) => b.quantidade - a.quantidade)
+    .slice(0, 5);
+
+  const maior = Math.max(1, ...lista.map((item) => item.quantidade));
+
+  return lista.map((item) => ({
+    ...item,
+    percentual: Math.round((item.quantidade / maior) * 100),
+  }));
+}
+
+function calcularTopClientes(historico, clientesOriginais) {
+  const clientes = {};
+
+  (historico || []).forEach((dia) => {
+    (dia.vendasClientes || []).forEach((item) => {
+      if (!clientes[item.cliente]) {
+        clientes[item.cliente] = {
+          nome: item.cliente,
+          pedidos: 0,
+          faturamento: 0,
+        };
+      }
+
+      clientes[item.cliente].pedidos += Number(item.pedidos) || 0;
+      clientes[item.cliente].faturamento += Number(item.faturamento) || 0;
+    });
+  });
+
+  const lista = Object.values(clientes)
+    .sort((a, b) => b.faturamento - a.faturamento)
+    .slice(0, 5);
+
+  return lista.map((cliente) => {
+    const original = (clientesOriginais || []).find(
+      (item) => item.nome === cliente.nome
+    );
+
+    return {
+      ...cliente,
+      ltv: formatarMoeda(cliente.faturamento),
+      status: original?.status || "Ativo",
+    };
+  });
+}
+
+function agruparFluxo(historico, periodo) {
+  const grupos = agruparHistorico(
+    historico,
+    periodo,
+    ["entrada", "saida"]
+  );
+
+  return grupos.map((item) => ({
+    dia: item.mes,
+    entrada: item.entrada,
+    saida: item.saida,
+  }));
+}
+
+function calcularIndicadores(financeiro, comercial, producao) {
+  const receita = somar(financeiro, "receita");
+  const lucro = somar(financeiro, "lucro");
+  const perdas = somar(financeiro, "perdas");
+
+  const pedidos = (comercial || []).reduce((total, dia) => {
+    return total + (dia.vendasClientes || []).reduce(
+      (soma, item) => soma + (Number(item.pedidos) || 0),
+      0
+    );
+  }, 0);
+
+  const margem = receita > 0 ? (lucro / receita) * 100 : 0;
+  const percentualPerdas = receita > 0 ? (perdas / receita) * 100 : 0;
+  const ticketMedio = pedidos > 0 ? receita / pedidos : 0;
+
+  return [
+    { titulo: "Margem média", valor: `${margem.toFixed(1).replace(".", ",")}%` },
+    { titulo: "Ticket médio B2B", valor: formatarMoeda(ticketMedio) },
+    { titulo: "Perdas de produção", valor: `${percentualPerdas.toFixed(1).replace(".", ",")}%` },
+    { titulo: "Prazo médio entrega", valor: "2,4 dias" },
+    { titulo: "Produção do período", valor: `${producao.quantidade.toLocaleString("pt-BR")} un.` },
+  ];
+}
+
 function ModalDetalhesCard({ cardKey, onFechar, dados }) {
   const [saindo, setSaindo] = useState(false);
   const janelaRef = useRef(null);
@@ -69,12 +468,14 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
 
   useEffect(() => {
     botaoXRef.current?.focus();
+
     const overflowAnterior = document.body.style.overflow;
     document.body.style.overflow = "hidden";
 
     function aoPressionarEsc(e) {
-      if (e.key === "Escape" && fecharRef.current) fecharRef.current();
+      if (e.key === "Escape") fecharRef.current?.();
     }
+
     document.addEventListener("keydown", aoPressionarEsc);
 
     return () => {
@@ -86,10 +487,13 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
 
   function aoPressionarTab(e) {
     if (e.key !== "Tab" || !janelaRef.current) return;
+
     const focaveis = janelaRef.current.querySelectorAll(
       'button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
-    if (focaveis.length === 0) return;
+
+    if (!focaveis.length) return;
+
     const primeiro = focaveis[0];
     const ultimo = focaveis[focaveis.length - 1];
 
@@ -105,35 +509,38 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
   const configuracoes = {
     topProdutos: {
       titulo: "Top 5 produtos vendidos",
-      subtitulo: "Detalhes de volume de vendas e participação no card.",
+      subtitulo: "Volume de vendas no período selecionado.",
     },
     alertasEstoque: {
       titulo: "Alertas de estoque & validade",
-      subtitulo: "Alertas ativos de cobertura, validade e sugestão de compra.",
+      subtitulo: "Alertas ativos de cobertura, validade e compra.",
     },
     lotesVencimento: {
       titulo: "Controle de lotes próximos ao vencimento",
-      subtitulo: "Lotes monitorados por quantidade e prazo de validade.",
+      subtitulo: "Lotes monitorados por quantidade e validade.",
     },
     proximasEntregas: {
       titulo: "Próximas entregas",
-      subtitulo: "Pedidos agendados, produtos e prioridades de entrega.",
+      subtitulo: "Pedidos agendados e prioridades de entrega.",
     },
     topClientesB2B: {
       titulo: "Top clientes B2B",
-      subtitulo: "Clientes com maior volume de pedidos, LTV e status atual.",
+      subtitulo: "Faturamento e pedidos no período selecionado.",
     },
     alertasCriticos: {
       titulo: "Alertas críticos",
-      subtitulo: "Todos os alertas críticos registrados na operação.",
+      subtitulo: "Alertas registrados na operação.",
     },
     fornecedoresAtraso: {
       titulo: "Fornecedores em atraso",
-      subtitulo: "Atrasos, avaliações, últimas entregas e recomendação do card.",
+      subtitulo: "Atrasos, avaliações e últimas entregas.",
     },
   };
 
-  const info = configuracoes[cardKey] || { titulo: "Detalhes", subtitulo: "" };
+  const info = configuracoes[cardKey] || {
+    titulo: "Detalhes",
+    subtitulo: "",
+  };
 
   return (
     <div
@@ -152,9 +559,7 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
       >
         <div className="gmCabecalho">
           <div>
-            <h2 id="gmDetalhesTitulo" className="gmTitulo">
-              {info.titulo}
-            </h2>
+            <h2 id="gmDetalhesTitulo" className="gmTitulo">{info.titulo}</h2>
             <p className="gmSubtitulo">{info.subtitulo}</p>
           </div>
 
@@ -165,15 +570,8 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
             onClick={fechar}
             aria-label="Fechar"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              aria-hidden="true"
-            >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M18 6 6 18" />
               <path d="m6 6 12 12" />
             </svg>
@@ -184,15 +582,13 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
           {cardKey === "topProdutos" && (
             <div className="listaProdutosDashboard" style={{ marginTop: 4 }}>
               {dados.produtos.map((produto, i) => (
-                <div className="produtoDashboard" key={i}>
+                <div className="produtoDashboard" key={produto.nome}>
                   <div className="produtoNome">
-                    <span>
-                      #{i + 1} · {produto.nome}
-                    </span>
+                    <span>#{i + 1} · {produto.nome}</span>
                     <strong>{produto.quantidade.toLocaleString("pt-BR")} un.</strong>
                   </div>
                   <div className="barraProduto">
-                    <div style={{ width: `${(produto.quantidade / 4200) * 100}%` }}></div>
+                    <div style={{ width: `${produto.percentual}%` }}></div>
                   </div>
                 </div>
               ))}
@@ -213,8 +609,8 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
                 ))}
               </div>
               <div className="sugestaoDashboard">
-                <b>Sugestão:</b> Comprar 40kg de chocolate ao leite e 15kg de manteiga nos
-                próximos 3 dias.
+                <b>Sugestão:</b> Comprar 40kg de chocolate ao leite e 15kg de manteiga
+                nos próximos 3 dias.
               </div>
             </>
           )}
@@ -222,10 +618,7 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
           {cardKey === "lotesVencimento" && (
             <div className="tabelaDashboard">
               <div className="linhaTabela cabecalhoTabela">
-                <span>Lote</span>
-                <span>Produto</span>
-                <span>Qtd</span>
-                <span>Vence</span>
+                <span>Lote</span><span>Produto</span><span>Qtd</span><span>Vence</span>
               </div>
               {dados.lotes.map((lote, i) => (
                 <div className="linhaTabela" key={i}>
@@ -258,21 +651,14 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
           {cardKey === "topClientesB2B" && (
             <div className="tabelaDashboard">
               <div className="linhaTabela cabecalhoTabela">
-                <span>Cliente</span>
-                <span>Pedidos</span>
-                <span>LTV</span>
-                <span>Status</span>
+                <span>Cliente</span><span>Pedidos</span><span>Faturamento</span><span>Status</span>
               </div>
               {dados.clientes.map((cliente, i) => (
                 <div className="linhaTabela" key={i}>
                   <strong>{cliente.nome}</strong>
                   <span>{cliente.pedidos}</span>
                   <span>{cliente.ltv}</span>
-                  <b
-                    className={`statusCliente ${cliente.status
-                      .toLowerCase()
-                      .replace("ã", "a")}`}
-                  >
+                  <b className={`statusCliente ${cliente.status.toLowerCase().replace("ã", "a")}`}>
                     {cliente.status}
                   </b>
                 </div>
@@ -298,10 +684,7 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
             <>
               <div className="tabelaDashboard">
                 <div className="linhaTabela cabecalhoTabela">
-                  <span>Fornecedor</span>
-                  <span>Atraso</span>
-                  <span>Nota</span>
-                  <span>Última entrega</span>
+                  <span>Fornecedor</span><span>Atraso</span><span>Nota</span><span>Última entrega</span>
                 </div>
                 {dados.fornecedores.map((fornecedor, i) => (
                   <div className="linhaTabela" key={i}>
@@ -313,8 +696,8 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
                 ))}
               </div>
               <div className="recomendacaoDashboard">
-                <b>Recomendação:</b> Avalie substituir Embalagens Rápido — nota 2,5 e 8 dias de
-                atraso médio nos últimos 3 meses.
+                <b>Recomendação:</b> Avalie substituir Embalagens Rápido — nota 2,5 e
+                8 dias de atraso médio nos últimos 3 meses.
               </div>
             </>
           )}
@@ -333,7 +716,6 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
   );
 }
 
-/* pop-up de gerenciar metas */
 function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
   const [rascunho, setRascunho] = useState(() => metas.map(paraRascunho));
   const [erros, setErros] = useState({});
@@ -362,8 +744,9 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
     document.body.style.overflow = "hidden";
 
     function aoPressionarEsc(e) {
-      if (e.key === "Escape" && fecharRef.current) fecharRef.current();
+      if (e.key === "Escape") fecharRef.current?.();
     }
+
     document.addEventListener("keydown", aoPressionarEsc);
 
     return () => {
@@ -379,7 +762,8 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
     const focaveis = janelaRef.current.querySelectorAll(
       'button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])'
     );
-    if (focaveis.length === 0) return;
+
+    if (!focaveis.length) return;
 
     const primeiro = focaveis[0];
     const ultimo = focaveis[focaveis.length - 1];
@@ -394,10 +778,13 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
   }
 
   function atualizarCampo(id, campo, valor) {
-    setRascunho((atual) => atual.map((m) => (m.id === id ? { ...m, [campo]: valor } : m)));
+    setRascunho((atual) =>
+      atual.map((m) => m.id === id ? { ...m, [campo]: valor } : m)
+    );
 
     setErros((atual) => {
-      if (!atual[id] || !atual[id][campo]) return atual;
+      if (!atual[id]?.[campo]) return atual;
+
       const copia = { ...atual, [id]: { ...atual[id] } };
       delete copia[id][campo];
       return copia;
@@ -408,6 +795,7 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
     if (rascunho.length >= LIMITE_DE_METAS) return;
 
     const novoId = criarId();
+
     setRascunho((atual) => [
       ...atual,
       { id: novoId, titulo: "", tipo: "numero", atual: "0", meta: "" },
@@ -422,6 +810,7 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
 
   function removerMeta(id) {
     setRascunho((atual) => atual.filter((m) => m.id !== id));
+
     setErros((atual) => {
       const copia = { ...atual };
       delete copia[id];
@@ -454,14 +843,16 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
         erro.atual = "Informe um valor de 0 ou mais.";
       }
 
-      if (Object.keys(erro).length > 0) novosErros[m.id] = erro;
+      if (Object.keys(erro).length) novosErros[m.id] = erro;
     });
 
-    if (Object.keys(novosErros).length > 0) {
+    if (Object.keys(novosErros).length) {
       setErros(novosErros);
+
       setTimeout(() => {
         janelaRef.current?.querySelector('[aria-invalid="true"]')?.focus();
       }, 0);
+
       return;
     }
 
@@ -475,6 +866,7 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
           meta: Number(m.meta),
         }))
       );
+
       fechar();
     } catch (error) {
       setErros({ geral: error.message || "Não foi possível salvar as metas." });
@@ -511,8 +903,8 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
             onClick={fechar}
             aria-label="Fechar"
           >
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2"
-              strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
               <path d="M18 6 6 18" />
               <path d="m6 6 12 12" />
             </svg>
@@ -561,8 +953,8 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
                       aria-label={`Remover meta ${m.titulo || indice + 1}`}
                       title="Remover meta"
                     >
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                        strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <path d="M3 6h18" />
                         <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
                         <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
@@ -594,7 +986,6 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
                           type="number"
                           min="0"
                           step="any"
-                          inputMode="decimal"
                           value={m.atual}
                           aria-invalid={erro.atual ? "true" : "false"}
                           onChange={(e) => atualizarCampo(m.id, "atual", e.target.value)}
@@ -613,7 +1004,6 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
                           type="number"
                           min="0"
                           step="any"
-                          inputMode="decimal"
                           placeholder="0"
                           value={m.meta}
                           aria-invalid={erro.meta ? "true" : "false"}
@@ -640,8 +1030,8 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
               onClick={adicionarMeta}
               disabled={rascunho.length >= LIMITE_DE_METAS}
             >
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4"
-                strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 5v14" />
                 <path d="M5 12h14" />
               </svg>
@@ -673,60 +1063,139 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
   );
 }
 
+// NOVO MODAL: SELEÇÃO DE PERÍODO
+function ModalPeriodo({
+  dataInicio,
+  dataFim,
+  setDataInicio,
+  setDataFim,
+  erro,
+  onAplicar,
+  onFechar,
+}) {
+  const janelaRef = useRef(null);
 
-function agruparHistoricoFinanceiro(historico, periodo) {
-  const dias = periodo === "7d" ? 7 :
-    periodo === "30d" ? 30 :
-    periodo === "90d" ? 90 : 365;
+  useEffect(() => {
+    janelaRef.current?.querySelector("input")?.focus();
 
-  const hoje = new Date();
-  hoje.setHours(23, 59, 59, 999);
-
-  const inicio = new Date(hoje);
-  inicio.setDate(inicio.getDate() - dias + 1);
-  inicio.setHours(0, 0, 0, 0);
-
-  const registros = historico.filter((item) => {
-    const [ano, mes, dia] = item.data.split("-").map(Number);
-    const data = new Date(ano, mes - 1, dia);
-    return data >= inicio && data <= hoje;
-  });
-
-  const grupos = {};
-
-  registros.forEach((item) => {
-    const [ano, mes, dia] = item.data.split("-").map(Number);
-    const data = new Date(ano, mes - 1, dia);
-
-    let chave;
-    let rotulo;
-
-    if (periodo === "1a") {
-      chave = `${ano}-${mes}`;
-      rotulo = data.toLocaleDateString("pt-BR", { month: "short" });
-    } else if (periodo === "7d") {
-      chave = item.data;
-      rotulo = `${dia}/${mes}`;
-    } else {
-      const inicioSemana = new Date(data);
-      inicioSemana.setDate(data.getDate() - data.getDay());
-      chave = inicioSemana.toISOString().slice(0, 10);
-      rotulo = `${inicioSemana.getDate()}/${inicioSemana.getMonth() + 1}`;
+    function aoPressionarEsc(e) {
+      if (e.key === "Escape") onFechar();
     }
 
-    if (!grupos[chave]) {
-      grupos[chave] = { mes: rotulo, receita: 0, custo: 0 };
-    }
+    document.addEventListener("keydown", aoPressionarEsc);
 
-    grupos[chave].receita += Number(item.receita) || 0;
-    grupos[chave].custo += Number(item.custo) || 0;
-  });
+    return () => {
+      document.removeEventListener("keydown", aoPressionarEsc);
+    };
+  }, [onFechar]);
 
-  return Object.values(grupos);
+  return (
+    <div
+      className="gmOverlay"
+      onMouseDown={(e) => {
+        if (e.target === e.currentTarget) onFechar();
+      }}
+    >
+      <div
+        ref={janelaRef}
+        className="gmJanela"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="tituloModalPeriodo"
+      >
+        <div className="gmCabecalho">
+          <div>
+            <h2 id="tituloModalPeriodo" className="gmTitulo">
+              Selecionar período
+            </h2>
+            <p className="gmSubtitulo">
+              Escolha o intervalo que deseja analisar no Dashboard.
+            </p>
+          </div>
+
+          <button
+            type="button"
+            className="gmBotaoX"
+            onClick={onFechar}
+            aria-label="Fechar"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+              strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M18 6 6 18" />
+              <path d="m6 6 12 12" />
+            </svg>
+          </button>
+        </div>
+
+        <div className="gmCorpo">
+          <div className="gmCampos">
+            <div className="gmCampo">
+              <label className="gmRotulo" htmlFor="periodoInicio">
+                Data inicial
+              </label>
+              <input
+                id="periodoInicio"
+                className="gmInput"
+                type="date"
+                value={dataInicio}
+                max={dataFim || undefined}
+                onChange={(e) => setDataInicio(e.target.value)}
+              />
+            </div>
+
+            <div className="gmCampo">
+              <label className="gmRotulo" htmlFor="periodoFim">
+                Data final
+              </label>
+              <input
+                id="periodoFim"
+                className="gmInput"
+                type="date"
+                value={dataFim}
+                min={dataInicio || undefined}
+                onChange={(e) => setDataFim(e.target.value)}
+              />
+            </div>
+          </div>
+
+          {erro && (
+            <p className="gmErro" role="alert" style={{ marginTop: 12 }}>
+              {erro}
+            </p>
+          )}
+        </div>
+
+        <div className="gmRodape">
+          <div></div>
+          <div className="gmAcoes">
+            <button
+              type="button"
+              className="gmBotaoSecundario"
+              onClick={onFechar}
+            >
+              Cancelar
+            </button>
+
+            <button
+              type="button"
+              className="gmBotaoPrimario"
+              onClick={onAplicar}
+            >
+              Aplicar período
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
 
-
 function Dashboard() {
+  const [periodoPersonalizado, setPeriodoPersonalizado] = useState(false);
+  const [dataInicio, setDataInicio] = useState("");
+  const [dataFim, setDataFim] = useState("");
+  const [erroPeriodo, setErroPeriodo] = useState("");
+
   const [metas, setMetas] = useState(metasPadrao);
   const [dadosDashboard, setDadosDashboard] = useState(null);
   const [carregando, setCarregando] = useState(true);
@@ -735,6 +1204,7 @@ function Dashboard() {
   const [modalMetasAberto, setModalMetasAberto] = useState(false);
   const [modalCardAtivo, setModalCardAtivo] = useState(null);
   const [avisoMetas, setAvisoMetas] = useState(false);
+
   const botaoGerenciarRef = useRef(null);
   const avisoTimerRef = useRef(null);
 
@@ -745,11 +1215,13 @@ function Dashboard() {
       try {
         setCarregando(true);
         setErroDashboard("");
+
         const dados = await buscarDashboard();
 
         if (!ativo) return;
 
         setDadosDashboard(dados);
+
         setMetas((dados.metas || []).map((meta) => ({
           id: meta.id,
           titulo: meta.nome,
@@ -758,7 +1230,9 @@ function Dashboard() {
           meta: Number(meta.objetivo),
         })));
       } catch (error) {
-        if (ativo) setErroDashboard(error.message || "Não foi possível carregar o Dashboard.");
+        if (ativo) {
+          setErroDashboard(error.message || "Não foi possível carregar o Dashboard.");
+        }
       } finally {
         if (ativo) setCarregando(false);
       }
@@ -796,6 +1270,7 @@ function Dashboard() {
 
     setMetas(metasFormatadas);
     setAvisoMetas(true);
+
     clearTimeout(avisoTimerRef.current);
     avisoTimerRef.current = setTimeout(() => setAvisoMetas(false), 2600);
   }
@@ -805,40 +1280,284 @@ function Dashboard() {
     botaoGerenciarRef.current?.focus();
   }
 
+  // Aplica o intervalo escolhido no modal.
+  function aplicarPeriodoPersonalizado() {
+    setErroPeriodo("");
+
+    if (!dataInicio || !dataFim) {
+      setErroPeriodo("Preencha a data inicial e a data final.");
+      return;
+    }
+
+    if (dataInicio > dataFim) {
+      setErroPeriodo("A data inicial não pode ser posterior à data final.");
+      return;
+    }
+
+    setPeriodoSelecionado("personalizado");
+    setPeriodoPersonalizado(false);
+  }
+
+  // Exporta os dados visíveis do período selecionado para CSV.
+  function exportarDashboard() {
+    const intervalo = obterIntervalo(
+      periodoSelecionado,
+      dataInicio,
+      dataFim
+    );
+
+    const periodoTexto =
+      periodoSelecionado === "personalizado"
+        ? `${dataInicio} até ${dataFim}`
+        : periodoSelecionado === "7d"
+          ? "Últimos 7 dias"
+          : periodoSelecionado === "30d"
+            ? "Últimos 30 dias"
+            : periodoSelecionado === "90d"
+              ? "Últimos 90 dias"
+              : "Últimos 365 dias";
+
+    const linhas = [
+      ["DASHBOARD SUBLIME"],
+      ["Período", periodoTexto],
+      [
+        "Data de exportação",
+        formatarDataLocal(new Date()),
+      ],
+      [],
+      ["INDICADORES FINANCEIROS"],
+      ["Indicador", "Valor", "Variação"],
+      ...kpis.map((item) => [
+        item.titulo,
+        item.valor,
+        item.variacao.texto,
+      ]),
+      [],
+      ["HISTÓRICO FINANCEIRO"],
+      ["Data", "Receita", "Custo", "Lucro", "Perdas"],
+      ...financeiroPeriodo.map((item) => [
+        item.data,
+        Number(item.receita) || 0,
+        Number(item.custo) || 0,
+        Number(item.lucro) || 0,
+        Number(item.perdas) || 0,
+      ]),
+      [],
+      ["PRODUÇÃO"],
+      ["Indicador", "Valor"],
+      ["OEE", `${producao.oee}%`],
+      ["Disponibilidade", `${producao.disponibilidade}%`],
+      ["Desempenho", `${producao.desempenho}%`],
+      ["Qualidade", `${producao.qualidade}%`],
+      ["Quantidade produzida", producao.quantidade],
+      [],
+      ["TOP PRODUTOS"],
+      ["Produto", "Quantidade", "Faturamento"],
+      ...produtos.map((item) => [
+        item.nome,
+        item.quantidade,
+        Number(item.faturamento) || 0,
+      ]),
+      [],
+      ["CLIENTES B2B"],
+      ["Cliente", "Pedidos", "Faturamento", "Status"],
+      ...clientes.map((item) => [
+        item.nome,
+        item.pedidos,
+        item.faturamento ?? item.ltv,
+        item.status,
+      ]),
+      [],
+      ["INDICADORES OPERACIONAIS"],
+      ["Indicador", "Valor"],
+      ...indicadores.map((item) => [
+        item.titulo,
+        item.valor,
+      ]),
+    ];
+
+    // Escapa aspas e separa as colunas com ponto e vírgula.
+    const conteudoCSV = linhas
+      .map((linha) =>
+        linha
+          .map((valor) => {
+            const texto = String(valor ?? "").replace(/"/g, '""');
+            return `"${texto}"`;
+          })
+          .join(";")
+      )
+      .join("\r\n");
+
+    // BOM permite que o Excel reconheça corretamente caracteres acentuados.
+    const arquivo = new Blob(
+      ["\uFEFF" + conteudoCSV],
+      { type: "text/csv;charset=utf-8;" }
+    );
+
+    const url = URL.createObjectURL(arquivo);
+    const link = document.createElement("a");
+
+    link.href = url;
+    link.download = `dashboard-sublime-${formatarDataLocal(new Date())}.csv`;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+  }
+
+  const historicoFinanceiro = dadosDashboard?.historicoFinanceiro || [];
+  const historicoProducao = dadosDashboard?.historicoProducao || [];
+  const historicoComercial = dadosDashboard?.historicoComercial || [];
+
+  const financeiroPeriodo = filtrarPeriodo(
+    historicoFinanceiro,
+    periodoSelecionado,
+    false,
+    dataInicio,
+    dataFim
+  );
+
+  const financeiroAnterior = filtrarPeriodo(
+    historicoFinanceiro,
+    periodoSelecionado,
+    true,
+    dataInicio,
+    dataFim
+  );
+
+  const producaoPeriodo = filtrarPeriodo(
+    historicoProducao,
+    periodoSelecionado,
+    false,
+    dataInicio,
+    dataFim
+  );
+
+  const comercialPeriodo = filtrarPeriodo(
+    historicoComercial,
+    periodoSelecionado,
+    false,
+    dataInicio,
+    dataFim
+  );
+
+  const comercialAnterior = filtrarPeriodo(
+    historicoComercial,
+    periodoSelecionado,
+    true,
+    dataInicio,
+    dataFim
+  );
+
+  const kpis = calcularResumoFinanceiro(financeiroPeriodo, financeiroAnterior);
+
+  const receita = agruparHistorico(
+    financeiroPeriodo,
+    periodoSelecionado,
+    ["receita", "custo"]
+  );
+
+  const maiorReceita = Math.max(
+    1,
+    ...receita.map((item) => Math.max(item.receita, item.custo))
+  );
+
+  const fluxoSemana = agruparFluxo(financeiroPeriodo, periodoSelecionado);
+
+  const producao = calcularProducao(producaoPeriodo);
+  const mixProducao = calcularMixProducao(producaoPeriodo);
+
+  const mixGradiente = (() => {
+    let inicio = 0;
+
+    const partes = mixProducao.categorias.map((item, index) => {
+      const fim = inicio + item.percentual;
+      const parte = `${CORES_MIX[index]} ${inicio}% ${fim}%`;
+      inicio = fim;
+      return parte;
+    });
+
+    return `conic-gradient(${partes.join(", ")})`;
+  })();
+
+  const produtosCalculados = calcularTopProdutos(comercialPeriodo);
+  const clientesCalculados = calcularTopClientes(
+    comercialPeriodo,
+    dadosDashboard?.clientes || []
+  );
+
+  const produtos = produtosCalculados.length
+    ? produtosCalculados
+    : (dadosDashboard?.produtos || []).map((produto) => ({
+        ...produto,
+        percentual: Math.round((produto.quantidade / 4200) * 100),
+      }));
+
+  const clientes = clientesCalculados.length
+    ? clientesCalculados
+    : dadosDashboard?.clientes || [];
+
   const resumo = (dadosDashboard?.resumo || []).map((item) => ({
     titulo: item.titulo,
     status: item.valor,
     tipo: item.status,
-    icone: item.status === "urgente" ? "×" : item.status === "atencao" ? "!" : "✓",
+    icone: item.status === "urgente" ? "×" :
+      item.status === "atencao" ? "!" : "✓",
   }));
 
-  const kpis = (dadosDashboard?.kpis || []).map((item) => ({
-    titulo: item.titulo,
-    valor: item.valor,
-    variacao: item.variacao,
-    tipo: item.status,
-    icone: item.titulo.toLowerCase().includes("inadimplência") ? "%" :
-      item.titulo.toLowerCase().includes("perdas") ? "↓" : "R$",
-  }));
-
-  const fluxoSemana = dadosDashboard?.fluxoSemana || [];
-  const produtos = dadosDashboard?.produtos || [];
   const lotes = dadosDashboard?.lotes || [];
-  const clientes = dadosDashboard?.clientes || [];
   const entregas = dadosDashboard?.entregas || [];
   const alertas = dadosDashboard?.alertas || [];
   const fornecedores = dadosDashboard?.fornecedores || [];
-  const indicadores = dadosDashboard?.indicadores || [];
 
-const receita = agruparHistoricoFinanceiro(
-  dadosDashboard?.historicoFinanceiro || [],
-  periodoSelecionado
-);
+  const indicadores = calcularIndicadores(
+    financeiroPeriodo,
+    comercialPeriodo,
+    producao
+  );
 
-  const producao = dadosDashboard?.producao || {
-    oee: 0, disponibilidade: 0, desempenho: 0, qualidade: 0
-  };
-  const maiorReceita = Math.max(1, ...receita.map((item) => Number(item.receita) || 0));
+  const produtoDestaque = produtos[0] || null;
+  const clienteAtual = clientes[0] || null;
+
+  function obterQuantidadeProduto(historico, nomeProduto) {
+    return (historico || []).reduce((total, dia) => {
+      const produto = (dia.vendasProdutos || []).find(
+        (item) => item.produto === nomeProduto
+      );
+
+      return total + (Number(produto?.quantidade) || 0);
+    }, 0);
+  }
+
+  function obterFaturamentoCliente(historico, nomeCliente) {
+    return (historico || []).reduce((total, dia) => {
+      const cliente = (dia.vendasClientes || []).find(
+        (item) => item.cliente === nomeCliente
+      );
+
+      return total + (Number(cliente?.faturamento) || 0);
+    }, 0);
+  }
+
+  const crescimentoProduto = produtoDestaque
+    ? (() => {
+        const atual = obterQuantidadeProduto(comercialPeriodo, produtoDestaque.nome);
+        const anterior = obterQuantidadeProduto(comercialAnterior, produtoDestaque.nome);
+
+        return anterior > 0 ? ((atual - anterior) / anterior) * 100 : null;
+      })()
+    : null;
+
+  const variacaoCliente = clienteAtual
+    ? (() => {
+        const atual = obterFaturamentoCliente(comercialPeriodo, clienteAtual.nome);
+        const anterior = obterFaturamentoCliente(comercialAnterior, clienteAtual.nome);
+
+        return anterior > 0 ? ((atual - anterior) / anterior) * 100 : null;
+      })()
+    : null;
 
   const dadosModal = {
     produtos,
@@ -850,11 +1569,34 @@ const receita = agruparHistoricoFinanceiro(
   };
 
   if (carregando) {
-    return <div className="tudoDashboard"><Sidebar paginaAtiva="Dashboard" /><div className="tudoMenosSidebar"><Header nomeIndustria="Sweet Sunset" /><main className="conteudoDashboard"><p>Carregando Dashboard...</p></main></div></div>;
+    return (
+      <div className="tudoDashboard">
+        <Sidebar paginaAtiva="Dashboard" />
+        <div className="tudoMenosSidebar">
+          <Header nomeIndustria="Sweet Sunset" />
+          <main className="conteudoDashboard">
+            <p>Carregando Dashboard...</p>
+          </main>
+        </div>
+      </div>
+    );
   }
 
   if (erroDashboard) {
-    return <div className="tudoDashboard"><Sidebar paginaAtiva="Dashboard" /><div className="tudoMenosSidebar"><Header nomeIndustria="Sweet Sunset" /><main className="conteudoDashboard"><p role="alert">{erroDashboard}</p><button type="button" onClick={() => window.location.reload()}>Tentar novamente</button></main></div></div>;
+    return (
+      <div className="tudoDashboard">
+        <Sidebar paginaAtiva="Dashboard" />
+        <div className="tudoMenosSidebar">
+          <Header nomeIndustria="Sweet Sunset" />
+          <main className="conteudoDashboard">
+            <p role="alert">{erroDashboard}</p>
+            <button type="button" onClick={() => window.location.reload()}>
+              Tentar novamente
+            </button>
+          </main>
+        </div>
+      </div>
+    );
   }
 
   return (
@@ -865,7 +1607,6 @@ const receita = agruparHistoricoFinanceiro(
         <Header nomeIndustria="Sweet Sunset" />
 
         <main className="conteudoDashboard">
-          {/* CABEÇALHO */}
           <div className="topoDashboard">
             <div>
               <h1 className="tituloDashboard">Dashboard</h1>
@@ -875,7 +1616,7 @@ const receita = agruparHistoricoFinanceiro(
             </div>
           </div>
 
-          {/* PERÍODOS E EXPORTAR */}
+          {/* PERÍODOS */}
           <div className="divSeiLa">
             <div className="acoesDashboard">
               {[
@@ -895,17 +1636,28 @@ const receita = agruparHistoricoFinanceiro(
                 </button>
               ))}
 
-              <button className="botaoDashboardSecundario">
+              <button
+                type="button"
+                className={`botaoDashboardSecundario ${periodoSelecionado === "personalizado" ? "ativo" : ""}`}
+                onClick={() => {
+                  setErroPeriodo("");
+                  setPeriodoPersonalizado(true);
+                }}
+              >
                 📅 Período
               </button>
 
-              <button className="botaoDashboardSecundario">
+              <button
+                type="button"
+                className="botaoDashboardSecundario"
+                onClick={exportarDashboard}
+              >
                 ↓ Exportar
               </button>
             </div>
           </div>
 
-          {/* RESUMO POR SETOR */}
+          {/* RESUMO */}
           <section className="secaoDashboard">
             <div className="cardsResumo">
               {resumo.map((item, i) => (
@@ -932,7 +1684,9 @@ const receita = agruparHistoricoFinanceiro(
                 <div className="cardKpiDashboard" key={i}>
                   <div className="topoKpiDashboard">
                     <span className="iconeKpiDashboard">{k.icone}</span>
-                    <span className={`badgeKpiDashboard ${k.tipo}`}>↗ {k.variacao}</span>
+                    <span className={`badgeKpiDashboard ${k.variacao.status}`}>
+                      ↗ {k.variacao.texto}
+                    </span>
                   </div>
                   <p className="tituloKpiDashboard">{k.titulo}</p>
                   <strong className="valorKpiDashboard">{k.valor}</strong>
@@ -941,11 +1695,10 @@ const receita = agruparHistoricoFinanceiro(
             </div>
 
             <div className="gridFinanceiro">
-              {/* GRÁFICO */}
               <div className="cardDashboard graficoReceita">
                 <div className="cabecalhoCardDashboard">
                   <h3>Receita, custo e meta</h3>
-                  <span className="badgeSucesso">↗ Acima da meta</span>
+                  <span className="badgeSucesso">Período selecionado</span>
                 </div>
 
                 <div className="graficoArea">
@@ -960,8 +1713,22 @@ const receita = agruparHistoricoFinanceiro(
                   <div className="graficoColunas">
                     {receita.map((item, i) => (
                       <div className="grupoGrafico" key={`${item.mes}-${i}`}>
-                        <div className="barraReceita" style={{ height: `${((Number(item.receita) || 0) / maiorReceita) * 100}%` }}></div>
-                        <div className="barraCusto" style={{ height: `${((Number(item.custo) || 0) / maiorReceita) * 100}%` }}></div>
+                        <div
+                          className="barraReceita"
+                          style={{
+                            height: `${(item.receita / maiorReceita) * 100}%`,
+                          }}
+                          title={`Receita: ${formatarMoeda(item.receita)}`}
+                        ></div>
+
+                        <div
+                          className="barraCusto"
+                          style={{
+                            height: `${(item.custo / maiorReceita) * 100}%`,
+                          }}
+                          title={`Custo: ${formatarMoeda(item.custo)}`}
+                        ></div>
+
                         <span>{item.mes}</span>
                       </div>
                     ))}
@@ -975,7 +1742,6 @@ const receita = agruparHistoricoFinanceiro(
                 </div>
               </div>
 
-              {/* METAS */}
               <div className="cardDashboard cardMetasDashboard">
                 <div className="cabecalhoCardDashboard">
                   <h3>Metas do mês</h3>
@@ -987,8 +1753,8 @@ const receita = agruparHistoricoFinanceiro(
                     aria-haspopup="dialog"
                     onClick={() => setModalMetasAberto(true)}
                   >
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
-                      strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M21 4h-7" />
                       <path d="M10 4H3" />
                       <path d="M21 12h-9" />
@@ -1033,16 +1799,16 @@ const receita = agruparHistoricoFinanceiro(
               </div>
             </div>
 
-            {/* FLUXO + INSIGHTS */}
+            {/* FLUXO E INSIGHTS */}
             <div className="gridDoisDashboard">
               <div className="cardDashboard">
                 <div className="cabecalhoCardDashboard">
-                  <h3>Fluxo da semana</h3>
+                  <h3>Fluxo de caixa</h3>
                 </div>
 
                 <div className="fluxoDashboard">
                   {fluxoSemana.map((dia, i) => {
-                    const maior = Math.max(dia.entrada, dia.saida);
+                    const maior = Math.max(dia.entrada, dia.saida, 1);
 
                     return (
                       <div className="diaFluxo" key={i}>
@@ -1050,10 +1816,13 @@ const receita = agruparHistoricoFinanceiro(
                           <div
                             className="barraEntrada"
                             style={{ height: `${(dia.entrada / maior) * 100}%` }}
+                            title={`Entrada: ${formatarMoeda(dia.entrada)}`}
                           ></div>
+
                           <div
                             className="barraSaida"
-                            style={{ height: `${(dia.saida / maior) * 75}%` }}
+                            style={{ height: `${(dia.saida / maior) * 100}%` }}
+                            title={`Saída: ${formatarMoeda(dia.saida)}`}
                           ></div>
                         </div>
                         <span>{dia.dia}</span>
@@ -1076,22 +1845,43 @@ const receita = agruparHistoricoFinanceiro(
                 <div className="insight positivo">
                   <strong>↗ Oportunidade</strong>
                   <p>
-                    Brigadeiro Gourmet cresceu <b>+38%</b> em 30 dias.
-                    Considere aumentar a produção em 15%.
+                    {produtoDestaque ? (
+                      <>
+                        <b>{produtoDestaque.nome}</b> lidera as vendas com{" "}
+                        <b>{produtoDestaque.quantidade.toLocaleString("pt-BR")} unidades</b>
+                        {crescimentoProduto !== null
+                          ? `, variação de ${crescimentoProduto >= 0 ? "+" : ""}${crescimentoProduto.toFixed(1).replace(".", ",")}% em relação ao período anterior.`
+                          : " no período selecionado."}
+                      </>
+                    ) : (
+                      "Ainda não existem vendas suficientes para gerar uma recomendação."
+                    )}
                   </p>
                 </div>
 
                 <div className="insight atencao">
                   <strong>↘ Atenção</strong>
                   <p>
-                    <b>Rede Doce Mel</b> reduziu pedidos em 22%. Recomendamos contato comercial.
+                    {clienteAtual ? (
+                      <>
+                        <b>{clienteAtual.nome}</b> é o cliente com maior faturamento no período,
+                        com {formatarMoeda(clienteAtual.faturamento || 0)} em compras.
+                        {variacaoCliente !== null && variacaoCliente < 0
+                          ? ` O faturamento caiu ${Math.abs(variacaoCliente).toFixed(1).replace(".", ",")}% em relação ao período anterior.`
+                          : ""}
+                      </>
+                    ) : (
+                      "Não há dados comerciais suficientes para analisar os clientes."
+                    )}
                   </p>
                 </div>
 
                 <div className="insight estoque">
                   <strong>Estoque</strong>
                   <p>
-                    Compra sugerida: <b>40kg de chocolate ao leite</b> para cobrir 30 dias.
+                    {alertas.length > 0
+                      ? alertas[0].mensagem
+                      : "Nenhum alerta operacional registrado no momento."}
                   </p>
                 </div>
               </div>
@@ -1136,13 +1926,19 @@ const receita = agruparHistoricoFinanceiro(
                 <h3>Mix de produção</h3>
 
                 <div className="mixDashboard">
-                  <div className="pizzaMix"></div>
+                  <div
+                    className="pizzaMix"
+                    style={{ background: mixGradiente }}
+                  ></div>
 
                   <div className="legendaMix">
-                    <span><i></i> Bolos <b>38%</b></span>
-                    <span><i></i> Doces finos <b>27%</b></span>
-                    <span><i></i> Tortas <b>19%</b></span>
-                    <span><i></i> Sazonais <b>16%</b></span>
+                    {mixProducao.categorias.map((categoria) => (
+                      <span key={categoria.nome}>
+                        <i></i>
+                        {categoria.nome}
+                        <b>{categoria.percentual}%</b>
+                      </span>
+                    ))}
                   </div>
                 </div>
               </div>
@@ -1160,17 +1956,19 @@ const receita = agruparHistoricoFinanceiro(
                 </div>
 
                 <div className="listaProdutosDashboard">
-                  {produtos.map((produto, i) => (
-                    <div className="produtoDashboard" key={i}>
+                  {produtos.map((produto) => (
+                    <div className="produtoDashboard" key={produto.nome}>
                       <div className="produtoNome">
                         <span>{produto.nome}</span>
                         <strong>{produto.quantidade.toLocaleString("pt-BR")}</strong>
                       </div>
                       <div className="barraProduto">
-                        <div style={{ width: `${(produto.quantidade / 4200) * 100}%` }}></div>
+                        <div style={{ width: `${produto.percentual}%` }}></div>
                       </div>
                     </div>
                   ))}
+
+                  {produtos.length === 0 && <p>Sem vendas no período.</p>}
                 </div>
               </div>
             </div>
@@ -1228,10 +2026,7 @@ const receita = agruparHistoricoFinanceiro(
 
                 <div className="tabelaDashboard">
                   <div className="linhaTabela cabecalhoTabela">
-                    <span>Lote</span>
-                    <span>Produto</span>
-                    <span>Qtd</span>
-                    <span>Vence</span>
+                    <span>Lote</span><span>Produto</span><span>Qtd</span><span>Vence</span>
                   </div>
 
                   {lotes.map((lote, i) => (
@@ -1300,20 +2095,16 @@ const receita = agruparHistoricoFinanceiro(
                   <div className="linhaTabela cabecalhoTabela">
                     <span>Cliente</span>
                     <span>Pedidos</span>
-                    <span>LTV</span>
+                    <span>Faturamento</span>
                     <span>Status</span>
                   </div>
 
-                  {clientes.map((cliente, i) => (
-                    <div className="linhaTabela" key={i}>
+                  {clientes.map((cliente) => (
+                    <div className="linhaTabela" key={cliente.nome}>
                       <strong>{cliente.nome}</strong>
                       <span>{cliente.pedidos}</span>
                       <span>{cliente.ltv}</span>
-                      <b
-                        className={`statusCliente ${cliente.status
-                          .toLowerCase()
-                          .replace("ã", "a")}`}
-                      >
+                      <b className={`statusCliente ${cliente.status.toLowerCase().replace("ã", "a")}`}>
                         {cliente.status}
                       </b>
                     </div>
@@ -1387,8 +2178,8 @@ const receita = agruparHistoricoFinanceiro(
                 </div>
 
                 <div className="recomendacaoDashboard">
-                  <b>Recomendação:</b> Avalie substituir Embalagens Rápido — nota 2,5 e 8 dias
-                  de atraso médio nos últimos 3 meses.
+                  <b>Recomendação:</b> Avalie substituir Embalagens Rápido — nota 2,5
+                  e 8 dias de atraso médio nos últimos 3 meses.
                 </div>
               </div>
             </div>
@@ -1406,7 +2197,6 @@ const receita = agruparHistoricoFinanceiro(
         </main>
       </div>
 
-      {/* Popup de gerenciar metas e aviso de "salvo" */}
       {modalMetasAberto &&
         createPortal(
           <ModalGerenciarMetas
@@ -1417,13 +2207,26 @@ const receita = agruparHistoricoFinanceiro(
           document.body
         )}
 
-      {/* Popup de detalhes / gerenciamento dos cards */}
       {modalCardAtivo &&
         createPortal(
           <ModalDetalhesCard
             cardKey={modalCardAtivo}
             dados={dadosModal}
             onFechar={() => setModalCardAtivo(null)}
+          />,
+          document.body
+        )}
+
+      {periodoPersonalizado &&
+        createPortal(
+          <ModalPeriodo
+            dataInicio={dataInicio}
+            dataFim={dataFim}
+            setDataInicio={setDataInicio}
+            setDataFim={setDataFim}
+            erro={erroPeriodo}
+            onAplicar={aplicarPeriodoPersonalizado}
+            onFechar={() => setPeriodoPersonalizado(false)}
           />,
           document.body
         )}
