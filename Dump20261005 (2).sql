@@ -454,106 +454,193 @@ ADD COLUMN cidade_fabrica VARCHAR(80),
 ADD COLUMN estado_fabrica CHAR(2);
 
 
-CREATE TABLE ordens_producao (
+ALTER TABLE usuario
+MODIFY COLUMN email_usuario VARCHAR(100),
+MODIFY COLUMN nome_fabrica_usuario VARCHAR(80),
+ADD COLUMN id_fabrica_usuario INT;
 
-    id_ordem INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+ALTER TABLE funcionarios
+ADD COLUMN nome_funcionario VARCHAR(100),
+ADD COLUMN horario_funcionario VARCHAR(60),
+MODIFY COLUMN salario_funcionario DECIMAL(12,2);
 
-    nome_produto_ordem VARCHAR(100) NOT NULL,
+ALTER TABLE fornecedores
+MODIFY COLUMN cnpj_fornecedor VARCHAR(18),
+ADD COLUMN nome_fornecedor VARCHAR(100),
+ADD COLUMN telefone_fornecedor VARCHAR(20),
+ADD COLUMN email_fornecedor VARCHAR(120),
+ADD COLUMN nota_fornecedor DECIMAL(3,1),
+ADD COLUMN atraso_dias_fornecedor INT,
+ADD COLUMN data_ultima_movimentacao_fornecedor DATE;
 
-    quantidade_total INT NOT NULL,
+ALTER TABLE cliente
+ADD COLUMN telefone_cliente VARCHAR(20),
+ADD COLUMN email_cliente VARCHAR(120),
+ADD COLUMN status_cliente ENUM('ativo', 'atencao', 'inativo'),
+ADD COLUMN data_cadastro_cliente DATETIME DEFAULT CURRENT_TIMESTAMP;
 
-    quantidade_feita INT DEFAULT 0,
+ALTER TABLE insumos
+MODIFY COLUMN custo_unit_insumo DECIMAL(12,2),
+ADD COLUMN unidade_medida_insumo VARCHAR(20);
 
-    status_ordem ENUM(
-        'na_fila',
-        'em_andamento',
-        'concluida'
-    ) DEFAULT 'na_fila',
+ALTER TABLE produtos
+MODIFY COLUMN nome_produto VARCHAR(100),
+MODIFY COLUMN preco_unit_produto DECIMAL(12,2),
+MODIFY COLUMN margem_lucro_produto DECIMAL(5,2),
+MODIFY COLUMN descricao_produto TEXT,
+MODIFY COLUMN receita_produto TEXT,
+ADD COLUMN custo_unit_produto DECIMAL(12,2),
+ADD COLUMN imagem_produto VARCHAR(500);
 
-    prazo_ordem DATE NOT NULL
+ALTER TABLE produtos
+MODIFY COLUMN categ_produto ENUM(
+    'Doces finos',
+    'Bolos',
+    'Tortas',
+    'Sazonais',
+    'Mousses e cremosos',
+    'Pavês e gelados',
+    'Cupcakes',
+    'Cookies/biscoitos',
+    'Brownies',
+    'Cheesecakes',
+    'Doces de pote',
+    'Trufas/bombons',
+    'Brigadeiros/enrolados',
+    'Macarons',
+    'Donuts',
+    'Muffins',
+    'Pudins',
+    'Pães de mel',
+    'Rocamboles',
+    'Kits festa',
+    'Lançamentos',
+    'Edição limitada',
+    'Linha premium',
+    'Congelados',
+    'Outros'
+) DEFAULT NULL;
 
+ALTER TABLE pedido
+MODIFY COLUMN nome_produto_pedido VARCHAR(100),
+MODIFY COLUMN prazo_pedido DATETIME NULL DEFAULT NULL,
+MODIFY COLUMN forma_pagamento_pedido VARCHAR(50),
+MODIFY COLUMN vlr_total_pedido DECIMAL(12,2),
+MODIFY COLUMN descricao_pedido VARCHAR(500);
+
+ALTER TABLE entradas
+MODIFY COLUMN nome_entrada VARCHAR(100),
+MODIFY COLUMN categoria_entrada VARCHAR(60),
+MODIFY COLUMN valor_entrada DECIMAL(12,2),
+MODIFY COLUMN obs_entrada VARCHAR(255),
+ADD COLUMN comprovante_entrada VARCHAR(255);
+
+ALTER TABLE saidas
+MODIFY COLUMN nome_saida VARCHAR(100),
+MODIFY COLUMN data_saida DATETIME DEFAULT CURRENT_TIMESTAMP,
+MODIFY COLUMN categoria_saida VARCHAR(60),
+MODIFY COLUMN valor_saida DECIMAL(12,2),
+MODIFY COLUMN obs_saida VARCHAR(255),
+MODIFY COLUMN tipo_saida ENUM('fixa', 'variável'),
+ADD COLUMN comprovante_saida VARCHAR(255);
+
+ALTER TABLE movimentacoes
+MODIFY COLUMN data_movimentacao DATETIME
+NOT NULL DEFAULT CURRENT_TIMESTAMP;
+
+ALTER TABLE evento
+MODIFY COLUMN titulo_evento VARCHAR(80),
+MODIFY COLUMN descricao_evento VARCHAR(255);
+
+ALTER TABLE meta
+ADD COLUMN qtde_atual_meta INT,
+ADD COLUMN valor_atual_meta DECIMAL(12,2),
+ADD COLUMN valor_alvo_meta DECIMAL(12,2),
+ADD COLUMN tipo_meta VARCHAR(30),
+MODIFY COLUMN descricao_meta VARCHAR(255);
+
+CREATE TABLE pedido_item (
+    id_item_pedido INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+
+    id_pedido INT NOT NULL,
+
+    id_produto INT NULL,
+
+    nome_produto_item VARCHAR(100) NOT NULL,
+
+    quantidade_item INT NOT NULL,
+
+    preco_unitario_item DECIMAL(12,2),
+
+    subtotal_item DECIMAL(12,2),
+
+    descricao_item VARCHAR(255)
 );
 
 
-INSERT INTO entradas (
-    nome_entrada,
-    data_entrada,
-    categoria_entrada,
-    valor_entrada,
-    obs_entrada
-) VALUES
-
-(
-    'Venda - Padaria Estrella',
-    '2026-05-03',
-    'Outros',
-    2700.00,
-    '15 Torta de Limão 22cm, 30 Cupcake Red Velvet, 28 Brownie Avelã, 40 Cupcake Morango'
-),
-
-(
-    'Venda - Sonda Supermercado',
-    '2026-05-03',
-    'Venda de produto',
-    745.00,
-    '15 Bolo Formigueiro, 15 Bolo Chocolate Branco, 15 Bolo Sensação, 15 Bolo Meio Amargo, 15 Ninho'
-),
-
-(
-    'Venda - Tia Bete Doces',
-    '2026-05-01',
-    'Venda de produto',
-    922.00,
-    '16 Mousse Maracujá, 10 Pizza Brownie, 10 Copo Felicidade Surpresa de Uva, 15 Vulcão Chocolate'
-),
-
-(
-    'Venda - Doceria Super Magic',
-    '2026-05-01',
-    'Venda de produto',
-    2700.00,
-    'Pedido personalizado'
-);
 
 
-INSERT INTO entradas (
-    nome_entrada,
-    data_entrada,
-    categoria_entrada,
-    valor_entrada,
-    obs_entrada
-) VALUES
+-- a partir daqui sao as conexoes, tem q conferir tudo antes bonitinho e ter certeza que os IDs estao validos
 
-(
-    'Venda - Padaria Estrella',
-    '2026-05-03',
-    'Outros',
-    2700.00,
-    '15 Torta de Limão 22cm, 30 Cupcake Red Velvet, 28 Brownie Avelã, 40 Cupcake Morango'
-),
+-- USUARIO -> FABRICA
 
-(
-    'Venda - Sonda Supermercado',
-    '2026-05-03',
-    'Venda de produto',
-    745.00,
-    '15 Bolo Formigueiro, 15 Bolo Chocolate Branco, 15 Bolo Sensação, 15 Bolo Meio Amargo, 15 Ninho'
-),
+ALTER TABLE usuario
+ADD CONSTRAINT fk_usuario_fabrica
+FOREIGN KEY (id_fabrica_usuario)
+REFERENCES fabrica(id_fabrica)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
 
-(
-    'Venda - Tia Bete Doces',
-    '2026-05-01',
-    'Venda de produto',
-    922.00,
-    '16 Mousse Maracujá, 10 Pizza Brownie, 10 Copo Felicidade Surpresa de Uva, 15 Vulcão Chocolate'
-),
 
-(
-    'Venda - Doceria Super Magic',
-    '2026-05-01',
-    'Venda de produto',
-    2700.00,
-    'Pedido personalizado'
-);
 
+-- INSUMOS -> FORNECEDORES
+
+ALTER TABLE insumos
+ADD CONSTRAINT fk_insumo_fornecedor
+FOREIGN KEY (fornecedor_insumo)
+REFERENCES fornecedores(id_fornecedor)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+
+-- PRODUTOS -> CATEGORIA_PRODUTOS
+
+ALTER TABLE produtos
+ADD CONSTRAINT fk_produto_categoria
+FOREIGN KEY (categ_produto)
+REFERENCES categoria_produtos(id_categoria_produto)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
+
+
+
+
+-- PEDIDO -> CLIENTE
+
+ALTER TABLE pedido
+ADD CONSTRAINT fk_pedido_cliente
+FOREIGN KEY (cliente_pedido)
+REFERENCES cliente(id_cliente)
+ON DELETE RESTRICT
+ON UPDATE CASCADE;
+
+
+-- PEDIDO_ITEM -> PEDIDO
+
+ALTER TABLE pedido_item
+ADD CONSTRAINT fk_item_pedido
+FOREIGN KEY (id_pedido)
+REFERENCES pedido(id_pedido)
+ON DELETE CASCADE
+ON UPDATE CASCADE;
+
+
+-- PEDIDO_ITEM -> PRODUTOS
+
+ALTER TABLE pedido_item
+ADD CONSTRAINT fk_item_produto
+FOREIGN KEY (id_produto)
+REFERENCES produtos(id_produto)
+ON DELETE SET NULL
+ON UPDATE CASCADE;
 
