@@ -1,4 +1,3 @@
-
 :root {
   --cor-primaria: #8E1027;
   --cor-primaria-hover: #6f0c1e;
@@ -45,7 +44,7 @@
   width: 100%;
   min-height: 100vh;
   box-sizing: border-box;
-  margin-left: 68px; /* espaço pro menu lateral fechado (68px) */
+  margin-left: 68px;
   background-color: var(--cor-fundo);
 }
 
@@ -68,7 +67,7 @@
   font-weight: 700;
   line-height: 1.3;
   letter-spacing: -0.02em;
-  color: #8E1027
+  color: #8E1027;
 }
 
 .subtituloEstoque {
@@ -150,23 +149,49 @@
   box-shadow: 0 0 0 3px rgba(142, 16, 39, 0.12);
 }
 
-/* aviso "... abaixo do mínimo" */
+/* botão/aviso "... abaixo do mínimo" */
 .avisoMinimo {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 8px;
+  height: 44px;
+  box-sizing: border-box;
   background-color: #FDE8EA;
   border: 1px solid #F6C9CF;
   color: #B91C1C;
   font: 600 13px "Inter", sans-serif;
-  padding: 9px 16px;
+  padding: 0 16px;
   border-radius: 999px;
   white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.15s ease;
+}
+
+.avisoMinimo:hover {
+  background-color: #FBD5D9;
+  border-color: #E5A4AE;
+  transform: translateY(-1px);
+}
+
+.avisoMinimo:active {
+  transform: translateY(0);
+}
+
+.avisoMinimo.ativo {
+  background-color: #B91C1C;
+  border-color: #B91C1C;
+  color: #FFFFFF;
+  box-shadow: 0 3px 10px rgba(185, 28, 28, 0.25);
 }
 
 .avisoMinimo svg {
   width: 15px;
   height: 15px;
+  flex-shrink: 0;
 }
 
 /* filtro de insumo (select) */
@@ -202,7 +227,7 @@
 }
 
 /* botão "+ Novo insumo" */
-.ladoDireitoFiltros button:not(#selectFiltroInsumo){
+.ladoDireitoFiltros button:not(#selectFiltroInsumo) {
   display: inline-flex;
   align-items: center;
   gap: 6px;
@@ -214,20 +239,17 @@
   font: 600 14px "Inter", sans-serif;
   text-decoration: none;
   cursor: pointer;
-
   background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 45%, #B3213B 100%);
   background-size: 221% 100%;
   background-position: 0% 50%;
   box-shadow: 0 2px 6px rgba(142, 16, 39, 0.25);
-
   transition:
     background-position 0.5s ease,
     box-shadow 0.3s ease,
     transform 0.2s ease;
 }
 
-.ladoDireitoFiltros button:not(#selectFiltroInsumo):hover
-{
+.ladoDireitoFiltros button:not(#selectFiltroInsumo):hover {
   background-position: 100% 50%;
   box-shadow: 0 4px 12px rgba(142, 16, 39, 0.35);
   transform: translateY(-1px);
@@ -308,7 +330,6 @@
   color: var(--cor-texto-suave);
 }
 
-
 .statusReposicao {
   display: inline-flex;
   align-items: center;
@@ -362,14 +383,12 @@
   to   { opacity: 1; translate: 0 0; }
 }
 
-/* ---------- ordem de entrada ---------- */
 .tituloEstoque    { --atraso: 0s; }
 .subtituloEstoque { --atraso: .08s; }
 .barraFiltros     { --atraso: .18s; }
 .tabelaEstoque    { --atraso: .3s; }
 
 @media (prefers-reduced-motion: no-preference) {
-
   .tituloEstoque,
   .subtituloEstoque,
   .barraFiltros,
@@ -377,7 +396,6 @@
     animation: entradaCarga 0.7s var(--suave) var(--atraso, 0s) backwards;
   }
 
-  /* linhas da tabela entram uma após a outra */
   .tabelaEstoque tbody tr {
     animation: entradaCarga 0.5s var(--suave) backwards;
   }
@@ -394,7 +412,6 @@
   .tabelaEstoque tbody tr:nth-child(n+10) { animation-delay: .85s; }
 }
 
-/* ---------- linhas abaixo da dobra surgem ao rolar ---------- */
 @supports (animation-timeline: view()) {
   @media (prefers-reduced-motion: no-preference) {
     .tabelaEstoque tbody tr {
@@ -450,10 +467,6 @@
   }
 }
 
-
-
-
-
 /* =====================================================
    POP-UP MODAL GLOBAL (PADRÃO UNIFICADO)
 ===================================================== */
@@ -487,12 +500,26 @@
 }
 
 @keyframes scaleInModal {
-  from { 
-    opacity: 0; 
-    transform: translateY(20px) scale(0.96); 
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
   }
-  to { 
-    opacity: 1; 
-    transform: translateY(0) scale(1); 
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
   }
+}
+
+
+
+
+
+button.botaoDetalhesInsumo {
+  background: none;
+  border: none;
+  padding: 0;
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: left;
 }

@@ -1,5 +1,5 @@
 // Importa a conexão com o banco de dados
-const db = require("../config/database");
+//const db = require("../config/database");
 
 // Busca os totais que aparecem nos cards da Visão Geral
 async function obterResumoKpis(req, res) {
