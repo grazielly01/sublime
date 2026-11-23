@@ -13,7 +13,6 @@ const initialOrders = [
   { id: 5, name: "Bolo de Chocolate 1kg", team: "Equipe B", total: 30, done: 0, status: "Na fila", time: "Iniciar 15h30", prazo: "2026-08-22", kind: "queued" },
 ];
 
-//testando
 export default function Producao() {
   const [orders, setOrders] = useState(initialOrders);
 
@@ -62,14 +61,12 @@ export default function Producao() {
     setModalNovaOrdemAberto(false);
   };
 
-  // Abre o modal de Detalhes da Ordem
   const abrirDetalhesOrdem = (order) => {
     setOrdemSelecionada({ ...order });
     setEditandoOrdem(false);
     setModalDetalhesOrdemAberto(true);
   };
 
-  // Salva edição da ordem selecionada
   const salvarEdicaoOrdem = () => {
     setOrders((prev) =>
       prev.map((o) => (o.id === ordemSelecionada.id ? ordemSelecionada : o))
@@ -77,13 +74,11 @@ export default function Producao() {
     setEditandoOrdem(false);
   };
 
-  // Abre o modal de Confirmação de Exclusão
   const solicitarExclusaoOrdem = () => {
     setModalDetalhesOrdemAberto(false);
     setModalConfirmarExclusaoAberto(true);
   };
 
-  // Exclui definitivamente a ordem da lista
   const confirmarExclusaoOrdem = () => {
     if (ordemSelecionada) {
       setOrders((prev) => prev.filter((o) => o.id !== ordemSelecionada.id));
@@ -118,6 +113,14 @@ export default function Producao() {
     });
   }
 
+  // Cálculo dinâmico da Meta do Dia com base nas ordens
+  const totalMetaUnidades = orders.reduce((acc, o) => acc + (Number(o.total) || 0), 0);
+  const totalConcluidasUnidades = orders.reduce((acc, o) => acc + (Number(o.done) || 0), 0);
+  const porcentagemMeta =
+    totalMetaUnidades > 0
+      ? Math.min(100, Math.round((totalConcluidasUnidades / totalMetaUnidades) * 100))
+      : 0;
+
   return (
     <div className="production-page">
       <Sidebar paginaAtiva="Produção" />
@@ -145,9 +148,15 @@ export default function Producao() {
         <section className="metrics">
           <article className="metric">
             <div className="metric-label">META DO DIA</div>
-            <div className="metric-number">1.420 un</div>
-            <div className="mini-track"><span /></div>
-            <div className="metric-text complete-rate">87% concluído</div>
+            <div className="metric-number">
+              {totalMetaUnidades.toLocaleString("pt-BR")} un
+            </div>
+            <div className="mini-track">
+              <span style={{ width: `${porcentagemMeta}%` }} />
+            </div>
+            <div className="metric-text complete-rate">
+              {porcentagemMeta}% concluído ({totalConcluidasUnidades.toLocaleString("pt-BR")}/{totalMetaUnidades.toLocaleString("pt-BR")} un)
+            </div>
           </article>
 
           <article className="metric">
@@ -172,7 +181,7 @@ export default function Producao() {
           <h2>Fila de produção</h2>
           <div className="orders">
             {orders.map((order, index) => {
-              const percent = Math.round((order.done / order.total) * 100);
+              const percent = order.total > 0 ? Math.round((order.done / order.total) * 100) : 0;
               return (
                 <article
                   className="order"
@@ -228,9 +237,7 @@ export default function Producao() {
         </section>
       </main>
 
-      {/* =====================================================
-         POP-UP 1: REGISTRAR NOVA ORDEM
-      ===================================================== */}
+      {/* POP-UP 1: REGISTRAR NOVA ORDEM */}
       {modalNovaOrdemAberto && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "620px" }}>
@@ -310,9 +317,7 @@ export default function Producao() {
         </div>
       )}
 
-      {/* =====================================================
-         POP-UP 2: DETALHES DA ORDEM
-      ===================================================== */}
+      {/* POP-UP 2: DETALHES DA ORDEM */}
       {modalDetalhesOrdemAberto && ordemSelecionada && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "600px" }}>
@@ -411,9 +416,7 @@ export default function Producao() {
         </div>
       )}
 
-      {/* =====================================================
-         POP-UP 3: CONFIRMAR EXCLUSÃO DA ORDEM
-      ===================================================== */}
+      {/* POP-UP 3: CONFIRMAR EXCLUSÃO DA ORDEM */}
       {modalConfirmarExclusaoAberto && ordemSelecionada && (
         <div className="modalOverlay">
           <div className="modalConteudo" style={{ maxWidth: "460px" }}>

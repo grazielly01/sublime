@@ -10,8 +10,9 @@ import Header from "../../componentes/Header/Header.jsx";
 import Select from "../../componentes/Select/Select.jsx";
 
 function Calendario() {
-  const [mesAtual, setMesAtual] = useState(4);
-  const [anoAtual, setAnoAtual] = useState(2026);
+ const hoje = new Date();
+const [mesAtual, setMesAtual] = useState(hoje.getMonth());
+const [anoAtual, setAnoAtual] = useState(hoje.getFullYear());
 
   // Estado do pop-up Registrar Novo Evento
   const [modalNovoEventoAberto, setModalNovoEventoAberto] = useState(false);
@@ -212,10 +213,10 @@ function Calendario() {
     setModalNovoEventoAberto(false);
   };
 
-  const anos = [];
-  for (let ano = 2026; ano <= 2076; ano++) {
-    anos.push(ano.toString());
-  }
+ const anos = [];
+for (let ano = hoje.getFullYear() - 5; ano <= hoje.getFullYear() + 50; ano++) {
+  anos.push(ano.toString());
+}
 
   function mesAnterior() {
     if (mesAtual === 0) {
@@ -314,8 +315,13 @@ function Calendario() {
                     evento.dia === dia && evento.mes === mesAtual && evento.ano === anoAtual
                 );
 
+                const ehHoje =
+                        dia === hoje.getDate() &&
+                           mesAtual === hoje.getMonth() &&
+                           anoAtual === hoje.getFullYear();
+
                 return (
-                  <div className="celulaDia" key={index}>
+                 <div className={"celulaDia" + (ehHoje ? " hoje" : "")} key={index}>
                     {dia !== null && (
                       <div className="conteudoCelula">
                         <span className="numeroDia">{dia}</span>

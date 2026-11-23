@@ -10,6 +10,61 @@ import { useState, useEffect } from "react";
 
 const API_CAIXA = "http://localhost:3000/caixa";
 const STORAGE_KEY = "sublime_fluxo_caixa";
+const STORAGE_DESPESAS_FIXAS_VARIAVEIS = "sublime_despesas_fixas_variaveis";
+
+const DESPESAS_FIXAS_PADRAO = [
+  { nome: "Aluguel", valor: 3500 },
+  { nome: "Salários", valor: 5000 },
+  { nome: "Internet", valor: 200 },
+  { nome: "Sistema/assinaturas", valor: 300 },
+  { nome: "Energia base", valor: 800 },
+  { nome: "Manutenção", valor: 300 },
+];
+
+const DESPESAS_VARIAVEIS_PADRAO = [
+  { nome: "Matéria-prima", valor: 3500 },
+  { nome: "Embalagens", valor: 5000 },
+  { nome: "Fretes", valor: 200 },
+  { nome: "Taxas de entrega", valor: 300 },
+  { nome: "Horas extras", valor: 800 },
+  { nome: "Produção extra", valor: 300 },
+];
+
+function lerDespesasFixasVariaveis() {
+  try {
+    const salvo = JSON.parse(localStorage.getItem(STORAGE_DESPESAS_FIXAS_VARIAVEIS) || "null");
+    if (
+      salvo &&
+      Array.isArray(salvo.fixas) &&
+      Array.isArray(salvo.variaveis)
+    ) {
+      return {
+        fixas: salvo.fixas.map((item, idx) => ({
+          nome: item.nome ?? DESPESAS_FIXAS_PADRAO[idx]?.nome ?? `Item ${idx + 1}`,
+          valor: Number(item.valor) || 0,
+        })),
+        variaveis: salvo.variaveis.map((item, idx) => ({
+          nome: item.nome ?? DESPESAS_VARIAVEIS_PADRAO[idx]?.nome ?? `Item ${idx + 1}`,
+          valor: Number(item.valor) || 0,
+        })),
+      };
+    }
+  } catch {
+    // Fallback para valores padrão
+  }
+
+  return {
+    fixas: DESPESAS_FIXAS_PADRAO,
+    variaveis: DESPESAS_VARIAVEIS_PADRAO,
+  };
+}
+
+function salvarDespesasFixasVariaveis(fixas, variaveis) {
+  localStorage.setItem(
+    STORAGE_DESPESAS_FIXAS_VARIAVEIS,
+    JSON.stringify({ fixas, variaveis })
+  );
+}
 
 function lerLocal() {
   try {
@@ -21,6 +76,39 @@ function lerLocal() {
 
 function salvarLocal(lista) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
+}
+
+function parseValorMoeda(valor) {
+  if (typeof valor === "number") return Number.isFinite(valor) ? valor : 0;
+  const limpo = String(valor ?? "0")
+    .replace(/R\$/gi, "")
+    .replace(/\s+/g, "")
+    .replace(/\./g, "")
+    .replace(",", ".");
+  const num = Number(limpo);
+  return Number.isFinite(num) ? num : 0;
+}
+
+function formatarDataParaIso(dataStr) {
+  if (!dataStr) return new Date().toISOString().slice(0, 10);
+  if (/^\d{4}-\d{2}-\d{2}/.test(dataStr)) return dataStr.slice(0, 10);
+  const partes = String(dataStr).split("/");
+  if (partes.length === 3) {
+    const [dia, mes, ano] = partes;
+    return `${ano}-${String(mes).padStart(2, "0")}-${String(dia).padStart(2, "0")}`;
+  }
+  return new Date().toISOString().slice(0, 10);
+}
+
+function formatarDataParaBr(dataIso) {
+  if (!dataIso) return "";
+  const limpa = String(dataIso).slice(0, 10);
+  const partes = limpa.split("-");
+  if (partes.length === 3) {
+    const [ano, mes, dia] = partes;
+    return `${dia}/${mes}/${ano}`;
+  }
+  return dataIso;
 }
 
 async function cadastrarTransacao(dados) {
@@ -37,14 +125,48 @@ async function cadastrarTransacao(dados) {
     }
     return resultado;
   } catch {
-    const nova = { ...dados, id: Date.now() };
+    const nova = { ...dados, id: dados.id ?? Date.now() };
     const atuais = lerLocal();
     salvarLocal([nova, ...atuais]);
     return nova;
   }
 }
 
+async function atualizarTransacao(id, dados) {
+  try {
+    const response = await fetch(`${API_CAIXA}/${encodeURIComponent(id)}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(dados),
+    });
+    const texto = await response.text();
+    const resultado = texto ? JSON.parse(texto) : {};
+    if (!response.ok) {
+      throw new Error(resultado.error || "Erro ao atualizar na API");
+    }
+    const locais = lerLocal();
+    if (locais.some((item) => String(item.id) === String(id))) {
+      salvarLocal(
+        locais.map((item) =>
+          String(item.id) === String(id) ? { ...item, ...dados, id } : item
+        )
+      );
+    }
+    return { ...dados, ...resultado, id };
+  } catch {
+    const locais = lerLocal();
+    const existeLocal = locais.some((item) => String(item.id) === String(id));
+    const atualizada = { ...dados, id };
+    const novaLista = existeLocal
+      ? locais.map((item) => (String(item.id) === String(id) ? { ...item, ...atualizada } : item))
+      : [atualizada, ...locais];
+    salvarLocal(novaLista);
+    return atualizada;
+  }
+}
+
 async function listarTransacoes() {
+  const locais = lerLocal();
   try {
     const response = await fetch(API_CAIXA, {
       headers: { Accept: "application/json" },
@@ -56,34 +178,43 @@ async function listarTransacoes() {
     }
 
     const resultado = texto ? JSON.parse(texto) : [];
-    return Array.isArray(resultado) ? resultado : resultado.data || [];
+    const apiLista = Array.isArray(resultado) ? resultado : resultado.data || [];
+    const idsApi = new Set(apiLista.map((i) => String(i.id)));
+    const apenasLocais = locais.filter((i) => !idsApi.has(String(i.id)));
+    return [...apenasLocais, ...apiLista];
   } catch (error) {
     console.warn("API do caixa indisponível; usando dados locais.", error.message);
-    return lerLocal();
+    return locais;
   }
 }
 
 async function excluirTransacao(id) {
-  const response = await fetch(`${API_CAIXA}/${encodeURIComponent(id)}`, {
-    method: "DELETE",
-  });
+  try {
+    const response = await fetch(`${API_CAIXA}/${encodeURIComponent(id)}`, {
+      method: "DELETE",
+    });
 
-  if (!response.ok) {
-    const texto = await response.text();
-    let mensagem = "Erro ao excluir transação";
-
-    try {
-      mensagem = texto ? JSON.parse(texto).error || mensagem : mensagem;
-    } catch {
-      // Resposta não-JSON do servidor
+    if (!response.ok && response.status !== 404) {
+      const texto = await response.text();
+      let mensagem = "Erro ao excluir transação";
+      try {
+        mensagem = texto ? JSON.parse(texto).error || mensagem : mensagem;
+      } catch {
+        // Resposta não-JSON do servidor
+      }
+      throw new Error(mensagem);
     }
-
-    throw new Error(mensagem);
+  } catch (error) {
+    const locais = lerLocal();
+    const existeLocal = locais.some((item) => String(item.id) === String(id));
+    if (!existeLocal) {
+      throw error;
+    }
   }
 
   const filtradas = lerLocal().filter((item) => String(item.id) !== String(id));
   salvarLocal(filtradas);
-  return response;
+  return true;
 }
 
 function calcularFluxoCaixa(movimentacoes = []) {
@@ -147,11 +278,172 @@ const IconeSetaSaida = () => (
   </svg>
 );
 
+const IconeTresPontinhos = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="12" cy="5" r="2" />
+    <circle cx="12" cy="12" r="2" />
+    <circle cx="12" cy="19" r="2" />
+  </svg>
+);
+
+const IconeFecharX = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" xmlns="http://www.w3.org/2000/svg">
+    <path d="M18 6L6 18M6 6l12 12" />
+  </svg>
+);
+
+// Gráficos dinâmicos
+const pad2 = (n) => String(n).padStart(2, "0");
+
+function extrairDataPartes(dataValor) {
+  const texto = String(dataValor ?? "").trim();
+
+  const isoMatch = texto.match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (isoMatch) {
+    return {
+      ano: Number(isoMatch[1]),
+      mes: Number(isoMatch[2]),
+      dia: Number(isoMatch[3]),
+    };
+  }
+
+  const brMatch = texto.match(/^(\d{2})\/(\d{2})\/(\d{4})/);
+  if (brMatch) {
+    return {
+      ano: Number(brMatch[3]),
+      mes: Number(brMatch[2]),
+      dia: Number(brMatch[1]),
+    };
+  }
+
+  return { ano: NaN, mes: NaN, dia: NaN };
+}
+
+function normalizarTransacao(t) {
+  const { ano, mes, dia } = extrairDataPartes(t.date ?? t.dataCompleta ?? t.data);
+  return {
+    ehEntrada: t.type === "INCOME" || t.tipo === "entrada",
+    ehSaida: t.type === "EXPENSE" || t.tipo === "saida",
+    valor: Number(t.amount ?? t.valorNumerico ?? parseValorMoeda(t.valor) ?? 0) || 0,
+    ano,
+    mes,
+    dia,
+  };
+}
+
+function filtrarDoMes(transacoes, mes, ano) {
+  return transacoes.filter((t) => {
+    const n = normalizarTransacao(t);
+    return n.ano === ano && n.mes === mes;
+  });
+}
+
+function escalaEixo(minimo, maximo, intervalos) {
+  const min = Math.min(0, minimo);
+  const max = Math.max(0, maximo);
+  let passo = 1000;
+  let base = 0;
+
+  if (max !== min) {
+    let achou = false;
+    for (let magnitude = 1; !achou; magnitude *= 10) {
+      for (const m of [1, 2, 2.5, 5]) {
+        const p = m * magnitude;
+        const b = Math.floor(min / p) * p;
+        if (b + intervalos * p >= max) {
+          passo = p;
+          base = b;
+          achou = true;
+          break;
+        }
+      }
+    }
+  }
+
+  const topo = base + intervalos * passo;
+  const ticks = Array.from({ length: intervalos + 1 }, (_, i) => topo - i * passo);
+  return { base, topo, passo, ticks };
+}
+
+function formatarEixo(valor) {
+  const abs = Math.abs(valor);
+  const texto =
+    abs >= 1000
+      ? (abs / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "k"
+      : abs.toLocaleString("pt-BR", { maximumFractionDigits: 0 });
+  return (valor < 0 ? "-" : "") + texto;
+}
+
+function montarDadosGraficos(transacoesDoMes, mes, ano) {
+  const diasNoMes = new Date(ano, mes, 0).getDate();
+  const lista = transacoesDoMes.map(normalizarTransacao);
+
+  const semanas = [];
+  for (let inicio = 1; inicio <= diasNoMes; inicio += 7) {
+    semanas.push({ inicio, fim: Math.min(inicio + 6, diasNoMes), entradas: 0, saidas: 0 });
+  }
+
+  lista.forEach((t) => {
+    const semana = semanas[Math.floor((t.dia - 1) / 7)];
+    if (!semana) return;
+    if (t.ehEntrada) semana.entradas += t.valor;
+    if (t.ehSaida) semana.saidas += t.valor;
+  });
+
+  const maiorBarra = Math.max(0, ...semanas.flatMap((s) => [s.entradas, s.saidas]));
+  const eixoBarras = escalaEixo(0, maiorBarra, 3);
+
+  const barras = semanas.map((s) => ({
+    rotulo: `${pad2(s.inicio)}–${pad2(s.fim)}/${pad2(mes)}`,
+    entradas: s.entradas,
+    saidas: s.saidas,
+    alturaEntrada: (s.entradas / eixoBarras.topo) * 100,
+    alturaSaida: (s.saidas / eixoBarras.topo) * 100,
+  }));
+
+  const dias = [1, 5, 10, 15, 20, 25, diasNoMes];
+  const saldos = dias.map((d) =>
+    lista
+      .filter((t) => t.dia <= d)
+      .reduce((soma, t) => soma + (t.ehEntrada ? t.valor : t.ehSaida ? -t.valor : 0), 0)
+  );
+
+  const eixoLinha = escalaEixo(Math.min(...saldos), Math.max(...saldos), 4);
+
+  const Y_TOPO = 10;
+  const Y_BASE = 240;
+  const pontosLinha = saldos.map((saldo, i) => ({
+    x: 20 + i * (960 / (dias.length - 1)),
+    y:
+      Y_BASE -
+      ((saldo - eixoLinha.base) / (eixoLinha.topo - eixoLinha.base)) * (Y_BASE - Y_TOPO),
+    saldo,
+    diaLabel: i === 0 ? `01/${pad2(mes)}` : `Dia ${pad2(dias[i])}/${pad2(mes)}`,
+  }));
+
+  const rotulosLinha = dias.map((d, i) => (i === 0 ? `01/${pad2(mes)}` : pad2(d)));
+
+  return { barras, eixoBarras, eixoLinha, pontosLinha, rotulosLinha };
+}
+
 function FluxoCaixa() {
   const navigate = useNavigate();
 
+  const dadosDespesasIniciais = lerDespesasFixasVariaveis();
+  const [despesasFixas, setDespesasFixas] = useState(dadosDespesasIniciais.fixas);
+  const [despesasVariaveis, setDespesasVariaveis] = useState(dadosDespesasIniciais.variaveis);
+
+  // Estados do menu de três pontinhos e modos ("editar" | "excluir" | null)
+  const [menuFixasAberto, setMenuFixasAberto] = useState(false);
+  const [menuVariaveisAberto, setMenuVariaveisAberto] = useState(false);
+  const [modoFixas, setModoFixas] = useState(null);
+  const [modoVariaveis, setModoVariaveis] = useState(null);
+  const [rascunhoFixas, setRascunhoFixas] = useState([]);
+  const [rascunhoVariaveis, setRascunhoVariaveis] = useState([]);
+
   const [cardAtivo, setCardAtivo] = useState("margem");
   const [botaoAtivo, setBotaoAtivo] = useState("entrada");
+  const [tooltipGrafico, setTooltipGrafico] = useState(null);
 
   const [modalMovimentacoesAberto, setModalMovimentacoesAberto] = useState(false);
   const [modalDespesasAberto, setModalDespesasAberto] = useState(false);
@@ -179,6 +471,7 @@ function FluxoCaixa() {
   });
 
   const [transacoesApi, setTransacoesApi] = useState([]);
+  const [itensBaseRemovidos, setItensBaseRemovidos] = useState([]);
 
   const [modalDetalhesEntradaAberto, setModalDetalhesEntradaAberto] = useState(false);
   const [entradaSelecionada, setEntradaSelecionada] = useState(null);
@@ -192,6 +485,118 @@ function FluxoCaixa() {
 
   const [nomeArquivoSaida, setNomeArquivoSaida] = useState("");
   const [nomeArquivoEntrada, setNomeArquivoEntrada] = useState("");
+
+  // Ações do menu de Despesas Fixas
+  const abrirAdicionarFixa = () => {
+    setMenuFixasAberto(false);
+    const base = despesasFixas.map((item) => ({
+      ...item,
+      valorTexto: Number(item.valor).toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+    }));
+    setRascunhoFixas([...base, { nome: "", valor: 0, valorTexto: "0,00" }]);
+    setModoFixas("editar");
+  };
+
+  const abrirEditarFixas = () => {
+    setMenuFixasAberto(false);
+    setRascunhoFixas(
+      despesasFixas.map((item) => ({
+        ...item,
+        valorTexto: Number(item.valor).toLocaleString("pt-BR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }),
+      }))
+    );
+    setModoFixas("editar");
+  };
+
+  const abrirExcluirFixas = () => {
+    setMenuFixasAberto(false);
+    setModoFixas("excluir");
+  };
+
+  const salvarFixas = () => {
+    const atualizadas = rascunhoFixas
+      .filter((item) => String(item.nome ?? "").trim() !== "")
+      .map((item) => ({
+        nome: String(item.nome).trim(),
+        valor: parseValorMoeda(item.valorTexto ?? item.valor),
+      }));
+    setDespesasFixas(atualizadas);
+    salvarDespesasFixasVariaveis(atualizadas, despesasVariaveis);
+    setModoFixas(null);
+  };
+
+  const cancelarFixas = () => {
+    setRascunhoFixas([]);
+    setModoFixas(null);
+  };
+
+  const removerItemFixo = (index) => {
+    const atualizadas = despesasFixas.filter((_, idx) => idx !== index);
+    setDespesasFixas(atualizadas);
+    salvarDespesasFixasVariaveis(atualizadas, despesasVariaveis);
+  };
+
+  // Ações do menu de Despesas Variáveis
+  const abrirAdicionarVariavel = () => {
+    setMenuVariaveisAberto(false);
+    const base = despesasVariaveis.map((item) => ({
+      ...item,
+      valorTexto: Number(item.valor).toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+    }));
+    setRascunhoVariaveis([...base, { nome: "", valor: 0, valorTexto: "0,00" }]);
+    setModoVariaveis("editar");
+  };
+
+  const abrirEditarVariaveis = () => {
+    setMenuVariaveisAberto(false);
+    setRascunhoVariaveis(
+      despesasVariaveis.map((item) => ({
+        ...item,
+        valorTexto: Number(item.valor).toLocaleString("pt-BR", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        }),
+      }))
+    );
+    setModoVariaveis("editar");
+  };
+
+  const abrirExcluirVariaveis = () => {
+    setMenuVariaveisAberto(false);
+    setModoVariaveis("excluir");
+  };
+
+  const salvarVariaveis = () => {
+    const atualizadas = rascunhoVariaveis
+      .filter((item) => String(item.nome ?? "").trim() !== "")
+      .map((item) => ({
+        nome: String(item.nome).trim(),
+        valor: parseValorMoeda(item.valorTexto ?? item.valor),
+      }));
+    setDespesasVariaveis(atualizadas);
+    salvarDespesasFixasVariaveis(despesasFixas, atualizadas);
+    setModoVariaveis(null);
+  };
+
+  const cancelarVariaveis = () => {
+    setRascunhoVariaveis([]);
+    setModoVariaveis(null);
+  };
+
+  const removerItemVariavel = (index) => {
+    const atualizadas = despesasVariaveis.filter((_, idx) => idx !== index);
+    setDespesasVariaveis(atualizadas);
+    salvarDespesasFixasVariaveis(despesasFixas, atualizadas);
+  };
 
   const carregarTransacoes = async () => {
     try {
@@ -227,13 +632,16 @@ function FluxoCaixa() {
 
   const handleSalvarSaida = async (e) => {
     e.preventDefault();
-    const valorNumerico = Number(String(formSaida.amount).replace(/\./g, "").replace(",", "."));
+    const valorNumerico = parseValorMoeda(formSaida.amount);
 
     const payload = {
       description: formSaida.description,
       amount: valorNumerico,
       type: "EXPENSE",
       category: formSaida.category,
+      categoriaVisual: formSaida.categoriaVisual || "Insumos",
+      detalhes: formSaida.detalhes,
+      observacoes: formSaida.observacoes,
       date: formSaida.date,
     };
 
@@ -258,13 +666,16 @@ function FluxoCaixa() {
 
   const handleSalvarEntrada = async (e) => {
     e.preventDefault();
-    const valorNumerico = Number(String(formEntrada.amount).replace(/\./g, "").replace(",", "."));
+    const valorNumerico = parseValorMoeda(formEntrada.amount);
 
     const payload = {
       description: formEntrada.description,
       amount: valorNumerico,
       type: "INCOME",
       category: null,
+      categoriaVisual: formEntrada.categoriaVisual || "Venda de produto",
+      detalhes: formEntrada.detalhes,
+      observacoes: formEntrada.observacoes,
       date: formEntrada.date,
     };
 
@@ -286,13 +697,82 @@ function FluxoCaixa() {
     }
   };
 
+  const handleSalvarEdicaoEntrada = async () => {
+    if (!entradaSelecionada) return;
+    const valorNumerico = parseValorMoeda(entradaSelecionada.valor);
+    const dataIso = formatarDataParaIso(entradaSelecionada.data);
+
+    const payload = {
+      description: entradaSelecionada.titulo,
+      amount: valorNumerico,
+      type: "INCOME",
+      category: null,
+      categoriaVisual: entradaSelecionada.categoria,
+      detalhes: entradaSelecionada.itens,
+      observacoes: entradaSelecionada.observacoes,
+      date: dataIso,
+    };
+
+    if (entradaSelecionada.id) {
+      await atualizarTransacao(entradaSelecionada.id, payload);
+      await carregarTransacoes();
+    } else {
+      const nova = { ...payload, id: Date.now() };
+      const atuais = lerLocal();
+      salvarLocal([nova, ...atuais]);
+      if (entradaSelecionada.baseKey) {
+        setItensBaseRemovidos((prev) => [...prev, entradaSelecionada.baseKey]);
+      }
+      await carregarTransacoes();
+      setEntradaSelecionada((prev) => ({ ...prev, id: nova.id, baseKey: null }));
+    }
+
+    setEditandoDetalhes(false);
+  };
+
+  const handleSalvarEdicaoSaida = async () => {
+    if (!saidaSelecionada) return;
+    const valorNumerico = parseValorMoeda(saidaSelecionada.valor);
+    const dataIso = formatarDataParaIso(saidaSelecionada.data);
+    const categoriaEnum =
+      String(saidaSelecionada.tipoDespesa).toLowerCase().includes("fix") ? "FIXED" : "VARIABLE";
+
+    const payload = {
+      description: saidaSelecionada.titulo,
+      amount: valorNumerico,
+      type: "EXPENSE",
+      category: categoriaEnum,
+      categoriaVisual: saidaSelecionada.categoria,
+      detalhes: saidaSelecionada.descricao,
+      observacoes: saidaSelecionada.observacoes,
+      date: dataIso,
+    };
+
+    if (saidaSelecionada.id) {
+      await atualizarTransacao(saidaSelecionada.id, payload);
+      await carregarTransacoes();
+    } else {
+      const nova = { ...payload, id: Date.now() };
+      const atuais = lerLocal();
+      salvarLocal([nova, ...atuais]);
+      if (saidaSelecionada.baseKey) {
+        setItensBaseRemovidos((prev) => [...prev, saidaSelecionada.baseKey]);
+      }
+      await carregarTransacoes();
+      setSaidaSelecionada((prev) => ({ ...prev, id: nova.id, baseKey: null }));
+    }
+
+    setEditandoDetalhesSaida(false);
+  };
+
   const handleExcluirTransacao = async (alvo) => {
     if (!alvo) return;
-    const { id, rotaFallback } = alvo;
+    const { id, baseKey, rotaFallback } = alvo;
 
     if (id) {
       try {
         await excluirTransacao(id);
+        setTransacoesApi((prev) => prev.filter((item) => String(item.id) !== String(id)));
         await carregarTransacoes();
         setConfirmacaoExclusao(null);
         setModalDetalhesEntradaAberto(false);
@@ -304,10 +784,20 @@ function FluxoCaixa() {
       }
     }
 
+    if (baseKey) {
+      setItensBaseRemovidos((prev) => [...prev, baseKey]);
+      setConfirmacaoExclusao(null);
+      setModalDetalhesEntradaAberto(false);
+      setModalDetalhesSaidaAberto(false);
+      return;
+    }
+
     setConfirmacaoExclusao(null);
     setModalDetalhesEntradaAberto(false);
     setModalDetalhesSaidaAberto(false);
-    navigate(rotaFallback);
+    if (rotaFallback) {
+      navigate(rotaFallback);
+    }
   };
 
   const handleArquivoSaida = (e) => {
@@ -333,11 +823,18 @@ function FluxoCaixa() {
   const abrirDetalhesEntrada = (item) => {
     setEntradaSelecionada({
       id: item.id || null,
+      baseKey: item.baseKey || null,
       titulo: item.descricao || item.titulo,
-      data: item.dataCompleta || item.data || "03/05/2026",
-      categoria: item.categoria || "Venda de produto",
-      valor: String(item.valor || "0,00").replace("R$ ", ""),
-      itens: item.itens || "15 Torta de Limão 22cm, 30 Cupcake Red Velvet, 28 Brownie Avelã, 40 Cupcake Morango",
+      data: formatarDataParaIso(item.dataCompleta || item.data || new Date().toISOString().slice(0, 10)),
+      categoria: item.categoria || item.categoriaVisual || "Venda de produto",
+      valor: Number(item.valorNumerico ?? parseValorMoeda(item.valor)).toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+      itens:
+        item.itens ||
+        item.detalhes ||
+        "15 Torta de Limão 22cm, 30 Cupcake Red Velvet, 28 Brownie Avelã, 40 Cupcake Morango",
       observacoes: item.observacoes || "",
     });
     setNomeArquivoDetalhes("");
@@ -348,12 +845,21 @@ function FluxoCaixa() {
   const abrirDetalhesSaida = (item) => {
     setSaidaSelecionada({
       id: item.id || null,
+      baseKey: item.baseKey || null,
       titulo: item.descricao || item.titulo,
-      data: item.dataCompleta || item.data || "03/05/2026",
-      categoria: item.categoria || "Insumos",
-      valor: String(item.valor || "0,00").replace("R$ ", ""),
-      descricao: item.itens || item.descricao || "Compra de matéria-prima para produção",
-      tipoDespesa: item.tipoDespesa || "Variável",
+      data: formatarDataParaIso(item.dataCompleta || item.data || new Date().toISOString().slice(0, 10)),
+      categoria: item.categoria || item.categoriaVisual || "Insumos",
+      valor: Number(item.valorNumerico ?? parseValorMoeda(item.valor)).toLocaleString("pt-BR", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      }),
+      descricao:
+        item.itens ||
+        item.descricao ||
+        item.detalhes ||
+        "Compra de matéria-prima para produção",
+      tipoDespesa:
+        item.tipoDespesa || (item.category === "FIXED" ? "Fixa" : "Variável"),
       observacoes: item.observacoes || "",
     });
     setNomeArquivoDetalhesSaida("");
@@ -363,8 +869,8 @@ function FluxoCaixa() {
 
   const [abertosGrupos, setAbertosGrupos] = useState({
     Hoje: true,
-    Ontem: false,
-    "01/05": true,
+    Ontem: true,
+    "Outras movimentações": true,
   });
 
   const alternarGrupo = (titulo) => {
@@ -373,18 +879,22 @@ function FluxoCaixa() {
 
   const movimentosBase = [
     {
+      baseKey: "base-0",
       tipo: "entrada",
       descricao: "Venda – Padaria São José",
       valor: "R$ 2.760,00",
+      valorNumerico: 2760,
       dataCompleta: "03/05/2026",
       categoria: "Venda de produto",
       itens: "20 Bolo de Cenoura c/ Chocolate, 35 Brigadeiro Gourmet, 15 Torta de Limão",
       observacoes: "Pagamento via PIX na entrega.",
     },
     {
+      baseKey: "base-1",
       tipo: "saida",
       descricao: "Compra – Chocolate Callebaut 10kg",
       valor: "R$ 1.240,00",
+      valorNumerico: 1240,
       dataCompleta: "03/05/2026",
       categoria: "Compra de insumo",
       itens: "Chocolate ao leite Callebaut 10kg (Lote LT-0421)",
@@ -392,9 +902,11 @@ function FluxoCaixa() {
       observacoes: "Fornecedor oficial.",
     },
     {
+      baseKey: "base-2",
       tipo: "saida",
       descricao: "Compra – Farinha de trigo 25kg",
       valor: "R$ 615,00",
+      valorNumerico: 615,
       dataCompleta: "02/05/2026",
       categoria: "Compra de insumo",
       itens: "Saco de Farinha de trigo especial 25kg",
@@ -402,18 +914,22 @@ function FluxoCaixa() {
       observacoes: "",
     },
     {
+      baseKey: "base-3",
       tipo: "entrada",
       descricao: "Venda – Vila Bela Bolos",
       valor: "R$ 1.840,00",
+      valorNumerico: 1840,
       dataCompleta: "02/05/2026",
       categoria: "Encomenda",
       itens: "12 Bolo Red Velvet, 25 Brownie Tradicional",
       observacoes: "",
     },
     {
+      baseKey: "base-4",
       tipo: "saida",
       descricao: "Compra – Chocolate Callebaut 5kg",
       valor: "R$ 625,00",
+      valorNumerico: 625,
       dataCompleta: "01/05/2026",
       categoria: "Compra de insumo",
       itens: "Chocolate meio amargo Callebaut 5kg",
@@ -430,26 +946,68 @@ function FluxoCaixa() {
       ...t,
       reactKey: `api-${t.id ?? `${t.description}-${t.date}-${valorNum}`}`,
       tipo: ehEntrada ? "entrada" : "saida",
-      descricao: t.description || t.descricao,
+      descricao: t.description || t.descricao || "Movimentação",
+      valorNumerico: valorNum,
       valor: valorNum.toLocaleString("pt-BR", { style: "currency", currency: "BRL" }),
-      dataCompleta: t.date || "Hoje",
+      dataCompleta: t.date || new Date().toISOString().slice(0, 10),
+      categoria: t.categoriaVisual || (ehEntrada ? "Venda de produto" : "Insumos"),
+      itens: t.detalhes || t.description || t.descricao || "",
       tipoDespesa: t.category === "FIXED" ? "Fixa" : "Variável",
     };
   });
 
-  const movimentosBaseFormatados = movimentosBase.map((m, i) => ({
-    ...m,
-    reactKey: `base-${i}-${m.descricao}`,
-  }));
+  const movimentosBaseFormatados = movimentosBase
+    .filter((m) => !itensBaseRemovidos.includes(m.baseKey))
+    .map((m) => ({
+      ...m,
+      reactKey: m.baseKey,
+    }));
 
   const movimentos = [...movimentosFormatadosApi, ...movimentosBaseFormatados];
 
-  const baseCalculo = [
-    { type: "INCOME", amount: 52430 },
-    { type: "EXPENSE", amount: 18220 },
-    ...transacoesApi,
-  ];
-  const resumo = calcularFluxoCaixa(baseCalculo);
+  const hoje = new Date();
+  const mesSistema = hoje.getMonth() + 1;
+  const anoSistema = hoje.getFullYear();
+  const hojeIso = hoje.toISOString().slice(0, 10);
+  const ontemDate = new Date(hoje);
+  ontemDate.setDate(hoje.getDate() - 1);
+  const ontemIso = ontemDate.toISOString().slice(0, 10);
+
+  const transacoesConsolidadas = movimentos.map((m) => ({
+    ...m,
+    type: m.tipo === "entrada" ? "INCOME" : "EXPENSE",
+    amount: Number(m.valorNumerico ?? parseValorMoeda(m.valor) ?? 0),
+    date: formatarDataParaIso(m.dataCompleta || m.data || hojeIso),
+  }));
+
+  const transacoesDoMesAtual = filtrarDoMes(transacoesConsolidadas, mesSistema, anoSistema);
+
+  const primeiraDataValida = transacoesConsolidadas
+    .map((t) => extrairDataPartes(t.date))
+    .find((d) => !Number.isNaN(d.ano) && !Number.isNaN(d.mes));
+
+  const mesReferencia =
+    transacoesDoMesAtual.length > 0
+      ? mesSistema
+      : primeiraDataValida?.mes || mesSistema;
+
+  const anoReferencia =
+    transacoesDoMesAtual.length > 0
+      ? anoSistema
+      : primeiraDataValida?.ano || anoSistema;
+
+  const transacoesParaCalculo =
+    transacoesDoMesAtual.length > 0
+      ? transacoesDoMesAtual
+      : filtrarDoMes(transacoesConsolidadas, mesReferencia, anoReferencia);
+
+  const dataRef = new Date(anoReferencia, mesReferencia - 1, 1);
+  const nomeMesRaw = dataRef.toLocaleDateString("pt-BR", { month: "long" });
+  const nomeMes = nomeMesRaw.charAt(0).toUpperCase() + nomeMesRaw.slice(1);
+
+  const resumo = calcularFluxoCaixa(transacoesParaCalculo);
+  const graficos = montarDadosGraficos(transacoesParaCalculo, mesReferencia, anoReferencia);
+
   const margemLucro =
     resumo.totalEntradas > 0
       ? ((resumo.saldoFinal / resumo.totalEntradas) * 100).toFixed(1).replace(".", ",")
@@ -458,125 +1016,113 @@ function FluxoCaixa() {
   const formatarMoeda = (num) =>
     Number(num).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
 
-  const maioresDespesas = [
-    { nome: "Folha de salários", valor: "R$ 4.500" },
-    { nome: "Matéria-prima", valor: "R$ 3.120" },
-    { nome: "Energia elétrica", valor: "R$ 1.950" },
-    { nome: "Embalagens personalizadas", valor: "R$ 1.250" },
-    { nome: "Manutenção de equipamentos", valor: "R$ 850" },
-  ];
+  // Totais e percentuais dinâmicos de Despesas fixas x despesas variáveis
+  const listaFixasAtiva =
+    modoFixas === "editar"
+      ? rascunhoFixas.map((item) => ({
+          nome: item.nome,
+          valor: parseValorMoeda(item.valorTexto ?? item.valor),
+        }))
+      : despesasFixas;
 
-  const despesasFixas = [
-    ["Aluguel", "R$ 3.500,00"],
-    ["Salários", "R$ 5.000,00"],
-    ["Internet", "R$ 200,00"],
-    ["Sistema/assinaturas", "R$ 300,00"],
-    ["Energia base", "R$ 800,00"],
-    ["Manutenção", "R$ 300,00"],
-  ];
+  const listaVariaveisAtiva =
+    modoVariaveis === "editar"
+      ? rascunhoVariaveis.map((item) => ({
+          nome: item.nome,
+          valor: parseValorMoeda(item.valorTexto ?? item.valor),
+        }))
+      : despesasVariaveis;
 
-  const despesasVariaveis = [
-    ["Matéria-prima", "R$ 3.500,00"],
-    ["Embalagens", "R$ 5.000,00"],
-    ["Fretes", "R$ 200,00"],
-    ["Taxas de entrega", "R$ 300,00"],
-    ["Horas extras", "R$ 800,00"],
-    ["Produção extra", "R$ 300,00"],
-  ];
+  const totalFixas = listaFixasAtiva.reduce((acc, item) => acc + (Number(item.valor) || 0), 0);
+  const totalVariaveis = listaVariaveisAtiva.reduce((acc, item) => acc + (Number(item.valor) || 0), 0);
+  const totalDespesasFixasVariaveis = totalFixas + totalVariaveis;
+
+  const percFixasNumero =
+    totalDespesasFixasVariaveis > 0 ? (totalFixas / totalDespesasFixasVariaveis) * 100 : 0;
+  const percVariaveisNumero =
+    totalDespesasFixasVariaveis > 0 ? (totalVariaveis / totalDespesasFixasVariaveis) * 100 : 0;
+
+  const percFixasTexto = percFixasNumero.toFixed(1).replace(".", ",");
+  const percVariaveisTexto = percVariaveisNumero.toFixed(1).replace(".", ",");
+
+  // Conexão dinâmica de Maiores despesas com Despesas fixas e variáveis
+  const despesasCompletas = [
+    ...listaFixasAtiva.map((item) => ({
+      nome: item.nome,
+      detalhe: "Despesa fixa",
+      valorNumero: Number(item.valor) || 0,
+      valor: formatarMoeda(item.valor),
+    })),
+    ...listaVariaveisAtiva.map((item) => ({
+      nome: item.nome,
+      detalhe: "Despesa variável",
+      valorNumero: Number(item.valor) || 0,
+      valor: formatarMoeda(item.valor),
+    })),
+  ]
+    .filter((item) => item.nome.trim() !== "")
+    .sort((a, b) => b.valorNumero - a.valorNumero);
+
+  const maioresDespesas = despesasCompletas.slice(0, 5);
+
+  const atualizarPosicaoTooltip = (e, dados) => {
+    setTooltipGrafico({
+      x: e.clientX,
+      y: e.clientY,
+      ...dados,
+    });
+  };
+
+  const esconderTooltip = () => {
+    setTooltipGrafico(null);
+  };
+
+  const mapearItemModal = (item) => ({
+    id: item.id,
+    baseKey: item.baseKey || null,
+    tipo: item.tipo,
+    titulo: item.descricao,
+    data: formatarDataParaBr(item.dataCompleta).slice(0, 5) || "Hoje",
+    dataCompleta: item.dataCompleta,
+    itens: item.itens || item.descricao,
+    categoria: item.categoria,
+    tipoDespesa: item.tipoDespesa,
+    observacoes: item.observacoes || "",
+    valorNumerico: item.valorNumerico,
+    valor: Number(item.valorNumerico).toLocaleString("pt-BR", {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2,
+    }),
+  });
+
+  const itensHoje = movimentos
+    .filter((item) => formatarDataParaIso(item.dataCompleta) === hojeIso)
+    .map(mapearItemModal);
+
+  const itensOntem = movimentos
+    .filter((item) => formatarDataParaIso(item.dataCompleta) === ontemIso)
+    .map(mapearItemModal);
+
+  const itensOutrasDatas = movimentos
+    .filter((item) => {
+      const iso = formatarDataParaIso(item.dataCompleta);
+      return iso !== hojeIso && iso !== ontemIso;
+    })
+    .map(mapearItemModal);
 
   const gruposMovimentacoesCompleto = [
     {
       titulo: "Hoje",
-      itens: [
-        {
-          tipo: "entrada",
-          titulo: "Venda — Padaria Estrella",
-          data: "03/05",
-          dataCompleta: "03/05/2026",
-          itens: "15 Torta de Limão 22cm, 30 Cupcake Red Velvet, 28 Brownie Avelã, 40 Cupcake Morango",
-          categoria: "Outros",
-          valor: "R$ 2.700,00",
-        },
-        {
-          tipo: "entrada",
-          titulo: "Venda — Sonda Supermercado",
-          data: "03/05",
-          dataCompleta: "03/05/2026",
-          itens: "15 Bolo Formigueiro, 15 Bolo Chocolate Branco, 15 Bolo Sensação, 15 Bolo Meio Amargo, 15 Ninho",
-          categoria: "Venda de produto",
-          valor: "R$ 745,00",
-        },
-        {
-          tipo: "saida",
-          titulo: "Compra — Serviço encanador",
-          data: "03/05",
-          dataCompleta: "03/05/2026",
-          itens: "Conserto sanitário masculino",
-          categoria: "Conserto/manutenção",
-          tipoDespesa: "Variável",
-          observacoes: "do seu Zé (o melhor)",
-          valor: "R$ 1.200,00",
-        },
-      ],
+      itens: itensHoje,
     },
     {
       titulo: "Ontem",
-      itens: [],
+      itens: itensOntem,
     },
     {
-      titulo: "01/05",
-      itens: [
-        {
-          tipo: "saida",
-          titulo: "Compra — Embalagens Personalizadas",
-          data: "01/05",
-          dataCompleta: "01/05/2026",
-          itens: "Embalagens Personalizadas",
-          categoria: "Compra de insumo",
-          tipoDespesa: "Variável",
-          valor: "R$ 2.080,00",
-        },
-        {
-          tipo: "entrada",
-          titulo: "Venda — Tia Bete Doces",
-          data: "01/05",
-          dataCompleta: "01/05/2026",
-          itens: "16 Mousse Maracujá, 10 Pizza Brownie, 10 Copo Felicidade Surpresa de Uva, 15 Vulcão Chocolate",
-          categoria: "Venda de produto",
-          valor: "R$ 922,00",
-        },
-        {
-          tipo: "saida",
-          titulo: "Compra — Farinha de Trigo 30kg",
-          data: "01/05",
-          dataCompleta: "01/05/2026",
-          itens: "Farinha de trigo 30kg",
-          categoria: "Compra de insumo",
-          tipoDespesa: "Variável",
-          valor: "R$ 1.052,00",
-        },
-        {
-          tipo: "entrada",
-          titulo: "Venda — Doceria Super Magic",
-          data: "01/05",
-          dataCompleta: "01/05/2026",
-          itens: "Pedido personalizado",
-          categoria: "Venda de produto",
-          valor: "R$ 2.700,00",
-        },
-      ],
+      titulo: "Outras movimentações",
+      itens: itensOutrasDatas,
     },
-  ];
-
-  const despesasCompletas = [
-    { nome: "Folha salarial", detalhe: "Pagamento de funcionário", valor: "R$ 8.400" },
-    { nome: "Farinha e açúcar (lote mensal)", detalhe: "Compra de insumo", valor: "R$ 3.120" },
-    { nome: "Energia elétrica industrial", detalhe: "Contas", valor: "R$ 1.950" },
-    { nome: "Embalagens personalizadas", detalhe: "Compra de insumo", valor: "R$ 2.760" },
-    { nome: "Manutenção de equipamentos industriais", detalhe: "Conserto/manutenção", valor: "R$ 4.300" },
-    { nome: "Gás industrial", detalhe: "Contas", valor: "R$ 2.650" },
-    { nome: "Fretes e entregas", detalhe: "Fretes/entregas", valor: "R$ 2.100" },
-    { nome: "Ingredientes complementares e especiais", detalhe: "Compra de insumo", valor: "R$ 1.780" },
   ];
 
   const voltar = () => {
@@ -615,7 +1161,7 @@ function FluxoCaixa() {
             </div>
 
             <p className="subtituloFluxoCaixa">
-              Entradas, saídas e saldo consolidado de setembro/2026.
+              Entradas, saídas e saldo consolidado de {nomeMes}/{anoReferencia}.
             </p>
           </div>
 
@@ -690,49 +1236,70 @@ function FluxoCaixa() {
 
             <div className="graficoBarras">
               <div className="eixoY">
-                <span>60k</span><span>40k</span><span>20k</span><span>0</span>
+                {graficos.eixoBarras.ticks.map((valor) => (
+                  <span key={valor}>{formatarEixo(valor)}</span>
+                ))}
               </div>
+
               <div className="areaBarras">
                 <div className="linhaGrafico linha60"></div>
                 <div className="linhaGrafico linha40"></div>
                 <div className="linhaGrafico linha20"></div>
                 <div className="linhaGrafico linha0"></div>
 
-                <div className="grupoBarras">
-                  <div className="parBarras">
-                    <div className="barra entrada" style={{ height: "68%" }}></div>
-                    <div className="barra saida" style={{ height: "46%" }}></div>
+                {graficos.barras.map((b) => (
+                  <div
+                    className="grupoBarras"
+                    key={b.rotulo}
+                    onMouseEnter={(e) =>
+                      atualizarPosicaoTooltip(e, {
+                        titulo: `Período ${b.rotulo}`,
+                        itens: [
+                          {
+                            cor: "entrada",
+                            rotulo: "Entradas",
+                            valor: formatarMoeda(b.entradas),
+                          },
+                          {
+                            cor: "saida",
+                            rotulo: "Saídas",
+                            valor: formatarMoeda(b.saidas),
+                          },
+                        ],
+                      })
+                    }
+                    onMouseMove={(e) =>
+                      atualizarPosicaoTooltip(e, {
+                        titulo: `Período ${b.rotulo}`,
+                        itens: [
+                          {
+                            cor: "entrada",
+                            rotulo: "Entradas",
+                            valor: formatarMoeda(b.entradas),
+                          },
+                          {
+                            cor: "saida",
+                            rotulo: "Saídas",
+                            valor: formatarMoeda(b.saidas),
+                          },
+                        ],
+                      })
+                    }
+                    onMouseLeave={esconderTooltip}
+                  >
+                    <div className="parBarras">
+                      <div
+                        className="barra entrada"
+                        style={{ height: `${b.alturaEntrada}%` }}
+                      ></div>
+                      <div
+                        className="barra saida"
+                        style={{ height: `${b.alturaSaida}%` }}
+                      ></div>
+                    </div>
+                    <span>{b.rotulo}</span>
                   </div>
-                  <span>07/09</span>
-                </div>
-                <div className="grupoBarras">
-                  <div className="parBarras">
-                    <div className="barra entrada" style={{ height: "76%" }}></div>
-                    <div className="barra saida" style={{ height: "43%" }}></div>
-                  </div>
-                  <span>08/09</span>
-                </div>
-                <div className="grupoBarras">
-                  <div className="parBarras">
-                    <div className="barra entrada" style={{ height: "64%" }}></div>
-                    <div className="barra saida" style={{ height: "39%" }}></div>
-                  </div>
-                  <span>15/09</span>
-                </div>
-                <div className="grupoBarras">
-                  <div className="parBarras">
-                    <div className="barra entrada" style={{ height: "70%" }}></div>
-                    <div className="barra saida" style={{ height: "44%" }}></div>
-                  </div>
-                  <span>22/09</span>
-                </div>
-                <div className="grupoBarras">
-                  <div className="parBarras">
-                    <div className="barra entrada" style={{ height: "82%" }}></div>
-                    <div className="barra saida" style={{ height: "45%" }}></div>
-                  </div>
-                  <span>29/09</span>
-                </div>
+                ))}
               </div>
             </div>
           </section>
@@ -743,35 +1310,90 @@ function FluxoCaixa() {
               <h2>Evolução do saldo</h2>
             </div>
             <div className="graficoLinha">
-              <div className="linhasLinha">
-                <span></span><span></span><span></span><span></span>
-              </div>
-
               <div className="eixoLinhaY">
-                <span>32k</span><span>24k</span><span>16k</span><span>8k</span><span>0</span>
+                {graficos.eixoLinha.ticks.map((valor) => (
+                  <span key={valor}>{formatarEixo(valor)}</span>
+                ))}
               </div>
 
-              <svg className="svgLinha" viewBox="0 0 1000 250" preserveAspectRatio="none">
-                <polyline
-                  points="20,205 190,180 360,185 530,145 700,125 850,88 980,52"
-                  fill="none"
-                  stroke="#9d0926"
-                  strokeWidth="3"
-                />
-                <circle cx="20" cy="205" r="5" />
-                <circle cx="190" cy="180" r="5" />
-                <circle cx="360" cy="185" r="5" />
-                <circle cx="530" cy="145" r="5" />
-                <circle cx="700" cy="125" r="5" />
-                <circle cx="850" cy="88" r="5" />
-                <circle cx="980" cy="52" r="5" />
-              </svg>
+              <div className="campoLinhaGrafico">
+                <div className="linhasLinha">
+                  <span></span><span></span><span></span><span></span><span></span>
+                </div>
 
-              <div className="datasLinha">
-                <span>01/09</span><span>05</span><span>10</span><span>15</span><span>20</span><span>25</span><span>30</span>
+                <svg className="svgLinha" viewBox="0 0 1000 250" preserveAspectRatio="none">
+                  <polyline
+                    points={graficos.pontosLinha.map((p) => `${p.x},${p.y}`).join(" ")}
+                    fill="none"
+                    stroke="#9d0926"
+                    strokeWidth="3"
+                  />
+                  {graficos.pontosLinha.map((p) => (
+                    <circle
+                      key={p.x}
+                      cx={p.x}
+                      cy={p.y}
+                      r="5"
+                      onMouseEnter={(e) =>
+                        atualizarPosicaoTooltip(e, {
+                          titulo: p.diaLabel,
+                          itens: [
+                            {
+                              cor: p.saldo >= 0 ? "entrada" : "saida",
+                              rotulo: "Saldo acumulado",
+                              valor: formatarMoeda(p.saldo),
+                            },
+                          ],
+                        })
+                      }
+                      onMouseMove={(e) =>
+                        atualizarPosicaoTooltip(e, {
+                          titulo: p.diaLabel,
+                          itens: [
+                            {
+                              cor: p.saldo >= 0 ? "entrada" : "saida",
+                              rotulo: "Saldo acumulado",
+                              valor: formatarMoeda(p.saldo),
+                            },
+                          ],
+                        })
+                      }
+                      onMouseLeave={esconderTooltip}
+                    />
+                  ))}
+                </svg>
+
+                <div className="datasLinha">
+                  {graficos.rotulosLinha.map((rotulo, i) => (
+                    <span key={i}>{rotulo}</span>
+                  ))}
+                </div>
               </div>
             </div>
           </section>
+
+          {/* TOOLTIP FLUTUANTE */}
+          {tooltipGrafico && (
+            <div
+              className="tooltipGrafico"
+              style={{ left: `${tooltipGrafico.x}px`, top: `${tooltipGrafico.y}px` }}
+            >
+              <div className="tooltipGraficoTitulo">{tooltipGrafico.titulo}</div>
+              {tooltipGrafico.itens.map((item, idx) => (
+                <div className="tooltipGraficoLinha" key={idx}>
+                  <span>
+                    <i
+                      className={
+                        item.cor === "entrada" ? "tooltipPontoEntrada" : "tooltipPontoSaida"
+                      }
+                    />
+                    {item.rotulo}
+                  </span>
+                  <strong>{item.valor}</strong>
+                </div>
+              ))}
+            </div>
+          )}
 
           {/* DUAS COLUNAS */}
           <section className="duasColunasFluxo">
@@ -827,7 +1449,7 @@ function FluxoCaixa() {
 
               <div className="listaMovimentacoes">
                 {maioresDespesas.map((d, i) => (
-                  <div className="movimentacao" key={i}>
+                  <div className="movimentacao" key={`${d.nome}-${i}`}>
                     <div className="infoMovimentacao">
                       <span className="iconeDespesa">-</span>
                       <strong>{d.nome}</strong>
@@ -865,43 +1487,276 @@ function FluxoCaixa() {
             </div>
             <div className="conteudoDespesas">
               <div className="areaPizza">
-                <div className="pizza">
+                <div
+                  className="pizza"
+                  style={{
+                    background: `conic-gradient(#8e1027 0% ${percFixasNumero}%, #f4b6c2 ${percFixasNumero}% 100%)`,
+                  }}
+                >
                   <div className="centroPizza">
-                    <strong>R$ 20.500,00</strong>
+                    <strong>{formatarMoeda(totalDespesasFixasVariaveis)}</strong>
                     <span>Total de despesas</span>
                   </div>
                 </div>
                 <div className="legendaPizza">
-                  <div><i className="pontoFixo"></i>Despesas fixas (58,5%)</div>
-                  <div><i className="pontoVariavel"></i>Despesas variáveis (41,5%)</div>
+                  <div>
+                    <i className="pontoFixo"></i>Despesas fixas ({percFixasTexto}%)
+                  </div>
+                  <div>
+                    <i className="pontoVariavel"></i>Despesas variáveis ({percVariaveisTexto}%)
+                  </div>
                 </div>
               </div>
 
+              {/* TABELA DESPESAS FIXAS */}
               <div className="tabelaDespesa">
-                <h3>Despesas fixas</h3>
-                {despesasFixas.map((item, i) => (
-                  <div className="linhaDespesa" key={i}>
-                    <span>{item[0]}</span>
-                    <strong>{item[1]}</strong>
-                  </div>
-                ))}
+                <div className="cabecalhoTabelaDespesa">
+                  <h3>Despesas fixas</h3>
+
+                  {modoFixas === "editar" ? (
+                    <div className="acoesEditarDespesaDiscreto">
+                      <button
+                        type="button"
+                        className="botaoSalvarDespesaDiscreto"
+                        onClick={salvarFixas}
+                      >
+                        Salvar
+                      </button>
+                      <button
+                        type="button"
+                        className="botaoCancelarDespesaDiscreto"
+                        onClick={cancelarFixas}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  ) : modoFixas === "excluir" ? (
+                    <button
+                      type="button"
+                      className="botaoSalvarDespesaDiscreto"
+                      onClick={() => setModoFixas(null)}
+                    >
+                      Concluir
+                    </button>
+                  ) : (
+                    <div className="menuDespesaWrapper">
+                      <button
+                        type="button"
+                        className={`botaoTresPontinhosDespesa ${menuFixasAberto ? "aberto" : ""}`}
+                        aria-label={menuFixasAberto ? "Fechar opções" : "Opções de despesas fixas"}
+                        onClick={() => {
+                          setMenuFixasAberto((prev) => !prev);
+                          setMenuVariaveisAberto(false);
+                        }}
+                      >
+                        {menuFixasAberto ? <IconeFecharX /> : <IconeTresPontinhos />}
+                      </button>
+
+                      {menuFixasAberto && (
+                        <div className="dropdownDespesaOpcoes">
+                          <button type="button" onClick={abrirAdicionarFixa}>
+                            + Adicionar
+                          </button>
+                          <button type="button" onClick={abrirEditarFixas}>
+                            Editar
+                          </button>
+                          <button
+                            type="button"
+                            className="opcaoExcluirDespesa"
+                            onClick={abrirExcluirFixas}
+                          >
+                            Excluir
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {(modoFixas === "editar" ? rascunhoFixas : despesasFixas).map((item, i) =>
+                  modoFixas === "editar" ? (
+                    <div className="linhaDespesaEditavel" key={`fixa-edit-${i}`}>
+                      <div className="camposLinhaDespesaEditavel">
+                        <input
+                          type="text"
+                          className="inputNomeDespesaInline"
+                          placeholder="Nome da despesa"
+                          value={item.nome}
+                          onChange={(e) => {
+                            const novoNome = e.target.value;
+                            setRascunhoFixas((prev) =>
+                              prev.map((linha, idx) =>
+                                idx === i ? { ...linha, nome: novoNome } : linha
+                              )
+                            );
+                          }}
+                        />
+                        <input
+                          type="text"
+                          className="inputValorDespesaInline"
+                          placeholder="0,00"
+                          value={item.valorTexto}
+                          onChange={(e) => {
+                            const novoTexto = e.target.value;
+                            setRascunhoFixas((prev) =>
+                              prev.map((linha, idx) =>
+                                idx === i ? { ...linha, valorTexto: novoTexto } : linha
+                              )
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="linhaDespesa" key={`${item.nome}-${i}`}>
+                      <span>{item.nome}</span>
+                      <div className="ladoDireitoLinhaDespesa">
+                        <strong>{formatarMoeda(item.valor)}</strong>
+                        {modoFixas === "excluir" && (
+                          <button
+                            type="button"
+                            className="botaoRemoverDespesaLinha"
+                            title="Excluir item"
+                            aria-label={`Excluir ${item.nome}`}
+                            onClick={() => removerItemFixo(i)}
+                          >
+                            &times;
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )
+                )}
+
                 <div className="totalDespesa">
                   <span>Total fixas</span>
-                  <strong>R$ 12.000,00</strong>
+                  <strong>{formatarMoeda(totalFixas)}</strong>
                 </div>
               </div>
 
+              {/* TABELA DESPESAS VARIÁVEIS */}
               <div className="tabelaDespesa">
-                <h3>Despesas variáveis</h3>
-                {despesasVariaveis.map((item, i) => (
-                  <div className="linhaDespesa" key={i}>
-                    <span>{item[0]}</span>
-                    <strong>{item[1]}</strong>
-                  </div>
-                ))}
+                <div className="cabecalhoTabelaDespesa">
+                  <h3>Despesas variáveis</h3>
+
+                  {modoVariaveis === "editar" ? (
+                    <div className="acoesEditarDespesaDiscreto">
+                      <button
+                        type="button"
+                        className="botaoSalvarDespesaDiscreto"
+                        onClick={salvarVariaveis}
+                      >
+                        Salvar
+                      </button>
+                      <button
+                        type="button"
+                        className="botaoCancelarDespesaDiscreto"
+                        onClick={cancelarVariaveis}
+                      >
+                        Cancelar
+                      </button>
+                    </div>
+                  ) : modoVariaveis === "excluir" ? (
+                    <button
+                      type="button"
+                      className="botaoSalvarDespesaDiscreto"
+                      onClick={() => setModoVariaveis(null)}
+                    >
+                      Concluir
+                    </button>
+                  ) : (
+                    <div className="menuDespesaWrapper">
+                      <button
+                        type="button"
+                        className={`botaoTresPontinhosDespesa ${menuVariaveisAberto ? "aberto" : ""}`}
+                        aria-label={menuVariaveisAberto ? "Fechar opções" : "Opções de despesas variáveis"}
+                        onClick={() => {
+                          setMenuVariaveisAberto((prev) => !prev);
+                          setMenuFixasAberto(false);
+                        }}
+                      >
+                        {menuVariaveisAberto ? <IconeFecharX /> : <IconeTresPontinhos />}
+                      </button>
+
+                      {menuVariaveisAberto && (
+                        <div className="dropdownDespesaOpcoes">
+                          <button type="button" onClick={abrirAdicionarVariavel}>
+                            + Adicionar
+                          </button>
+                          <button type="button" onClick={abrirEditarVariaveis}>
+                            Editar
+                          </button>
+                          <button
+                            type="button"
+                            className="opcaoExcluirDespesa"
+                            onClick={abrirExcluirVariaveis}
+                          >
+                            Excluir
+                          </button>
+                        </div>
+                      )}
+                    </div>
+                  )}
+                </div>
+
+                {(modoVariaveis === "editar" ? rascunhoVariaveis : despesasVariaveis).map((item, i) =>
+                  modoVariaveis === "editar" ? (
+                    <div className="linhaDespesaEditavel" key={`var-edit-${i}`}>
+                      <div className="camposLinhaDespesaEditavel">
+                        <input
+                          type="text"
+                          className="inputNomeDespesaInline"
+                          placeholder="Nome da despesa"
+                          value={item.nome}
+                          onChange={(e) => {
+                            const novoNome = e.target.value;
+                            setRascunhoVariaveis((prev) =>
+                              prev.map((linha, idx) =>
+                                idx === i ? { ...linha, nome: novoNome } : linha
+                              )
+                            );
+                          }}
+                        />
+                        <input
+                          type="text"
+                          className="inputValorDespesaInline"
+                          placeholder="0,00"
+                          value={item.valorTexto}
+                          onChange={(e) => {
+                            const novoTexto = e.target.value;
+                            setRascunhoVariaveis((prev) =>
+                              prev.map((linha, idx) =>
+                                idx === i ? { ...linha, valorTexto: novoTexto } : linha
+                              )
+                            );
+                          }}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="linhaDespesa" key={`${item.nome}-${i}`}>
+                      <span>{item.nome}</span>
+                      <div className="ladoDireitoLinhaDespesa">
+                        <strong>{formatarMoeda(item.valor)}</strong>
+                        {modoVariaveis === "excluir" && (
+                          <button
+                            type="button"
+                            className="botaoRemoverDespesaLinha"
+                            title="Excluir item"
+                            aria-label={`Excluir ${item.nome}`}
+                            onClick={() => removerItemVariavel(i)}
+                          >
+                            &times;
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  )
+                )}
+
                 <div className="totalDespesa">
                   <span>Total variáveis</span>
-                  <strong>R$ 8.500,00</strong>
+                  <strong>{formatarMoeda(totalVariaveis)}</strong>
                 </div>
               </div>
             </div>
@@ -947,7 +1802,7 @@ function FluxoCaixa() {
                         <path d="M8 3v4M16 3v4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
                       </svg>
                       <input
-                        type="text"
+                        type="date"
                         value={entradaSelecionada.data}
                         readOnly={!editandoDetalhes}
                         onChange={(e) =>
@@ -1038,9 +1893,9 @@ function FluxoCaixa() {
                       setConfirmacaoExclusao({
                         tipo: "entrada",
                         id: entradaSelecionada.id,
+                        baseKey: entradaSelecionada.baseKey,
                         titulo: entradaSelecionada.titulo,
                         valor: entradaSelecionada.valor,
-                        rotaFallback: "/fluxocaixaexcluir2",
                       })
                     }
                   >
@@ -1049,7 +1904,13 @@ function FluxoCaixa() {
                   <button
                     type="button"
                     className="botaoEditar"
-                    onClick={() => setEditandoDetalhes(!editandoDetalhes)}
+                    onClick={() => {
+                      if (editandoDetalhes) {
+                        handleSalvarEdicaoEntrada();
+                      } else {
+                        setEditandoDetalhes(true);
+                      }
+                    }}
                   >
                     {editandoDetalhes ? "Salvar" : "Editar"}
                   </button>
@@ -1105,7 +1966,7 @@ function FluxoCaixa() {
                         <path d="M8 3v4M16 3v4" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
                       </svg>
                       <input
-                        type="text"
+                        type="date"
                         value={saidaSelecionada.data}
                         readOnly={!editandoDetalhesSaida}
                         onChange={(e) =>
@@ -1210,9 +2071,9 @@ function FluxoCaixa() {
                       setConfirmacaoExclusao({
                         tipo: "saida",
                         id: saidaSelecionada.id,
+                        baseKey: saidaSelecionada.baseKey,
                         titulo: saidaSelecionada.titulo,
                         valor: saidaSelecionada.valor,
-                        rotaFallback: "/fluxocaixaexcluir1",
                       })
                     }
                   >
@@ -1221,7 +2082,13 @@ function FluxoCaixa() {
                   <button
                     type="button"
                     className="botaoEditar"
-                    onClick={() => setEditandoDetalhesSaida(!editandoDetalhesSaida)}
+                    onClick={() => {
+                      if (editandoDetalhesSaida) {
+                        handleSalvarEdicaoSaida();
+                      } else {
+                        setEditandoDetalhesSaida(true);
+                      }
+                    }}
                   >
                     {editandoDetalhesSaida ? "Salvar" : "Editar"}
                   </button>
@@ -1271,52 +2138,58 @@ function FluxoCaixa() {
                         <IconeChevron />
                       </button>
 
-                      {aberto && grupo.itens.length > 0 && (
+                      {aberto && (
                         <div className="itensGrupo">
-                          {grupo.itens.map((item, i) => (
-                            <div
-                              className="movimentacao"
-                              key={i}
-                              style={{ cursor: "pointer" }}
-                              onClick={() => {
-                                setModalMovimentacoesAberto(false);
-                                if (item.tipo === "entrada") {
-                                  abrirDetalhesEntrada(item);
-                                } else {
-                                  abrirDetalhesSaida(item);
-                                }
-                              }}
-                            >
-                              <div className="infoMovimentacaoCompleta">
-                                <span
-                                  className={`iconeMovimentacaoCompleta ${
-                                    item.tipo === "entrada" ? "iconeEntrada" : "iconeSaida"
-                                  }`}
-                                >
-                                  <IconeSeta tipo={item.tipo} />
-                                </span>
+                          {grupo.itens.length === 0 ? (
+                            <p style={{ padding: "12px 16px", color: "#7A6E6C", fontSize: "13px" }}>
+                              Nenhuma movimentação registrada neste período.
+                            </p>
+                          ) : (
+                            grupo.itens.map((item, i) => (
+                              <div
+                                className="movimentacao"
+                                key={item.id || item.baseKey || `${grupo.titulo}-${i}`}
+                                style={{ cursor: "pointer" }}
+                                onClick={() => {
+                                  setModalMovimentacoesAberto(false);
+                                  if (item.tipo === "entrada") {
+                                    abrirDetalhesEntrada(item);
+                                  } else {
+                                    abrirDetalhesSaida(item);
+                                  }
+                                }}
+                              >
+                                <div className="infoMovimentacaoCompleta">
+                                  <span
+                                    className={`iconeMovimentacaoCompleta ${
+                                      item.tipo === "entrada" ? "iconeEntrada" : "iconeSaida"
+                                    }`}
+                                  >
+                                    <IconeSeta tipo={item.tipo} />
+                                  </span>
 
-                                <div className="textoMovimentacao">
-                                  <strong>{item.titulo}</strong>
-                                  <div className="metaMovimentacao">
-                                    <span className="tagTipo">
-                                      {item.tipo === "entrada" ? "Entrada" : "Saída"}
-                                    </span>
-                                    <span className="separador">·</span>
-                                    <span>{item.data}</span>
-                                    <span className="separador">·</span>
-                                    <span>{item.itens}</span>
-                                    <span className="separador">·</span>
-                                    <span>{item.categoria}</span>
+                                  <div className="textoMovimentacao">
+                                    <strong>{item.titulo}</strong>
+                                    <div className="metaMovimentacao">
+                                      <span className="tagTipo">
+                                        {item.tipo === "entrada" ? "Entrada" : "Saída"}
+                                      </span>
+                                      <span className="separador">·</span>
+                                      <span>{item.data}</span>
+                                      <span className="separador">·</span>
+                                      <span>{item.itens}</span>
+                                      <span className="separador">·</span>
+                                      <span>{item.categoria}</span>
+                                    </div>
                                   </div>
                                 </div>
-                              </div>
 
-                              <span className={`valorMovimentacaoCompleta ${item.tipo}`}>
-                                {item.tipo === "entrada" ? `+ ${item.valor}` : item.valor}
-                              </span>
-                            </div>
-                          ))}
+                                <span className={`valorMovimentacaoCompleta ${item.tipo}`}>
+                                  {item.tipo === "entrada" ? `+ ${item.valor}` : item.valor}
+                                </span>
+                              </div>
+                            ))
+                          )}
                         </div>
                       )}
                     </div>
@@ -1348,7 +2221,7 @@ function FluxoCaixa() {
                 style={{ background: "transparent", border: "none", boxShadow: "none", padding: 0 }}
               >
                 {despesasCompletas.map((d, i) => (
-                  <div className="despesa" key={i}>
+                  <div className="despesa" key={`${d.nome}-${i}`}>
                     <div className="infoDespesaWrapper">
                       <span className="iconeSaida">
                         <IconeSetaSaida />
@@ -1423,11 +2296,11 @@ function FluxoCaixa() {
                       required
                     >
                       <option value="" disabled>Selecione uma categoria</option>
-                      <option value="insumos">Insumos</option>
-                      <option value="folha">Folha de pagamento</option>
-                      <option value="custo-fixo">Custo fixo</option>
-                      <option value="manutencao">Manutenção</option>
-                      <option value="outros">Outros</option>
+                      <option value="Insumos">Insumos</option>
+                      <option value="Folha de pagamento">Folha de pagamento</option>
+                      <option value="Custo fixo">Custo fixo</option>
+                      <option value="Manutenção">Manutenção</option>
+                      <option value="Outros">Outros</option>
                     </select>
                   </label>
                   <label className="campoValor">
@@ -1568,9 +2441,9 @@ function FluxoCaixa() {
                       required
                     >
                       <option value="" disabled>Selecione uma categoria</option>
-                      <option value="venda">Venda de produto</option>
-                      <option value="encomenda">Encomenda</option>
-                      <option value="outros">Outros</option>
+                      <option value="Venda de produto">Venda de produto</option>
+                      <option value="Encomenda">Encomenda</option>
+                      <option value="Outros">Outros</option>
                     </select>
                   </label>
                   <label className="campoValor">
@@ -1647,7 +2520,7 @@ function FluxoCaixa() {
         </div>
       )}
 
-      {/* Pop up de exclusao */}
+      {/* POP-UP DE EXCLUSÃO */}
       {confirmacaoExclusao && (
         <div
           className="modalOverlay"
