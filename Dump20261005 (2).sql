@@ -432,3 +432,125 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2026-10-05 17:20:59
+
+
+ALTER TABLE fabrica
+ADD COLUMN razao_social_fabrica VARCHAR(120),
+ADD COLUMN cnpj_fabrica VARCHAR(18),
+ADD COLUMN inscricao_estadual_fabrica VARCHAR(30),
+ADD COLUMN inscricao_municipal_fabrica VARCHAR(30),
+ADD COLUMN data_fundacao_fabrica DATE,
+ADD COLUMN telefone_fabrica VARCHAR(20),
+ADD COLUMN email_fabrica VARCHAR(120),
+ADD COLUMN cep_fabrica CHAR(9),
+ADD COLUMN rua_fabrica VARCHAR(120),
+ADD COLUMN numero_fabrica VARCHAR(15),
+ADD COLUMN complemento_fabrica VARCHAR(80),
+ADD COLUMN bairro_fabrica VARCHAR(80),
+ADD COLUMN cidade_fabrica VARCHAR(80),
+ADD COLUMN estado_fabrica CHAR(2);
+
+
+CREATE TABLE ordens_producao (
+
+    id_ordem INT AUTO_INCREMENT NOT NULL PRIMARY KEY,
+
+    nome_produto_ordem VARCHAR(100) NOT NULL,
+
+    quantidade_total INT NOT NULL,
+
+    quantidade_feita INT DEFAULT 0,
+
+    status_ordem ENUM(
+        'na_fila',
+        'em_andamento',
+        'concluida'
+    ) DEFAULT 'na_fila',
+
+    prazo_ordem DATE NOT NULL
+
+);
+
+
+INSERT INTO entradas (
+    nome_entrada,
+    data_entrada,
+    categoria_entrada,
+    valor_entrada,
+    obs_entrada
+) VALUES
+
+(
+    'Venda - Padaria Estrella',
+    '2026-05-03',
+    'Outros',
+    2700.00,
+    '15 Torta de Limão 22cm, 30 Cupcake Red Velvet, 28 Brownie Avelã, 40 Cupcake Morango'
+),
+
+(
+    'Venda - Sonda Supermercado',
+    '2026-05-03',
+    'Venda de produto',
+    745.00,
+    '15 Bolo Formigueiro, 15 Bolo Chocolate Branco, 15 Bolo Sensação, 15 Bolo Meio Amargo, 15 Ninho'
+),
+
+(
+    'Venda - Tia Bete Doces',
+    '2026-05-01',
+    'Venda de produto',
+    922.00,
+    '16 Mousse Maracujá, 10 Pizza Brownie, 10 Copo Felicidade Surpresa de Uva, 15 Vulcão Chocolate'
+),
+
+(
+    'Venda - Doceria Super Magic',
+    '2026-05-01',
+    'Venda de produto',
+    2700.00,
+    'Pedido personalizado'
+);
+
+
+INSERT INTO entradas (
+    nome_entrada,
+    data_entrada,
+    categoria_entrada,
+    valor_entrada,
+    obs_entrada
+) VALUES
+
+(
+    'Venda - Padaria Estrella',
+    '2026-05-03',
+    'Outros',
+    2700.00,
+    '15 Torta de Limão 22cm, 30 Cupcake Red Velvet, 28 Brownie Avelã, 40 Cupcake Morango'
+),
+
+(
+    'Venda - Sonda Supermercado',
+    '2026-05-03',
+    'Venda de produto',
+    745.00,
+    '15 Bolo Formigueiro, 15 Bolo Chocolate Branco, 15 Bolo Sensação, 15 Bolo Meio Amargo, 15 Ninho'
+),
+
+(
+    'Venda - Tia Bete Doces',
+    '2026-05-01',
+    'Venda de produto',
+    922.00,
+    '16 Mousse Maracujá, 10 Pizza Brownie, 10 Copo Felicidade Surpresa de Uva, 15 Vulcão Chocolate'
+),
+
+(
+    'Venda - Doceria Super Magic',
+    '2026-05-01',
+    'Venda de produto',
+    2700.00,
+    'Pedido personalizado'
+);
+
+
