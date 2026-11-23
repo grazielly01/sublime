@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
-import { motion } from "motion/react";
+import { buscarDashboard, salvarMetas as salvarMetasAPI } from "../../services/dashboardService";
 
 const metasPadrao = [
   { id: "m1", titulo: "Meta de faturamento", tipo: "moeda", atual: 91000, meta: 100000 },
@@ -12,7 +12,6 @@ const metasPadrao = [
 ];
 
 const LIMITE_DE_METAS = 6;
-const CHAVE_METAS = "dashboardMetas";
 
 function formatarValor(valor, tipo) {
   const n = Number(valor) || 0;
@@ -32,36 +31,6 @@ function calcularPorcentagem(atual, meta) {
   const m = Number(meta);
   if (!Number.isFinite(a) || !Number.isFinite(m) || m <= 0) return 0;
   return Math.round((a / m) * 100);
-}
-
-function lerMetasSalvas() {
-  try {
-    const bruto = localStorage.getItem(CHAVE_METAS);
-    if (!bruto) return metasPadrao;
-
-    const lista = JSON.parse(bruto);
-    const valida =
-      Array.isArray(lista) &&
-      lista.every(
-        (m) =>
-          m &&
-          typeof m.titulo === "string" &&
-          Number.isFinite(Number(m.atual)) &&
-          Number.isFinite(Number(m.meta))
-      );
-
-    if (!valida) return metasPadrao;
-
-    return lista.map((m, i) => ({
-      id: m.id ?? `salva${i}`,
-      titulo: m.titulo,
-      tipo: m.tipo === "moeda" ? "moeda" : "numero",
-      atual: Number(m.atual),
-      meta: Number(m.meta),
-    }));
-  } catch {
-    return metasPadrao;
-  }
 }
 
 function criarId() {
@@ -465,7 +434,7 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
     setErros({});
   }
 
-  function salvar(e) {
+  async function salvar(e) {
     e.preventDefault();
 
     const novosErros = {};
@@ -496,17 +465,20 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
       return;
     }
 
-    onSalvar(
-      rascunho.map((m) => ({
-        id: m.id,
-        titulo: m.titulo.trim(),
-        tipo: m.tipo,
-        atual: Number(m.atual),
-        meta: Number(m.meta),
-      }))
-    );
-
-    fechar();
+    try {
+      await onSalvar(
+        rascunho.map((m) => ({
+          id: m.id,
+          titulo: m.titulo.trim(),
+          tipo: m.tipo,
+          atual: Number(m.atual),
+          meta: Number(m.meta),
+        }))
+      );
+      fechar();
+    } catch (error) {
+      setErros({ geral: error.message || "Não foi possível salvar as metas." });
+    }
   }
 
   return (
@@ -554,6 +526,8 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
                 Nenhuma meta definida. Clique em "Adicionar meta" para criar a primeira.
               </p>
             )}
+
+            {erros.geral && <p className="gmErro" role="alert">{erros.geral}</p>}
 
             {rascunho.map((m, indice) => {
               const erro = erros[m.id] || {};
@@ -700,7 +674,11 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
 }
 
 function Dashboard() {
-  const [metas, setMetas] = useState(lerMetasSalvas);
+  const [metas, setMetas] = useState(metasPadrao);
+  const [dadosDashboard, setDadosDashboard] = useState(null);
+  const [carregando, setCarregando] = useState(true);
+  const [erroDashboard, setErroDashboard] = useState("");
+  const [periodoSelecionado, setPeriodoSelecionado] = useState("30d");
   const [modalMetasAberto, setModalMetasAberto] = useState(false);
   const [modalCardAtivo, setModalCardAtivo] = useState(null);
   const [avisoMetas, setAvisoMetas] = useState(false);
@@ -708,19 +686,62 @@ function Dashboard() {
   const avisoTimerRef = useRef(null);
 
   useEffect(() => {
-    try {
-      localStorage.setItem(CHAVE_METAS, JSON.stringify(metas));
-    } catch {
-      /* se o navegador bloquear o armazenamento, só não salva */
+    let ativo = true;
+
+    async function carregarDashboard() {
+      try {
+        setCarregando(true);
+        setErroDashboard("");
+        const dados = await buscarDashboard();
+
+        if (!ativo) return;
+
+        setDadosDashboard(dados);
+        setMetas((dados.metas || []).map((meta) => ({
+          id: meta.id,
+          titulo: meta.nome,
+          tipo: meta.tipo === "moeda" ? "moeda" : "numero",
+          atual: Number(meta.atual),
+          meta: Number(meta.objetivo),
+        })));
+      } catch (error) {
+        if (ativo) setErroDashboard(error.message || "Não foi possível carregar o Dashboard.");
+      } finally {
+        if (ativo) setCarregando(false);
+      }
     }
-  }, [metas]);
+
+    carregarDashboard();
+
+    return () => {
+      ativo = false;
+    };
+  }, []);
 
   useEffect(() => {
     return () => clearTimeout(avisoTimerRef.current);
   }, []);
 
-  function salvarMetas(novasMetas) {
-    setMetas(novasMetas);
+  async function salvarMetas(novasMetas) {
+    const metasParaAPI = novasMetas.map((meta) => ({
+      id: meta.id,
+      nome: meta.titulo,
+      tipo: meta.tipo,
+      atual: meta.atual,
+      objetivo: meta.meta,
+    }));
+
+    const metasSalvas = await salvarMetasAPI(metasParaAPI);
+
+    const metasFormatadas = metasSalvas.map((meta) => ({
+      id: meta.id,
+      titulo: meta.nome,
+      tipo: meta.tipo === "moeda" ? "moeda" : "numero",
+      atual: Number(meta.atual),
+      meta: Number(meta.objetivo),
+    }));
+
+    setMetas(metasFormatadas);
     setAvisoMetas(true);
     clearTimeout(avisoTimerRef.current);
     avisoTimerRef.current = setTimeout(() => setAvisoMetas(false), 2600);
@@ -731,78 +752,35 @@ function Dashboard() {
     botaoGerenciarRef.current?.focus();
   }
 
-  const resumo = [
-    { titulo: "Estoque", status: "OK", tipo: "ok", icone: "✓" },
-    { titulo: "Produção", status: "Atenção", tipo: "atencao", icone: "!" },
-    { titulo: "Pedidos", status: "Urgente", tipo: "urgente", icone: "×" },
-    { titulo: "Financeiro", status: "Estável", tipo: "estavel", icone: "✓" },
-  ];
+  const resumo = (dadosDashboard?.resumo || []).map((item) => ({
+    titulo: item.titulo,
+    status: item.valor,
+    tipo: item.status,
+    icone: item.status === "urgente" ? "×" : item.status === "atencao" ? "!" : "✓",
+  }));
 
-  const kpis = [
-    { titulo: "Lucro estimado (mês)", valor: "R$ 47.000", variacao: "+9,3%", tipo: "positivo", icone: "R$" },
-    { titulo: "Perdas em R$", valor: "R$ 2.912", variacao: "-12,1%", tipo: "positivo", icone: "↓" },
-    { titulo: "Faturamento (mês)", valor: "R$ 91.430", variacao: "+12,4%", tipo: "positivo", icone: "R$" },
-    { titulo: "Inadimplência", valor: "1,8%", variacao: "-0,4pp", tipo: "positivo", icone: "%" },
-  ];
+  const kpis = (dadosDashboard?.kpis || []).map((item) => ({
+    titulo: item.titulo,
+    valor: item.valor,
+    variacao: item.variacao,
+    tipo: item.status,
+    icone: item.titulo.toLowerCase().includes("inadimplência") ? "%" :
+      item.titulo.toLowerCase().includes("perdas") ? "↓" : "R$",
+  }));
 
-  const fluxoSemana = [
-    { dia: "Seg", entrada: 12400, saida: 8200 },
-    { dia: "Ter", entrada: 9800, saida: 6100 },
-    { dia: "Qua", entrada: 15200, saida: 11400 },
-    { dia: "Qui", entrada: 11000, saida: 7300 },
-    { dia: "Sex", entrada: 18900, saida: 9200 },
-    { dia: "Sáb", entrada: 22400, saida: 5800 },
-  ];
-
-  const produtos = [
-    { nome: "Brigadeiro Gourmet", quantidade: 4200 },
-    { nome: "Cupcake Sortido", quantidade: 3100 },
-    { nome: "Torta de Limão", quantidade: 2400 },
-    { nome: "Bolo Red Velvet", quantidade: 1900 },
-    { nome: "Copo da Felicidade", quantidade: 1650 },
-  ];
-
-  const lotes = [
-    { codigo: "#L2206", produto: "Leite condensado", qtd: "120 un", vence: "5 dias", badgeClass: "badgeUrgente" },
-    { codigo: "#L2198", produto: "Creme de leite", qtd: "85 un", vence: "12 dias", badgeClass: "badgeAtencao" },
-    { codigo: "#L2185", produto: "Farinha de trigo", qtd: "200 kg", vence: "28 dias", badgeClass: "badgeNormal" },
-  ];
-
-  const clientes = [
-    { nome: "Padaria Pão Quente", pedidos: 28, ltv: "R$ 42.800", status: "Ativo" },
-    { nome: "Mercado Vila Nova", pedidos: 22, ltv: "R$ 36.200", status: "Ativo" },
-    { nome: "Rede Doce Mel", pedidos: 19, ltv: "R$ 31.900", status: "Atenção" },
-    { nome: "Café Central", pedidos: 14, ltv: "R$ 18.400", status: "Ativo" },
-    { nome: "Empório Sabor", pedidos: 11, ltv: "R$ 14.200", status: "Inativo" },
-  ];
-
-  const entregas = [
-    { cliente: "Padaria Pão Quente", produto: "300 brigadeiros", quando: "Hoje 14h", urgente: true },
-    { cliente: "Mercado Vila Nova", produto: "80 tortas de limão", quando: "Amanhã 09h", urgente: false },
-    { cliente: "Café Central", produto: "120 cupcakes", quando: "Amanhã 16h", urgente: false },
-    { cliente: "Rede Doce Mel", produto: "Bolos sortidos (45kg)", quando: "Sex 08h", urgente: false },
-  ];
-
-  const alertas = [
-    { tipo: "Estoque", mensagem: "Chocolate ao leite — 2 dias de cobertura", nivel: "alta" },
-    { tipo: "Validade", mensagem: "Lote #L2206 vence em 5 dias", nivel: "media" },
-    { tipo: "Financeiro", mensagem: "3 faturas vencendo nesta semana", nivel: "media" },
-    { tipo: "Produção", mensagem: "Forno 2 — manutenção preventiva atrasada", nivel: "alta" },
-  ];
-
-  const fornecedores = [
-    { nome: "Distribuidora Açúcar & Cia", atraso: "12d", nota: "2,8", ultima: "10/06/2026" },
-    { nome: "Laticínios Sul", atraso: "5d", nota: "3,2", ultima: "14/06/2026" },
-    { nome: "Embalagens Rápido", atraso: "8d", nota: "2,5", ultima: "11/06/2026" },
-  ];
-
-  const indicadores = [
-    { titulo: "Margem média", valor: "42%" },
-    { titulo: "Ticket médio B2B", valor: "R$ 1.180" },
-    { titulo: "Perdas de produção", valor: "3,2%" },
-    { titulo: "Prazo médio entrega", valor: "2,4 dias" },
-    { titulo: "Produção do dia", valor: "3.280 un." },
-  ];
+  const fluxoSemana = dadosDashboard?.fluxoSemana || [];
+  const produtos = dadosDashboard?.produtos || [];
+  const lotes = dadosDashboard?.lotes || [];
+  const clientes = dadosDashboard?.clientes || [];
+  const entregas = dadosDashboard?.entregas || [];
+  const alertas = dadosDashboard?.alertas || [];
+  const fornecedores = dadosDashboard?.fornecedores || [];
+  const indicadores = dadosDashboard?.indicadores || [];
+  const receita = dadosDashboard?.receita || [];
+  const producao = dadosDashboard?.producao || {
+    oee: 0, disponibilidade: 0, desempenho: 0, qualidade: 0
+  };
+  const maiorReceita = Math.max(1, ...receita.map((item) => Number(item.receita) || 0));
 
   const dadosModal = {
     produtos,
@@ -812,6 +790,14 @@ function Dashboard() {
     alertas,
     fornecedores,
   };
+
+  if (carregando) {
+    return <div className="tudoDashboard"><Sidebar paginaAtiva="Dashboard" /><div className="tudoMenosSidebar"><Header nomeIndustria="Sweet Sunset" /><main className="conteudoDashboard"><p>Carregando Dashboard...</p></main></div></div>;
+  }
+
+  if (erroDashboard) {
+    return <div className="tudoDashboard"><Sidebar paginaAtiva="Dashboard" /><div className="tudoMenosSidebar"><Header nomeIndustria="Sweet Sunset" /><main className="conteudoDashboard"><p role="alert">{erroDashboard}</p><button type="button" onClick={() => window.location.reload()}>Tentar novamente</button></main></div></div>;
+  }
 
   return (
     <div className="tudoDashboard">
@@ -834,10 +820,22 @@ function Dashboard() {
           {/* PERÍODOS E EXPORTAR */}
           <div className="divSeiLa">
             <div className="acoesDashboard">
-              <button className="botaoPeriodo">7d</button>
-              <button className="botaoPeriodo ativo">30d</button>
-              <button className="botaoPeriodo">90d</button>
-              <button className="botaoPeriodo">Ano</button>
+              {[
+                { valor: "7d", rotulo: "7d" },
+                { valor: "30d", rotulo: "30d" },
+                { valor: "90d", rotulo: "90d" },
+                { valor: "1a", rotulo: "Ano" },
+              ].map((periodo) => (
+                <button
+                  key={periodo.valor}
+                  type="button"
+                  className={`botaoPeriodo ${periodoSelecionado === periodo.valor ? "ativo" : ""}`}
+                  aria-pressed={periodoSelecionado === periodo.valor}
+                  onClick={() => setPeriodoSelecionado(periodo.valor)}
+                >
+                  {periodo.rotulo}
+                </button>
+              ))}
 
               <button className="botaoDashboardSecundario">
                 📅 Período
@@ -902,11 +900,11 @@ function Dashboard() {
                   </div>
 
                   <div className="graficoColunas">
-                    {[52, 58, 67, 74, 84, 91].map((valor, i) => (
-                      <div className="grupoGrafico" key={i}>
-                        <div className="barraReceita" style={{ height: `${valor}%` }}></div>
-                        <div className="barraCusto" style={{ height: `${valor * 0.48}%` }}></div>
-                        <span>{["Jan", "Fev", "Mar", "Abr", "Mai", "Jun"][i]}</span>
+                    {receita.map((item, i) => (
+                      <div className="grupoGrafico" key={`${item.mes}-${i}`}>
+                        <div className="barraReceita" style={{ height: `${((Number(item.receita) || 0) / maiorReceita) * 100}%` }}></div>
+                        <div className="barraCusto" style={{ height: `${((Number(item.custo) || 0) / maiorReceita) * 100}%` }}></div>
+                        <span>{item.mes}</span>
                       </div>
                     ))}
                   </div>
@@ -1055,22 +1053,22 @@ function Dashboard() {
 
                 <div className="circuloOee">
                   <div>
-                    <strong>78%</strong>
+                    <strong>{producao.oee}%</strong>
                     <span>OEE</span>
                   </div>
                 </div>
 
                 <div className="indicadoresOee">
                   <div>
-                    <strong>92%</strong>
+                    <strong>{producao.disponibilidade}%</strong>
                     <span>Disponib.</span>
                   </div>
                   <div>
-                    <strong>88%</strong>
+                    <strong>{producao.desempenho}%</strong>
                     <span>Performance</span>
                   </div>
                   <div>
-                    <strong>96%</strong>
+                    <strong>{producao.qualidade}%</strong>
                     <span>Qualidade</span>
                   </div>
                 </div>

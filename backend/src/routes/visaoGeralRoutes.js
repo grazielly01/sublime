@@ -1,10 +1,13 @@
+
 const { Router } = require('express');
-const visaoGeralController = require('../controllers/visaoGeralController');
 
 const router = Router();
 
-// importa a function qe calcula os indicadores da tela Visão Geral
-const { obterResumoKpis } = require("../controllers/visaoGeralController");
+// Importa a função que calcula os indicadores
+const { obterResumoKpis } = require('../controllers/visaoGeralController');
 
-//rota q fornece os números dos cards da Visão Geral
-router.get("/resumo", obterResumoKpis);
+// Rota que fornece os números dos cards da Visão Geral
+router.get('/resumo', obterResumoKpis);
+
+// Exporta as rotas
+module.exports = router;
