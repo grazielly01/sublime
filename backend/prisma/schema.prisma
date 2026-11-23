@@ -6,94 +6,291 @@ datasource db {
   provider = "mysql"
 }
 
-
-model Usuario {
-  id       Int      @id @default(autoincrement())
-  nome     String
-  email    String   @unique
-  senha    String
-  criadoEm DateTime @default(now())
+model categoria_evento {
+  id_categoria_evento   Int     @id @default(autoincrement())
+  nome_categoria_evento String? @db.VarChar(30)
 }
 
-model Insumo {
-  id         Int      @id @default(autoincrement())
-  nome       String
-  lote       String
-  quantidade Int      @default(0)
-  minimo     Int      @default(0)
-  validade   DateTime
-  custo      Float
-  criadoEm   DateTime @default(now())
+model categoria_insumos {
+  id_categoria_insumos   Int       @id @default(autoincrement())
+  nome_categoria_insumos String?   @db.VarChar(60)
+  insumos                insumos[]
 }
 
-model Pedido {
-  id       Int      @id @default(autoincrement())
-  valor    Float
-  status   String   @default("PENDENTE")
-  criadoEm DateTime @default(now())
+model cliente {
+  id_cliente            Int                     @id @default(autoincrement())
+  nome_cliente          String?                 @db.VarChar(80)
+  endereco_cliente      String?                 @db.VarChar(180)
+  documento_cliente     String?                 @db.Char(20)
+  telefone_cliente      String?                 @db.VarChar(20)
+  email_cliente         String?                 @db.VarChar(120)
+  status_cliente        cliente_status_cliente?
+  data_cadastro_cliente DateTime?               @default(now()) @db.DateTime(0)
+  pedido                pedido[]
 }
 
-// -----------------------------------------------------------------
-// ENUMS E MODELOS PARA FLUXO DE CAIXA
-// -----------------------------------------------------------------
-
-enum TipoCaixa {
-  ENTRADA // ENTRADA
-  SAIDA   // SAÍDA
+model entradas {
+  id_entrada          Int       @id @default(autoincrement())
+  nome_entrada        String?   @db.VarChar(100)
+  data_entrada        DateTime? @db.Date
+  categoria_entrada   String?   @db.VarChar(60)
+  valor_entrada       Decimal?  @db.Decimal(12, 2)
+  obs_entrada         String?   @db.VarChar(255)
+  comprovante_entrada String?   @db.VarChar(255)
 }
 
-enum TipoCategoria {
-  FIXA     // Despesa Fixa
-  VARIAVEL // Despesa Variável
-  RECEITA  // Receitas/Vendas
+model evento {
+  id_evento          Int                      @id @default(autoincrement())
+  titulo_evento      String?                  @db.VarChar(80)
+  data_inicio_evento DateTime?                @db.DateTime(0)
+  data_fim_evento    DateTime?                @db.DateTime(0)
+  categoria_evento   evento_categoria_evento?
+  descricao_evento   String?                  @db.VarChar(255)
 }
 
-model Categoria {
-  id       Int           @id @default(autoincrement())
-  nome     String        // Ex: "Matéria-prima", "Aluguel", "Salários"
-  tipo     TipoCategoria
-  caixas   Caixa[]       // Relação apontando para o modelo Caixa
-  criadoEm DateTime      @default(now())
+model fabrica {
+  id_fabrica                  Int       @id @default(autoincrement())
+  nome_fabrica                String?   @db.VarChar(80)
+  razao_social_fabrica        String?   @db.VarChar(120)
+  cnpj_fabrica                String?   @db.VarChar(18)
+  inscricao_estadual_fabrica  String?   @db.VarChar(30)
+  inscricao_municipal_fabrica String?   @db.VarChar(30)
+  data_fundacao_fabrica       DateTime? @db.Date
+  telefone_fabrica            String?   @db.VarChar(20)
+  email_fabrica               String?   @db.VarChar(120)
+  cep_fabrica                 String?   @db.Char(9)
+  rua_fabrica                 String?   @db.VarChar(120)
+  numero_fabrica              String?   @db.VarChar(15)
+  complemento_fabrica         String?   @db.VarChar(80)
+  bairro_fabrica              String?   @db.VarChar(80)
+  cidade_fabrica              String?   @db.VarChar(80)
+  estado_fabrica              String?   @db.Char(2)
+  usuario                     usuario[]
 }
 
-model Caixa {
-  id          Int           @id @default(autoincrement())
-  descricao   String        // Ex: "Venda - Padaria São José", "Energia elétrica"
-  valor       Float         // Valor do movimento
-  tipo        TipoCaixa     // Usando o Enum TipoCaixa correto
-  data        DateTime      // Data da transação
-  categoriaId Int?
-  categoria   Categoria?    @relation(fields: [categoriaId], references: [id], onDelete: SetNull)
-  criadoEm    DateTime      @default(now())
+model fornecedores {
+  id_fornecedor                       Int       @id @default(autoincrement())
+  cnpj_fornecedor                     String?   @db.VarChar(18)
+  nome_fornecedor                     String?   @db.VarChar(100)
+  telefone_fornecedor                 String?   @db.VarChar(20)
+  email_fornecedor                    String?   @db.VarChar(120)
+  nota_fornecedor                     Decimal?  @db.Decimal(3, 1)
+  atraso_dias_fornecedor              Int?
+  data_ultima_movimentacao_fornecedor DateTime? @db.Date
+  insumos                             insumos[]
 }
 
-enum StatusOrdem {
-  NA_FILA
-  EM_ANDAMENTO
-  CONCLUIDO
+model funcionarios {
+  id_funcionario      Int                              @id @default(autoincrement())
+  cargo_funcionario   String?                          @db.VarChar(50)
+  salario_funcionario Decimal?                         @db.Decimal(12, 2)
+  turno_funcionario   funcionarios_turno_funcionario?
+  acesso_funcionario  funcionarios_acesso_funcionario?
+  nome_funcionario    String?                          @db.VarChar(100)
+  horario_funcionario String?                          @db.VarChar(60)
 }
 
-model OrdemProducao {
-  id              Int         @id @default(autoincrement())
-  produto         String      // Ex: "Brigadeiro Gourmet", "Cupcake Red Velvet"
-  equipe          String      // Ex: "Equipe A", "Equipe B"
-  quantidadeTotal Int         // Ex: 480
-  quantidadeFeita Int         @default(0) // Ex: 360
-  status          StatusOrdem @default(NA_FILA)
-  tempoEstimado   String?     // Ex: "45 min restantes" ou "Iniciar 14h00"
-  horarioFim      DateTime?   // Data/Hora de conclusão
-  data            DateTime    @default(now())
-  criadoEm        DateTime    @default(now())
+model insumos {
+  idInsumo               Int                    @id @default(autoincrement())
+  nome_insumo            String?                @db.VarChar(80)
+  qtde_em_estoque_insumo Int?
+  qtde_minima_insumo     Int?
+  data_validade_insumo   DateTime?              @db.Date
+  categoria_insumo       Int?
+  custo_unit_insumo      Decimal?               @db.Decimal(12, 2)
+  lote_insumo            String?                @db.VarChar(20)
+  status_insumo          insumos_status_insumo?
+  fornecedor_insumo      Int?
+  unidade_medida_insumo  String?                @db.VarChar(20)
+  categoria_insumos      categoria_insumos?     @relation(fields: [categoria_insumo], references: [id_categoria_insumos], map: "fk_insumo_categoria")
+  fornecedores           fornecedores?          @relation(fields: [fornecedor_insumo], references: [id_fornecedor], map: "fk_insumo_fornecedor")
 
-  @@map("ordens_producao")
+  @@index([categoria_insumo], map: "fk_insumo_categoria")
+  @@index([fornecedor_insumo], map: "fk_insumo_fornecedor")
 }
 
-model MetaProducao {
-  id            Int      @id @default(autoincrement())
-  data          DateTime @default(now()) @db.Date
-  metaDiaria    Int      @default(1500) // Ex: 1500 unidades
-  perdasPercent Float    @default(0.0)  // Ex: 2.1%
-  criadoEm      DateTime @default(now())
+model meta {
+  id_meta          Int       @id @default(autoincrement())
+  titulo_meta      String?   @db.VarChar(60)
+  prazo_meta       DateTime? @db.Date
+  qtde_meta        Int?
+  descricao_meta   String?   @db.VarChar(255)
+  qtde_atual_meta  Int?
+  valor_atual_meta Decimal?  @db.Decimal(12, 2)
+  valor_alvo_meta  Decimal?  @db.Decimal(12, 2)
+  tipo_meta        String?   @db.VarChar(30)
+}
 
-  @@map("metas_producao")
+model movimentacoes {
+  id_movimentacao     Int                              @id @default(autoincrement())
+  titulo_movimentacao String?                          @db.VarChar(20)
+  data_movimentacao   DateTime                         @default(now()) @db.DateTime(0)
+  tipo_movimentacao   movimentacoes_tipo_movimentacao?
+}
+
+model ordens_producao {
+  id_ordem           Int                           @id @default(autoincrement())
+  nome_produto_ordem String                        @db.VarChar(100)
+  quantidade_total   Int
+  quantidade_feita   Int?                          @default(0)
+  status_ordem       ordens_producao_status_ordem? @default(na_fila)
+  prazo_ordem        DateTime                      @db.Date
+}
+
+model pedido {
+  id_pedido               Int                   @id @default(autoincrement())
+  cliente_pedido          Int?
+  nome_produto_pedido     String?               @db.VarChar(100)
+  data_solicitacao_pedido DateTime?             @db.Date
+  data_entrega_pedido     DateTime?             @db.Date
+  qtde_produto_pedido     Int?
+  status_pedido           pedido_status_pedido?
+  prazo_pedido            DateTime?             @db.DateTime(0)
+  forma_pagamento_pedido  String?               @db.VarChar(50)
+  vlr_total_pedido        Decimal?              @db.Decimal(12, 2)
+  descricao_pedido        String?               @db.VarChar(500)
+  cliente                 cliente?              @relation(fields: [cliente_pedido], references: [id_cliente], onDelete: Restrict, map: "fk_pedido_cliente")
+  pedido_item             pedido_item[]
+
+  @@index([cliente_pedido], map: "fk_pedido_cliente")
+}
+
+model pedido_item {
+  id_item_pedido      Int       @id @default(autoincrement())
+  id_pedido           Int
+  id_produto          Int?
+  nome_produto_item   String    @db.VarChar(100)
+  quantidade_item     Int
+  preco_unitario_item Decimal?  @db.Decimal(12, 2)
+  subtotal_item       Decimal?  @db.Decimal(12, 2)
+  descricao_item      String?   @db.VarChar(255)
+  pedido              pedido    @relation(fields: [id_pedido], references: [id_pedido], onDelete: Cascade, map: "fk_item_pedido")
+  produtos            produtos? @relation(fields: [id_produto], references: [id_produto], map: "fk_item_produto")
+
+  @@index([id_pedido], map: "fk_item_pedido")
+  @@index([id_produto], map: "fk_item_produto")
+}
+
+model produtos {
+  id_produto            Int                     @id @default(autoincrement())
+  data_validade_produto DateTime?               @db.Date
+  nome_produto          String?                 @db.VarChar(100)
+  qtde_produto          Decimal?                @db.Decimal(10, 0)
+  preco_unit_produto    Decimal?                @db.Decimal(12, 2)
+  categ_produto         produtos_categ_produto?
+  descricao_produto     String?                 @db.Text
+  receita_produto       String?                 @db.Text
+  margem_lucro_produto  Decimal?                @db.Decimal(5, 2)
+  custo_unit_produto    Decimal?                @db.Decimal(12, 2)
+  imagem_produto        String?                 @db.VarChar(500)
+  pedido_item           pedido_item[]
+}
+
+model saidas {
+  id_saida          Int                @id @default(autoincrement())
+  nome_saida        String?            @db.VarChar(100)
+  data_saida        DateTime?          @default(now()) @db.DateTime(0)
+  categoria_saida   String?            @db.VarChar(60)
+  valor_saida       Decimal?           @db.Decimal(12, 2)
+  tipo_saida        saidas_tipo_saida?
+  obs_saida         String?            @db.VarChar(255)
+  comprovante_saida String?            @db.VarChar(255)
+}
+
+model usuario {
+  id_usuario           Int      @id @default(autoincrement())
+  nome_usuario         String?  @db.VarChar(60)
+  telefone_usuario     String?  @db.Char(15)
+  plano_usuario        String?  @db.Char(15)
+  email_usuario        String?  @db.VarChar(100)
+  nome_fabrica_usuario String?  @db.VarChar(80)
+  cargo_usuario        String?  @db.VarChar(40)
+  id_fabrica_usuario   Int?
+  senha_usuario        String?  @db.VarChar(255)
+  fabrica              fabrica? @relation(fields: [id_fabrica_usuario], references: [id_fabrica], map: "fk_usuario_fabrica")
+
+  @@index([id_fabrica_usuario], map: "fk_usuario_fabrica")
+}
+
+enum funcionarios_turno_funcionario {
+  diurno
+  vespertino
+  noturno
+}
+
+enum movimentacoes_tipo_movimentacao {
+  E
+  S
+}
+
+enum evento_categoria_evento {
+  produ__o  @map("produção")
+  entrega
+  compra
+  pagamento
+  outro
+}
+
+enum funcionarios_acesso_funcionario {
+  NIVEL_1 @map("1")
+  NIVEL_2 @map("2")
+  NIVEL_3 @map("3")
+}
+
+enum ordens_producao_status_ordem {
+  na_fila
+  em_andamento
+  concluida
+}
+
+enum produtos_categ_produto {
+  Doces_finos           @map("Doces finos")
+  Bolos
+  Tortas
+  Sazonais
+  Mousses_e_cremosos    @map("Mousses e cremosos")
+  Pav_s_e_gelados       @map("Pavês e gelados")
+  Cupcakes
+  Cookies_biscoitos     @map("Cookies/biscoitos")
+  Brownies
+  Cheesecakes
+  Doces_de_pote         @map("Doces de pote")
+  Trufas_bombons        @map("Trufas/bombons")
+  Brigadeiros_enrolados @map("Brigadeiros/enrolados")
+  Macarons
+  Donuts
+  Muffins
+  Pudins
+  P_es_de_mel           @map("Pães de mel")
+  Rocamboles
+  Kits_festa            @map("Kits festa")
+  Lan_amentos           @map("Lançamentos")
+  Edi__o_limitada       @map("Edição limitada")
+  Linha_premium         @map("Linha premium")
+  Congelados
+  Outros
+}
+
+enum saidas_tipo_saida {
+  fixa
+  vari_vel @map("variável")
+}
+
+enum cliente_status_cliente {
+  ativo
+  atencao
+  inativo
+}
+
+enum pedido_status_pedido {
+  em_produ__o @map("em produção")
+  entregue
+  pronto
+  aguardando
+  cancelado
+}
+
+enum insumos_status_insumo {
+  ok
+  repor
 }
