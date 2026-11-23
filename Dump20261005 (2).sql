@@ -435,6 +435,8 @@ UNLOCK TABLES;
 
 
 
+
+
 ALTER TABLE fabrica
 ADD COLUMN razao_social_fabrica VARCHAR(120),
 ADD COLUMN cnpj_fabrica VARCHAR(18),
