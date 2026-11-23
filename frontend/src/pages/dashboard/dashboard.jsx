@@ -673,6 +673,59 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
   );
 }
 
+
+function agruparHistoricoFinanceiro(historico, periodo) {
+  const dias = periodo === "7d" ? 7 :
+    periodo === "30d" ? 30 :
+    periodo === "90d" ? 90 : 365;
+
+  const hoje = new Date();
+  hoje.setHours(23, 59, 59, 999);
+
+  const inicio = new Date(hoje);
+  inicio.setDate(inicio.getDate() - dias + 1);
+  inicio.setHours(0, 0, 0, 0);
+
+  const registros = historico.filter((item) => {
+    const [ano, mes, dia] = item.data.split("-").map(Number);
+    const data = new Date(ano, mes - 1, dia);
+    return data >= inicio && data <= hoje;
+  });
+
+  const grupos = {};
+
+  registros.forEach((item) => {
+    const [ano, mes, dia] = item.data.split("-").map(Number);
+    const data = new Date(ano, mes - 1, dia);
+
+    let chave;
+    let rotulo;
+
+    if (periodo === "1a") {
+      chave = `${ano}-${mes}`;
+      rotulo = data.toLocaleDateString("pt-BR", { month: "short" });
+    } else if (periodo === "7d") {
+      chave = item.data;
+      rotulo = `${dia}/${mes}`;
+    } else {
+      const inicioSemana = new Date(data);
+      inicioSemana.setDate(data.getDate() - data.getDay());
+      chave = inicioSemana.toISOString().slice(0, 10);
+      rotulo = `${inicioSemana.getDate()}/${inicioSemana.getMonth() + 1}`;
+    }
+
+    if (!grupos[chave]) {
+      grupos[chave] = { mes: rotulo, receita: 0, custo: 0 };
+    }
+
+    grupos[chave].receita += Number(item.receita) || 0;
+    grupos[chave].custo += Number(item.custo) || 0;
+  });
+
+  return Object.values(grupos);
+}
+
+
 function Dashboard() {
   const [metas, setMetas] = useState(metasPadrao);
   const [dadosDashboard, setDadosDashboard] = useState(null);
@@ -776,7 +829,12 @@ function Dashboard() {
   const alertas = dadosDashboard?.alertas || [];
   const fornecedores = dadosDashboard?.fornecedores || [];
   const indicadores = dadosDashboard?.indicadores || [];
-  const receita = dadosDashboard?.receita || [];
+
+const receita = agruparHistoricoFinanceiro(
+  dadosDashboard?.historicoFinanceiro || [],
+  periodoSelecionado
+);
+
   const producao = dadosDashboard?.producao || {
     oee: 0, disponibilidade: 0, desempenho: 0, qualidade: 0
   };
