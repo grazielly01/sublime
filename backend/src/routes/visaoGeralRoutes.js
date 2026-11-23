@@ -9,5 +9,8 @@ const { obterResumoKpis } = require('../controllers/visaoGeralController');
 // Rota que fornece os números dos cards da Visão Geral
 router.get('/resumo', obterResumoKpis);
 
-// Exporta as rotas
-module.exports = router;
+
+//rota q fornece os números dos cards da Visão Geral
+router.get("/resumo", obterResumoKpis);     
+
+module.exports = Router;
