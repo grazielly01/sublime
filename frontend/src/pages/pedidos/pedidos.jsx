@@ -9,6 +9,28 @@ import Sidebar from "../../componentes/Sidebar/Sidebar.jsx";
 import Header from "../../componentes/Header/Header.jsx";
 import Select from "../../componentes/Select/Select.jsx";
 
+const API_PEDIDOS = "http://localhost:3000/pedidos";
+const STORAGE_KEY_PEDIDOS = "pedidos_sweet_sunset";
+
+function lerPedidosLocal() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY_PEDIDOS);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+function salvarPedidosLocal(lista) {
+  try {
+    localStorage.setItem(STORAGE_KEY_PEDIDOS, JSON.stringify(lista));
+    window.dispatchEvent(new Event("sweet-sunset-pedidos-atualizados"));
+  } catch (err) {
+    console.warn("Não foi possível salvar pedidos no localStorage:", err);
+  }
+}
+
 function Pedidos() {
   const [pedidos, setPedidos] = useState([]);
   const [filtroAtivo, setFiltroAtivo] = useState("TODOS");
@@ -40,23 +62,55 @@ function Pedidos() {
     { label: "Cancelado", value: "CANCELADO" },
   ];
 
-  const carregarPedidos = async (status) => {
-    try {
-      const url =
-        status && status !== "TODOS"
-          ? `http://localhost:3000/pedidos?status=${status}`
-          : "http://localhost:3000/pedidos";
+  const atualizarListaESincronizar = (updater) => {
+    setPedidos((prev) => {
+      const proxima = typeof updater === "function" ? updater(prev) : updater;
+      salvarPedidosLocal(proxima);
+      return proxima;
+    });
+  };
 
-      const response = await fetch(url);
+  const carregarPedidos = async (status) => {
+    const locais = lerPedidosLocal();
+
+    try {
+      const response = await fetch(API_PEDIDOS);
       const result = await response.json();
 
-      if (result.data) {
-        setPedidos(result.data);
-      } else if (Array.isArray(result)) {
-        setPedidos(result);
+      const daApi = Array.isArray(result?.data)
+        ? result.data
+        : Array.isArray(result)
+          ? result
+          : [];
+
+      // Mescla API + locais evitando duplicar por id
+      const mapaPorId = new Map();
+      [...daApi, ...locais].forEach((item, idx) => {
+        const chave = item.id ?? `local-${idx}-${item.cliente || item.estabelecimento || ""}`;
+        mapaPorId.set(chave, item);
+      });
+
+      const todosCombinados = Array.from(mapaPorId.values());
+      salvarPedidosLocal(todosCombinados);
+
+      if (status && status !== "TODOS") {
+        setPedidos(
+          todosCombinados.filter(
+            (p) => String(p.status || "").toUpperCase() === status
+          )
+        );
+      } else {
+        setPedidos(todosCombinados);
       }
     } catch (error) {
-      console.error("Erro ao carregar pedidos da API:", error);
+      console.error("Erro ao carregar pedidos da API, usando dados locais:", error);
+      if (status && status !== "TODOS") {
+        setPedidos(
+          locais.filter((p) => String(p.status || "").toUpperCase() === status)
+        );
+      } else {
+        setPedidos(locais);
+      }
     }
   };
 
@@ -116,39 +170,72 @@ function Pedidos() {
     setModalDetalhesAberto(true);
   };
 
-  const salvarEdicaoPedido = () => {
+  const salvarEdicaoPedido = async () => {
     if (!pedidoSelecionado) return;
 
     const statusCodigo = mapearCodigoStatus(pedidoSelecionado.status);
+    const qtdNum = Number(pedidoSelecionado.quantidade) || 1;
 
-    setPedidos((prev) =>
-      prev.map((p) =>
-        p.id === pedidoSelecionado.id
-          ? {
-              ...p,
-              cliente: pedidoSelecionado.cliente,
-              status: statusCodigo,
-              itensCount: Number(pedidoSelecionado.quantidade) || 1,
-              entrega: pedidoSelecionado.prazo,
-              descricao: pedidoSelecionado.descricao,
-            }
-          : p
-      )
+    const pedidoAtualizadoCampos = {
+      cliente: pedidoSelecionado.cliente,
+      status: statusCodigo,
+      itensCount: qtdNum,
+      entrega: pedidoSelecionado.prazo,
+      descricao: pedidoSelecionado.descricao,
+    };
+
+    const todasSalvas = lerPedidosLocal().map((p) =>
+      p.id === pedidoSelecionado.id ? { ...p, ...pedidoAtualizadoCampos } : p
     );
+    salvarPedidosLocal(todasSalvas);
+
+    setPedidos((prev) => {
+      const mapeados = prev.map((p) =>
+        p.id === pedidoSelecionado.id ? { ...p, ...pedidoAtualizadoCampos } : p
+      );
+      if (filtroAtivo !== "TODOS") {
+        return mapeados.filter(
+          (p) => String(p.status || "").toUpperCase() === filtroAtivo
+        );
+      }
+      return mapeados;
+    });
+
+    try {
+      await fetch(`${API_PEDIDOS}/${encodeURIComponent(pedidoSelecionado.id)}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(pedidoAtualizadoCampos),
+      });
+    } catch (error) {
+      console.warn("Não foi possível atualizar pedido na API:", error);
+    }
+
     setEditandoPedido(false);
   };
 
-  // Abre o pop-up de confirmação de exclusão
   const solicitarExclusaoPedido = () => {
     setModalDetalhesAberto(false);
     setModalConfirmarExclusaoAberto(true);
   };
 
-  // Remove o pedido definitivamente
-  const confirmarExclusaoPedido = () => {
-    if (pedidoSelecionado) {
-      setPedidos((prev) => prev.filter((p) => p.id !== pedidoSelecionado.id));
+  const confirmarExclusaoPedido = async () => {
+    if (!pedidoSelecionado) return;
+    const idAlvo = pedidoSelecionado.id;
+
+    const restantesLocais = lerPedidosLocal().filter((p) => p.id !== idAlvo);
+    salvarPedidosLocal(restantesLocais);
+
+    setPedidos((prev) => prev.filter((p) => p.id !== idAlvo));
+
+    try {
+      await fetch(`${API_PEDIDOS}/${encodeURIComponent(idAlvo)}`, {
+        method: "DELETE",
+      });
+    } catch (error) {
+      console.warn("Não foi possível excluir pedido na API:", error);
     }
+
     setModalConfirmarExclusaoAberto(false);
     setPedidoSelecionado(null);
   };
@@ -173,16 +260,28 @@ function Pedidos() {
     };
 
     try {
-      await fetch("http://localhost:3000/pedidos", {
+      const res = await fetch(API_PEDIDOS, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(novoItem),
       });
+      if (res.ok) {
+        const criado = await res.json().catch(() => null);
+        if (criado?.id) novoItem.id = criado.id;
+        if (criado?.data?.id) novoItem.id = criado.data.id;
+      }
     } catch (error) {
       console.warn("API offline, adicionando pedido localmente:", error);
     }
 
-    setPedidos((prev) => [novoItem, ...prev]);
+    const baseAtual = lerPedidosLocal();
+    const semDuplicata = baseAtual.filter((p) => p.id !== novoItem.id);
+    salvarPedidosLocal([novoItem, ...semDuplicata]);
+
+    if (filtroAtivo === "TODOS" || filtroAtivo === statusCodigo) {
+      setPedidos((prev) => [novoItem, ...prev]);
+    }
+
     setNovoPedidoForm({
       cliente: "",
       status: "Aguardando",

@@ -1,4 +1,3 @@
-
 import "./dashboard.css";
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
@@ -9,6 +8,9 @@ import {
   salvarMetas as salvarMetasAPI,
 } from "../../services/dashboardService";
 
+
+const API_ESTOQUE = "http://localhost:3000/estoque";
+
 const metasPadrao = [
   { id: "m1", titulo: "Meta de faturamento", tipo: "moeda", atual: 91000, meta: 100000 },
   { id: "m2", titulo: "Pedidos do mês", tipo: "numero", atual: 142, meta: 160 },
@@ -17,6 +19,95 @@ const metasPadrao = [
 
 const LIMITE_DE_METAS = 6;
 const CORES_MIX = ["#9b78d0", "#e8a1b5", "#f2c879", "#75b9a8"];
+
+function parseDataValidade(valor) {
+  if (!valor) return null;
+  const texto = String(valor).trim().split("T")[0];
+
+  // Formato DD/MM/AAAA
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(texto)) {
+    const [dia, mes, ano] = texto.split("/").map(Number);
+    const data = new Date(ano, mes - 1, dia);
+    data.setHours(0, 0, 0, 0);
+    return Number.isNaN(data.getTime()) ? null : data;
+  }
+
+  // Formato AAAA-MM-DD
+  if (/^\d{4}-\d{2}-\d{2}$/.test(texto)) {
+    const [ano, mes, dia] = texto.split("-").map(Number);
+    const data = new Date(ano, mes - 1, dia);
+    data.setHours(0, 0, 0, 0);
+    return Number.isNaN(data.getTime()) ? null : data;
+  }
+
+  const fallback = new Date(texto);
+  if (Number.isNaN(fallback.getTime())) return null;
+  fallback.setHours(0, 0, 0, 0);
+  return fallback;
+}
+
+function mapearInsumosParaLotes(listaInsumos) {
+  if (!Array.isArray(listaInsumos) || listaInsumos.length === 0) return [];
+
+  const hoje = new Date();
+  hoje.setHours(0, 0, 0, 0);
+
+  return listaInsumos
+    .map((insumo) => {
+      const dataVal = parseDataValidade(insumo.validade);
+      if (!dataVal) return null;
+
+      const diffMs = dataVal.getTime() - hoje.getTime();
+      const diasRestantes = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+      let textoVence = "";
+      let badgeClass = "badgeSucesso";
+
+      if (diasRestantes < 0) {
+        const diasAtras = Math.abs(diasRestantes);
+        textoVence = diasAtras === 1 ? "Venceu ontem" : `Vencido (${diasAtras}d)`;
+        badgeClass = "badgeUrgente";
+      } else if (diasRestantes === 0) {
+        textoVence = "Vence hoje";
+        badgeClass = "badgeUrgente";
+      } else if (diasRestantes === 1) {
+        textoVence = "1 dia";
+        badgeClass = "badgeUrgente";
+      } else {
+        textoVence = `${diasRestantes} dias`;
+        if (diasRestantes <= 7) {
+          badgeClass = "badgeUrgente";
+        } else if (diasRestantes <= 15) {
+          badgeClass = "badgeAtencao";
+        } else {
+          badgeClass = "badgeSucesso";
+        }
+      }
+
+      const codigoBruto = String(insumo.lote || "").trim();
+      const codigoFormatado = codigoBruto
+        ? codigoBruto.startsWith("#")
+          ? codigoBruto
+          : `#${codigoBruto}`
+        : "—";
+
+      const qtdNumero = Number(insumo.quantidade ?? 0);
+      const unidade = insumo.unidade ? ` ${insumo.unidade}` : " un";
+
+      return {
+        id: insumo.id,
+        codigo: codigoFormatado,
+        produto: insumo.nome || "Insumo sem nome",
+        qtd: `${qtdNumero.toLocaleString("pt-BR")}${unidade}`,
+        vence: textoVence,
+        badgeClass,
+        diasRestantes,
+        validadeFormatada: dataVal.toLocaleDateString("pt-BR"),
+      };
+    })
+    .filter(Boolean)
+    .sort((a, b) => a.diasRestantes - b.diasRestantes);
+}
 
 function formatarMoeda(valor) {
   return Number(valor || 0).toLocaleString("pt-BR", {
@@ -78,7 +169,6 @@ function formatarDataLocal(data) {
   return `${ano}-${mes}-${dia}`;
 }
 
-// Agora aceita também o período personalizado.
 function obterIntervalo(periodo, inicioPersonalizado = "", fimPersonalizado = "") {
   if (periodo === "personalizado") {
     const inicio = obterDataLocal(inicioPersonalizado);
@@ -449,6 +539,48 @@ function calcularIndicadores(financeiro, comercial, producao) {
   ];
 }
 
+
+
+
+
+function mapearPedidosAguardandoParaEntregas(listaPedidos) {
+  if (!Array.isArray(listaPedidos) || listaPedidos.length === 0) return [];
+
+  return listaPedidos
+    .filter((pedido) => String(pedido.status || "").toUpperCase() === "AGUARDANDO")
+    .map((pedido) => {
+      const cliente = pedido.cliente || pedido.estabelecimento || "Cliente";
+
+      const temDescricaoValida =
+        pedido.descricao &&
+        String(pedido.descricao).trim() !== "" &&
+        String(pedido.descricao).trim().toLowerCase() !== "sem descrição informada.";
+
+      const qtdTexto = pedido.itensCount
+        ? `${pedido.itensCount} itens`
+        : pedido.itens || "";
+
+      const produto = temDescricaoValida
+        ? `${pedido.descricao}${qtdTexto ? ` (${qtdTexto})` : ""}`
+        : qtdTexto || "Pedido aguardando";
+
+      const prazoTexto = pedido.entrega || pedido.prazo || "A definir";
+      const urgente =
+        Boolean(pedido.urgente) ||
+        /hoje|urgente/i.test(String(prazoTexto));
+
+      return {
+        id: pedido.id,
+        cliente,
+        produto,
+        quando: prazoTexto,
+        urgente,
+      };
+    });
+}
+
+
+
 function ModalDetalhesCard({ cardKey, onFechar, dados }) {
   const [saindo, setSaindo] = useState(false);
   const janelaRef = useRef(null);
@@ -517,7 +649,7 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
     },
     lotesVencimento: {
       titulo: "Controle de lotes próximos ao vencimento",
-      subtitulo: "Lotes monitorados por quantidade e validade.",
+      subtitulo: "Lotes do estoque ordenados por data de validade (PEPS).",
     },
     proximasEntregas: {
       titulo: "Próximas entregas",
@@ -620,14 +752,20 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
               <div className="linhaTabela cabecalhoTabela">
                 <span>Lote</span><span>Produto</span><span>Qtd</span><span>Vence</span>
               </div>
-              {dados.lotes.map((lote, i) => (
-                <div className="linhaTabela" key={i}>
-                  <span>{lote.codigo}</span>
-                  <span>{lote.produto}</span>
-                  <span>{lote.qtd}</span>
-                  <b className={lote.badgeClass}>{lote.vence}</b>
-                </div>
-              ))}
+              {dados.lotes.length === 0 ? (
+                <p style={{ padding: "12px 0", color: "#7A6E6C" }}>
+                  Nenhum insumo com validade cadastrada no estoque.
+                </p>
+              ) : (
+                dados.lotes.map((lote, i) => (
+                  <div className="linhaTabela" key={lote.id || i} title={lote.validadeFormatada ? `Validade: ${lote.validadeFormatada}` : undefined}>
+                    <span>{lote.codigo}</span>
+                    <span>{lote.produto}</span>
+                    <span>{lote.qtd}</span>
+                    <b className={lote.badgeClass}>{lote.vence}</b>
+                  </div>
+                ))
+              )}
             </div>
           )}
 
@@ -1063,7 +1201,6 @@ function ModalGerenciarMetas({ metas, onSalvar, onFechar }) {
   );
 }
 
-// NOVO MODAL: SELEÇÃO DE PERÍODO
 function ModalPeriodo({
   dataInicio,
   dataFim,
@@ -1198,6 +1335,7 @@ function Dashboard() {
 
   const [metas, setMetas] = useState(metasPadrao);
   const [dadosDashboard, setDadosDashboard] = useState(null);
+  const [insumosEstoque, setInsumosEstoque] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erroDashboard, setErroDashboard] = useState("");
   const [periodoSelecionado, setPeriodoSelecionado] = useState("30d");
@@ -1208,6 +1346,22 @@ function Dashboard() {
   const botaoGerenciarRef = useRef(null);
   const avisoTimerRef = useRef(null);
 
+  const buscarInsumosEstoque = async () => {
+    try {
+      const resposta = await fetch(API_ESTOQUE);
+      if (!resposta.ok) return;
+      const json = await resposta.json();
+      const lista = Array.isArray(json?.data)
+        ? json.data
+        : Array.isArray(json)
+          ? json
+          : [];
+      setInsumosEstoque(lista);
+    } catch (err) {
+      console.warn("Não foi possível buscar insumos do estoque:", err);
+    }
+  };
+
   useEffect(() => {
     let ativo = true;
 
@@ -1216,7 +1370,10 @@ function Dashboard() {
         setCarregando(true);
         setErroDashboard("");
 
-        const dados = await buscarDashboard();
+        const [dados] = await Promise.all([
+          buscarDashboard(),
+          buscarInsumosEstoque(),
+        ]);
 
         if (!ativo) return;
 
@@ -1240,8 +1397,13 @@ function Dashboard() {
 
     carregarDashboard();
 
+    // Atualiza os lotes caso o usuário volte para a aba do Dashboard após editar o Estoque
+    const aoFocarJanela = () => buscarInsumosEstoque();
+    window.addEventListener("focus", aoFocarJanela);
+
     return () => {
       ativo = false;
+      window.removeEventListener("focus", aoFocarJanela);
     };
   }, []);
 
@@ -1280,7 +1442,6 @@ function Dashboard() {
     botaoGerenciarRef.current?.focus();
   }
 
-  // Aplica o intervalo escolhido no modal.
   function aplicarPeriodoPersonalizado() {
     setErroPeriodo("");
 
@@ -1298,14 +1459,7 @@ function Dashboard() {
     setPeriodoPersonalizado(false);
   }
 
-  // Exporta os dados visíveis do período selecionado para CSV.
   function exportarDashboard() {
-    const intervalo = obterIntervalo(
-      periodoSelecionado,
-      dataInicio,
-      dataFim
-    );
-
     const periodoTexto =
       periodoSelecionado === "personalizado"
         ? `${dataInicio} até ${dataFim}`
@@ -1376,7 +1530,6 @@ function Dashboard() {
       ]),
     ];
 
-    // Escapa aspas e separa as colunas com ponto e vírgula.
     const conteudoCSV = linhas
       .map((linha) =>
         linha
@@ -1388,7 +1541,6 @@ function Dashboard() {
       )
       .join("\r\n");
 
-    // BOM permite que o Excel reconheça corretamente caracteres acentuados.
     const arquivo = new Blob(
       ["\uFEFF" + conteudoCSV],
       { type: "text/csv;charset=utf-8;" }
@@ -1507,7 +1659,10 @@ function Dashboard() {
       item.status === "atencao" ? "!" : "✓",
   }));
 
-  const lotes = dadosDashboard?.lotes || [];
+  // Lotes sincronizados em tempo real com a validade dos insumos do Estoque
+  const lotesDoEstoque = mapearInsumosParaLotes(insumosEstoque);
+  const lotes = lotesDoEstoque.length > 0 ? lotesDoEstoque : (dadosDashboard?.lotes || []);
+
   const entregas = dadosDashboard?.entregas || [];
   const alertas = dadosDashboard?.alertas || [];
   const fornecedores = dadosDashboard?.fornecedores || [];
@@ -2029,14 +2184,24 @@ function Dashboard() {
                     <span>Lote</span><span>Produto</span><span>Qtd</span><span>Vence</span>
                   </div>
 
-                  {lotes.map((lote, i) => (
-                    <div className="linhaTabela" key={i}>
-                      <span>{lote.codigo}</span>
-                      <span>{lote.produto}</span>
-                      <span>{lote.qtd}</span>
-                      <b className={lote.badgeClass}>{lote.vence}</b>
-                    </div>
-                  ))}
+                  {lotes.length === 0 ? (
+                    <p style={{ padding: "12px 0", color: "#7A6E6C" }}>
+                      Nenhum insumo com validade cadastrada.
+                    </p>
+                  ) : (
+                    lotes.slice(0, 3).map((lote, i) => (
+                      <div
+                        className="linhaTabela"
+                        key={lote.id || i}
+                        title={lote.validadeFormatada ? `Validade: ${lote.validadeFormatada}` : undefined}
+                      >
+                        <span>{lote.codigo}</span>
+                        <span>{lote.produto}</span>
+                        <span>{lote.qtd}</span>
+                        <b className={lote.badgeClass}>{lote.vence}</b>
+                      </div>
+                    ))
+                  )}
                 </div>
               </div>
             </div>
