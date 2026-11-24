@@ -1783,3 +1783,220 @@
 .gmCorpo .listaEntregas {
   margin-top: 8px;
 }
+
+
+
+
+
+/* =========================================================
+   NOVOS GRÁFICOS FINANCEIROS (Faturamento x Lucro + Categorias)
+========================================================= */
+.barraLucro {
+  width: 16px;
+  max-height: 88%;
+  border-radius: 5px 5px 0 0;
+  transform-origin: bottom;
+  background: linear-gradient(180deg, #27a35a 0%, #15803D 100%);
+  transition: filter 0.2s, opacity 0.2s;
+  animation: crescerY 0.9s var(--suave) 0.3s both;
+}
+
+.barraLucro:hover {
+  filter: brightness(1.1);
+  opacity: 1;
+}
+
+.legendaLucro {
+  background: #15803D;
+}
+
+/* Gráfico 2: Receita por categoria de produto */
+.listaCategoriasReceita {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 14px;
+}
+
+.itemCategoriaReceita {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.topoCategoriaReceita {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.nomeCategoriaReceita {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--cor-texto);
+  font: 600 13px "Inter", sans-serif;
+}
+
+.nomeCategoriaReceita i {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.valoresCategoriaReceita {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-variant-numeric: tabular-nums;
+}
+
+.valoresCategoriaReceita strong {
+  color: var(--cor-texto);
+  font: 700 13px "Inter", sans-serif;
+}
+
+.valoresCategoriaReceita small {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: var(--cor-rosa-suave);
+  color: var(--cor-primaria);
+  font: 700 11px "Inter", sans-serif;
+}
+
+.trilhoCategoriaReceita {
+  width: 100%;
+  height: 10px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: var(--cor-trilho);
+}
+
+.preenchimentoCategoriaReceita {
+  height: 100%;
+  border-radius: inherit;
+  transform-origin: left;
+  animation: crescerX 0.9s var(--suave) 0.25s both;
+  transition: width 0.5s var(--suave), filter 0.2s;
+}
+
+.itemCategoriaReceita:hover .preenchimentoCategoriaReceita {
+  filter: brightness(1.08);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .barraLucro,
+  .preenchimentoCategoriaReceita {
+    animation: none;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* =========================================================
+   VOLUME PRODUZIDO POR PERÍODO (Paleta Sweet Sunset)
+========================================================= */
+.volumeProducaoCard {
+  display: flex;
+  flex-direction: column;
+}
+
+.volumeProducaoCard .cabecalhoCardDashboard {
+  margin-bottom: 6px;
+}
+
+.subinfoVolumeProducao {
+  margin: 0 0 14px;
+  color: var(--cor-texto-secundario);
+  font: 400 12px "Inter", sans-serif;
+}
+
+.subinfoVolumeProducao b {
+  color: var(--cor-primaria);
+  font-weight: 600;
+}
+
+.volumeColunasArea {
+  flex: 1;
+  min-height: 175px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 8px;
+  padding-top: 6px;
+  border-bottom: 1px solid var(--cor-borda);
+}
+
+.volumeColunaItem {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.volumeValorTopo {
+  color: var(--cor-texto-secundario);
+  font: 600 11px "Inter", sans-serif;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.volumeValorTopo.pico {
+  color: var(--cor-primaria);
+  font-weight: 700;
+}
+
+.volumeTrilho {
+  width: 18px;
+  height: 122px;
+  border-radius: 6px 6px 0 0;
+  background: var(--cor-trilho);
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+}
+
+.volumeBarra {
+  width: 100%;
+  border-radius: 6px 6px 0 0;
+  background: linear-gradient(180deg, #F0B1BC 0%, #E89CA9 100%);
+  transform-origin: bottom;
+  animation: crescerY 0.9s var(--suave) 0.3s both;
+  transition: filter 0.2s ease, height 0.4s var(--suave);
+}
+
+.volumeBarra.pico {
+  background: linear-gradient(180deg, #B3213B 0%, #8E1027 100%);
+}
+
+.volumeBarra:hover {
+  filter: brightness(1.06);
+}
+
+.volumeRotuloBase {
+  padding-bottom: 8px;
+  color: var(--cor-texto-secundario);
+  font: 500 11px "Inter", sans-serif;
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .volumeBarra {
+    animation: none;
+  }
+}
