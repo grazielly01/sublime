@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import './App.css';
 import Sidebar from "./componentes/Sidebar/Sidebar.jsx";
 import { Routes, Route, useLocation } from "react-router-dom";
@@ -66,6 +67,18 @@ function App() {
     location.pathname === "/login" ||
     location.pathname === "/cadastro" ||
     location.pathname === "/esqueci-senha";
+
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+
+    document
+      .querySelectorAll(".tudoMenosSidebar, .conteudoLogin")
+      .forEach((el) => {
+        el.scrollTop = 0;
+      });
+  }, [location.pathname]);
 
   return (
     <div className="Fundo" style={{ padding: "0px" }}>

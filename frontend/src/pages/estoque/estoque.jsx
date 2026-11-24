@@ -55,6 +55,16 @@ function Estoque() {
     carregarEstoque();
   }, []);
 
+
+  const normalizarDataParaISO = (textoData) => {
+  const limpo = String(textoData || "").trim();
+  if (/^\d{2}\/\d{2}\/\d{4}$/.test(limpo)) {
+    const [dia, mes, ano] = limpo.split("/");
+    return `${ano}-${mes}-${dia}`;
+  }
+  return limpo;
+};
+
   const carregarEstoque = () => {
     setCarregando(true);
     setErro("");
