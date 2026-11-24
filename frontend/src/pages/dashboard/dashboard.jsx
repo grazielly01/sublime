@@ -8,7 +8,6 @@ import {
   salvarMetas as salvarMetasAPI,
 } from "../../services/dashboardService";
 
-
 const API_ESTOQUE = "http://localhost:3000/estoque";
 
 const metasPadrao = [
@@ -18,7 +17,6 @@ const metasPadrao = [
 ];
 
 const LIMITE_DE_METAS = 6;
-const CORES_MIX = ["#9b78d0", "#e8a1b5", "#f2c879", "#75b9a8"];
 
 function parseDataValidade(valor) {
   if (!valor) return null;
@@ -401,37 +399,91 @@ function calcularProducao(historico) {
   };
 }
 
-function calcularMixProducao(historico) {
+function calcularVolumePorPeriodo(historicoProducao, periodo) {
+  const agrupado = agruparHistorico(historicoProducao, periodo, ["quantidade"]);
+  const serie = agrupado.map((item) => ({
+    label: item.mes,
+    valor: Number(item.quantidade) || 0,
+  }));
+
+  const total = serie.reduce((acc, item) => acc + item.valor, 0);
+  const media = serie.length > 0 ? Math.round(total / serie.length) : 0;
+  const pico = serie.length > 0
+    ? serie.reduce((maior, atual) => (atual.valor > maior.valor ? atual : maior), serie[0])
+    : null;
+  const maxValor = Math.max(1, ...serie.map((item) => item.valor));
+
+  return {
+    serie,
+    total,
+    media,
+    pico,
+    maxValor,
+  };
+}
+
+function calcularReceitaPorCategoria(historicoProducao, historicoComercial) {
+  const categorias = [
+    { chave: "bolos", nome: "Bolos", cor: "#8E1027", termos: ["bolo"] },
+    { chave: "tortas", nome: "Tortas", cor: "#B3213B", termos: ["torta"] },
+    {
+      chave: "docesFinos",
+      nome: "Doces finos",
+      cor: "#D96B7E",
+      termos: ["doce", "brigadeiro", "trufa", "macaron", "camafeu"],
+    },
+    { chave: "cupcakes", nome: "Cupcakes", cor: "#E89CA9", termos: ["cupcake"] },
+  ];
+
   const totais = {
     bolos: 0,
-    docesFinos: 0,
     tortas: 0,
+    docesFinos: 0,
     cupcakes: 0,
   };
 
-  (historico || []).forEach((item) => {
-    Object.keys(totais).forEach((categoria) => {
-      totais[categoria] += Number(item.mix?.[categoria]) || 0;
+  let encontrouFaturamentoComercial = false;
+
+  (historicoComercial || []).forEach((dia) => {
+    (dia.vendasProdutos || []).forEach((item) => {
+      const fat = Number(item.faturamento) || 0;
+      if (fat <= 0) return;
+
+      const nomeProd = String(item.produto || "").toLowerCase();
+      const cat =
+        categorias.find((c) => c.termos.some((t) => nomeProd.includes(t))) ||
+        categorias[2];
+
+      totais[cat.chave] += fat;
+      encontrouFaturamentoComercial = true;
     });
   });
 
-  const total = Object.values(totais).reduce((a, b) => a + b, 0);
+  if (!encontrouFaturamentoComercial) {
+    (historicoProducao || []).forEach((item) => {
+      categorias.forEach((cat) => {
+        totais[cat.chave] += Number(item.mix?.[cat.chave]) || 0;
+      });
+    });
+  }
 
-  const nomes = {
-    bolos: "Bolos",
-    docesFinos: "Doces finos",
-    tortas: "Tortas",
-    cupcakes: "Cupcakes",
-  };
+  const totalGeral = Object.values(totais).reduce((acc, v) => acc + v, 0);
+  const maiorValor = Math.max(1, ...Object.values(totais));
 
   return {
-    categorias: Object.entries(totais).map(([chave, quantidade]) => ({
-      nome: nomes[chave],
-      quantidade,
-      percentual: total > 0
-        ? Math.round((quantidade / total) * 100)
-        : 0,
-    })),
+    ehMoeda: encontrouFaturamentoComercial,
+    itens: categorias
+      .map((cat) => {
+        const valor = totais[cat.chave];
+        return {
+          nome: cat.nome,
+          cor: cat.cor,
+          valor,
+          percentualTotal: totalGeral > 0 ? Math.round((valor / totalGeral) * 100) : 0,
+          larguraBarra: Math.round((valor / maiorValor) * 100),
+        };
+      })
+      .sort((a, b) => b.valor - a.valor),
   };
 }
 
@@ -500,20 +552,6 @@ function calcularTopClientes(historico, clientesOriginais) {
   });
 }
 
-function agruparFluxo(historico, periodo) {
-  const grupos = agruparHistorico(
-    historico,
-    periodo,
-    ["entrada", "saida"]
-  );
-
-  return grupos.map((item) => ({
-    dia: item.mes,
-    entrada: item.entrada,
-    saida: item.saida,
-  }));
-}
-
 function calcularIndicadores(financeiro, comercial, producao) {
   const receita = somar(financeiro, "receita");
   const lucro = somar(financeiro, "lucro");
@@ -538,48 +576,6 @@ function calcularIndicadores(financeiro, comercial, producao) {
     { titulo: "Produção do período", valor: `${producao.quantidade.toLocaleString("pt-BR")} un.` },
   ];
 }
-
-
-
-
-
-function mapearPedidosAguardandoParaEntregas(listaPedidos) {
-  if (!Array.isArray(listaPedidos) || listaPedidos.length === 0) return [];
-
-  return listaPedidos
-    .filter((pedido) => String(pedido.status || "").toUpperCase() === "AGUARDANDO")
-    .map((pedido) => {
-      const cliente = pedido.cliente || pedido.estabelecimento || "Cliente";
-
-      const temDescricaoValida =
-        pedido.descricao &&
-        String(pedido.descricao).trim() !== "" &&
-        String(pedido.descricao).trim().toLowerCase() !== "sem descrição informada.";
-
-      const qtdTexto = pedido.itensCount
-        ? `${pedido.itensCount} itens`
-        : pedido.itens || "";
-
-      const produto = temDescricaoValida
-        ? `${pedido.descricao}${qtdTexto ? ` (${qtdTexto})` : ""}`
-        : qtdTexto || "Pedido aguardando";
-
-      const prazoTexto = pedido.entrega || pedido.prazo || "A definir";
-      const urgente =
-        Boolean(pedido.urgente) ||
-        /hoje|urgente/i.test(String(prazoTexto));
-
-      return {
-        id: pedido.id,
-        cliente,
-        produto,
-        quando: prazoTexto,
-        urgente,
-      };
-    });
-}
-
-
 
 function ModalDetalhesCard({ cardKey, onFechar, dados }) {
   const [saindo, setSaindo] = useState(false);
@@ -1397,7 +1393,6 @@ function Dashboard() {
 
     carregarDashboard();
 
-    // Atualiza os lotes caso o usuário volte para a aba do Dashboard após editar o Estoque
     const aoFocarJanela = () => buscarInsumosEstoque();
     window.addEventListener("focus", aoFocarJanela);
 
@@ -1497,6 +1492,14 @@ function Dashboard() {
         Number(item.perdas) || 0,
       ]),
       [],
+      ["RECEITA POR CATEGORIA"],
+      ["Categoria", "Valor", "Participação"],
+      ...receitaCategorias.itens.map((cat) => [
+        cat.nome,
+        receitaCategorias.ehMoeda ? formatarMoeda(cat.valor) : `${cat.valor} un.`,
+        `${cat.percentualTotal}%`,
+      ]),
+      [],
       ["PRODUÇÃO"],
       ["Indicador", "Valor"],
       ["OEE", `${producao.oee}%`],
@@ -1504,6 +1507,13 @@ function Dashboard() {
       ["Desempenho", `${producao.desempenho}%`],
       ["Qualidade", `${producao.qualidade}%`],
       ["Quantidade produzida", producao.quantidade],
+      [],
+      ["VOLUME PRODUZIDO POR PERÍODO"],
+      ["Período", "Unidades"],
+      ...volumeProduzido.serie.map((item) => [
+        item.label,
+        item.valor,
+      ]),
       [],
       ["TOP PRODUTOS"],
       ["Produto", "Quantidade", "Faturamento"],
@@ -1605,34 +1615,38 @@ function Dashboard() {
 
   const kpis = calcularResumoFinanceiro(financeiroPeriodo, financeiroAnterior);
 
-  const receita = agruparHistorico(
+  // GRÁFICO 1: Faturamento vs. Lucro líquido (escala dinâmica real)
+  const faturamentoLucro = agruparHistorico(
     financeiroPeriodo,
     periodoSelecionado,
-    ["receita", "custo"]
+    ["receita", "lucro"]
   );
 
-  const maiorReceita = Math.max(
+  const maiorValorGrafico1 = Math.max(
     1,
-    ...receita.map((item) => Math.max(item.receita, item.custo))
+    ...faturamentoLucro.map((item) => Math.max(item.receita, item.lucro))
   );
 
-  const fluxoSemana = agruparFluxo(financeiroPeriodo, periodoSelecionado);
+  const tetoEscala = Math.ceil(maiorValorGrafico1 / 1000) * 1000;
+  const ticksEscala = [
+    tetoEscala,
+    Math.round(tetoEscala * 0.75),
+    Math.round(tetoEscala * 0.5),
+    Math.round(tetoEscala * 0.25),
+    0,
+  ];
+
+  // GRÁFICO 2: Receita por categoria de produto
+  const receitaCategorias = calcularReceitaPorCategoria(
+    producaoPeriodo,
+    comercialPeriodo
+  );
 
   const producao = calcularProducao(producaoPeriodo);
-  const mixProducao = calcularMixProducao(producaoPeriodo);
-
-  const mixGradiente = (() => {
-    let inicio = 0;
-
-    const partes = mixProducao.categorias.map((item, index) => {
-      const fim = inicio + item.percentual;
-      const parte = `${CORES_MIX[index]} ${inicio}% ${fim}%`;
-      inicio = fim;
-      return parte;
-    });
-
-    return `conic-gradient(${partes.join(", ")})`;
-  })();
+  const volumeProduzido = calcularVolumePorPeriodo(
+    producaoPeriodo,
+    periodoSelecionado
+  );
 
   const produtosCalculados = calcularTopProdutos(comercialPeriodo);
   const clientesCalculados = calcularTopClientes(
@@ -1659,7 +1673,6 @@ function Dashboard() {
       item.status === "atencao" ? "!" : "✓",
   }));
 
-  // Lotes sincronizados em tempo real com a validade dos insumos do Estoque
   const lotesDoEstoque = mapearInsumosParaLotes(insumosEstoque);
   const lotes = lotesDoEstoque.length > 0 ? lotesDoEstoque : (dadosDashboard?.lotes || []);
 
@@ -1799,7 +1812,7 @@ function Dashboard() {
                   setPeriodoPersonalizado(true);
                 }}
               >
-                📅 Período
+                Período
               </button>
 
               <button
@@ -1850,38 +1863,43 @@ function Dashboard() {
             </div>
 
             <div className="gridFinanceiro">
+              {/* GRÁFICO 1: Faturamento vs. Lucro líquido */}
               <div className="cardDashboard graficoReceita">
                 <div className="cabecalhoCardDashboard">
-                  <h3>Receita, custo e meta</h3>
+                  <h3>Faturamento vs. Lucro líquido</h3>
                   <span className="badgeSucesso">Período selecionado</span>
                 </div>
 
                 <div className="graficoArea">
                   <div className="linhasGrafico">
-                    <span>100k</span>
-                    <span>75k</span>
-                    <span>50k</span>
-                    <span>25k</span>
-                    <span>0</span>
+                    {ticksEscala.map((tick, idx) => (
+                      <span key={idx}>
+                        {tick === 0
+                          ? "0"
+                          : tick >= 1000
+                            ? `${(tick / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 1 })}k`
+                            : tick}
+                      </span>
+                    ))}
                   </div>
 
                   <div className="graficoColunas">
-                    {receita.map((item, i) => (
+                    {faturamentoLucro.map((item, i) => (
                       <div className="grupoGrafico" key={`${item.mes}-${i}`}>
                         <div
                           className="barraReceita"
                           style={{
-                            height: `${(item.receita / maiorReceita) * 100}%`,
+                            height: `${(item.receita / tetoEscala) * 100}%`,
                           }}
-                          title={`Receita: ${formatarMoeda(item.receita)}`}
+                          title={`Faturamento: ${formatarMoeda(item.receita)}`}
                         ></div>
 
                         <div
-                          className="barraCusto"
+                          className="barraLucro"
                           style={{
-                            height: `${(item.custo / maiorReceita) * 100}%`,
+                            height: `${(Math.max(0, item.lucro) / tetoEscala) * 100}%`,
                           }}
-                          title={`Custo: ${formatarMoeda(item.custo)}`}
+                          title={`Lucro líquido: ${formatarMoeda(item.lucro)}`}
                         ></div>
 
                         <span>{item.mes}</span>
@@ -1891,9 +1909,8 @@ function Dashboard() {
                 </div>
 
                 <div className="legendaGrafico">
-                  <span><i className="legendaReceita"></i>Receita</span>
-                  <span><i className="legendaCusto"></i>Custo</span>
-                  <span><i className="legendaMeta"></i>Meta</span>
+                  <span><i className="legendaReceita"></i>Faturamento</span>
+                  <span><i className="legendaLucro"></i>Lucro líquido</span>
                 </div>
               </div>
 
@@ -1954,41 +1971,43 @@ function Dashboard() {
               </div>
             </div>
 
-            {/* FLUXO E INSIGHTS */}
+            {/* GRÁFICO 2 E INSIGHTS */}
             <div className="gridDoisDashboard">
               <div className="cardDashboard">
                 <div className="cabecalhoCardDashboard">
-                  <h3>Fluxo de caixa</h3>
+                  <h3>Receita por categoria de produto</h3>
+                  <span className="badgeSucesso">Mix comercial</span>
                 </div>
 
-                <div className="fluxoDashboard">
-                  {fluxoSemana.map((dia, i) => {
-                    const maior = Math.max(dia.entrada, dia.saida, 1);
-
-                    return (
-                      <div className="diaFluxo" key={i}>
-                        <div className="barrasFluxo">
-                          <div
-                            className="barraEntrada"
-                            style={{ height: `${(dia.entrada / maior) * 100}%` }}
-                            title={`Entrada: ${formatarMoeda(dia.entrada)}`}
-                          ></div>
-
-                          <div
-                            className="barraSaida"
-                            style={{ height: `${(dia.saida / maior) * 100}%` }}
-                            title={`Saída: ${formatarMoeda(dia.saida)}`}
-                          ></div>
+                <div className="listaCategoriasReceita">
+                  {receitaCategorias.itens.map((cat) => (
+                    <div className="itemCategoriaReceita" key={cat.nome}>
+                      <div className="topoCategoriaReceita">
+                        <span className="nomeCategoriaReceita">
+                          <i style={{ background: cat.cor }}></i>
+                          {cat.nome}
+                        </span>
+                        <div className="valoresCategoriaReceita">
+                          <strong>
+                            {receitaCategorias.ehMoeda
+                              ? formatarMoeda(cat.valor)
+                              : `${cat.valor.toLocaleString("pt-BR")} un.`}
+                          </strong>
+                          <small>{cat.percentualTotal}%</small>
                         </div>
-                        <span>{dia.dia}</span>
                       </div>
-                    );
-                  })}
-                </div>
 
-                <div className="legendaGrafico">
-                  <span><i className="legendaReceita"></i>Entrada</span>
-                  <span><i className="legendaCusto"></i>Saída</span>
+                      <div className="trilhoCategoriaReceita">
+                        <div
+                          className="preenchimentoCategoriaReceita"
+                          style={{
+                            width: `${cat.larguraBarra}%`,
+                            background: cat.cor,
+                          }}
+                        ></div>
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
 
@@ -2077,25 +2096,62 @@ function Dashboard() {
                 </div>
               </div>
 
-              <div className="cardDashboard">
-                <h3>Mix de produção</h3>
-
-                <div className="mixDashboard">
-                  <div
-                    className="pizzaMix"
-                    style={{ background: mixGradiente }}
-                  ></div>
-
-                  <div className="legendaMix">
-                    {mixProducao.categorias.map((categoria) => (
-                      <span key={categoria.nome}>
-                        <i></i>
-                        {categoria.nome}
-                        <b>{categoria.percentual}%</b>
-                      </span>
-                    ))}
-                  </div>
+              <div className="cardDashboard volumeProducaoCard">
+                <div className="cabecalhoCardDashboard">
+                  <h3>Volume produzido</h3>
+                  <span className="badgeSucesso">
+                    Média: {volumeProduzido.media.toLocaleString("pt-BR")} un.
+                  </span>
                 </div>
+
+                {volumeProduzido.pico && (
+                  <p className="subinfoVolumeProducao">
+                    Pico em <b>{volumeProduzido.pico.label}</b> com{" "}
+                    <b>{volumeProduzido.pico.valor.toLocaleString("pt-BR")} un.</b>
+                  </p>
+                )}
+
+                {volumeProduzido.serie.length === 0 ? (
+                  <p className="metasVazio">
+                    Sem registros de produção no período selecionado.
+                  </p>
+                ) : (
+                  <div className="volumeColunasArea">
+                    {volumeProduzido.serie.map((item, idx) => {
+                      const alturaPct = Math.max(
+                        (item.valor / volumeProduzido.maxValor) * 100,
+                        8
+                      );
+                      const isPico =
+                        volumeProduzido.pico &&
+                        item.label === volumeProduzido.pico.label &&
+                        item.valor === volumeProduzido.pico.valor;
+
+                      const valorCompacto =
+                        item.valor >= 1000
+                          ? `${(item.valor / 1000).toLocaleString("pt-BR", {
+                              maximumFractionDigits: 1,
+                            })}k`
+                          : item.valor.toLocaleString("pt-BR");
+
+                      return (
+                        <div className="volumeColunaItem" key={`${item.label}-${idx}`}>
+                          <span className={`volumeValorTopo ${isPico ? "pico" : ""}`}>
+                            {valorCompacto}
+                          </span>
+                          <div className="volumeTrilho">
+                            <div
+                              className={`volumeBarra ${isPico ? "pico" : ""}`}
+                              style={{ height: `${alturaPct}%` }}
+                              title={`${item.label}: ${item.valor.toLocaleString("pt-BR")} unidades`}
+                            />
+                          </div>
+                          <span className="volumeRotuloBase">{item.label}</span>
+                        </div>
+                      );
+                    })}
+                  </div>
+                )}
               </div>
 
               <div className="cardDashboard">
