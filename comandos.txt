@@ -1,0 +1,34 @@
+!!!COMANDOS!!!
+
+    -cd mobile
+
+    -npm install
+    -npm install lucide-react-native
+    -npm install expo-font
+    -npx expo install expo-linear-gradient
+    -npx expo install expo-document-picker
+    -npx expo install @react-native-async-storage/async-storage  (SO USA ESSE SE DER UM CERTO ERRO)
+
+
+
+    -cd backend
+
+    -npm install multer
+    -npm run dev
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+PRA BAIXAR O PRISMA:
+
+    -npm install -D prisma@7 @types/node
+    -npm install @prisma/client@7 @prisma/adapter-mariadb dotenv
+
+
+--------------------------------------------------------------------------------------------------------------------------------------
+
+
+PRA RODAR:
+
+    -npx expo start
