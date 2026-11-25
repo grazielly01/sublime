@@ -1,3 +1,5 @@
+CREATE DATABASE  IF NOT EXISTS `sublime_db` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+USE `sublime_db`;
 -- MySQL dump 10.13  Distrib 8.0.44, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: sublime_db
@@ -538,3 +540,57 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2026-11-23 17:10:56
+
+
+
+-- 1. Categorias de eventos
+SELECT * FROM categoria_evento;
+
+-- 2. Categorias de insumos
+SELECT * FROM categoria_insumos;
+
+-- 3. Clientes
+SELECT * FROM cliente;
+
+-- 4. Entradas financeiras
+SELECT * FROM entradas;
+
+-- 5. Eventos
+SELECT * FROM evento;
+
+-- 6. Fábricas
+SELECT * FROM fabrica;
+
+-- 7. Fornecedores
+SELECT * FROM fornecedores;
+
+-- 8. Funcionários
+SELECT * FROM funcionarios;
+
+-- 9. Insumos
+SELECT * FROM insumos;
+
+-- 10. Metas
+SELECT * FROM meta;
+
+-- 11. Movimentações
+SELECT * FROM movimentacoes;
+
+-- 12. Ordens de produção
+SELECT * FROM ordens_producao;
+
+-- 13. Pedidos
+SELECT * FROM pedido;
+
+-- 14. Itens dos pedidos
+SELECT * FROM pedido_item;
+
+-- 15. Produtos
+SELECT * FROM produtos;
+
+-- 16. Saídas financeiras
+SELECT * FROM saidas;
+
+-- 17. Usuários
+SELECT * FROM usuario;
+
