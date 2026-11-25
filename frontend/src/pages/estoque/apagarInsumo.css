@@ -1,98 +1,197 @@
-/*         DIV Q ABRIGA TUDO         */
-
-
-.tudoApagarInsumo{
-    width: 93%;
-    min-height: 170vh;
-    display: flex;
+/* =====================================================
+   POP-UP CONFIRMAÇÃO DE EXCLUSÃO — PROPORÇÃO EXATA
+===================================================== */
+.modalOverlayConfirmacao {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(35, 16, 21, 0.48);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 20px;
+  box-sizing: border-box;
+  animation: fadeOverlayConfirmacao 0.2s ease both;
 }
 
-
-/*        TUDO MENOS A SIDEBAR. APROVADO
-*/
-
-
-.tudoMenosSidebar{
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    min-height: 100vh;
-    box-sizing: border-box;
-    margin-left: 68px; /*abre espaço pro menu lateral fechado (q é 68px)*/
-    background-color: #FDEDE8;
+@keyframes fadeOverlayConfirmacao {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
-
-/*        CONTEÚDO DA PÁGINA (embaixo do Header)        */
-
-
-.conteudoApagarInsumo{
-    padding-top: 6%;
-    box-sizing: border-box;
+.janelaConfirmacaoPopup {
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  padding: 28px 28px 24px;
+  background-color: #FFFFFF;
+  border: 1px solid #EDE3E1;
+  border-radius: 18px;
+  box-shadow: 0 22px 48px rgba(25, 12, 16, 0.22);
+  box-sizing: border-box;
+  font-family: "Inter", sans-serif;
+  text-align: center;
+  animation: entrarCardConfirmacao 0.24s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
-.tituloESetinha{
-    display: flex;
-    align-items: center;
-    gap: 16px;
+@keyframes entrarCardConfirmacao {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
 
-.tituloApagarInsumo{
-    margin: 0;
-    font-size: 350%;
-    color: #870B22;
+.janelaConfirmacaoPopup .botaoFecharModal {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  padding: 0;
+  border-radius: 999px;
+  border: none;
+  background: transparent;
+  color: #7A6E6C;
+  font-size: 20px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background-color 0.18s ease, color 0.18s ease;
 }
 
-.svgSetinha{
-    cursor: pointer;
+.janelaConfirmacaoPopup .botaoFecharModal:hover {
+  background-color: #FBEAED;
+  color: #8E1027;
 }
 
-
-/*        JANELA DE CONFIRMAÇÃO        */
-
-
-.janelaConfirmacao{
-    background-color: white;
-    border: 1px solid #870B22;
-    border-radius: 12px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    width: 620px;
-    max-width: 100%;
-    margin: 20vh auto 0 auto; /*"auto" na esquerda e direita centraliza a janela horizontalmente*/
-    padding: 48px 32px;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.iconeAlertaConfirmacao {
+  width: 48px;
+  height: 48px;
+  margin: 0 auto 14px;
+  border-radius: 999px;
+  background-color: #FDE8EA;
+  color: #8E1027;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.perguntaConfirmacao{
-    margin: 0 0 32px 0;
-    font-size: 29px;
-    font-weight: 600;
-    color: #870B22;
-    text-align: center;
+.iconeAlertaConfirmacao svg {
+  width: 22px;
+  height: 22px;
 }
 
-.botoesConfirmacao{
-    display: flex;
-    flex-direction: row;
-    gap: 16px;
-    margin-left: 50%;
+.janelaConfirmacaoPopup .tituloApagarInsumo {
+  margin: 0 0 8px;
+  font-size: 19px;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: #1F2328;
+  font-family: "Inter", sans-serif;
 }
 
-.botoesConfirmacao .button{
-    width: auto;
-    padding: 12px 32px;
-    border-radius: 30px;
+.janelaConfirmacaoPopup .perguntaConfirmacao {
+  margin: 0 0 6px;
+  font-size: 13.5px;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #5C626D;
 }
 
-.botaoContorno .button{
-    background-color: white;
-    border: 1px solid #870B22;
-    color: #000;
+.janelaConfirmacaoPopup .perguntaConfirmacao strong {
+  display: inline;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: #8E1027;
+  font-weight: 600;
 }
 
-.botaoContorno .button:hover{
-    background-color: #fdf0ee;
+.janelaConfirmacaoPopup .subtextoConfirmacao {
+  margin: 0 0 22px;
+  font-size: 12px;
+  line-height: 1.45;
+  font-weight: 400;
+  color: #8C929C;
+}
+
+.janelaConfirmacaoPopup .botoesConfirmacao {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  width: 100%;
+}
+
+.janelaConfirmacaoPopup .botoesConfirmacao .botaoContorno {
+  display: flex;
+  width: 100%;
+}
+
+.janelaConfirmacaoPopup .botoesConfirmacao .button {
+  width: 100%;
+  min-width: 0;
+  height: 42px;
+  min-height: 42px;
+  max-height: 42px;
+  padding: 0 14px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: linear-gradient(120deg, #6F0C1E 0%, #8E1027 50%, #B3213B 100%);
+  color: #FFFFFF;
+  font-family: "Inter", sans-serif;
+  font-size: 13.5px;
+  line-height: 1;
+  font-weight: 600;
+  white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(142, 16, 39, 0.24);
+  transition: transform 0.18s ease, box-shadow 0.22s ease, opacity 0.18s ease;
+}
+
+.janelaConfirmacaoPopup .botoesConfirmacao .button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(142, 16, 39, 0.32);
+}
+
+.janelaConfirmacaoPopup .botoesConfirmacao .botaoContorno .button {
+  background: #FFFFFF;
+  border: 1px solid #D8DCE2;
+  color: #374151;
+  box-shadow: none;
+}
+
+.janelaConfirmacaoPopup .botoesConfirmacao .botaoContorno .button:hover:not(:disabled) {
+  background: #FAF6F5;
+  border-color: #C8B8B6;
+  color: #8E1027;
+}
+
+.janelaConfirmacaoPopup .botoesConfirmacao .button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+@media (max-width: 480px) {
+  .janelaConfirmacaoPopup {
+    padding: 24px 20px 20px;
+  }
+
+  .janelaConfirmacaoPopup .botoesConfirmacao {
+    grid-template-columns: 1fr;
+  }
 }
