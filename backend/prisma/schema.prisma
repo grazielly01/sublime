@@ -128,14 +128,17 @@ model movimentacoes {
   tipo_movimentacao   movimentacoes_tipo_movimentacao?
 }
 
+
 model ordens_producao {
-  id_ordem           Int                           @id @default(autoincrement())
-  nome_produto_ordem String                        @db.VarChar(100)
-  quantidade_total   Int
-  quantidade_feita   Int?                          @default(0)
-  status_ordem       ordens_producao_status_ordem? @default(na_fila)
-  prazo_ordem        DateTime                      @db.Date
+  id_ordem             Int                           @id @default(autoincrement())
+  nome_produto_ordem   String                        @db.VarChar(100)
+  quantidade_total     Int
+  quantidade_feita     Int?                          @default(0)
+  status_ordem         ordens_producao_status_ordem? @default(na_fila)
+  prazo_ordem          DateTime                      @db.Date
+  data_conclusao_ordem DateTime?                     @db.DateTime(0)
 }
+
 
 model pedido {
   id_pedido               Int                   @id @default(autoincrement())
@@ -273,7 +276,7 @@ enum produtos_categ_produto {
 
 enum saidas_tipo_saida {
   fixa
-  vari_vel @map("variável")
+  variavel
 }
 
 enum cliente_status_cliente {

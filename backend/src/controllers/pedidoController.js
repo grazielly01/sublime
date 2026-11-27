@@ -119,41 +119,54 @@ class PedidoController {
   }
 
   // PATCH /pedidos/:id/status - Altera o status no banco
-  async atualizarStatus(req, res) {
-    try {
-      const id = Number(req.params.id);
-      const { status } = req.body;
-      const statusBanco = normalizarStatus(status);
 
-      if (!statusBanco) {
-        return res.status(400).json({ error: 'Status inválido.' });
-      }
+async atualizarStatus(req, res) {
+  try {
+    const id = Number(req.params.id);
+    const status = normalizarStatus(req.body.status);
 
-      const pedido = await prisma.pedido.update({
-        where: { id_pedido: id },
-        data: { status_pedido: statusBanco },
-        include: { cliente: true }
+    const atual = await prisma.ordens_producao.findUnique({
+      where: { id_ordem: id }
+    });
+
+    if (!atual) {
+      return res.status(404).json({
+        error: 'Ordem não encontrada.'
       });
-
-      return res.json({
-        id: pedido.id_pedido,
-        cliente: pedido.cliente?.nome_cliente || '',
-        itensCount: pedido.qtde_produto_pedido,
-        entrega: pedido.data_entrega_pedido
-          ? pedido.data_entrega_pedido.toISOString().slice(0, 10)
-          : 'A definir',
-        valorTotal: pedido.vlr_total_pedido ? Number(pedido.vlr_total_pedido) : 0,
-        status: formatarStatus(pedido.status_pedido)
-      });
-    } catch (erro) {
-      if (erro?.code === 'P2025') {
-        return res.status(404).json({ error: 'Pedido não encontrado.' });
-      }
-
-      console.error('Erro ao atualizar pedido:', erro);
-      return res.status(500).json({ error: 'Erro ao atualizar pedido no banco de dados.' });
     }
+
+    const ordem = await prisma.ordens_producao.update({
+      where: { id_ordem: id },
+      data: {
+        status_ordem: status,
+
+        quantidade_feita: status === 'concluida'
+          ? atual.quantidade_total
+          : atual.quantidade_feita,
+
+        data_conclusao_ordem: status === 'concluida'
+          ? (atual.data_conclusao_ordem || new Date())
+          : null
+      }
+    });
+
+    return res.json({
+      id: ordem.id_ordem,
+      produto: ordem.nome_produto_ordem,
+      quantidadeTotal: ordem.quantidade_total,
+      quantidadeFeita: ordem.quantidade_feita,
+      status: formatarStatus(ordem.status_ordem),
+      dataConclusao: ordem.data_conclusao_ordem
+    });
+
+  } catch (error) {
+    console.error('Erro ao atualizar ordem:', error);
+
+    return res.status(500).json({
+      error: 'Erro ao atualizar ordem no banco de dados.'
+    });
   }
+}
 }
 
 module.exports = new PedidoController();

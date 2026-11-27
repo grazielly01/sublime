@@ -93,7 +93,7 @@ class CaixaController {
           data: {
             nome_saida: description.trim(),
             data_saida: new Date(`${date}T00:00:00`),
-            tipo_saida: category === 'FIXED' ? 'fixa' : 'vari_vel',
+            tipo_saida: category === 'FIXED' ? 'fixa' : 'variavel',
             valor_saida: valor
           }
         });
