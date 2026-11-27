@@ -50,7 +50,7 @@ async function obterResumoKpis(req, res) {
             message: "Não foi possível carregar os indicadores da Visão Geral."
         });
     }
-}
 
+}
 // Exporta a função para ser utilizada na rota do dashboard
 module.exports = { obterResumoKpis };

@@ -90,3 +90,4 @@ class ProducaoController {
 }
 
 module.exports = new ProducaoController();
+module.exports = new ProducaoController();

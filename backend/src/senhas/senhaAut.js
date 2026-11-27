@@ -20,7 +20,8 @@ module.exports = (req, res, next) => {
 
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
-    req.usuarioId = decoded.id; // Salva o ID do usuário na requisição
+    req.usuarioId = decoded.id;
+    req.usuario = { id: decoded.id, email: decoded.email };
     return next();
   } catch (err) {
     return res.status(401).json({ error: 'Token inválido ou expirado.' });
