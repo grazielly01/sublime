@@ -1,327 +1,150 @@
-
-// Array que simula a tabela do banco de dados
-let insumosMock = [
-  {
-    id: 1,
-    nome: "Chocolate ao leite Callebaut 80g",
-    categoria: "Cacau e chocolates",
-    lote: "LT-0421",
-    quantidade: 200,
-    minimo: 250,
-    validade: "2026-12-08T00:00:00.000Z",
-    custo: 78.50
-  },
-  {
-    id: 2,
-    nome: "Açúcar refinado 2kg",
-    categoria: "Doces",
-    lote: "LT-0419",
-    quantidade: 180,
-    minimo: 120,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 142.00
-  },
-  {
-    id: 3,
-    nome: "Leite Condensado Moça",
-    categoria: "Laticínios",
-    lote: "LT-0425",
-    quantidade: 120,
-    minimo: 100,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 142.00
-  },
-  {
-    id: 4,
-    nome: "Ovos brancos tipo extra 12unid",
-    categoria: "Ovos e derivados",
-    lote: "LT-0426",
-    quantidade: 104,
-    minimo: 60,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 0.55
-  },
-  {
-    id: 5,
-    nome: "Creme de leite UHT 400ml",
-    categoria: "Laticínios",
-    lote: "LT-0427",
-    quantidade: 80,
-    minimo: 90,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 4.20
-  },
-  {
-    id: 6,
-    nome: "Farinha de trigo especial 300g",
-    categoria: "Farinhas e massas",
-    lote: "LT-0428",
-    quantidade: 200,
-    minimo: 100,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 142.00
-  },
-  {
-    id: 7,
-    nome: "Açucar mascavo 300g",
-    categoria: "Farinhas e massas",
-    lote: "LT-0429",
-    quantidade: 60,
-    minimo: 40,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 142.00
-  },
-  {
-    id: 8,
-    nome: "Chocolate branco callebaut 300g",
-    categoria: "Cacau e chocolates",
-    lote: "LT-0430",
-    quantidade: 45,
-    minimo: 20,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 142.00
-  },
-  {
-    id: 9,
-    nome: "Fermento especial 300g",
-    categoria: "Fermentos",
-    lote: "LT-0431",
-    quantidade: 100,
-    minimo: 50,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 142.00
-  },
-  {
-    id: 10,
-    nome: "Óleo Vegetal 300ml",
-    categoria: "Gorduras/óleos",
-    lote: "LT-0432",
-    quantidade: 10,
-    minimo: 6,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 142.00
-  },
-  {
-    id: 11,
-    nome: "Morango congelado 300g",
-    categoria: "Frutas",
-    lote: "LT-0432",
-    quantidade: 30,
-    minimo: 15,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 142.00
-  },
-  {
-    id: 12,
-    nome: "Granulado TOP 400g",
-    categoria: "Confeitos e finalizações",
-    lote: "LT-0432",
-    quantidade: 20,
-    minimo: 15,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 142.00
-  },
-  {
-    id: 13,
-    nome: "Essência de baunilha 30ml",
-    categoria: "Essências e aromatizantes",
-    lote: "LT-0432",
-    quantidade: 10,
-    minimo: 15,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 142.00
-  },
-  {
-    id: 14,
-    nome: "Corante ARCOLOR 10ml",
-    categoria: "Corantes",
-    lote: "LT-0432",
-    quantidade: 25,
-    minimo: 15,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 142.00
-  },
-  {
-    id: 15,
-    nome: "Embalagem para Torta Redonda Alta S-50 ",
-    categoria: "Embalagens",
-    lote: "LT-0432",
-    quantidade: 10,
-    minimo: 15,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 142.00
-  },
-  {
-    id: 16,
-    nome: "Bicos de confeitar",
-    categoria: "Decorações",
-    lote: "LT-0432",
-    quantidade: 30,
-    minimo: 15,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 142.00
-  },
-  {
-    id: 17,
-    nome: "Palitos de madeira",
-    categoria: "Outros",
-    lote: "LT-0432",
-    quantidade: 10,
-    minimo: 15,
-    validade: "2026-11-30T00:00:00.000Z",
-    custo: 142.00
-  }
-];
-
-let proximoId = Math.max(...insumosMock.map(item => item.id)) + 1;
+const prisma = require('../config/database');
 
 class EstoqueController {
-
-  // GET /estoque
   async listar(req, res) {
-    const resultado = insumosMock.map(item => {
-      const precisaRepor =
-        Number(item.quantidade) <= Number(item.minimo);
-
-      return {
-        ...item,
-        status: precisaRepor ? "Repor" : "OK"
-      };
-    });
-
-    const abaixoDoMinimoCount = resultado.filter(
-      item => item.status === "Repor"
-    ).length;
-
-    return res.json({
-      abaixoDoMinimoCount,
-      total: resultado.length,
-      data: resultado
-    });
-  }
-
-  // POST /estoque
-  async criar(req, res) {
-    try {
-      const {
-        nome,
-        categoria,
-        lote,
-        quantidade,
-        minimo,
-        validade,
-        custo
-      } = req.body;
-
-      if (
-        !nome ||
-        !lote ||
-        !validade ||
-        quantidade === undefined ||
-        minimo === undefined ||
-        custo === undefined
-      ) {
-        return res.status(400).json({
-          mensagem: "Preencha todos os campos obrigatórios."
-        });
-      }
-
-      const novoItem = {
-        id: proximoId++,
-        nome,
-        categoria: categoria || "Outros",
-        lote,
-        quantidade: Number(quantidade),
-        minimo: Number(minimo),
-        validade,
-        custo: Number(custo)
-      };
-
-      insumosMock.push(novoItem);
-
-      return res.status(201).json(novoItem);
-
-    } catch (erro) {
-      return res.status(500).json({
-        mensagem: "Erro ao cadastrar insumo."
+     try {
+      const insumos = await prisma.insumos.findMany({
+        include: { categoria_insumos: true, fornecedores: true },
+        orderBy: { idInsumo: 'desc' }
       });
+
+ const resultado = insumos.map((item) => {
+        const quantidade = Number(item.qtde_em_estoque_insumo || 0);
+        const minimo = Number(item.qtde_minima_insumo || 0);
+        return {
+          id: item.idInsumo,
+          nome: item.nome_insumo || '',
+          categoria: item.categoria_insumos?.nome_categoria_insumos || 'Outros',
+          lote: item.lote_insumo || '',
+          quantidade,
+          minimo,
+          validade: item.data_validade_insumo
+            ? item.data_validade_insumo.toISOString()
+            : null,
+          custo: item.custo_unit_insumo ? Number(item.custo_unit_insumo) : 0,
+          status: quantidade <= minimo ? 'Repor' : 'OK'
+        };
+      });
+
+ const abaixoDoMinimoCount = resultado.filter((item) => item.status === 'Repor').length;
+      return res.json({ abaixoDoMinimoCount, total: resultado.length, data: resultado });
+    } catch (error) {
+      console.error('Erro ao listar estoque:', error);
+      return res.status(500).json({ mensagem: 'Erro ao carregar estoque do banco de dados.' });
     }
   }
-
-  // PUT /estoque/:id
+  async criar(req, res) {
+    try {
+   const { nome, categoria, lote, quantidade, minimo, validade, custo } = req.body;
+  if (!nome || !lote || !validade || quantidade === undefined || minimo === undefined || custo === undefined) {
+        return res.status(400).json({ mensagem: 'Preencha todos os campos obrigatórios.' });
+      }
+   let categoriaDb = null;
+      if (categoria) {
+        categoriaDb = await prisma.categoria_insumos.findFirst({
+          where: { nome_categoria_insumos: categoria }
+        });
+ if (!categoriaDb) {
+          categoriaDb = await prisma.categoria_insumos.create({
+            data: { nome_categoria_insumos: categoria }
+          });
+        }
+      }
+const item = await prisma.insumos.create({
+        data: {
+          nome_insumo: nome,
+          qtde_em_estoque_insumo: Number(quantidade),
+          qtde_minima_insumo: Number(minimo),
+          data_validade_insumo: new Date(validade),
+          categoria_insumo: categoriaDb?.id_categoria_insumos || null,
+          custo_unit_insumo: Number(custo),
+          lote_insumo: lote,
+          status_insumo: Number(quantidade) <= Number(minimo) ? 'repor' : 'ok'
+        },
+        include: { categoria_insumos: true }
+      });
+ return res.status(201).json({
+        id: item.idInsumo,
+        nome: item.nome_insumo,
+        categoria: item.categoria_insumos?.nome_categoria_insumos || 'Outros',
+        lote: item.lote_insumo,
+        quantidade: Number(item.qtde_em_estoque_insumo),
+        minimo: Number(item.qtde_minima_insumo),
+        validade: item.data_validade_insumo?.toISOString(),
+        custo: Number(item.custo_unit_insumo)
+      });
+    } catch (error) {
+      console.error('Erro ao criar insumo:', error);
+      return res.status(500).json({ mensagem: 'Erro ao cadastrar insumo no banco de dados.' });
+    }
+  }
   async atualizar(req, res) {
     try {
       const id = Number(req.params.id);
-
-      const indice = insumosMock.findIndex(
-        item => item.id === id
-      );
-
-      if (indice === -1) {
-        return res.status(404).json({
-          mensagem: "Insumo não encontrado."
-        });
-      }
-
       const dados = req.body;
 
-      insumosMock[indice] = {
-        ...insumosMock[indice],
-        ...dados,
-        id,
-        quantidade:
-          dados.quantidade !== undefined
-            ? Number(dados.quantidade)
-            : insumosMock[indice].quantidade,
-        minimo:
-          dados.minimo !== undefined
-            ? Number(dados.minimo)
-            : insumosMock[indice].minimo,
-        custo:
-          dados.custo !== undefined
-            ? Number(dados.custo)
-            : insumosMock[indice].custo
-      };
+      const atual = await prisma.insumos.findUnique({ where: { idInsumo: id } });
+      if (!atual) return res.status(404).json({ mensagem: 'Insumo não encontrado.' });
+const quantidade = dados.quantidade !== undefined ? Number(dados.quantidade) : atual.qtde_em_estoque_insumo;
+      const minimo = dados.minimo !== undefined ? Number(dados.minimo) : atual.qtde_minima_insumo;
+ let categoriaInsumo = atual.categoria_insumo;
+      if (dados.categoria) {
+        let categoria = await prisma.categoria_insumos.findFirst({
+          where: { nome_categoria_insumos: dados.categoria }
+        });
+        if (!categoria) {
+          categoria = await prisma.categoria_insumos.create({
+            data: { nome_categoria_insumos: dados.categoria }
+          });
+        }
+        categoriaInsumo = categoria.id_categoria_insumos;
+      }
+       const item = await prisma.insumos.update({
+        where: { idInsumo: id },
+        data: {
+          nome_insumo: dados.nome ?? atual.nome_insumo,
+          lote_insumo: dados.lote ?? atual.lote_insumo,
+          qtde_em_estoque_insumo: quantidade,
+          qtde_minima_insumo: minimo,
+          custo_unit_insumo: dados.custo !== undefined ? Number(dados.custo) : atual.custo_unit_insumo,
+          data_validade_insumo: dados.validade ? new Date(dados.validade) : atual.data_validade_insumo,
+          categoria_insumo: categoriaInsumo,
+          status_insumo: Number(quantidade) <= Number(minimo) ? 'repor' : 'ok'
+        },
+        include: { categoria_insumos: true }
+      });
 
       return res.json({
-        mensagem: "Insumo atualizado com sucesso!",
-        data: insumosMock[indice]
+        mensagem: 'Insumo atualizado com sucesso!',
+        data: {
+          id: item.idInsumo,
+          nome: item.nome_insumo,
+          categoria: item.categoria_insumos?.nome_categoria_insumos || 'Outros',
+          lote: item.lote_insumo,
+          quantidade: Number(item.qtde_em_estoque_insumo),
+          minimo: Number(item.qtde_minima_insumo),
+          validade: item.data_validade_insumo?.toISOString(),
+          custo: Number(item.custo_unit_insumo),
+          status: Number(item.qtde_em_estoque_insumo) <= Number(item.qtde_minima_insumo) ? 'Repor' : 'OK'
+        }
       });
-
-    } catch (erro) {
-      return res.status(500).json({
-        mensagem: "Erro ao atualizar insumo."
-      });
+    } catch (error) {
+      console.error('Erro ao atualizar insumo:', error);
+      return res.status(500).json({ mensagem: 'Erro ao atualizar insumo no banco de dados.' });
     }
   }
 
-  // DELETE /estoque/:id
   async excluir(req, res) {
     try {
-      const id = Number(req.params.id);
-
-      const indice = insumosMock.findIndex(
-        item => item.id === id
-      );
-
-      if (indice === -1) {
-        return res.status(404).json({
-          mensagem: "Insumo não encontrado."
-        });
+       await prisma.insumos.delete({ where: { idInsumo: Number(req.params.id) } });
+      return res.json({ mensagem: 'Insumo excluído com sucesso!' });
+    } catch (error) {
+      if (error?.code === 'P2025') {
+        return res.status(404).json({ mensagem: 'Insumo não encontrado.' });
       }
 
-      insumosMock.splice(indice, 1);
-
-      return res.json({
-        mensagem: "Insumo excluído com sucesso!"
-      });
-
-    } catch (erro) {
-      return res.status(500).json({
-        mensagem: "Erro ao excluir insumo."
-      });
+        console.error('Erro ao excluir insumo:', error);
+      return res.status(500).json({ mensagem: 'Erro ao excluir insumo no banco de dados.' });
     }
   }
 }
-
-module.exports = new EstoqueController();

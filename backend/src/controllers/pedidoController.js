@@ -1,160 +1,154 @@
-let pedidosMock = [
-  {
-    id: 1,
-    cliente: "Padaria São José",
-    itensCount: 4,
-    entrega: "19/05 16h",
-    valorTotal: 2840.00,
-    status: "EM_PRODUCAO"
-  },
-  {
-    id: 2,
-    cliente: "Mercado Bom Preço",
-    itensCount: 7,
-    entrega: "20/05 09h",
-    valorTotal: 5610.00,
-    status: "AGUARDANDO"
-  },
-  {
-    id: 3,
-    cliente: "Confeitaria Doce Lar",
-    itensCount: 2,
-    entrega: "19/05 18h",
-    valorTotal: 3120.00,
-    status: "PRONTO"
-  },
-  {
-    id: 4,
-    cliente: "Tia Bete Bolos",
-    itensCount: 3,
-    entrega: "18/05",
-    valorTotal: 1450.00,
-    status: "ENTREGUE"
-  },
-  {
-    id: 5,
-    cliente: "Empório Café & Cia",
-    itensCount: 5,
-    entrega: "20/05 14h",
-    valorTotal: 2210.00,
-    status: "EM_PRODUCAO"
-  },
-  {
-    id: 6,
-    cliente: "Padaria Pão Quente",
-    itensCount: 6,
-    entrega: "A definir",
-    valorTotal: 4180.00,
-    status: "CANCELADO"
-  },
-  {
-    id: 7,
-    cliente: "Doceria Flor de açúcar",
-    itensCount: 3,
-    entrega: "A definir",
-    valorTotal: 1890.00,
-    status: "AGUARDANDO"
-  },
-  {
-    id: 8,
-    cliente: "Padaria Trigo Dourado",
-    itensCount: 8,
-    entrega: "A definir",
-    valorTotal: 6300.00,
-    status: "EM_PRODUCAO"
-  },
-  {
-    id: 9,
-    cliente: "Café & Cia Express",
-    itensCount: 2,
-    entrega: "A definir",
-    valorTotal: 980.00,
-    status: "PRONTO"
-  },
-  {
-    id: 10,
-    cliente: "Padaria Pão Mercearia Sabor Caseiro",
-    itensCount: 5,
-    entrega: "A definir",
-    valorTotal: 2750.00,
-    status: "ENTREGUE"
-  },
-  {
-    id: 11,
-    cliente: "Confeitaria Doce Encanto",
-    itensCount: 4,
-    entrega: "A definir",
-    valorTotal: 3450.00,
-    status: "AGUARDANDO"
-  },
-  {
-    id: 12,
-    cliente: "Padaria Estrela Dourada",
-    itensCount: 6,
-    entrega: "A definir",
-    valorTotal: 5100.00,
-    status: "CANCELADO"
+const prisma = require('../config/database');
+
+function normalizarStatus(status) {
+  if (!status) return undefined;
+
+  const valor = String(status).toUpperCase();
+  if (valor === 'EM_PRODUCAO' || valor === 'EM PRODUÇÃO') {
+    return 'em_produ__o';
   }
-];
+
+  const mapa = {
+    AGUARDANDO: 'aguardando',
+    PRONTO: 'pronto',
+    ENTREGUE: 'entregue',
+    CANCELADO: 'cancelado'
+  };
+
+  return mapa[valor];
+}
+
+function formatarStatus(status) {
+  if (!status) return 'AGUARDANDO';
+
+  const valor = String(status).toLowerCase();
+  if (valor === 'em producao' || valor === 'em produção' || valor === 'em_produ__o') {
+    return 'EM_PRODUCAO';
+  }
+
+  return valor.toUpperCase();
+}
 
 class PedidoController {
   // GET /pedidos - Aceita filtro por Query Param: ?status=AGUARDANDO
   async listar(req, res) {
+    try {
+      const { status } = req.query;
+      const statusFiltro = status && status.toUpperCase() !== 'TODOS'
+        ? normalizarStatus(status)
+        : undefined;
 
-    console.log("pppppppppppppppppppppppppppppppppp");
+         const pedidos = await prisma.pedido.findMany({
+        where: statusFiltro ? { status_pedido: statusFiltro } : undefined,
+        include: {
+          cliente: true,
+          pedido_item: true
+        },
+        orderBy: { id_pedido: 'desc' }
+      });
 
-    const { status } = req.query;
+       const resultado = pedidos.map((pedido) => ({
+        id: pedido.id_pedido,
+        cliente: pedido.cliente?.nome_cliente || '',
+        clienteId: pedido.cliente_pedido,
+        itensCount: pedido.qtde_produto_pedido || pedido.pedido_item?.length || 1,
+        entrega: pedido.data_entrega_pedido
+          ? pedido.data_entrega_pedido.toISOString().slice(0, 10)
+          : 'A definir',
+        valorTotal: pedido.vlr_total_pedido ? Number(pedido.vlr_total_pedido) : 0,
+        status: formatarStatus(pedido.status_pedido),
+        descricao: pedido.descricao_pedido,
+        produto: pedido.nome_produto_pedido
+      }));
 
-    let resultado = pedidosMock;
-
-    // Se um filtro de status for enviado e não for 'TODOS'
-    if (status && status.toUpperCase() !== 'TODOS') {
-      resultado = pedidosMock.filter(
-        (p) => p.status.toUpperCase() === status.toUpperCase()
-      );
+            return res.json({
+        total: resultado.length,
+        data: resultado
+      });
+    } catch (erro) {
+      console.error('Erro ao listar pedidos:', erro);
+      return res.status(500).json({ error: 'Erro ao carregar pedidos do banco de dados.' });
     }
-
-    return res.json({
-      total: resultado.length,
-      data: resultado
-    });
-  }
-
-  // POST /pedidos - Cadastra um novo pedido (+ Novo pedido)
+     }
+      // POST /pedidos - Cadastra um novo pedido
   async criar(req, res) {
-    const { cliente, itensCount, entrega, valorTotal } = req.body;
+  try {
+      const { cliente, itensCount, entrega, valorTotal, descricao, status } = req.body;
 
-    if (!cliente || !valorTotal) {
-      return res.status(400).json({ error: "Cliente e valor são obrigatórios." });
+       if (!cliente || valorTotal === undefined) {
+        return res.status(400).json({ error: 'Cliente e valor são obrigatórios.' });
+      }
+
+      let clientePedido = await prisma.cliente.findFirst({
+        where: { nome_cliente: cliente }
+      });
+
+      if (!clientePedido) {
+        clientePedido = await prisma.cliente.create({
+          data: { nome_cliente: cliente }
+        });
+      }
+      const novoPedido = await prisma.pedido.create({
+        data: {
+          cliente_pedido: clientePedido.id_cliente,
+          nome_produto_pedido: descricao || 'Pedido',
+          data_entrega_pedido: entrega ? new Date(entrega) : null,
+          qtde_produto_pedido: Number(itensCount) || 1,
+          status_pedido: normalizarStatus(status) || 'aguardando',
+          vlr_total_pedido: Number(valorTotal),
+          descricao_pedido: descricao || null
+        }
+      });
+
+      return res.status(201).json({
+        id: novoPedido.id_pedido,
+        cliente,
+        itensCount: novoPedido.qtde_produto_pedido,
+        entrega: novoPedido.data_entrega_pedido
+          ? novoPedido.data_entrega_pedido.toISOString().slice(0, 10)
+          : 'A definir',
+        valorTotal: Number(novoPedido.vlr_total_pedido),
+        status: formatarStatus(novoPedido.status_pedido)
+      });
+    } catch (erro) {
+      console.error('Erro ao criar pedido:', erro);
+      return res.status(500).json({ error: 'Erro ao cadastrar pedido no banco de dados.' });
     }
-
-    const novoPedido = {
-      id: pedidosMock.length + 1,
-      cliente,
-      itensCount: Number(itensCount) || 1,
-      entrega: entrega || "A definir",
-      valorTotal: Number(valorTotal),
-      status: "AGUARDANDO" // Novo pedido entra como Aguardando por padrão
-    };
-
-    pedidosMock.push(novoPedido);
-    return res.status(201).json(novoPedido);
   }
 
-  // PATCH /pedidos/:id/status - Altera o status (ex: de AGUARDANDO para EM_PRODUCAO)
+   // PATCH /pedidos/:id/status - Altera o status no banco
   async atualizarStatus(req, res) {
-    const { id } = req.params;
-    const { status } = req.body;
+      try {
+      const id = Number(req.params.id);
+      const { status } = req.body;
+      const statusBanco = normalizarStatus(status);
+  if (!statusBanco) {
+        return res.status(400).json({ error: 'Status inválido.' });
+      }
 
-    const pedido = pedidosMock.find((p) => p.id === Number(id));
+      const pedido = await prisma.pedido.update({
+        where: { id_pedido: id },
+        data: { status_pedido: statusBanco },
+        include: { cliente: true }
+      });
 
-    if (!pedido) {
-      return res.status(404).json({ error: "Pedido não encontrado." });
+       return res.json({
+        id: pedido.id_pedido,
+        cliente: pedido.cliente?.nome_cliente || '',
+        itensCount: pedido.qtde_produto_pedido,
+        entrega: pedido.data_entrega_pedido
+          ? pedido.data_entrega_pedido.toISOString().slice(0, 10)
+          : 'A definir',
+        valorTotal: pedido.vlr_total_pedido ? Number(pedido.vlr_total_pedido) : 0,
+        status: formatarStatus(pedido.status_pedido)
+      });
+    } catch (erro) {
+      if (erro?.code === 'P2025') {
+        return res.status(404).json({ error: 'Pedido não encontrado.' });
+      }
+
+      console.error('Erro ao atualizar pedido:', erro);
+      return res.status(500).json({ error: 'Erro ao atualizar pedido no banco de dados.' });
     }
-
-    pedido.status = status.toUpperCase();
-    return res.json(pedido);
   }
 }
-
-module.exports = new PedidoController();

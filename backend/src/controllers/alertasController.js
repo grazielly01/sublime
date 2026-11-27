@@ -1,81 +1,82 @@
-let alertasMock = [
-  {
-    id: 1,
-    titulo: "Fermento Químico abaixo do minimo",
-    descricao: "Apenas 2kg restantes (mínimo 5kg). Produção de bolos em risco para amanhã.",
-    prioridade: "ALTA",
-    categoria: "ESTOQUE",
-    corBarra: "#d32f2f"
-  },
-  {
-    id: 2,
-    titulo: "Validade próxima - Ovos brancos ",
-    descricao: "Lote LT-0422 (1.800 un) vence em 02/12/2026 — priorizar no PEPS.",
-    prioridade: "ALTA",
-    categoria: "ESTOQUE",
-    corBarra: "#d32f2f"
-  }, 
-  {
-    id: 3,
-    titulo: "Margem caindo — Torta de Limão",
-    descricao: "Custo dos ingredientes subiu 8% no mês. Revisar preço de venda.",
-    prioridade: "MÉDIA",
-    categoria: "FINANCEIRO",
-    corBarra: "#fbc02d"
-  }, 
-  {
-    id: 4,
-    titulo: "Fermento  abaixo do minimo",
-    descricao: "Apenas 2kg restantes (mínimo 5kg). Produção de bolos em risco para amanhã.",
-    prioridade: "MÉDIA",
-    categoria: "ESTOQUE",
-    corBarra: "#fbc02d"
-  }, 
-  {
-    id: 5,
-    titulo: "Pedido -2340 sem confirmação do cliente",
-    descricao: "Mercado Bom Preço não confirmou entrega de amanhã às 09h.",
-    prioridade: "BAIXA",
-    categoria: "PEDIDOS",
-    corBarra: "#616161"
-  },
-];
+const prisma = require('../config/database');
+
 
 class AlertasController {
   // GET /alertas - Lista alertas com suporte a filtro ?categoria=ESTOQUE
   async listar(req, res) {
+   try {
+      const { categoria } = req.query;
+      const insumos = await prisma.insumos.findMany({
+        include: { categoria_insumos: true }
+      });
+      const pedidos = await prisma.pedido.findMany({
+        include: { cliente: true },
+        where: { status_pedido: { notIn: ['entregue', 'cancelado'] } }
+      });
 
-    //console.log("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa");
+         const alertas = [];
 
-    const { categoria } = req.query;
+     insumos.forEach((insumo) => {
+        const quantidade = Number(insumo.qtde_em_estoque_insumo || 0);
+        const minimo = Number(insumo.qtde_minima_insumo || 0);
+        if (quantidade <= minimo) {
+          alertas.push({
+            id: 1000 + insumo.idInsumo,
+            titulo: `${insumo.nome_insumo || 'Insumo'} abaixo do mínimo`,
+            descricao: `Apenas ${quantidade} restantes (mínimo ${minimo}).`,
+            prioridade: quantidade === 0 ? 'ALTA' : 'MÉDIA',
+            categoria: 'ESTOQUE',
+            corBarra: quantidade === 0 ? '#d32f2f' : '#fbc02d'
+          });
+        }
 
-    let resultado = alertasMock;
+      if (insumo.data_validade_insumo) {
+          const hoje = new Date();
+          const dias = Math.ceil((insumo.data_validade_insumo.getTime() - hoje.getTime()) / 86400000);
+          if (dias >= 0 && dias <= 30) {
+            alertas.push({
+              id: 2000 + insumo.idInsumo,
+              titulo: `Validade próxima - ${insumo.nome_insumo || 'Insumo'}`,
+              descricao: `Lote ${insumo.lote_insumo || '-'} vence em ${dias} dia(s).`,
+              prioridade: dias <= 7 ? 'ALTA' : 'MÉDIA',
+              categoria: 'VALIDADE',
+              corBarra: dias <= 7 ? '#d32f2f' : '#fbc02d'
+            });
+          }
+        }
+      });
 
-    if (categoria && categoria.toUpperCase() !== 'TODOS') {
-      resultado = alertasMock.filter(
-        (a) => a.categoria.toUpperCase() === categoria.toUpperCase()
-      );
+      pedidos.forEach((pedido) => {
+        alertas.push({
+          id: 3000 + pedido.id_pedido,
+          titulo: `Pedido #${pedido.id_pedido} em aberto`,
+          descricao: `${pedido.cliente?.nome_cliente || 'Cliente não informado'}: ${pedido.nome_produto_pedido || 'Pedido cadastrado'}.`,
+          prioridade: pedido.status_pedido === 'aguardando' ? 'MÉDIA' : 'BAIXA',
+          categoria: 'PEDIDOS',
+          corBarra: pedido.status_pedido === 'aguardando' ? '#fbc02d' : '#616161'
+        });
+      });
+
+ const categoriaFiltro = categoria && categoria.toUpperCase() !== 'TODOS'
+        ? categoria.toUpperCase()
+        : null;
+      const resultado = categoriaFiltro
+        ? alertas.filter((alerta) => alerta.categoria === categoriaFiltro)
+        : alertas;
+
+      return res.json({ total: resultado.length, data: resultado });
+    } catch (error) {
+      console.error('Erro ao listar alertas:', error);
+      return res.status(500).json({ error: 'Erro ao carregar alertas do banco de dados.' });
     }
-
-    return res.json({
-      total: resultado.length,
-      data: resultado
-    });
   }
-
   // DELETE /alertas/:id - Dispensa/Remove um alerta da lista
   async dispensar(req, res) {
-    const { id } = req.params;
-
-    const index = alertasMock.findIndex((a) => a.id === Number(id));
-
-    if (index === -1) {
-      return res.status(404).json({ error: "Alerta não encontrado." });
-    }
-
-    alertasMock.splice(index, 1);
-    return res.json({ mensagem: "Alerta dispensado com sucesso." });
+        return res.status(404).json({
+      error: 'Este alerta é calculado a partir do banco de dados e não pode ser dispensado.'
+    });
+    
   }
 }
 
-module.exports = new AlertasController();
+//module.exports = new AlertasController();
