@@ -8,7 +8,9 @@ import {
   salvarMetas as salvarMetasAPI,
 } from "../../services/dashboardService";
 
-const API_ESTOQUE = "http://localhost:3000/estoque";
+const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3000";
+const API_ESTOQUE = `${API_URL}/estoque`;
+const API_ALERTAS = `${API_URL}/alertas`;
 
 const metasPadrao = [
   { id: "m1", titulo: "Meta de faturamento", tipo: "moeda", atual: 91000, meta: 100000 },
@@ -17,6 +19,22 @@ const metasPadrao = [
 ];
 
 const LIMITE_DE_METAS = 6;
+
+function normalizarAlertaDashboard(alerta) {
+  const prioridade = String(alerta?.prioridade || alerta?.nivel || "media").toLowerCase();
+  const nivel =
+    prioridade === "alta" || prioridade === "urgente" || prioridade === "critico"
+      ? "alta"
+      : "media";
+
+  return {
+    id: alerta?.id,
+    tipo: alerta?.categoria || alerta?.tipo || "Alerta",
+    mensagem: alerta?.titulo || alerta?.descricao || alerta?.mensagem || "",
+    descricao: alerta?.descricao || "",
+    nivel,
+  };
+}
 
 function parseDataValidade(valor) {
   if (!valor) return null;
@@ -727,7 +745,7 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
             <>
               <div className="listaAlertas">
                 {dados.alertas.slice(0, 2).map((alerta, i) => (
-                  <div className="alertaDashboard" key={i}>
+                  <div className="alertaDashboard" key={alerta.id || i}>
                     <span className={`pontoAlerta ${alerta.nivel}`}></span>
                     <div>
                       <small>{alerta.tipo}</small>
@@ -803,7 +821,7 @@ function ModalDetalhesCard({ cardKey, onFechar, dados }) {
           {cardKey === "alertasCriticos" && (
             <div className="listaAlertas">
               {dados.alertas.map((alerta, i) => (
-                <div className="alertaDashboard" key={i}>
+                <div className="alertaDashboard" key={alerta.id || i}>
                   <span className={`pontoAlerta ${alerta.nivel}`}></span>
                   <div>
                     <small>{alerta.tipo}</small>
@@ -1332,6 +1350,7 @@ function Dashboard() {
   const [metas, setMetas] = useState(metasPadrao);
   const [dadosDashboard, setDadosDashboard] = useState(null);
   const [insumosEstoque, setInsumosEstoque] = useState([]);
+  const [alertasAPI, setAlertasAPI] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [erroDashboard, setErroDashboard] = useState("");
   const [periodoSelecionado, setPeriodoSelecionado] = useState("30d");
@@ -1358,6 +1377,24 @@ function Dashboard() {
     }
   };
 
+  const buscarAlertasAPI = async () => {
+    try {
+      const resposta = await fetch(API_ALERTAS, {
+        headers: { Accept: "application/json" },
+      });
+      if (!resposta.ok) return;
+      const json = await resposta.json();
+      const lista = Array.isArray(json?.data)
+        ? json.data
+        : Array.isArray(json)
+          ? json
+          : [];
+      setAlertasAPI(lista.map(normalizarAlertaDashboard));
+    } catch (err) {
+      console.warn("Não foi possível buscar alertas da API:", err);
+    }
+  };
+
   useEffect(() => {
     let ativo = true;
 
@@ -1369,6 +1406,7 @@ function Dashboard() {
         const [dados] = await Promise.all([
           buscarDashboard(),
           buscarInsumosEstoque(),
+          buscarAlertasAPI(),
         ]);
 
         if (!ativo) return;
@@ -1393,7 +1431,10 @@ function Dashboard() {
 
     carregarDashboard();
 
-    const aoFocarJanela = () => buscarInsumosEstoque();
+    const aoFocarJanela = () => {
+      buscarInsumosEstoque();
+      buscarAlertasAPI();
+    };
     window.addEventListener("focus", aoFocarJanela);
 
     return () => {
@@ -1677,7 +1718,10 @@ function Dashboard() {
   const lotes = lotesDoEstoque.length > 0 ? lotesDoEstoque : (dadosDashboard?.lotes || []);
 
   const entregas = dadosDashboard?.entregas || [];
-  const alertas = dadosDashboard?.alertas || [];
+  const listaBaseAlertas =
+    alertasAPI.length > 0 ? alertasAPI : dadosDashboard?.alertas || [];
+  const alertasCriticos = listaBaseAlertas.filter((item) => item.nivel === "alta");
+  const alertas = alertasCriticos.length > 0 ? alertasCriticos : listaBaseAlertas;
   const fornecedores = dadosDashboard?.fornecedores || [];
 
   const indicadores = calcularIndicadores(
@@ -1732,7 +1776,7 @@ function Dashboard() {
     lotes,
     clientes,
     entregas,
-    alertas,
+    alertas: listaBaseAlertas,
     fornecedores,
   };
 
@@ -2206,8 +2250,8 @@ function Dashboard() {
                 </div>
 
                 <div className="listaAlertas">
-                  {alertas.slice(0, 2).map((alerta, i) => (
-                    <div className="alertaDashboard" key={i}>
+                  {listaBaseAlertas.slice(0, 2).map((alerta, i) => (
+                    <div className="alertaDashboard" key={alerta.id || i}>
                       <span className={`pontoAlerta ${alerta.nivel}`}></span>
                       <div>
                         <small>{alerta.tipo}</small>
@@ -2349,22 +2393,28 @@ function Dashboard() {
                   <button
                     type="button"
                     className="botaoLinkDashboard"
-                    onClick={() => setModalCardAtivo("alertasCriticos")}
+                    onClick={() => window.location.assign("/alertas")}
                   >
                     Ver todos
                   </button>
                 </div>
 
                 <div className="listaAlertas">
-                  {alertas.map((alerta, i) => (
-                    <div className="alertaDashboard" key={i}>
-                      <span className={`pontoAlerta ${alerta.nivel}`}></span>
-                      <div>
-                        <small>{alerta.tipo}</small>
-                        <p>{alerta.mensagem}</p>
+                  {alertas.length === 0 ? (
+                    <p style={{ padding: "8px 0", color: "#7A6E6C" }}>
+                      Nenhum alerta crítico no momento.
+                    </p>
+                  ) : (
+                    alertas.map((alerta, i) => (
+                      <div className="alertaDashboard" key={alerta.id || i}>
+                        <span className={`pontoAlerta ${alerta.nivel}`}></span>
+                        <div>
+                          <small>{alerta.tipo}</small>
+                          <p>{alerta.mensagem}</p>
+                        </div>
                       </div>
-                    </div>
-                  ))}
+                    ))
+                  )}
                 </div>
               </div>
 

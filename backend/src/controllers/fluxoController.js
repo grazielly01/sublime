@@ -1,7 +1,6 @@
 const prisma = require('../config/database');
 
 class FluxoController {
-
   async getFluxoData(req, res) {
     try {
       const month = Number(req.query.month) || new Date().getMonth() + 1;
