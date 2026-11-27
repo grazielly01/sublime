@@ -1,5 +1,3 @@
-// src/controllers/producaoController.js
-
 const prisma = require('../config/database');
 
 function normalizarStatus(status) {
@@ -18,7 +16,8 @@ function formatarStatus(status) {
 
 class ProducaoController {
   async index(req, res) {
-    try {
+
+     try {
       const ordens = await prisma.ordens_producao.findMany({
         orderBy: { id_ordem: 'desc' }
       });
@@ -57,8 +56,9 @@ class ProducaoController {
     }
   }
 
-  async criar(req, res) {
-    try {
+   async criar(req, res) {
+
+     try {
       const { produto, quantidadeTotal, prazo } = req.body;
 
       if (!produto || !quantidadeTotal) {
@@ -90,7 +90,8 @@ class ProducaoController {
   }
 
   async atualizarStatus(req, res) {
-    try {
+
+     try {
       const id = Number(req.params.id);
       const status = normalizarStatus(req.body.status);
 
@@ -102,7 +103,8 @@ class ProducaoController {
         return res.status(404).json({ error: 'Ordem não encontrada.' });
       }
 
-      const ordem = await prisma.ordens_producao.update({
+
+        const ordem = await prisma.ordens_producao.update({
         where: { id_ordem: id },
         data: {
           status_ordem: status,
@@ -112,7 +114,7 @@ class ProducaoController {
         }
       });
 
-      return res.json({
+         return res.json({
         id: ordem.id_ordem,
         produto: ordem.nome_produto_ordem,
         quantidadeTotal: ordem.quantidade_total,
@@ -125,5 +127,3 @@ class ProducaoController {
     }
   }
 }
-
-module.exports = new ProducaoController();

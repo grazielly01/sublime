@@ -1,9 +1,10 @@
 const prisma = require('../config/database');
 
+
 class AlertasController {
   // GET /alertas - Lista alertas com suporte a filtro ?categoria=ESTOQUE
   async listar(req, res) {
-    try {
+   try {
       const { categoria } = req.query;
       const insumos = await prisma.insumos.findMany({
         include: { categoria_insumos: true }
@@ -13,9 +14,9 @@ class AlertasController {
         where: { status_pedido: { notIn: ['entregue', 'cancelado'] } }
       });
 
-      const alertas = [];
+         const alertas = [];
 
-      insumos.forEach((insumo) => {
+     insumos.forEach((insumo) => {
         const quantidade = Number(insumo.qtde_em_estoque_insumo || 0);
         const minimo = Number(insumo.qtde_minima_insumo || 0);
         if (quantidade <= minimo) {
@@ -29,7 +30,7 @@ class AlertasController {
           });
         }
 
-        if (insumo.data_validade_insumo) {
+      if (insumo.data_validade_insumo) {
           const hoje = new Date();
           const dias = Math.ceil((insumo.data_validade_insumo.getTime() - hoje.getTime()) / 86400000);
           if (dias >= 0 && dias <= 30) {
@@ -56,7 +57,7 @@ class AlertasController {
         });
       });
 
-      const categoriaFiltro = categoria && categoria.toUpperCase() !== 'TODOS'
+ const categoriaFiltro = categoria && categoria.toUpperCase() !== 'TODOS'
         ? categoria.toUpperCase()
         : null;
       const resultado = categoriaFiltro
@@ -69,13 +70,13 @@ class AlertasController {
       return res.status(500).json({ error: 'Erro ao carregar alertas do banco de dados.' });
     }
   }
-
   // DELETE /alertas/:id - Dispensa/Remove um alerta da lista
   async dispensar(req, res) {
-    return res.status(404).json({
+        return res.status(404).json({
       error: 'Este alerta é calculado a partir do banco de dados e não pode ser dispensado.'
     });
+    
   }
 }
 
-module.exports = new AlertasController();
+//module.exports = new AlertasController();

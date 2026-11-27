@@ -4,7 +4,7 @@ const prisma = require('../config/database');
 // Busca os totais que aparecem nos cards da Visão Geral
 async function obterResumoKpis(req, res) {
     try {
-        const [pedidosAbertos, itensEmBaixa] = await Promise.all([
+         const [pedidosAbertos, itensEmBaixa] = await Promise.all([
             prisma.pedido.count({
                 where: {
                     status_pedido: {
@@ -22,24 +22,18 @@ async function obterResumoKpis(req, res) {
             }
         });
 
-        const totalItensEmBaixa = insumos.filter((insumo) =>
+           const totalItensEmBaixa = insumos.filter((insumo) =>
             Number(insumo.qtde_em_estoque_insumo || 0) <= Number(insumo.qtde_minima_insumo || 0)
         ).length;
 
-        return res.status(200).json({
+           return res.status(200).json({
             data: {
                 pedidosAbertos,
-                itensEmBaixa: totalItensEmBaixa,
+                 itensEmBaixa: totalItensEmBaixa,
                 totalInsumos: itensEmBaixa
             }
         });
-    } catch (erro) {
-        console.error('Erro ao buscar indicadores da Visão Geral:', erro);
+          } catch (erro) {
+            console.error('Erro ao buscar indicadores da Visão Geral:', erro);
         return res.status(500).json({
-            message: 'Não foi possível carregar os indicadores da Visão Geral.'
-        });
-    }
-}
-
-// Exporta a função para ser utilizada na rota do dashboard
-module.exports = { obterResumoKpis };
+              message: 'Não foi possível carregar os indicadores da Visão Geral.'        });    }}

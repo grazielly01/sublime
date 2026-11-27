@@ -5,8 +5,7 @@ class FluxoController {
     try {
       const month = Number(req.query.month) || new Date().getMonth() + 1;
       const year = Number(req.query.year) || new Date().getFullYear();
-
-      if (!Number.isInteger(month) || month < 1 || month > 12 || !Number.isInteger(year) || year < 1) {
+ if (!Number.isInteger(month) || month < 1 || month > 12 || !Number.isInteger(year) || year < 1) {
         return res.status(400).json({ error: 'Mês ou ano inválido.' });
       }
 
@@ -50,60 +49,60 @@ class FluxoController {
         .filter((transaction) => transaction.type === 'EXPENSE')
         .reduce((sum, transaction) => sum + transaction.amount, 0);
       const netProfit = totalIncome - totalExpenses;
-      const profitMargin = totalIncome > 0
+      
+         const profitMargin = totalIncome > 0
         ? Number(((netProfit / totalIncome) * 100).toFixed(1))
         : 0;
-
-      const recentTransactions = [...monthTransactions]
+ const recentTransactions = [...monthTransactions]
         .sort((a, b) => b.date.localeCompare(a.date))
         .slice(0, 5);
-      const topExpenses = monthTransactions
-        .filter((transaction) => transaction.type === 'EXPENSE')
+         const topExpenses = monthTransactions
+         .filter((transaction) => transaction.type === 'EXPENSE')
         .sort((a, b) => b.amount - a.amount)
         .slice(0, 5);
-      const fixedList = monthTransactions.filter((transaction) => transaction.type === 'EXPENSE' && transaction.category === 'FIXED');
+
+         const fixedList = monthTransactions.filter((transaction) => transaction.type === 'EXPENSE' && transaction.category === 'FIXED');
       const variableList = monthTransactions.filter((transaction) => transaction.type === 'EXPENSE' && transaction.category === 'VARIABLE');
       const totalFixed = fixedList.reduce((sum, transaction) => sum + transaction.amount, 0);
       const totalVariable = variableList.reduce((sum, transaction) => sum + transaction.amount, 0);
       const totalCategoryExpenses = totalFixed + totalVariable;
-
-      const chart = { labels: [], income: [], expenses: [], balance: [] };
+       const chart = { labels: [], income: [], expenses: [], balance: [] };
       let accumulatedBalance = 0;
       const daysInMonth = new Date(year, month, 0).getDate();
 
       for (let day = 1; day <= daysInMonth; day++) {
-        const dayTransactions = monthTransactions.filter((transaction) => Number(transaction.date.split('-')[2]) === day);
+          const dayTransactions = monthTransactions.filter((transaction) => Number(transaction.date.split('-')[2]) === day);
         const income = dayTransactions.filter((transaction) => transaction.type === 'INCOME').reduce((sum, transaction) => sum + transaction.amount, 0);
         const expenses = dayTransactions.filter((transaction) => transaction.type === 'EXPENSE').reduce((sum, transaction) => sum + transaction.amount, 0);
         accumulatedBalance += income - expenses;
-        chart.labels.push(day);
+           chart.labels.push(day);
         chart.income.push(income);
         chart.expenses.push(expenses);
         chart.balance.push(accumulatedBalance);
       }
 
-      return res.json({
+       return res.json({
         period: { month, year },
-        kpis: { totalIncome, totalExpenses, netProfit, profitMargin, finalBalance: netProfit },
+
+          kpis: { totalIncome, totalExpenses, netProfit, profitMargin, finalBalance: netProfit },
         chart,
-        recentTransactions,
-        topExpenses,
-        expensesBreakdown: {
+ recentTransactions,
+     topExpenses,
+       expensesBreakdown: {
           totals: {
             fixed: totalFixed,
             variable: totalVariable,
             fixedPercentage: totalCategoryExpenses > 0 ? Number(((totalFixed / totalCategoryExpenses) * 100).toFixed(1)) : 0,
             variablePercentage: totalCategoryExpenses > 0 ? Number(((totalVariable / totalCategoryExpenses) * 100).toFixed(1)) : 0
           },
-          fixedList,
+
+             fixedList,
           variableList
         }
       });
-    } catch (error) {
+      } catch (error) {
       console.error('Erro no FluxoController:', error);
-      return res.status(500).json({ error: 'Erro ao carregar dados do fluxo de caixa.' });
+          return res.status(500).json({ error: 'Erro ao carregar dados do fluxo de caixa.' });
     }
   }
 }
-
-module.exports = new FluxoController();

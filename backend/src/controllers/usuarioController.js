@@ -6,7 +6,7 @@ const JWT_SECRET = process.env.JWT_SECRET || 'sublime_chave_secreta';
 
 class UsuarioController {
   async listar(req, res) {
-    try {
+     try {
       const usuarios = await prisma.usuario.findMany({
         orderBy: { id_usuario: 'desc' }
       });
@@ -22,15 +22,15 @@ class UsuarioController {
     }
   }
 
-  async criar(req, res) {
+   async criar(req, res) {
     try {
       const { nome, email, senha, cargo } = req.body;
 
-      if (!nome || !email || !senha) {
+       if (!nome || !email || !senha) {
         return res.status(400).json({ error: 'Nome, email e senha são obrigatórios.' });
       }
 
-      const usuarioExistente = await prisma.usuario.findFirst({
+       const usuarioExistente = await prisma.usuario.findFirst({
         where: { email_usuario: email }
       });
 
@@ -38,7 +38,7 @@ class UsuarioController {
         return res.status(400).json({ error: 'Este e-mail já está cadastrado.' });
       }
 
-      const senhaHash = await bcrypt.hash(senha, 10);
+        const senhaHash = await bcrypt.hash(senha, 10);
       const novoUsuario = await prisma.usuario.create({
         data: {
           nome_usuario: nome,
@@ -48,7 +48,7 @@ class UsuarioController {
         }
       });
 
-      return res.status(201).json({
+       return res.status(201).json({
         id: novoUsuario.id_usuario,
         nome: novoUsuario.nome_usuario,
         email: novoUsuario.email_usuario,
@@ -59,7 +59,7 @@ class UsuarioController {
     }
   }
 
-  async login(req, res) {
+   async login(req, res) {
     try {
       const { email, senha } = req.body;
 
@@ -67,15 +67,14 @@ class UsuarioController {
         return res.status(400).json({ error: 'Email e senha são obrigatórios.' });
       }
 
-      const usuario = await prisma.usuario.findFirst({
+            const usuario = await prisma.usuario.findFirst({
         where: { email_usuario: email }
       });
 
-      if (!usuario || !await bcrypt.compare(senha, usuario.senha_usuario || '')) {
+       if (!usuario || !await bcrypt.compare(senha, usuario.senha_usuario || '')) {
         return res.status(401).json({ error: 'Credenciais inválidas.' });
       }
-
-      const dadosUsuario = {
+       const dadosUsuario = {
         id: usuario.id_usuario,
         nome: usuario.nome_usuario,
         email: usuario.email_usuario,
@@ -83,19 +82,20 @@ class UsuarioController {
       };
 
       const token = jwt.sign(
-        { id: usuario.id_usuario, email: usuario.email_usuario },
+
+           { id: usuario.id_usuario, email: usuario.email_usuario },
         JWT_SECRET,
         { expiresIn: '8h' }
       );
 
-      return res.json({ usuario: dadosUsuario, token });
+        return res.json({ usuario: dadosUsuario, token });
     } catch (error) {
       return res.status(500).json({ error: 'Erro ao realizar login', detalhes: error.message });
     }
   }
 
   async perfil(req, res) {
-    try {
+     try {
       const id = req.usuario?.id;
       const email = req.usuario?.email;
 
@@ -116,5 +116,3 @@ class UsuarioController {
     }
   }
 }
-
-module.exports = new UsuarioController();

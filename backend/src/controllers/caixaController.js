@@ -32,7 +32,7 @@ function formatarTransacaoSaida(item) {
 
 class CaixaController {
   // Cadastrar entrada ou saída
-  async create(req, res) {
+ async create(req, res) {
     try {
       const {
         description,
@@ -62,13 +62,13 @@ class CaixaController {
         });
       }
 
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-        return res.status(400).json({
-          error: 'Data da transação inválida.'
-        });
-      }
+     if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+  return res.status(400).json({
+    error: 'Data da transação inválida.'
+  });
+}
 
-      if (type === 'INCOME') {
+        if (type === 'INCOME') {
         const item = await prisma.entradas.create({
           data: {
             nome_entrada: description.trim(),
@@ -83,17 +83,18 @@ class CaixaController {
         });
       }
 
-      if (type === 'EXPENSE') {
+        if (type === 'EXPENSE') {
         if (!['FIXED', 'VARIABLE'].includes(category)) {
           return res.status(400).json({
             error: 'Informe uma categoria válida.'
           });
         }
+
         const item = await prisma.saidas.create({
           data: {
             nome_saida: description.trim(),
             data_saida: new Date(`${date}T00:00:00`),
-            tipo_saida: category === 'FIXED' ? 'fixa' : 'variavel',
+           tipo_saida: category === 'FIXED' ? 'fixa' : 'variável',
             valor_saida: valor
           }
         });
@@ -106,10 +107,12 @@ class CaixaController {
       return res.status(400).json({
         error: 'Tipo de transação inválido.'
       });
-    } catch (error) {
+
+
+        } catch (error) {
       console.error('Erro no caixaController:', error);
 
-      return res.status(500).json({
+       return res.status(500).json({
         error: 'Erro ao registrar a transação.'
       });
     }
@@ -117,7 +120,8 @@ class CaixaController {
 
   // Listar transações
   async getAll(req, res) {
-    try {
+
+ try {
       const [entradas, saidas] = await Promise.all([
         prisma.entradas.findMany({ orderBy: { id_entrada: 'desc' } }),
         prisma.saidas.findMany({ orderBy: { id_saida: 'desc' } })
@@ -139,9 +143,10 @@ class CaixaController {
   async getById(req, res) {
     try {
       const rawId = String(req.params.id);
-      const [source, id] = rawId.includes('-') ? rawId.split('-') : ['', rawId];
+      const [source, id] = rawId.includes('-') ? rawId.split('-') : ['', 
+        rawId];
 
-      if (source === 'entrada') {
+       if (source === 'entrada') {
         const item = await prisma.entradas.findUnique({ where: { id_entrada: Number(id) } });
         return item ? res.json(formatarTransacaoEntrada(item)) : res.status(404).json({ error: 'Transação não encontrada.' });
       }
@@ -152,18 +157,22 @@ class CaixaController {
       }
 
       const numericId = Number(rawId);
-      const entrada = await prisma.entradas.findUnique({ where: { id_entrada: numericId } });
+      const entrada = await prisma.entradas.findUnique({ where: { 
+        id_entrada: numericId } });
       if (entrada) return res.json(formatarTransacaoEntrada(entrada));
-      const saida = await prisma.saidas.findUnique({ where: { id_saida: numericId } });
+      const saida = await prisma.saidas.findUnique({ where: { id_saida:
+      numericId } });
       return saida ? res.json(formatarTransacaoSaida(saida)) : res.status(404).json({ error: 'Transação não encontrada.' });
     } catch (error) {
-      return res.status(500).json({ error: 'Erro ao buscar transação.' });
+      return res.status(500).json({ error: 'Erro ao buscar transação.' 
+
+      });
     }
   }
 
   // Excluir transação
   async delete(req, res) {
-    try {
+      try {
       const rawId = String(req.params.id);
       const [source, id] = rawId.includes('-') ? rawId.split('-') : ['', rawId];
 
@@ -180,12 +189,10 @@ class CaixaController {
         }
       }
 
-      return res.json({ message: 'Transação excluída com sucesso!' });
+        return res.json({ message: 'Transação excluída com sucesso!' });
     } catch (error) {
       if (error?.code === 'P2025') return res.status(404).json({ error: 'Transação não encontrada.' });
       return res.status(500).json({ error: 'Erro ao excluir transação.' });
     }
-  }
+    }
 }
-
-module.exports = new CaixaController();

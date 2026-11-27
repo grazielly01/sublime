@@ -34,7 +34,6 @@ async function obterDashboard() {
     objetivo: Number(meta.qtde_meta ?? meta.valor_alvo_meta ?? 0),
     tipo: meta.tipo_meta === 'moeda' ? 'moeda' : 'numero'
   }));
-
   return {
     resumo: [
       { titulo: 'Estoque', valor: insumosBaixos.length ? 'Atenção' : 'OK', status: insumosBaixos.length ? 'atencao' : 'ok' },
@@ -112,7 +111,8 @@ async function obterDashboard() {
 
 async function atualizarMetas(metas) {
   if (!Array.isArray(metas) || metas.length > 6) {
-    throw new Error('Lista de metas inválida.');
+
+     throw new Error('Lista de metas inválida.');
   }
 
   await prisma.$transaction(async (tx) => {
@@ -129,7 +129,6 @@ async function atualizarMetas(metas) {
     });
   });
 
-  return obterDashboard();
+   return obterDashboard();
 }
-
 module.exports = { obterDashboard, atualizarMetas };
